@@ -1,1 +1,5 @@
+# Secret key
 .env
+
+# Database
+db.sqlite3
