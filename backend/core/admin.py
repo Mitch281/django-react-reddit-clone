@@ -4,13 +4,13 @@ from .models import Category, Post, Comment
 # Register your models here.
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Category._meta.get_fields()]
+    list_display = ["id", "name"]
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Post._meta.get_fields()]
+    list_display = ["id", "user", "category", "title", "content", "num_upvotes", "num_downvotes", "date_created"]
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Comment._meta.get_fields()]
+    list_display = ["id", "user", "parent_post", "content", "num_upvotes", "num_downvotes", "date_created"]
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
