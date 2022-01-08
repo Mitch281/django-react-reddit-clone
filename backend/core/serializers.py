@@ -9,6 +9,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("__all__")
 
 class PostSerializer(serializers.ModelSerializer):
+    category_name = serializers.ReadOnlyField()
+
     class Meta:
         model = Post
         fields = ("__all__")

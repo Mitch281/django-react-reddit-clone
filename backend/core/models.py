@@ -23,6 +23,10 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def category_name(self):
+        return self.category.name
+
 class Comment(models.Model):
     id = models.TextField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
