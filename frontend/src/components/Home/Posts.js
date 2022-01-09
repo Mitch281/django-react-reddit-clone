@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import Post from "./Post";
+import "../../style/posts.css";
 
 const Posts = (props) => {
     
@@ -7,10 +7,11 @@ const Posts = (props) => {
         <div id="posts">
             {props.posts.map((post) => <Post 
             key={post.id}
-            category_id={post.category}
+            categoryId={post.category}
+            categoryName={post.category_name}
             title={post.title}
             content={post.content}
-            numUpvotes={post.num_upovotes}
+            numUpvotes={post.num_upvotes}
             numDownvotes={post.num_downvotes}
             />)
             }
