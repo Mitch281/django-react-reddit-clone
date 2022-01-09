@@ -24,6 +24,10 @@ class Post(models.Model):
         return self.title
 
     @property
+    def username(self):
+        return self.user.username
+
+    @property
     def category_name(self):
         return self.category.name
 

@@ -3,3 +3,11 @@
     width: 500px;
     border: solid 4px black;
 }
+
+.post-title {
+    margin: 0px;
+}
+
+.post-content {
+    margin: 0px;
+}

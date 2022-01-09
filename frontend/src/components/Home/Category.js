@@ -1,8 +1,8 @@
 const Category = (props) => {
     return (
-        <h3 className="post-category-name">
+        <span className="post-category-name">
             {props.categoryName}
-        </h3>
+        </span>
     )
 }
 
