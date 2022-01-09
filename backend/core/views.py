@@ -19,6 +19,8 @@ class CategoryView(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.AllowAny(), ]
 
+        return permission_classes
+
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
