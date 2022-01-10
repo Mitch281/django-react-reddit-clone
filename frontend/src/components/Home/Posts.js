@@ -4,7 +4,7 @@ import "../../style/posts.css";
 const Posts = (props) => {
     
     return (
-        <div id="posts">
+        <div className="posts">
             {props.posts.map((post) => <Post 
             key={post.id}
             username={post.username}

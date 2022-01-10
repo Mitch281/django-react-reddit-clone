@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import SignupButton from "./SignupButton";
 import "../../style/navbar.css";
@@ -7,11 +8,11 @@ import Categories from "./Categories";
 const Navbar = () => {
 
     return (
-        <div id="navbar">
+        <div className="navbar">
             <Link to="/"><h1>Threddit</h1></Link>
-            <select id="categories">
+            <div className="select-categories">
                 <Categories />
-            </select>
+            </div>
             <LoginButton />
             <SignupButton />
         </div>

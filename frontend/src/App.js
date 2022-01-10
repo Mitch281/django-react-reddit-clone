@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Nav/Navbar";
 import Posts from "./components/Home/Posts";
+import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -33,6 +34,13 @@ function App() {
               <>
                 <Navbar />
                 <Posts posts={posts} />
+              </>
+            }
+            />
+            <Route path="posts/category=:categoryName" element = {
+              <>
+                <Navbar />
+                <PostsByCategory />
               </>
             }
             />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Category from "./Category";
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
@@ -20,7 +21,8 @@ const Categories = () => {
 
     return (
         categories.map((category) => 
-            <option key={category.id}>{category.name}</option>)
+            <Category key={category.id} category={category} />
+        )
     )
 }
 
