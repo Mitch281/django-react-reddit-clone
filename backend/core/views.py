@@ -9,6 +9,7 @@ from .serializers import CategorySerializer, PostSerializer, CommentSerializer, 
 
 # Create your views here.
 
+# TODO: Make sure that only the CREATORS of posts can delete them.
 # TODO: Maybe create my own permission class.
 class CategoryView(viewsets.ModelViewSet):
     def get_permissions(self):
@@ -37,6 +38,26 @@ class PostView(viewsets.ModelViewSet):
 
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+
+# This view is for viewing posts under a certain category.
+class PostsByCategoryView(viewsets.ModelViewSet):
+    serializer_class = PostSerializer
+
+    # Only users can create posts.
+    def get_permissions(self):
+        # Only users can create posts.
+        if self.request.method == "POST" or self.request.method == "DELETE":
+            permission_classes = [permissions.IsAuthenticated(), ]
+            return permission_classes
+            
+        else:
+            permission_classes = [permissions.AllowAny(), ]
+            return permission_classes
+
+    def get_queryset(self):
+        self.pk = self.kwargs["pk"]
+        queryset = Post.objects.filter(category=self.pk)
+        return queryset
 
 class CommentView(viewsets.ModelViewSet):
     # Only users can comment.
