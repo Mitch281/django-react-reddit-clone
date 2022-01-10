@@ -1,7 +1,7 @@
 const Category = (props) => {
     return (
         <span className="post-category-name">
-            {props.categoryName}
+            t/{props.categoryName}
         </span>
     )
 }

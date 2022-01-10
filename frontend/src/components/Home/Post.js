@@ -13,10 +13,14 @@ const Post = (props) => {
 
     return (
         <div className="post">
-            <PostVotes votes={votes} />
-            <Category categoryName={props.categoryName} />
-            <User username={props.username} />
-            <DateOfPost dateCreated={props.dateCreated} />
+            <div className="top-post flex-container">
+                <PostVotes votes={votes} />
+                <div className="post-info">
+                    <Category categoryName={props.categoryName} />
+                    <User username={props.username} />
+                    <DateOfPost dateCreated={props.dateCreated} />
+                </div>
+            </div>
             <Title title={props.title} />
             <PostContent content={props.content} />
         </div>

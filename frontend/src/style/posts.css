@@ -1,8 +1,32 @@
+:root {
+    --post-background-colour: rgb(250, 249, 249);
+}
+
+.flex-container {
+    display: flex;
+}
+
 .post {
-    height: 100px;
-    width: 500px;
-    border: solid 4px black;
+    height: auto;
+    width: 70%;
+    border: 1px solid white;
+    border-radius: 1%;
     margin-top: 50px;
+    background-color: var(--post-background-colour);
+}
+
+.post-votes {
+    display: flex;
+    flex-wrap: wrap;
+    width: 10%;
+}
+
+.post-votes * {
+    width: 100%;
+}
+
+.post-category-name {
+    display: inline;
 }
 
 .post-title {
