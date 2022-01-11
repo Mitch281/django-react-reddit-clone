@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/Auth/LoginPage";
+import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar";
 import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
@@ -34,6 +36,20 @@ function App() {
               <>
                 <Navbar />
                 <Posts posts={posts} />
+              </>
+            }
+            />
+            <Route exact path="/login/" element = {
+              <>
+                <Navbar />
+                <LoginPage />
+              </>
+            }
+            />
+            <Route exact path="/signup/" element = {
+              <>
+                <Navbar />
+                <SignupPage />
               </>
             }
             />
