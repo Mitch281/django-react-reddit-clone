@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
@@ -6,8 +6,10 @@ import Navbar from "./components/Nav/Navbar";
 import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 
+export const UserContext = createContext();
+
 function App() {
-  const [username, setUsername] = useState("");
+  const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [posts, setPosts] = useState([]);
@@ -30,38 +32,40 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-          <Routes>
-            <Route exact path="/" element = {
-              <>
-                <Navbar />
-                <Posts posts={posts} />
-              </>
-            }
-            />
-            <Route exact path="/login/" element = {
-              <>
-                <Navbar />
-                <LoginPage />
-              </>
-            }
-            />
-            <Route exact path="/signup/" element = {
-              <>
-                <Navbar />
-                <SignupPage />
-              </>
-            }
-            />
-            <Route path="posts/category=:categoryName" element = {
-              <>
-                <Navbar />
-                <PostsByCategory />
-              </>
-            }
-            />
-          </Routes>
-      </div>
+      <UserContext.Provider value={{usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn}}>
+        <div className="App">
+            <Routes>
+              <Route exact path="/" element = {
+                <>
+                  <Navbar />
+                  <Posts posts={posts} />
+                </>
+              }
+              />
+              <Route exact path="/login/" element = {
+                <>
+                  <Navbar />
+                  <LoginPage />
+                </>
+              }
+              />
+              <Route exact path="/signup/" element = {
+                <>
+                  <Navbar />
+                  <SignupPage />
+                </>
+              }
+              />
+              <Route path="posts/category=:categoryName" element = {
+                <>
+                  <Navbar />
+                  <PostsByCategory />
+                </>
+              }
+              />
+            </Routes>
+        </div>
+      </UserContext.Provider>
     </Router>
   );
 }

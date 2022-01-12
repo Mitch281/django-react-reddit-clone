@@ -89,7 +89,7 @@ class UserList(APIView):
     """
 
     # No authentication here as this view is used to create users.
-    permission_classes = [permissions.AllowAny(), ]
+    permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, format=None):
         users = User.objects.all()

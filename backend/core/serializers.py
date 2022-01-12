@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
 
-    #Write only true means that we do not get the password in response.
+    # Write only true means that we do not get the password in response.
     password = serializers.CharField(write_only=True)
 
     class Meta:
