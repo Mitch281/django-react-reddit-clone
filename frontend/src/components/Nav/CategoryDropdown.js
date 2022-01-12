@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Categories from "./Categories";
+import PropTypes from "prop-types";
 
 const CategoryDropdown = (props) => {
     
@@ -17,6 +18,10 @@ const CategoryDropdown = (props) => {
             {wantDropdown ? <Categories /> : ""}
         </div>
     )
+}
+
+CategoryDropdown.propTypes = {
+    activeCategory: PropTypes.string
 }
 
 export default CategoryDropdown

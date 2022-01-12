@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 const DateOfPost = (props) => {
 
@@ -25,6 +26,10 @@ const DateOfPost = (props) => {
             {props.dateCreated}
         </span>
     )
+}
+
+DateOfPost.propTypes = {
+    dateCreated: PropTypes.string
 }
 
 export default DateOfPost

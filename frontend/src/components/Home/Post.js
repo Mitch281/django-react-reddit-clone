@@ -5,6 +5,7 @@ import PostVotes from "./PostVotes";
 import Title from "./Title";
 import User from "./User";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Post = (props) => {
 
@@ -43,6 +44,18 @@ const Post = (props) => {
             <button type="button" onClick={navigateToPost}>Comments</button>
         </div>
     )
+}
+
+Post.propTypes = {
+    id : PropTypes.string,
+    username : PropTypes.string,
+    categoryId : PropTypes.string,
+    categoryName : PropTypes.string,
+    title : PropTypes.string,
+    content : PropTypes.string,
+    numUpvotes : PropTypes.number,
+    numDownvotes : PropTypes.number,
+    dateCreated : PropTypes.string
 }
 
 export default Post

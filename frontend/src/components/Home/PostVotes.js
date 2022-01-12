@@ -1,4 +1,5 @@
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
+import PropTypes from "prop-types";
 
 const PostVotes = (props) => {
     const numUpvotes = props.votes.numUpvotes;
@@ -11,6 +12,10 @@ const PostVotes = (props) => {
             <ImArrowDown className="downvote" />
         </div>
     )
+}
+
+PostVotes.propTypes = {
+    votes: PropTypes.object
 }
 
 export default PostVotes

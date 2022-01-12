@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Category from "./Category";
 
-const Categories = (props) => {
+const Categories = () => {
     const [categories, setCategories] = useState([]);
 
     async function fetchCategories() {

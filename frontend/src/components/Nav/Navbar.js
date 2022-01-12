@@ -2,10 +2,8 @@ import { Link } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import SignupButton from "./SignupButton";
 import "../../style/navbar.css";
-import Categories from "./Categories";
 import { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Post from "../Home/Post";
 import CategoryDropdown from "./CategoryDropdown";
 
 const Navbar = () => {
@@ -14,7 +12,6 @@ const Navbar = () => {
     const params = useParams();
     const activeCategory = params.categoryName;
 
-    const categoryDropdown = useRef(false);
     const ref = useRef(null);
 
     const categoryDropdownMargin = useRef();

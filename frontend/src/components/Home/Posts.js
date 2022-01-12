@@ -1,5 +1,6 @@
 import Post from "./Post";
 import "../../style/posts.css";
+import PropTypes from "prop-types";
 
 const Posts = (props) => {
     
@@ -22,4 +23,10 @@ const Posts = (props) => {
     )
 }
 
+Post.propTypes = {
+    posts: PropTypes.object
+}
+
 export default Posts
+
+
