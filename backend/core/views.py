@@ -26,7 +26,7 @@ class CategoryView(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.order_by("name")
 
-class PostView(viewsets.ModelViewSet):
+class PostsView(viewsets.ModelViewSet):
     def get_permissions(self):
         # Only users can create posts.
         if self.request.method == "POST" or self.request.method == "DELETE":
@@ -58,6 +58,24 @@ class PostsByCategoryView(viewsets.ModelViewSet):
     def get_queryset(self):
         self.pk = self.kwargs["pk"]
         queryset = Post.objects.filter(category=self.pk)
+        return queryset
+
+class PostView(viewsets.ModelViewSet):
+    serializer_class = PostSerializer(partial=True)
+
+    def get_permissions(self):
+        # Only users can create categories.
+        if self.request.method == "POST" or self.request.method == "DELETE":
+            permission_classes = [permissions.IsAuthenticated(), ]
+            
+        else:
+            permission_classes = [permissions.AllowAny(), ]
+
+        return permission_classes
+
+    def get_queryset(self):
+        self.pk = self.kwargs["pk"]
+        queryset = Post.objects.filter(id=self.pk)
         return queryset
 
 class CommentView(viewsets.ModelViewSet):
