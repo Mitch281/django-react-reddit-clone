@@ -5,6 +5,8 @@ import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar";
 import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
+import Comments from "./components/Comments/Comments";
+import PostSelected from "./components/Comments/PostSelected";
 
 export const UserContext = createContext();
 
@@ -19,7 +21,6 @@ function App() {
     const response = await fetch("http://localhost:8000/api/posts");
     if (response.ok) {
       const json = await response.json();
-      console.log(json);
       setPosts(json);
     } else {
       throw new Error("Error loading posts.");
@@ -60,6 +61,14 @@ function App() {
                 <>
                   <Navbar />
                   <PostsByCategory />
+                </>
+              }
+              />
+              <Route path="post=:postId/comments" element = {
+                <>
+                  <Navbar />
+                  <PostSelected />
+                  <Comments />
                 </>
               }
               />

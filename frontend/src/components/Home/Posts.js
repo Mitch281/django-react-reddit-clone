@@ -7,6 +7,7 @@ const Posts = (props) => {
         <div className="posts">
             {props.posts.map((post) => <Post 
             key={post.id}
+            id={post.id}
             username={post.username}
             categoryId={post.category}
             categoryName={post.category_name}

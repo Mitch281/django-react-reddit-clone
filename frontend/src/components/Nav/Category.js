@@ -8,7 +8,7 @@ const Category = (props) => {
     }
 
     return (
-        <button type="button" onClick={(e) => handleCategoryClick(e)}>
+        <button type="button" onClick={handleCategoryClick}>
             {props.category.name}
         </button>
     )

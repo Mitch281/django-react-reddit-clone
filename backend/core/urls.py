@@ -13,11 +13,14 @@ urlpatterns = [
 
     path('posts/', views.PostsView.as_view({"get": "list", "post": "create", "delete": "destroy"}), name='posts'),
 
-    re_path(r'posts/category=(?P<pk>[0-9a-z-&]+)/$', views.PostsByCategoryView.as_view({"get": "list", "post": "create", "delete": "destroy"})),
+    re_path(r'^posts/category=(?P<pk>[0-9a-z-&]+)/$', views.PostsByCategoryView.as_view({"get": "list", "post": "create", "delete": "destroy"})),
 
     path('comments/', views.CommentView.as_view({"get": "list", "post": "create", "delete": "destroy"}), name='comments'),
 
-    re_path(r'posts/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view({"get": "list", "patch": "update"})),
+    # re_path(r'^post=(?P<pk>[0-9a-z-&]+)/$/comments/', views.PostComments.as_view()),
+    re_path(r'^comments/post=(?P<pk>[0-9a-z-&]+)/$', views.PostComments.as_view({"get": "list"})),
+
+    re_path(r'^posts/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view({"get": "list", "patch": "update"})),
 
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -60,8 +60,9 @@ class PostsByCategoryView(viewsets.ModelViewSet):
         queryset = Post.objects.filter(category=self.pk)
         return queryset
 
+# TODO: check if we need this partial true.
 class PostView(viewsets.ModelViewSet):
-    serializer_class = PostSerializer(partial=True)
+    serializer_class = PostSerializer
 
     def get_permissions(self):
         # Only users can create categories.
@@ -80,16 +81,24 @@ class PostView(viewsets.ModelViewSet):
 
 class CommentView(viewsets.ModelViewSet):
     # Only users can comment.
-    def get_permissions(self):
-        # Only users can create categories.
-        if self.request.method == "POST" or self.request.method == "DELETE":
-            permission_classes = [permissions.IsAuthenticated(), ]
+    # def get_permissions(self):
+    #     # Only users can create categories.
+    #     if self.request.method == "POST" or self.request.method == "DELETE":
+    #         permission_classes = [permissions.IsAuthenticated(), ]
             
-        else:
-            permission_classes = [permissions.AllowAny(), ]
+    #     else:
+    #         permission_classes = [permissions.AllowAny(), ]
         
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+
+class PostComments(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        self.pk = self.kwargs["pk"]
+        queryset = Comment.objects.filter(parent_post=self.pk)
+        return queryset
 
 @api_view(["GET"])
 def current_user(request):
