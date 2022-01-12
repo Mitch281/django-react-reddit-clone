@@ -21,7 +21,7 @@ const Categories = (props) => {
 
     return (
         categories.map((category) => 
-            <Category key={category.id} category={category} activeCategory={props.activeCategory} />
+            <Category key={category.id} category={category} />
         )
     )
 }

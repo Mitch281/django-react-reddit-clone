@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Category = (props) => {
@@ -9,9 +8,7 @@ const Category = (props) => {
     }
 
     return (
-        <button type="button" onClick={(e) => handleCategoryClick(e)} style={
-            {order: `${props.activeCategory === props.category.name ? "1" : "2"}`}
-        }>
+        <button type="button" onClick={(e) => handleCategoryClick(e)}>
             {props.category.name}
         </button>
     )
