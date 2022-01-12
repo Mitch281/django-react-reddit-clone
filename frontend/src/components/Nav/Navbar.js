@@ -6,6 +6,7 @@ import Categories from "./Categories";
 import { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Post from "../Home/Post";
+import CategoryDropdown from "./CategoryDropdown";
 
 const Navbar = () => {
     // TODO: check why dynamic margin left styling is not working!
@@ -28,9 +29,7 @@ const Navbar = () => {
     return (
         <div id="navbar">
             <Link to="/"><h1 ref={ref}>Threddit</h1></Link>
-            <div id="category-dropdown" style={{marginLeft: `${categoryDropdownMargin.current}`}}>
-                <Categories activeCategory={activeCategory} />
-            </div>
+            <CategoryDropdown activeCategory={activeCategory}/>
             <div id="navbar-auth">
                 <LoginButton />
                 <SignupButton />
