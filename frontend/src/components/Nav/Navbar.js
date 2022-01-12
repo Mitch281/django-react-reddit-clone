@@ -3,18 +3,43 @@ import LoginButton from "./LoginButton";
 import SignupButton from "./SignupButton";
 import "../../style/navbar.css";
 import Categories from "./Categories";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import Post from "../Home/Post";
 
 const Navbar = () => {
+    // TODO: check why dynamic margin left styling is not working!
+    // const params = useParams();
+    const categoryName = params.categoryName;
+
+    // const { state } = useLocation();
+    // const categoryId = state.categoryId;
+
+    // console.table(categoryName, categoryId);
+    // console.log(categoryName);
     
     const categoryDropdown = useRef(false);
+    const ref = useRef(null);
+
+    const categoryDropdownMargin = useRef();
+
+    // When component renders, we will get the width of the header. This will be used to ensure that the margin on the
+    // category dropdown is adequate enough so that it does not collide with the header.
+    useEffect(() => {
+        const headerWidth = ref.current.offsetWidth;
+        categoryDropdownMargin.current = `min(${headerWidth + 10}, 40%)`;
+    }, []);
 
     return (
-        <div className="navbar">
-            <Link to="/"><h1>Threddit</h1></Link>
-            <Categories />
-            <LoginButton />
-            <SignupButton />
+        <div id="navbar">
+            <Link to="/"><h1 ref={ref}>Threddit</h1></Link>
+            <div id="category-dropdown" style={{marginLeft: `${categoryDropdownMargin.current}`}}>
+                <Categories />
+            </div>
+            <div id="navbar-auth">
+                <LoginButton />
+                <SignupButton />
+            </div>
         </div>
     )
 }

@@ -1,3 +1,16 @@
 #navbar {
     display: flex;
+    background-color: white;
+    justify-content: space-between;
+}
+
+#category-dropdown {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#category-dropdown button {
+    height: 50%;
 }
