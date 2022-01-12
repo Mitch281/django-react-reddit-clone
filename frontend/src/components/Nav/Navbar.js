@@ -4,20 +4,15 @@ import SignupButton from "./SignupButton";
 import "../../style/navbar.css";
 import Categories from "./Categories";
 import { useRef, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Post from "../Home/Post";
 
 const Navbar = () => {
     // TODO: check why dynamic margin left styling is not working!
-    // const params = useParams();
-    const categoryName = params.categoryName;
 
-    // const { state } = useLocation();
-    // const categoryId = state.categoryId;
+    const params = useParams();
+    const activeCategory = params.categoryName;
 
-    // console.table(categoryName, categoryId);
-    // console.log(categoryName);
-    
     const categoryDropdown = useRef(false);
     const ref = useRef(null);
 
@@ -34,7 +29,7 @@ const Navbar = () => {
         <div id="navbar">
             <Link to="/"><h1 ref={ref}>Threddit</h1></Link>
             <div id="category-dropdown" style={{marginLeft: `${categoryDropdownMargin.current}`}}>
-                <Categories />
+                <Categories activeCategory={activeCategory} />
             </div>
             <div id="navbar-auth">
                 <LoginButton />

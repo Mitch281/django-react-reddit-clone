@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Category from "./Category";
 
-const Categories = () => {
+const Categories = (props) => {
     const [categories, setCategories] = useState([]);
 
     async function fetchCategories() {
@@ -21,7 +21,7 @@ const Categories = () => {
 
     return (
         categories.map((category) => 
-            <Category key={category.id} category={category} />
+            <Category key={category.id} category={category} activeCategory={props.activeCategory} />
         )
     )
 }
