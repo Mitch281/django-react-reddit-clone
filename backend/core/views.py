@@ -11,6 +11,7 @@ from .serializers import CategorySerializer, PostSerializer, CommentSerializer, 
 
 # TODO: Make sure that only the CREATORS of posts can delete them.
 # TODO: Maybe create my own permission class.
+# TODO: Make ordering case insensitive.
 class CategoryView(viewsets.ModelViewSet):
     def get_permissions(self):
         # Only users can create categories.
@@ -23,7 +24,7 @@ class CategoryView(viewsets.ModelViewSet):
         return permission_classes
 
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by("name")
 
 class PostView(viewsets.ModelViewSet):
     def get_permissions(self):
