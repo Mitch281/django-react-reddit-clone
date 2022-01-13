@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Categories from "./Categories";
 import PropTypes from "prop-types";
 
@@ -13,7 +13,7 @@ const CategoryDropdown = (props) => {
     return (
         <div id="category-dropdown">
             <button type="button" onClick={handleCategoryClick} id="category-in-focus">
-                <span>{props.activeCategory}</span>
+                {props.activeCategory === undefined ? <span>Home</span> : <span>props.activeCategory</span>}
             </button>
             {wantDropdown ? <Categories /> : ""}
         </div>

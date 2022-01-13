@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Category from "./Category";
 
 const Categories = () => {
+    let navigate = useNavigate();
+
     const [categories, setCategories] = useState([]);
 
     async function fetchCategories() {
@@ -19,11 +22,16 @@ const Categories = () => {
         fetchCategories();
     }, []);
 
+    function navigateToHome() {
+        navigate("/");
+    }
+
     return (
-        categories.map((category) => 
-            <Category key={category.id} category={category} />
-        )
-    )
+        <>
+            <button type="button" onClick={navigateToHome}>Home</button>
+            {categories.map(category => <Category key={category.id} category={category} />)}
+        </>
+    );
 }
 
 export default Categories

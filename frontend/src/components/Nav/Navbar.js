@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import SignupButton from "./SignupButton";
 import "../../style/navbar.css";
 import { useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropdown";
 
 const Navbar = () => {
