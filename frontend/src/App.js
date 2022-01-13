@@ -57,14 +57,14 @@ function App() {
                 </>
               }
               />
-              <Route path="posts/category=:categoryName" element = {
+              <Route exact path="posts/category=:categoryName" element = {
                 <>
                   <Navbar />
                   <PostsByCategory />
                 </>
               }
               />
-              <Route path="post=:postId/comments" element = {
+              <Route exact path="post=:postId/comments" element = {
                 <>
                   <Navbar />
                   <PostSelected />

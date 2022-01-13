@@ -5,7 +5,7 @@ const Category = (props) => {
     const navigate = useNavigate();
 
     function handleCategoryClick(e) {
-        navigate(`/posts/category=${props.category.name}/`, {replace: true, state: {categoryId: props.category.id}});
+        navigate(`/posts/category=${props.category.name}/`, {state: {categoryId: props.category.id}});
     }
 
     return (

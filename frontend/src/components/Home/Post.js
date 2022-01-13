@@ -18,7 +18,7 @@ const Post = (props) => {
 
     // Show comments of post.
     function navigateToPost()  {
-        navigate(`/post=${props.id}/comments/`, {replace: true, state: {
+        navigate(`/post=${props.id}/comments/`, {state: {
             votes: votes,
             categoryName: props.categoryName,
             username: props.username,
