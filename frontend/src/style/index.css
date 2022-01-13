@@ -1,7 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@700&display=swap');
+
+h1 {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 700;
+}
+
+span {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 700;
+}
+
 :root {
     --background-colour: rgb(238, 236, 236);
 }
 
 body { 
     background-color: var(--background-colour);
+    margin: 0px;
 }

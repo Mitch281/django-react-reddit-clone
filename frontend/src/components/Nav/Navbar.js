@@ -24,7 +24,7 @@ const Navbar = () => {
 
     return (
         <div id="navbar">
-            <Link to="/"><h1 ref={ref}>Threddit</h1></Link>
+            <Link to="/" id="navbar-site-name"><h1 ref={ref}>Threddit</h1></Link>
             <CategoryDropdown activeCategory={activeCategory}/>
             <div id="navbar-auth">
                 <LoginButton />

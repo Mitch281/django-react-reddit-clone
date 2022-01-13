@@ -1,7 +1,13 @@
+:root {
+    --navbar-padding: 5px;
+}
+
 #navbar {
     display: flex;
     background-color: white;
     justify-content: space-between;
+    height: 5vh;
+    padding: var(--navbar-padding);
 }
 
 #category-dropdown {
@@ -9,9 +15,15 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    margin-left: 40%;
 }
 
 #category-dropdown button {
-    height: 50%;
-    width: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+#navbar-site-name {
+    text-decoration: none;
+    color: black;
 }

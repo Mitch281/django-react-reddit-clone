@@ -10,7 +10,7 @@ const Category = (props) => {
 
     return (
         <button type="button" onClick={handleCategoryClick}>
-            {props.category.name}
+            <span>{props.category.name}</span>
         </button>
     )
 }

@@ -11,7 +11,6 @@ const Categories = () => {
         const response = await fetch("http://localhost:8000/api/categories");
         if (response.ok) {
             const json = await response.json();
-            console.log(json);
             setCategories(json);
         } else {
             throw new Error("error loading categories.");
@@ -28,7 +27,7 @@ const Categories = () => {
 
     return (
         <>
-            <button type="button" onClick={navigateToHome}>Home</button>
+            <button type="button" onClick={navigateToHome}><span>Home</span></button>
             {categories.map(category => <Category key={category.id} category={category} />)}
         </>
     );
