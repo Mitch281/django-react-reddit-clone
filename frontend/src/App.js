@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
@@ -26,6 +26,8 @@ function App() {
       throw new Error("Error loading posts.");
     }
   }
+
+  async function loadVotes() {}
 
   useEffect(() => {
     loadPosts();

@@ -1,12 +1,16 @@
 import { Link, useParams } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import SignupButton from "./SignupButton";
+import LogoutButton from "./LogoutButton";
 import "../../style/navbar.css";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 import CategoryDropdown from "./CategoryDropdown";
+import { UserContext } from "../../App";
 
 const Navbar = () => {
     // TODO: check why dynamic margin left styling is not working!
+
+    const {usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
 
     const params = useParams();
     const activeCategory = params.categoryName;
@@ -27,8 +31,7 @@ const Navbar = () => {
             <Link to="/" id="navbar-site-name"><h1 ref={ref}>Threddit</h1></Link>
             <CategoryDropdown activeCategory={activeCategory}/>
             <div id="navbar-auth">
-                <LoginButton />
-                <SignupButton />
+                {!loggedIn ? <><LoginButton /><SignupButton /></> : <LogoutButton />}
             </div>
         </div>
     )

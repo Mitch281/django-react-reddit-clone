@@ -1,7 +1,10 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+
+    let navigate = useNavigate();
 
     const {usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
     
@@ -26,6 +29,7 @@ const LoginPage = () => {
             localStorage.setItem("refreshToken", json.refresh);
             setLoggedIn(true);
             setUsernameLoggedIn(username);
+            navigate("/");
         } else {
             throw new Error("Can't login!");
         }
