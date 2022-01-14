@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Category, Post, Comment
-from .serializers import CategorySerializer, PostSerializer, CommentSerializer, UserSerializer, UserSerializerWithToken
+from .models import Category, Post, Comment, PostVotes
+from .serializers import CategorySerializer, PostSerializer, CommentSerializer, UserSerializer, UserSerializerWithToken, PostVotesSerializer
 
 # Create your views here.
 
@@ -130,3 +130,8 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostVotesView(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = PostVotesSerializer
+    queryset = PostVotes.objects.all()

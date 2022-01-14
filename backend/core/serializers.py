@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Post, Comment
+from .models import Category, Post, Comment, PostVotes
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -25,6 +25,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "id")
+
+class PostVotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostVotes
+        fields = ("__all__")
 
 # Handle signup. For future reference, this was from https://stackoverflow.com/questions/52033003/return-token-after-registration-with-django-rest-framework-simplejwt
 class UserSerializerWithToken(serializers.ModelSerializer):

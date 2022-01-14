@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.id
 
     @property
     def username(self):
@@ -45,3 +46,19 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+class PostVotes(models.Model):
+
+    # We do not want to lose votes of users that delete their accounts.
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    upvote = models.BooleanField(default=False)
+    downvote = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "post"], name="vote_once_constraint"),
+            models.CheckConstraint(check= (~Q(upvote=True) | ~Q(downvote=True)),
+            name="cant_upvote_and_downvote")
+        ]
