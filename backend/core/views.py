@@ -5,7 +5,14 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Category, Post, Comment, PostVotes
-from .serializers import CategorySerializer, PostSerializer, CommentSerializer, UserSerializer, UserSerializerWithToken, PostVotesSerializer
+from .serializers import (CategorySerializer, 
+PostSerializer, 
+CommentSerializer, 
+UserSerializer, 
+UserSerializerWithToken, 
+PostVotesSerializer,
+MyTokenObtainPairSerializer)
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
 
@@ -135,3 +142,6 @@ class PostVotesView(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = PostVotesSerializer
     queryset = PostVotes.objects.all()
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

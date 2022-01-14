@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Category, Post, Comment, PostVotes
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,3 +60,13 @@ class UserSerializerWithToken(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+# For future reference, taken from https://stackoverflow.com/questions/61143726/return-username-and-id-with-django-rest-framework-simple-jwt-tokenrefresh
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super(MyTokenObtainPairSerializer, self).validate(attrs)
+
+        data.update({'user_id': self.user.id})
+
+        return data
