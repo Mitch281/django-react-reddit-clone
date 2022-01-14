@@ -12,6 +12,7 @@ export const UserContext = createContext();
 
 function App() {
   const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
+  const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [posts, setPosts] = useState([]);
@@ -35,7 +36,14 @@ function App() {
 
   return (
     <Router>
-      <UserContext.Provider value={{usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn}}>
+      <UserContext.Provider value={
+        {usernameLoggedIn,
+          userIdLoggedIn,
+          loggedIn, 
+          setUsernameLoggedIn, 
+          setUserIdLoggedIn,
+          setLoggedIn}
+        }>
         <div className="App">
             <Routes>
               <Route exact path="/" element = {

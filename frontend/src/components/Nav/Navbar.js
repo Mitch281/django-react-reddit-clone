@@ -10,7 +10,7 @@ import { UserContext } from "../../App";
 const Navbar = () => {
     // TODO: check why dynamic margin left styling is not working!
 
-    const {usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
+    const {loggedIn} = useContext(UserContext);
 
     const params = useParams();
     const activeCategory = params.categoryName;

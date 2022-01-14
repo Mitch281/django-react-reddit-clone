@@ -6,7 +6,7 @@ const LoginPage = () => {
 
     let navigate = useNavigate();
 
-    const {usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
+    const {setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn} = useContext(UserContext);
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -28,6 +28,7 @@ const LoginPage = () => {
             localStorage.setItem("accessToken", json.access);
             localStorage.setItem("refreshToken", json.refresh);
             setLoggedIn(true);
+            setUserIdLoggedIn(json.user_id);
             setUsernameLoggedIn(username);
             navigate("/");
         } else {

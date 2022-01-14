@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Category, Post, Comment
 
 # Register your models here.
+# TODO: add admin for postvotes table.
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["id", "name"]
