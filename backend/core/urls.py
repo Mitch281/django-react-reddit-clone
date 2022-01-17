@@ -9,20 +9,20 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     # See https://www.django-rest-framework.org/api-guide/viewsets/ for good documenation as_view params.
-    path('categories/', views.CategoryView.as_view({"get": "list", "post": "create", "delete": "destroy"}), name='categories'),
+    path('categories/', views.CategoryView.as_view(), name='categories'),
 
-    path('posts/', views.PostsView.as_view({"get": "list", "post": "create", "delete": "destroy"}), name='posts'),
+    path('posts/', views.PostsView.as_view(), name='posts'),
 
-    re_path(r'^posts/category=(?P<pk>[0-9a-z-&]+)/$', views.PostsByCategoryView.as_view({"get": "list", "post": "create", "delete": "destroy"})),
+    re_path(r'^posts/category=(?P<pk>[0-9a-z-&]+)/$', views.PostsByCategoryView.as_view()),
 
-    path('comments/', views.CommentView.as_view({"get": "list", "post": "create", "delete": "destroy"}), name='comments'),
+    path('comments/', views.CommentView.as_view(), name='comments'),
 
     # re_path(r'^post=(?P<pk>[0-9a-z-&]+)/$/comments/', views.PostComments.as_view()),
-    re_path(r'^comments/post=(?P<pk>[0-9a-z-&]+)/$', views.PostComments.as_view({"get": "list"})),
+    re_path(r'^comments/post=(?P<pk>[0-9a-z-&]+)/$', views.PostComments.as_view()),
 
-    re_path(r'^posts/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view({"get": "list", "patch": "update"})),
+    re_path(r'^posts/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view()),
 
-    path('post-votes/', views.PostVotesView.as_view({"get": "list", "post": "create"})),
+    path('post-votes/', views.PostVotesView.as_view()),
 
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

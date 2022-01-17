@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -19,93 +19,138 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 # TODO: Make sure that only the CREATORS of posts can delete them.
 # TODO: Maybe create my own permission class.
 # TODO: Make ordering case insensitive.
-class CategoryView(viewsets.ModelViewSet):
+# TODO: Does returning 401 bad errors return all types of errors? e.g: 401 error.
+class CategoryView(APIView):
+    """
+    List and create categories.
+    """
     def get_permissions(self):
-        # Only users can create categories.
-        if self.request.method == "POST" or self.request.method == "DELETE":
-            permission_classes = [permissions.IsAuthenticated(), ]
-            
-        else:
-            permission_classes = [permissions.AllowAny(), ]
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
 
-        return permission_classes
+    def get(self, request, format=None):
+        categories = Category.objects.order_by("name")
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
 
-    serializer_class = CategorySerializer
-    queryset = Category.objects.order_by("name")
+    def post(self, request, format=None):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PostsView(viewsets.ModelViewSet):
+class PostsView(APIView):
+    """
+    List and create posts.
+    """
     def get_permissions(self):
-        # Only users can create posts.
-        if self.request.method == "POST" or self.request.method == "DELETE":
-            permission_classes = [permissions.IsAuthenticated(), ]
-            return permission_classes
-            
-        else:
-            permission_classes = [permissions.AllowAny(), ]
-            return permission_classes
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
 
-    serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    def get(self, request, format=None):
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # This view is for viewing posts under a certain category.
-class PostsByCategoryView(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
-
-    # Only users can create posts.
-    def get_permissions(self):
-        # Only users can create posts.
-        if self.request.method == "POST" or self.request.method == "DELETE":
-            permission_classes = [permissions.IsAuthenticated(), ]
-            return permission_classes
-            
-        else:
-            permission_classes = [permissions.AllowAny(), ]
-            return permission_classes
-
-    def get_queryset(self):
-        self.pk = self.kwargs["pk"]
-        queryset = Post.objects.filter(category=self.pk)
-        return queryset
-
-# TODO: check if we need this partial true.
-class PostView(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
+class PostsByCategoryView(APIView):
+    """
+    List posts under certain categories.
+    """
 
     def get_permissions(self):
-        # Only users can create categories.
-        if self.request.method == "POST" or self.request.method == "DELETE":
-            permission_classes = [permissions.IsAuthenticated(), ]
-            
-        else:
-            permission_classes = [permissions.AllowAny(), ]
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
 
-        return permission_classes
+    def get(self, request, pk):
+        posts = Post.objects.filter(category=pk)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
-    def get_queryset(self):
-        self.pk = self.kwargs["pk"]
-        queryset = Post.objects.filter(id=self.pk)
-        return queryset
+class PostView(APIView):
+    """
+    Look at a certain post based on primary key sent from client.
+    """
 
-class CommentView(viewsets.ModelViewSet):
-    # Only users can comment.
-    # def get_permissions(self):
-    #     # Only users can create categories.
-    #     if self.request.method == "POST" or self.request.method == "DELETE":
-    #         permission_classes = [permissions.IsAuthenticated(), ]
-            
-    #     else:
-    #         permission_classes = [permissions.AllowAny(), ]
-        
+    serializer_class = PostSerializer
+
+    def get_permissions(self):
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
+
+    def get(self, request, pk):
+        post = Post.objects.get(id=pk)
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        post = Post.objects.get(id=pk)
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommentView(APIView):
+    """
+    List and create comments (across all posts).
+    """
+    def get_permissions(self):
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
+
+    def get(self, request, format=None):
+        comments = Comment.objects.all()
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostComments(APIView):
+    """
+    All the comments on a post.
+    """
+
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
 
-class PostComments(viewsets.ModelViewSet):
-    serializer_class = CommentSerializer
-
-    def get_queryset(self):
-        self.pk = self.kwargs["pk"]
-        queryset = Comment.objects.filter(parent_post=self.pk)
-        return queryset
+    def get(self, request, pk):
+        comments = Comment.objects.filter(parent_post=pk)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
 @api_view(["GET"])
 @permission_classes((permissions.IsAuthenticated, ))
@@ -139,10 +184,24 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PostVotesView(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny, ]
-    serializer_class = PostVotesSerializer
-    queryset = PostVotes.objects.all()
+class PostVotesView(APIView):
+    """
+    List all users and their votes. This is needed to keep track of users' upvotes and downvotes. Needs to be updated
+    whenever a post is upvoted or downvoted.
+    """
+
+    def get_permissions(self):
+        """Set custom permissions for each action."""
+        if self.request.method in ["post", "delete"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["get"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
+
+    def get(self, request, format=None):
+        votes = PostVotes.objects.all()
+        serializer = PostVotesSerializer(votes, many=True)
+        return Response(serializer.data)
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
