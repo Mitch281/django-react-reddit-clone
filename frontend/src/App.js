@@ -52,6 +52,10 @@ function App() {
     loadPosts();
   }, []);
 
+  useEffect(() => {
+    loadPosts();
+  }, [posts]);
+
   return (
     <Router>
       <UserContext.Provider value={
