@@ -26,9 +26,9 @@ class CategoryView(APIView):
     """
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE"]:
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
@@ -50,9 +50,9 @@ class PostsView(APIView):
     """
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE"]:
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
@@ -76,9 +76,9 @@ class PostsByCategoryView(APIView):
 
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE"]:
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
@@ -96,9 +96,10 @@ class PostView(APIView):
 
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE", "PATCH"]:
+            print("made it")
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
@@ -122,9 +123,9 @@ class CommentView(APIView):
     """
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE"]:
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
@@ -192,9 +193,9 @@ class PostVotesView(APIView):
 
     def get_permissions(self):
         """Set custom permissions for each action."""
-        if self.request.method in ["post", "delete"]:
+        if self.request.method in ["POST", "DELETE"]:
             self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["get"]:
+        elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 

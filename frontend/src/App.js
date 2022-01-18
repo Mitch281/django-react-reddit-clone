@@ -19,12 +19,30 @@ function App() {
 
   // TODO: Catch errors properly.
   async function loadPosts() {
-    const response = await fetch("http://localhost:8000/api/posts");
+    const response = await fetch("http://localhost:8000/api/posts/");
     if (response.ok) {
       const json = await response.json();
       setPosts(json);
     } else {
       throw new Error("Error loading posts.");
+    }
+  }
+
+  async function upvote(postId, currentNumUpvotes) {
+    const response = await fetch(`http://localhost:8000/api/post/id=${postId}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify({num_upvotes: currentNumUpvotes + 1})
+    });
+    if (response.ok) {
+      setPosts(posts.map(post => 
+        post.id === postId ? {...post, numUpvotes: currentNumUpvotes + 1} : post
+      ));
+    } else {
+      throw new Error("couldn't upvote!");
     }
   }
 
@@ -49,7 +67,7 @@ function App() {
               <Route exact path="/" element = {
                 <>
                   <Navbar />
-                  <Posts posts={posts} />
+                  <Posts posts={posts} upvote={upvote}/>
                 </>
               }
               />

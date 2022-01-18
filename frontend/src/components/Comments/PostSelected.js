@@ -7,9 +7,6 @@ const PostSelected = () => {
     const params = useParams();
     const postId = params.postId;
 
-    console.log(state);
-    console.log(postId);
-
     return (
         <Post 
             key={postId}

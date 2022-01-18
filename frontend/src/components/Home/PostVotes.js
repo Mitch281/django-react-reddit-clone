@@ -5,9 +5,13 @@ const PostVotes = (props) => {
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
+    function handleUpvote() {
+        props.upvote(props.postId, numUpvotes);
+    }
+
     return (
         <div className="post-votes">
-            <ImArrowUp className="upvote" />
+            <ImArrowUp className="upvote" onClick={handleUpvote}/>
             <span className="vote-count">{numUpvotes - numDownvotes}</span>
             <ImArrowDown className="downvote" />
         </div>
@@ -15,7 +19,9 @@ const PostVotes = (props) => {
 }
 
 PostVotes.propTypes = {
-    votes: PropTypes.object
+    votes: PropTypes.object,
+    postId: PropTypes.string,
+    upvote: PropTypes.func
 }
 
 export default PostVotes
