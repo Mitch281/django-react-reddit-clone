@@ -11,16 +11,24 @@ const PostVotes = (props) => {
 
     function checkUserVoteAlready() {
         const userVotes = props.userPostVotes.filter(userPostVote => userPostVote.user === userIdLoggedIn);
-        const postsVotedOn = userVotes.map(userVote => userVote.post);
-        if (postsVotedOn.includes(props.postId)) {
-            return true;
+        const postVotedOn = userVotes.filter(userVote => userVote.post === props.postId);
+        if (postVotedOn[0] === undefined) {
+            return false;
         }
-        return false;
+        else if (postVotedOn[0].upvote) {
+            return "upvote";
+        }
+        else if (postVotedOn[0].downvote) {
+            return "downvote";
+        }
     }
 
     function handleUpvote() {
-        if (!checkUserVoteAlready()) {
+        if (!checkUserVoteAlready() || checkUserVoteAlready() === "downvote") {
             props.upvote(props.postId, numUpvotes);
+        }
+        else if (checkUserVoteAlready() === "upvote") {
+            // undo upvote
         }
     }
 
