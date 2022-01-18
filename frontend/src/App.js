@@ -17,6 +17,10 @@ function App() {
 
   const [posts, setPosts] = useState([]);
 
+  // This keeps track of posts that users have voted on. This is needed to enforce the rule that users can only vote on a post
+  // once.
+  const [userPostVotes, setUserPostVotes] = useState([]);
+
   // TODO: Catch errors properly.
   async function loadPosts() {
     const response = await fetch("http://localhost:8000/api/posts/");
@@ -25,6 +29,16 @@ function App() {
       setPosts(json);
     } else {
       throw new Error("Error loading posts.");
+    }
+  }
+
+  async function loadPostVotes() {
+    const response = await fetch("http://localhost:8000/api/post-votes/");
+    if (response.ok) {
+      const json = await response.json();
+      setUserPostVotes(json);
+    } else {
+      throw new Error("Couldn't load user post votes");
     }
   }
 
@@ -39,22 +53,17 @@ function App() {
     });
     if (response.ok) {
       setPosts(posts.map(post => 
-        post.id === postId ? {...post, numUpvotes: currentNumUpvotes + 1} : post
+        post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
       ));
     } else {
       throw new Error("couldn't upvote!");
     }
   }
 
-  async function loadVotes() {}
-
   useEffect(() => {
     loadPosts();
+    loadPostVotes();
   }, []);
-
-  useEffect(() => {
-    loadPosts();
-  }, [posts]);
 
   return (
     <Router>
@@ -71,7 +80,7 @@ function App() {
               <Route exact path="/" element = {
                 <>
                   <Navbar />
-                  <Posts posts={posts} upvote={upvote}/>
+                  <Posts posts={posts} upvote={upvote} userPostVotes={userPostVotes} />
                 </>
               }
               />

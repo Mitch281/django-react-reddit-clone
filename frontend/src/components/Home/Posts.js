@@ -18,6 +18,7 @@ const Posts = (props) => {
             numDownvotes={post.num_downvotes}
             dateCreated={post.date_created}
             upvote={props.upvote}
+            userPostVotes={props.userPostVotes}
             />)
             }
         </div>
@@ -26,7 +27,8 @@ const Posts = (props) => {
 
 Post.propTypes = {
     posts: PropTypes.object,
-    upvote: PropTypes.func
+    upvote: PropTypes.func,
+    userPostVotes: PropTypes.array
 }
 
 export default Posts
