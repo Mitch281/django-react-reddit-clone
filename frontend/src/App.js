@@ -7,6 +7,7 @@ import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected";
+import { v4 as uuid_v4 } from "uuid";
 
 export const UserContext = createContext();
 
@@ -42,21 +43,55 @@ function App() {
     }
   }
 
-  async function upvote(postId, currentNumUpvotes) {
+  async function upvote(postId, currentNumUpvotes, downvoteAlready) {
+    let voteIncrement;
+    if (downvoteAlready) {
+      voteIncrement = 2;
+    } else {
+      voteIncrement = 1;
+    }
     const response = await fetch(`http://localhost:8000/api/post/id=${postId}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       },
-      body: JSON.stringify({num_upvotes: currentNumUpvotes + 1})
+      body: JSON.stringify({num_upvotes: currentNumUpvotes + voteIncrement})
     });
     if (response.ok) {
       setPosts(posts.map(post => 
-        post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
+        post.id === postId ? {...post, num_upvotes: currentNumUpvotes + voteIncrement} : post
       ));
     } else {
       throw new Error("couldn't upvote!");
+    }
+  }
+
+  // Updates the user's votes in the case of an upvote
+  async function userPostUpvote(userId, postId, downvoteAlready) {
+    console.log("made it");
+    let newUserPostVote;
+    if (!downvoteAlready) {
+      newUserPostVote = {
+        id: uuid_v4(),
+        upvote: true,
+        downvote: false,
+        user: userId,
+        post: postId
+      }
+      const response = await fetch("http://localhost:8000/api/post-votes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: JSON.stringify(newUserPostVote)
+      });
+      if (response.ok) {
+        setUserPostVotes(userPostVotes => [...userPostVotes, newUserPostVote]);
+      } else {
+        throw new Error("Couldn't update user post vote.");
+      }
     }
   }
 
@@ -80,7 +115,7 @@ function App() {
               <Route exact path="/" element = {
                 <>
                   <Navbar />
-                  <Posts posts={posts} upvote={upvote} userPostVotes={userPostVotes} />
+                  <Posts posts={posts} upvote={upvote} userPostVotes={userPostVotes} userPostUpvote={userPostUpvote} />
                 </>
               }
               />

@@ -18,6 +18,7 @@ const Posts = (props) => {
             numDownvotes={post.num_downvotes}
             dateCreated={post.date_created}
             upvote={props.upvote}
+            userPostUpvote={props.userPostUpvote}
             userPostVotes={props.userPostVotes}
             />)
             }
@@ -28,6 +29,7 @@ const Posts = (props) => {
 Post.propTypes = {
     posts: PropTypes.object,
     upvote: PropTypes.func,
+    userPostUpvote: PropTypes.func,
     userPostVotes: PropTypes.array
 }
 

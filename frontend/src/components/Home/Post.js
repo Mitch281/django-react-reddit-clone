@@ -32,7 +32,11 @@ const Post = (props) => {
     return (
         <div className="post">
             <div className="top-post flex-container">
-                <PostVotes votes={votes} upvote={props.upvote} postId={props.id} userPostVotes={props.userPostVotes} />
+                <PostVotes votes={votes} 
+                upvote={props.upvote} 
+                postId={props.id} 
+                userPostVotes={props.userPostVotes}
+                userPostUpvote={props.userPostUpvote} />
                 <div className="post-info">
                     <Category categoryName={props.categoryName} />
                     <User username={props.username} />
@@ -57,6 +61,7 @@ Post.propTypes = {
     numDownvotes : PropTypes.number,
     dateCreated : PropTypes.string,
     upvote: PropTypes.func,
+    userPostUpvote: PropTypes.func,
     userPostVotes: PropTypes.array
 }
 

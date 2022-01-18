@@ -24,19 +24,39 @@ const PostVotes = (props) => {
     }
 
     function handleUpvote() {
-        if (!checkUserVoteAlready() || checkUserVoteAlready() === "downvote") {
-            props.upvote(props.postId, numUpvotes);
+
+        // User has not voted yet.
+        if (!checkUserVoteAlready()) {
+            props.upvote(props.postId, numUpvotes, false)
+            .then(props.userPostUpvote(userIdLoggedIn, props.postId, false));
         }
+
+        // User is going from downvote to upvote.
+        if (checkUserVoteAlready() === "downvote") {
+            props.upvote(props.postId, numUpvotes, true);
+        }
+
         else if (checkUserVoteAlready() === "upvote") {
             // undo upvote
         }
     }
 
+    function determineUpArrowColour() {
+        if (checkUserVoteAlready() === "upvote") {
+            return {color: "orange"}
+        }
+    }
+
+    function determineDownArrowColour() {
+        if (checkUserVoteAlready() === "downvote") {
+            return {color: "orange"}
+        }
+    }
     return (
         <div className="post-votes">
-            <ImArrowUp className="upvote" onClick={handleUpvote}/>
+            <ImArrowUp className="upvote" onClick={handleUpvote} style={determineUpArrowColour()} />
             <span className="vote-count">{numUpvotes - numDownvotes}</span>
-            <ImArrowDown className="downvote" />
+            <ImArrowDown className="downvote" style={determineDownArrowColour()} />
         </div>
     )
 }
@@ -45,6 +65,7 @@ PostVotes.propTypes = {
     votes: PropTypes.object,
     postId: PropTypes.string,
     upvote: PropTypes.func,
+    userPostUpvote: PropTypes.func,
     userPostVotes: PropTypes.array
 }
 
