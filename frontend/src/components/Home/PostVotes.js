@@ -7,9 +7,12 @@ const PostVotes = (props) => {
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
-    const { userIdLoggedIn } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     function checkUserVoteAlready() {
+        if (!loggedIn) {
+            return;
+        }
         const userVotes = props.userPostVotes.filter(userPostVote => userPostVote.user === userIdLoggedIn);
         const postVotedOn = userVotes.filter(userVote => userVote.post === props.postId);
         if (postVotedOn[0] === undefined) {
