@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../../App";
 
 const PostVotes = (props) => {
+    console.log(props.userPostVotes);
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 

@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../App";
 import { useLocation, useParams } from "react-router-dom";
 import Post from "../Home/Post";
+import PropTypes from "prop-types";
 
-const PostsByCategory = () => {
+const PostsByCategory = (props) => {
+    const { reLogin } = useContext(UserContext);
+
     const params = useParams();
     const categoryName = params.categoryName;
 
@@ -22,13 +26,18 @@ const PostsByCategory = () => {
     }
 
     useEffect(() => {
+        reLogin()
+    }, []);
+
+    useEffect(() => {
         loadPostsByCategory();
     }, [params]);
 
     return (
         <div className="posts">
             {posts.map((post) => <Post 
-            key={post.id}
+                key={post.id}
+                id={post.id}
                 username={post.username}
                 categoryId={post.category}
                 categoryName={post.category_name}
@@ -37,10 +46,19 @@ const PostsByCategory = () => {
                 numUpvotes={post.num_upvotes}
                 numDownvotes={post.num_downvotes}
                 dateCreated={post.date_created}
+                upvote={props.upvote}
+                userPostVotes={props.userPostVotes}
+                userPostUpvote={props.userPostUpvote}
             />
             )}
         </div>
     )
+}
+
+PostsByCategory.propTypes = {
+    upvote: PropTypes.func,
+    userPostVotes: PropTypes.array,
+    userPostUpvote: PropTypes.func
 }
 
 export default PostsByCategory

@@ -22,6 +22,29 @@ function App() {
   // once.
   const [userPostVotes, setUserPostVotes] = useState([]);
 
+  // This function relogs in a user whenever they navigate to a different page or refresh the page.
+  async function reLogin() {
+    const response = await fetch("http://localhost:8000/api/current-user/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      }
+    });
+    if (response.ok) {
+      const json = await response.json();
+      setLoggedIn(true);
+      setUserIdLoggedIn(json.id);
+      setUsernameLoggedIn(json.username);
+    } else {
+      throw new Error("Can't relogin!");
+    }
+  }
+
+  useEffect(() => {
+    reLogin();
+  }, []);
+
   // TODO: Catch errors properly.
   async function loadPosts() {
     const response = await fetch("http://localhost:8000/api/posts/");
@@ -69,7 +92,6 @@ function App() {
 
   // Updates the user's votes in the case of an upvote
   async function userPostUpvote(userId, postId, downvoteAlready) {
-    console.log("made it");
     let newUserPostVote;
     if (!downvoteAlready) {
       newUserPostVote = {
@@ -108,7 +130,8 @@ function App() {
           loggedIn, 
           setUsernameLoggedIn, 
           setUserIdLoggedIn,
-          setLoggedIn}
+          setLoggedIn,
+          reLogin}
         }>
         <div className="App">
             <Routes>

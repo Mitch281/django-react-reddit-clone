@@ -1,7 +1,8 @@
 import { useLocation, useParams } from "react-router-dom";
 import Post from "../Home/Post";
+import PropTypes from "prop-types";
 
-const PostSelected = () => {
+const PostSelected = (props) => {
 
     const { state } = useLocation();
     const params = useParams();
@@ -19,15 +20,17 @@ const PostSelected = () => {
             numUpvotes={state.votes.numUpvotes}
             numDownvotes={state.votes.numDownvotes}
             dateCreated={state.dateCreated}
+            upvote={props.upvote}
+            userPostVotes={props.userPostVotes}
+            userPostUpvote={props.userPostUpvote}
             />
     )
 }
 
-export default PostSelected
+PostSelected.propTypes = {
+    upvote: PropTypes.func,
+    userPostVotes: PropTypes.array,
+    userPostUpvote: PropTypes.func
+}
 
-// votes: votes,
-// categoryName: props.categoryName,
-// username: props.username,
-// dateCreated: props.dateCreated,
-// title: props.title,
-// content: props.content
+export default PostSelected
