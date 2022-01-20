@@ -57,7 +57,10 @@ const PostVotes = (props) => {
         }
 
         else if (checkUserVoteAlready() === "upvote") {
-            // undo upvote
+            const postVoteId = getPostVoteId();
+            props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted")
+            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
+            .catch(error => console.log(error));
         }
     }
 

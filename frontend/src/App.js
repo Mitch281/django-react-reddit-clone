@@ -70,7 +70,11 @@ function App() {
     let data;
     if (status === "downvoted") {
       data = {num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1}
-    } else {
+    }
+    else if (status === "upvoted") {
+      data = {num_upvotes: currentNumUpvotes - 1}
+    } 
+    else {
       data = {num_upvotes: currentNumUpvotes + 1}
     }
     const response = await fetch(`http://localhost:8000/api/post/id=${postId}/`, {
@@ -86,7 +90,13 @@ function App() {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : post
           ));
-      } else {
+      }
+      else if (status === "upvoted") {
+        setPosts(posts.map(post => 
+          post.id === postId ? {...post, num_upvotes: currentNumUpvotes - 1} : post
+          ));
+      } 
+      else {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
         ));
@@ -96,11 +106,37 @@ function App() {
     }
   }
 
-  // Updates the user's votes in the case of an upvote
+  // Updates the user's votes in the case of an upvote.
+  // TODO: Fix issue where if user undoes upvote, they cannot vote again because the record already exists in post-votes model!
   async function userPostUpvote(userId, postId, status, postVoteId) {
-    let newUserPostVote;
-    if (status === "no vote") {
-      newUserPostVote = {
+    let data;
+    if (status === "downvoted" || status === "upvoted") {
+      data = (status === "downvoted") ? {downvote: false, upvote: true} : {upvote: false};
+      const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: JSON.stringify(data)
+      })
+      if (response.ok) {
+        if (status === "downvoted") {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
+            ));
+        } else {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, upvote: false} : userPostVote
+            ));
+        }
+      } else {
+        throw new Error("Couldn't upvote and undo downvote.");
+      }
+    }
+    else {
+      let data;
+      data = {
         id: uuid_v4(),
         upvote: true,
         downvote: false,
@@ -113,30 +149,14 @@ function App() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         },
-        body: JSON.stringify(newUserPostVote)
+        body: JSON.stringify(data)
       });
       if (response.ok) {
-        setUserPostVotes(userPostVotes => [...userPostVotes, newUserPostVote]);
+        setUserPostVotes(userPostVotes => [...userPostVotes, data]);
       } else {
         throw new Error("Couldn't update user post vote.");
       }
-    } else {
-      const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        },
-        body: JSON.stringify({downvote: false, upvote:true})
-      })
-      if (response.ok) {
-        setUserPostVotes(userPostVotes.map(userPostVote => 
-          userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
-          ));
-      } else {
-        throw new Error("Couldn't upvote and undo downvote.");
-      }
-    }
+    } 
   }
 
   useEffect(() => {
