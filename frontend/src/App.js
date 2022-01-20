@@ -107,7 +107,6 @@ function App() {
   }
 
   // Updates the user's votes in the case of an upvote.
-  // TODO: Fix issue where if user undoes upvote, they cannot vote again because the record already exists in post-votes model!
   async function userPostUpvote(userId, postId, status, postVoteId) {
     let data;
     if (status === "downvoted" || status === "upvoted") {
