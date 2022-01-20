@@ -107,6 +107,7 @@ function App() {
   }
 
   // Updates the user's votes in the case of an upvote.
+  // TODO: error with new accounts toggling upvotes causes them to be able to keep downvoting when pressing upvote button.
   async function userPostUpvote(userId, postId, status, postVoteId) {
     let data;
     if (status === "downvoted" || status === "upvoted") {

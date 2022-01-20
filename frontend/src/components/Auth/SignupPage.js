@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 
 const SignupPage = () => {
 
-    const {usernameLoggedIn, loggedIn, setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
+    let navigate = useNavigate("/");
+
+    const {setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn} = useContext(UserContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -26,7 +29,12 @@ const SignupPage = () => {
         });
         if (response.ok) {
             const json = await response.json();
-            console.log(json);
+            setLoggedIn(true);
+            setUsernameLoggedIn(json.username);
+            setUserIdLoggedIn(json.id);
+            localStorage.setItem("accessToken", json.token.access);
+            localStorage.setItem("refreshToken", json.token.refresh);
+            navigate("/");
         } else {
             throw new Error("failed to signup.");
         }
