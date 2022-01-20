@@ -135,28 +135,47 @@ function App() {
       }
     }
     else {
-      let data;
-      data = {
-        id: uuid_v4(),
-        upvote: true,
-        downvote: false,
-        user: userId,
-        post: postId
-      }
-      const response = await fetch("http://localhost:8000/api/post-votes/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        },
-        body: JSON.stringify(data)
-      });
-      if (response.ok) {
-        setUserPostVotes(userPostVotes => [...userPostVotes, data]);
+
+      // This means that the user has not voted on the post yet and thus, we need to create a new record.
+      if (postVoteId === null) {
+        data = {
+          id: uuid_v4(),
+          upvote: true,
+          downvote: false,
+          user: userId,
+          post: postId
+        }
+        const response = await fetch("http://localhost:8000/api/post-votes/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          setUserPostVotes(userPostVotes => [...userPostVotes, data]);
+        } else {
+          throw new Error("Couldn't update user post vote.");
+        }
       } else {
-        throw new Error("Couldn't update user post vote.");
-      }
-    } 
+        data = {upvote: true}
+        const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
+        } else {
+          throw new Error("Couldn't upvote existing vote!");
+        }
+      } 
+    }
   }
 
   useEffect(() => {

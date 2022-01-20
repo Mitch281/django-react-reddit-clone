@@ -40,24 +40,23 @@ const PostVotes = (props) => {
 
 
     function handleUpvote() {
+        const postVoteId = getPostVoteId();
 
         // User has not voted yet.
         if (!checkUserVoteAlready()) {
             props.upvote(props.postId, numUpvotes, numDownvotes, "no vote")
-            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", null))
+            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
             .catch(error => console.log(error));
         }
 
         // User is going from downvote to upvote.
         if (checkUserVoteAlready() === "downvote") {
-            const postVoteId = getPostVoteId();
             props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted")
             .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
             .catch(error => console.log(error));
         }
 
         else if (checkUserVoteAlready() === "upvote") {
-            const postVoteId = getPostVoteId();
             props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted")
             .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
             .catch(error => console.log(error));
