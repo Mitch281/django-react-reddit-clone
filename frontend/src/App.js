@@ -66,9 +66,9 @@ function App() {
     }
   }
 
-  async function upvote(postId, currentNumUpvotes, currentNumDownvotes, downvoteAlready) {
+  async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status) {
     let data;
-    if (downvoteAlready) {
+    if (status === "downvoted") {
       data = {num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1}
     } else {
       data = {num_upvotes: currentNumUpvotes + 1}
@@ -82,7 +82,7 @@ function App() {
       body: JSON.stringify(data)
     });
     if (response.ok) {
-      if (downvoteAlready) {
+      if (status === "downvoted") {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : post
           ));
@@ -97,9 +97,9 @@ function App() {
   }
 
   // Updates the user's votes in the case of an upvote
-  async function userPostUpvote(userId, postId, downvoteAlready, postVoteId) {
+  async function userPostUpvote(userId, postId, status, postVoteId) {
     let newUserPostVote;
-    if (!downvoteAlready) {
+    if (status === "no vote") {
       newUserPostVote = {
         id: uuid_v4(),
         upvote: true,
