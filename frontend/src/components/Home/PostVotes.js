@@ -10,6 +10,7 @@ const PostVotes = (props) => {
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     function checkUserVoteAlready() {
+        console.log(props.userPostVotes);
         if (!loggedIn) {
             return;
         }
