@@ -7,7 +7,7 @@ import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected";
-import { v4 as uuid_v4 } from "uuid";
+import { postUpvoteToPost, patchUsersUpvote, postUsersUpvote } from "./fetch-data";
 
 export const UserContext = createContext();
 
@@ -67,35 +67,24 @@ function App() {
   }
 
   async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status) {
-    let data;
-    if (status === "downvoted") {
-      data = {num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1}
-    }
-    else if (status === "upvoted") {
-      data = {num_upvotes: currentNumUpvotes - 1}
-    } 
-    else {
-      data = {num_upvotes: currentNumUpvotes + 1}
-    }
-    const response = await fetch(`http://localhost:8000/api/post/id=${postId}/`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-      },
-      body: JSON.stringify(data)
-    });
-    if (response.ok) {
+    const upvoted = await postUpvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status);
+    if (upvoted) {
+
+      // User is going from downvote to upvote.
       if (status === "downvoted") {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : post
           ));
       }
+
+      // User is undoing upvote.
       else if (status === "upvoted") {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes - 1} : post
           ));
       } 
+
+      // User is going from no vote to upvote.
       else {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
@@ -108,73 +97,44 @@ function App() {
 
   // Updates the user's votes in the case of an upvote.
   async function userPostUpvote(userId, postId, status, postVoteId) {
-    let data;
-    if (status === "downvoted" || status === "upvoted") {
-      data = (status === "downvoted") ? {downvote: false, upvote: true} : {upvote: false};
-      const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        },
-        body: JSON.stringify(data)
-      })
-      if (response.ok) {
+
+    // User has voted on post already. Thus, postVoteId exists (is not null).
+    if (postVoteId) {
+      const patchedUsersUpvote = await patchUsersUpvote(status, postVoteId);
+      if (patchedUsersUpvote) {
+
+        // User is going from downvote to upvote.
         if (status === "downvoted") {
           setUserPostVotes(userPostVotes.map(userPostVote => 
             userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
             ));
-        } else {
+
+        // User is undoing upvote.
+        } else if (status === "upvoted") {
           setUserPostVotes(userPostVotes.map(userPostVote => 
             userPostVote.id === postVoteId ? {...userPostVote, upvote: false} : userPostVote
             ));
+
+        // User has previously voted before, but has no current vote on the post.
+        } else {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
         }
       } else {
         throw new Error("Couldn't upvote and undo downvote.");
       }
     }
-    else {
 
-      // This means that the user has not voted on the post yet and thus, we need to create a new record.
-      if (postVoteId === null) {
-        data = {
-          id: uuid_v4(),
-          upvote: true,
-          downvote: false,
-          user: userId,
-          post: postId
-        }
-        const response = await fetch("http://localhost:8000/api/post-votes/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          setUserPostVotes(userPostVotes => [...userPostVotes, data]);
-        } else {
-          throw new Error("Couldn't update user post vote.");
-        }
+    // The user has not voted on the post yet. Thus, we need to post a new vote.
+    else {
+      const usersUpvotePosted = await postUsersUpvote(userId, postId);
+      if (usersUpvotePosted.result) {
+        const data = usersUpvotePosted.data;
+        setUserPostVotes(userPostVotes => [...userPostVotes, data]);
       } else {
-        data = {upvote: true}
-        const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          setUserPostVotes(userPostVotes.map(userPostVote => 
-            userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
-        } else {
-          throw new Error("Couldn't upvote existing vote!");
-        }
-      } 
-    }
+        throw new Error("Couldn't update user post vote.");
+      }
+    } 
   }
 
   useEffect(() => {
