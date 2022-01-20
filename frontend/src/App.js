@@ -7,7 +7,14 @@ import Posts from "./components/Home/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected";
-import { postUpvoteToPost, patchUsersUpvote, postUsersUpvote } from "./fetch-data";
+import { postUpvoteToPost, 
+        patchUsersUpvote, 
+        postUsersUpvote, 
+        postDownvoteToPost,  
+        patchUsersDownvote, 
+        postUsersDownvote 
+} 
+from "./fetch-data";
 
 export const UserContext = createContext();
 
@@ -137,6 +144,75 @@ function App() {
     } 
   }
 
+  async function downvote(postId, currentNumUpvotes, currentNumDownvotes, status) {
+    const downvoted = await postDownvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status);
+    if (downvoted) {
+      
+      // User is undoing downvote by downvoting again.
+      if (status === "downvoted") {
+        setPosts(posts.map(post => 
+          post.id === postId ? {...post, num_downvotes: currentNumDownvotes - 1}: post));
+      }
+
+      // User is going from upvote to downvote
+      else if (status === "upvoted") {
+        setPosts(posts.map(post =>
+          post.id === postId ? {...post, num_upvotes: currentNumUpvotes - 1, num_downvotes: currentNumDownvotes + 1} : post));
+      }
+
+      // User is going from no vote to downote.
+      else {
+        setPosts(posts.map(post =>
+          post.id === postId ? {...post, num_downvotes: currentNumDownvotes + 1} : post));
+      }
+    }
+    else {
+      throw new Error("couldn't downvote.");
+    }
+  }
+
+  async function userPostDownvote(userId, postId, status, postVoteId) {
+
+    // User has voted on the post before.
+    if (postVoteId) {
+      const patchedUsersDownvote = await patchUsersDownvote(status, postVoteId);
+
+      if (patchedUsersDownvote) {
+
+        // User is undoing downvote by downvoting again.
+        if (status === "downvoted") {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, downvote: false} : userPostVote
+            ));
+
+        // User is going from upvote to downvote.
+        } else if (status === "upvoted") {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, upvote: false, downvote: true} : userPostVote
+            ));
+
+        // User has previously voted before, but has no current vote on the post.
+        } else {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+            userPostVote.id === postVoteId ? {...userPostVote, downvote: true} : userPostVote));
+        }
+      } else {
+        throw new Error("Couldn't patch user's downvote");
+      }
+    }
+
+    // User has not voted on post yet.
+    else {
+      const usersDownvotePosted = await postUsersDownvote(userId, postId);
+      if (usersDownvotePosted.result) {
+        const data = usersDownvotePosted.data;
+        setUserPostVotes(userPostVotes => [...userPostVotes, data]);
+      } else {
+        throw new Error("Couldn't update user post vote.");
+      }
+    } 
+  }
+
   useEffect(() => {
     loadPosts();
     loadPostVotes();
@@ -158,7 +234,12 @@ function App() {
               <Route exact path="/" element = {
                 <>
                   <Navbar />
-                  <Posts posts={posts} upvote={upvote} userPostVotes={userPostVotes} userPostUpvote={userPostUpvote} />
+                  <Posts posts={posts} 
+                  upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  userPostUpvote={userPostUpvote} 
+                  downvote={downvote}
+                  userPostDownvote={userPostDownvote} />
                 </>
               }
               />
@@ -179,14 +260,24 @@ function App() {
               <Route exact path="posts/category=:categoryName" element = {
                 <>
                   <Navbar />
-                  <PostsByCategory upvote={upvote} userPostVotes={userPostVotes} userPostUpvote={userPostUpvote} />
+                  <PostsByCategory upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  userPostUpvote={userPostUpvote} 
+                  downvote={downvote}
+                  userPostDownvote={userPostDownvote}
+                  />
                 </>
               }
               />
               <Route exact path="post=:postId/comments" element = {
                 <>
                   <Navbar />
-                  <PostSelected upvote={upvote} userPostVotes={userPostVotes} userPostUpvote={userPostUpvote} />
+                  <PostSelected upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  userPostUpvote={userPostUpvote} 
+                  downvote={downvote}
+                  userPostDownvote={userPostDownvote}
+                  />
                   <Comments />
                 </>
               }

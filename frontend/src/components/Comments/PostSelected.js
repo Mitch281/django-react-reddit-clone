@@ -23,6 +23,8 @@ const PostSelected = (props) => {
             upvote={props.upvote}
             userPostVotes={props.userPostVotes}
             userPostUpvote={props.userPostUpvote}
+            downvote={props.downvote}
+            userPostDownvote={props.userPostDownvote}
             />
     )
 }
@@ -30,7 +32,9 @@ const PostSelected = (props) => {
 PostSelected.propTypes = {
     upvote: PropTypes.func,
     userPostVotes: PropTypes.array,
-    userPostUpvote: PropTypes.func
+    userPostUpvote: PropTypes.func,
+    downvote: PropTypes.func,
+    userPostDownvote: PropTypes.func
 }
 
 export default PostSelected

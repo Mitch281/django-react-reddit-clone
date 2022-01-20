@@ -20,6 +20,8 @@ const Posts = (props) => {
             upvote={props.upvote}
             userPostUpvote={props.userPostUpvote}
             userPostVotes={props.userPostVotes}
+            downvote={props.downvote}
+            userPostDownvote={props.userPostDownvote}
             />)
             }
         </div>
@@ -30,7 +32,9 @@ Post.propTypes = {
     posts: PropTypes.object,
     upvote: PropTypes.func,
     userPostUpvote: PropTypes.func,
-    userPostVotes: PropTypes.array
+    userPostVotes: PropTypes.array,
+    downvote : PropTypes.func,
+    userPostDownvote : PropTypes.func
 }
 
 export default Posts

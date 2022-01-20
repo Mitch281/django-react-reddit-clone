@@ -49,6 +49,8 @@ const PostsByCategory = (props) => {
                 upvote={props.upvote}
                 userPostVotes={props.userPostVotes}
                 userPostUpvote={props.userPostUpvote}
+                downvote={props.downvote}
+                userPostDownvote={props.userPostDownvote}
             />
             )}
         </div>
@@ -58,7 +60,9 @@ const PostsByCategory = (props) => {
 PostsByCategory.propTypes = {
     upvote: PropTypes.func,
     userPostVotes: PropTypes.array,
-    userPostUpvote: PropTypes.func
+    userPostUpvote: PropTypes.func,
+    downvote: PropTypes.func,
+    userPostDownvote: PropTypes.func
 }
 
 export default PostsByCategory

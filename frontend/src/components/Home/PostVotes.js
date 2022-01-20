@@ -1,6 +1,6 @@
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import PropTypes from "prop-types";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../App";
 
 const PostVotes = (props) => {
@@ -10,7 +10,6 @@ const PostVotes = (props) => {
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     function checkUserVoteAlready() {
-        console.log(props.userPostVotes);
         if (!loggedIn) {
             return;
         }
@@ -38,27 +37,48 @@ const PostVotes = (props) => {
     }
 
 
-    function handleUpvote() {
+    function handleVote(voteType) {
         const postVoteId = getPostVoteId();
 
         // User has not voted yet.
         if (!checkUserVoteAlready()) {
-            props.upvote(props.postId, numUpvotes, numDownvotes, "no vote")
-            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
-            .catch(error => console.log(error));
+            if (voteType === "upvote") {
+                props.upvote(props.postId, numUpvotes, numDownvotes, "no vote")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
+                .catch(error => console.log(error));
+            }
+            else {
+                props.downvote(props.postId, numUpvotes, numDownvotes, "no vote")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
+                .catch(error => console.log(error));
+            }
         }
 
         // User is going from downvote to upvote.
         if (checkUserVoteAlready() === "downvote") {
-            props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted")
-            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
-            .catch(error => console.log(error));
+            if (voteType === "upvote") {
+                props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
+                .catch(error => console.log(error));
+            }
+            else {
+                props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
+                .catch(error => console.log(error));
+            }
         }
 
         else if (checkUserVoteAlready() === "upvote") {
-            props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted")
-            .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
-            .catch(error => console.log(error));
+            if (voteType === "upvote") {
+                props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
+                .catch(error => console.log(error));
+            }
+            else {
+                props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
+                .catch(error => console.log(error));
+            }
         }
     }
 
@@ -70,14 +90,14 @@ const PostVotes = (props) => {
 
     function determineDownArrowColour() {
         if (checkUserVoteAlready() === "downvote") {
-            return {color: "orange"}
+            return {color: "blue"}
         }
     }
     return (
         <div className="post-votes">
-            <ImArrowUp className="upvote" onClick={handleUpvote} style={determineUpArrowColour()} />
+            <ImArrowUp className="upvote" onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
             <span className="vote-count">{numUpvotes - numDownvotes}</span>
-            <ImArrowDown className="downvote" style={determineDownArrowColour()} />
+            <ImArrowDown className="downvote" onClick={() => handleVote("downvote")} style={determineDownArrowColour()} />
         </div>
     )
 }
@@ -87,7 +107,9 @@ PostVotes.propTypes = {
     postId: PropTypes.string,
     upvote: PropTypes.func,
     userPostUpvote: PropTypes.func,
-    userPostVotes: PropTypes.array
+    userPostVotes: PropTypes.array,
+    downvote: PropTypes.func,
+    userPostDownvote: PropTypes.func
 }
 
 export default PostVotes

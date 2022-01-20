@@ -36,7 +36,10 @@ const Post = (props) => {
                 upvote={props.upvote} 
                 postId={props.id} 
                 userPostVotes={props.userPostVotes}
-                userPostUpvote={props.userPostUpvote} />
+                userPostUpvote={props.userPostUpvote}
+                downvote={props.downvote}
+                userPostDownvote={props.userPostDownvote} 
+                />
                 <div className="post-info">
                     <Category categoryName={props.categoryName} />
                     <User username={props.username} />
@@ -62,7 +65,9 @@ Post.propTypes = {
     dateCreated : PropTypes.string,
     upvote: PropTypes.func,
     userPostUpvote: PropTypes.func,
-    userPostVotes: PropTypes.array
+    userPostVotes: PropTypes.array,
+    downvote: PropTypes.func,
+    userPostDownvote: PropTypes.func
 }
 
 export default Post
