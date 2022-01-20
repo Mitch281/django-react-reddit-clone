@@ -23,6 +23,7 @@ urlpatterns = [
     re_path(r'^post/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view()),
 
     path('post-votes/', views.PostVotesView.as_view()),
+    re_path(r'^post-vote/(?P<pk>[0-9a-z-&]+)/$', views.PostVoteView().as_view()),
 
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -1,12 +1,13 @@
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "../../App";
 
 const PostVotes = (props) => {
-    console.log(props.userPostVotes);
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
+
+    const [postVoteId, setPostVoteId] = useState();
 
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
@@ -27,17 +28,32 @@ const PostVotes = (props) => {
         }
     }
 
+    // This function gets the id (primary key) of the object which stores information about the user's votes on this post.
+    function getPostVoteId() {
+        const userVotes = props.userPostVotes.filter(userPostVote => userPostVote.user === userIdLoggedIn);
+        const postVotedOn = userVotes.filter(userVote => userVote.post === props.postId);
+        if (postVotedOn[0] === undefined) {
+            return null
+        };
+        return postVotedOn[0].id;
+    }
+
+
     function handleUpvote() {
 
         // User has not voted yet.
         if (!checkUserVoteAlready()) {
-            props.upvote(props.postId, numUpvotes, false)
-            .then(props.userPostUpvote(userIdLoggedIn, props.postId, false));
+            props.upvote(props.postId, numUpvotes, numDownvotes, false)
+            .then(props.userPostUpvote(userIdLoggedIn, props.postId, false, null))
+            .catch(error => console.log(error));
         }
 
         // User is going from downvote to upvote.
         if (checkUserVoteAlready() === "downvote") {
-            props.upvote(props.postId, numUpvotes, true);
+            const postVoteId = getPostVoteId();
+            props.upvote(props.postId, numUpvotes, numDownvotes, true)
+            .then(props.userPostUpvote(userIdLoggedIn, props.postId, true, postVoteId))
+            .catch(error => console.log(error));
         }
 
         else if (checkUserVoteAlready() === "upvote") {

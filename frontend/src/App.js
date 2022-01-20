@@ -66,12 +66,12 @@ function App() {
     }
   }
 
-  async function upvote(postId, currentNumUpvotes, downvoteAlready) {
-    let voteIncrement;
+  async function upvote(postId, currentNumUpvotes, currentNumDownvotes, downvoteAlready) {
+    let data;
     if (downvoteAlready) {
-      voteIncrement = 2;
+      data = {num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1}
     } else {
-      voteIncrement = 1;
+      data = {num_upvotes: currentNumUpvotes + 1}
     }
     const response = await fetch(`http://localhost:8000/api/post/id=${postId}/`, {
       method: "PATCH",
@@ -79,19 +79,25 @@ function App() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       },
-      body: JSON.stringify({num_upvotes: currentNumUpvotes + voteIncrement})
+      body: JSON.stringify(data)
     });
     if (response.ok) {
-      setPosts(posts.map(post => 
-        post.id === postId ? {...post, num_upvotes: currentNumUpvotes + voteIncrement} : post
-      ));
+      if (downvoteAlready) {
+        setPosts(posts.map(post => 
+          post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : post
+          ));
+      } else {
+        setPosts(posts.map(post => 
+          post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
+        ));
+      }
     } else {
       throw new Error("couldn't upvote!");
     }
   }
 
   // Updates the user's votes in the case of an upvote
-  async function userPostUpvote(userId, postId, downvoteAlready) {
+  async function userPostUpvote(userId, postId, downvoteAlready, postVoteId) {
     let newUserPostVote;
     if (!downvoteAlready) {
       newUserPostVote = {
@@ -113,6 +119,22 @@ function App() {
         setUserPostVotes(userPostVotes => [...userPostVotes, newUserPostVote]);
       } else {
         throw new Error("Couldn't update user post vote.");
+      }
+    } else {
+      const response = await fetch(`http://localhost:8000/api/post-vote/${postVoteId}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: JSON.stringify({downvote: false, upvote:true})
+      })
+      if (response.ok) {
+        setUserPostVotes(userPostVotes.map(userPostVote => 
+          userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
+          ));
+      } else {
+        throw new Error("Couldn't upvote and undo downvote.");
       }
     }
   }

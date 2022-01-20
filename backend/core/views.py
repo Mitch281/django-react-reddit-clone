@@ -185,6 +185,21 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class PostVoteView(APIView):
+    """
+    View for the votes of one user on one specified post.
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    
+    def patch(self, request, pk):
+        post_vote = PostVotes.objects.get(id=pk)
+        serializer = PostVotesSerializer(post_vote, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class PostVotesView(APIView):
     """
     List all users and their votes. This is needed to keep track of users' upvotes and downvotes. Needs to be updated
