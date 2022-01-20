@@ -48,6 +48,7 @@ class Comment(models.Model):
         return self.content
 
 class PostVotes(models.Model):
+    id = models.TextField(primary_key=True)
 
     # We do not want to lose votes of users that delete their accounts.
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)

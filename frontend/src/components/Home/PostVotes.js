@@ -7,8 +7,6 @@ const PostVotes = (props) => {
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
-    const [postVoteId, setPostVoteId] = useState();
-
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     function checkUserVoteAlready() {
