@@ -34,7 +34,9 @@ const PostsByCategory = (props) => {
     }, [params]);
 
     return (
-        <div className="posts">
+        <>
+            <h1>{categoryName}</h1>
+            <div className="posts">
             {posts.map((post) => <Post 
                 key={post.id}
                 id={post.id}
@@ -53,7 +55,8 @@ const PostsByCategory = (props) => {
                 userPostDownvote={props.userPostDownvote}
             />
             )}
-        </div>
+            </div>
+        </>
     )
 }
 
