@@ -19,7 +19,9 @@ const CategoryDropdown = (props) => {
             </button>
 
             {/* These are all other categories including home.*/}
-            {wantDropdown ? <Categories /> : ""}
+            <div id="category-dropdown-content">
+                {wantDropdown ? <Categories /> : ""}
+            </div>
         </div>
     )
 }
