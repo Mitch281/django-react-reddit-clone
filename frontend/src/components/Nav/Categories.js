@@ -27,7 +27,10 @@ const Categories = () => {
 
     return (
         <>
+            {/* This is the first category in the dropdown, which is always the home category.*/}
             <button type="button" onClick={navigateToHome}><span>Home</span></button>
+
+            {/* These are the rest of the categories.*/}
             {categories.map(category => <Category key={category.id} category={category} />)}
         </>
     );

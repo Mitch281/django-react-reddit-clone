@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const Category = (props) => {
     const navigate = useNavigate();
 
-    function handleCategoryClick(e) {
+    function handleCategoryClick() {
         navigate(`/posts/category=${props.category.name}/`, {state: {categoryId: props.category.id}});
     }
 
