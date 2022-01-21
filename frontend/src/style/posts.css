@@ -2,17 +2,27 @@
     --post-background-colour: rgb(250, 249, 249);
 }
 
+.posts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .flex-container {
     display: flex;
 }
 
 .post {
+    position: relative;
     height: auto;
-    width: 70%;
+    width: 50%;
     border: 1px solid white;
     border-radius: 1%;
     margin-top: 50px;
     background-color: var(--post-background-colour);
+    overflow-wrap: break-word; /* Wraps the text */
+    min-height: 30vh;
+    border-radius: 5px;
 }
 
 .post-votes {
@@ -39,4 +49,10 @@
 
 .upvote, .downvote {
     cursor: pointer;
+}
+
+.nav-to-comments {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
 }

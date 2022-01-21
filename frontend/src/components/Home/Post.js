@@ -48,7 +48,7 @@ const Post = (props) => {
             </div>
             <Title title={props.title} />
             <PostContent content={props.content} />
-            <button type="button" onClick={navigateToPost}>Comments</button>
+            <button type="button" className="nav-to-comments" onClick={navigateToPost}>Comments</button>
         </div>
     )
 }
