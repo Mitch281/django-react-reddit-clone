@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 const Category = (props) => {
     return (
         <span className="post-category-name">
-            t/{props.categoryName}
+            t/{props.categoryName} &nbsp;
         </span>
     )
 }

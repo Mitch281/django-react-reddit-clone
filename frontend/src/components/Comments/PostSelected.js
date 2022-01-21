@@ -8,6 +8,10 @@ const PostSelected = (props) => {
     const params = useParams();
     const postId = params.postId;
 
+    // TODO: Issue where when upvoting or downvoting post in this router componenent, number of votes doesn't update. This is
+    // probably because we are sending state from router, so it doesn't change until page refresh. Solution: load post selected
+    // using get request with postId.
+
     return (
         <Post 
             key={postId}
