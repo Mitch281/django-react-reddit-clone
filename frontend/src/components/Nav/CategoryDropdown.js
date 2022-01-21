@@ -12,9 +12,13 @@ const CategoryDropdown = (props) => {
 
     return (
         <div id="category-dropdown">
+
+            {/* This shows the category at the top of the dropdown.*/}
             <button type="button" onClick={handleCategoryClick} id="category-in-focus">
                 {props.activeCategory === undefined ? <span>Home</span> : <span>{props.activeCategory}</span>}
             </button>
+
+            {/* These are all other categories including home.*/}
             {wantDropdown ? <Categories /> : ""}
         </div>
     )
