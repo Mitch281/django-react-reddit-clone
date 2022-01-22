@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import "../../style/login-signup.css";
 
 const LoginPage = () => {
 
@@ -37,7 +38,7 @@ const LoginPage = () => {
     }
 
     return (
-        <div>
+        <div id="login">
             <form onSubmit={(e) => handleLogin(e)}>
                 <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />

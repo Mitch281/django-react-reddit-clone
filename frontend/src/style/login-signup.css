@@ -1,0 +1,48 @@
+:root {
+    --input-border-colour: rgb(147, 213, 252);
+    --input-background-colour-focus: rgb(235, 241, 240);
+}
+
+/* TODO: fix error where input of type submit different width to input of type text. See 
+https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-input-type-text */
+
+#login, #signup {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#login form, #signup form {
+    width: 25vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#login form input, #signup form input {
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-radius: 10px;
+}
+
+#login form input:not(:first-child), #signup form input:not(:first-child) {
+    margin-top: 10px;
+}
+
+/* Shift placeholder text to right. */
+#login form input:not(:last-child), #signup form input:not(:last-child) {
+    padding-left: 10px;
+}
+
+#login form input:focus:not(:last-child), #signup form input:focus:not(:last-child) {
+    outline: none;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
+#login form input[type="submit"]:hover, #signup form input[type="submit"]:hover {
+    background-color: var(--input-background-colour-focus);
+    cursor: pointer;
+}
