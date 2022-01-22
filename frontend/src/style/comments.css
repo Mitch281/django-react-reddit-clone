@@ -1,6 +1,8 @@
 :root {
     --input-border-colour: rgb(147, 213, 252);
     --input-background-colour-focus: rgb(235, 241, 240);
+    --gap-to-post: 25px;
+    --button-colours: rgb(235, 241, 240);
 }
 
 #comment-input-flex-container {
@@ -9,15 +11,11 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 25px;
+    margin-top: var(--gap-to-post);
 }
 
 #comment-input {
     width: 40%;
-}
-
-#comment-input p {
-    margin: 0px;
 }
 
 #comment-input form {
@@ -54,4 +52,22 @@
 #comment-input form input:hover {
     background-color: var(--input-background-colour-focus);
     cursor: pointer;
+}
+
+#comment-not-logged-in-flex-container {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--gap-to-post);
+}
+
+#comment-not-logged-in a {
+    text-decoration: none;
+    color: black;
+    background-color: var(--button-colours);
+    padding: 8px;
+    border-radius: 3px;
+}
+
+#comment-not-logged-in a:hover {
+    background-color: rgb(147, 213, 252);
 }
