@@ -6,6 +6,7 @@ import Title from "./Title";
 import User from "./User";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { BiCommentDetail } from "react-icons/bi";
 
 const Post = (props) => {
 
@@ -48,7 +49,10 @@ const Post = (props) => {
             </div>
             <Title title={props.title} />
             <PostContent content={props.content} />
-            <button type="button" className="nav-to-comments" onClick={navigateToPost}>Comments</button>
+            <div className="nav-to-comments" onClick={navigateToPost}>
+                <BiCommentDetail />
+                <span>Comments</span>
+            </div>
         </div>
     )
 }

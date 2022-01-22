@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap');
+
 :root {
     --post-background-colour: rgb(250, 249, 249);
+    --votes-dist-to-left: 5px;
+    --votes-dist-to-top: 5px;
 }
 
-.posts{
+/* .posts{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,7 +25,7 @@
     border-radius: 1%;
     margin-top: 50px;
     background-color: var(--post-background-colour);
-    overflow-wrap: break-word; /* Wraps the text */
+    overflow-wrap: break-word;
     min-height: 30vh;
     border-radius: 5px;
 }
@@ -55,4 +60,65 @@
     position: absolute;
     left: 5px;
     bottom: 5px;
+} */
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post {
+    background: var(--post-background-colour);
+    position: relative; /* Ensures that position absolute for post votes works. */
+    border: 1px solid white;
+    width: 40%;
+    margin-top: 10px;
+    overflow-wrap: break-word;
+    border-radius: 5px;
+}
+
+.post-votes {
+    position: absolute;
+    left: var(--votes-dist-to-left);
+    top: var(--votes-dist-to-top);
+    
+    /* To make pattern of top arrow then votes then bottom arrow */
+    display: flex;
+    flex-direction: column;
+}
+
+.vote-count {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.post-info {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+}
+
+.post-title {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    margin-top: 0px;
+}
+
+.post-content {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    font-family: 'Antic Slab', serif;
+}
+
+.username, .post-date {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: small;
+    color: grey;
+}
+
+.nav-to-comments span {
+    font-family: 'Antic Slab', serif;
+    color: darkgray;
+}
+
+.nav-to-comments:hover {
+    cursor: pointer;
+    background-color: grey;
 }
