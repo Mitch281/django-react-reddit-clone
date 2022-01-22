@@ -42,7 +42,7 @@ const Post = (props) => {
                 userPostDownvote={props.userPostDownvote} 
                 />
                 <div className="post-info">
-                    <Category categoryName={props.categoryName} />
+                    <Category categoryId={props.categoryId} categoryName={props.categoryName} />
                     <User username={props.username} />
                     <DateOfPost dateCreated={props.dateCreated} />
                 </div>

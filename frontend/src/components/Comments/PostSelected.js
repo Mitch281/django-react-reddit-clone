@@ -13,23 +13,25 @@ const PostSelected = (props) => {
     // using get request with postId.
 
     return (
-        <Post 
-            key={postId}
-            id={postId}
-            username={state.username}
-            categoryId={state.categoryId}
-            categoryName={state.categoryName}
-            title={state.title}
-            content={state.content}
-            numUpvotes={state.votes.numUpvotes}
-            numDownvotes={state.votes.numDownvotes}
-            dateCreated={state.dateCreated}
-            upvote={props.upvote}
-            userPostVotes={props.userPostVotes}
-            userPostUpvote={props.userPostUpvote}
-            downvote={props.downvote}
-            userPostDownvote={props.userPostDownvote}
-            />
+        <div className="posts">
+            <Post
+                key={postId}
+                id={postId}
+                username={state.username}
+                categoryId={state.categoryId}
+                categoryName={state.categoryName}
+                title={state.title}
+                content={state.content}
+                numUpvotes={state.votes.numUpvotes}
+                numDownvotes={state.votes.numDownvotes}
+                dateCreated={state.dateCreated}
+                upvote={props.upvote}
+                userPostVotes={props.userPostVotes}
+                userPostUpvote={props.userPostUpvote}
+                downvote={props.downvote}
+                userPostDownvote={props.userPostDownvote}
+                />
+        </div>
     )
 }
 

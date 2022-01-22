@@ -7,65 +7,11 @@
     --votes-dist-to-top: 5px;
 }
 
-/* .posts{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.flex-container {
-    display: flex;
-}
-
-.post {
-    position: relative;
-    height: auto;
-    width: 50%;
-    border: 1px solid white;
-    border-radius: 1%;
-    margin-top: 50px;
-    background-color: var(--post-background-colour);
-    overflow-wrap: break-word;
-    min-height: 30vh;
-    border-radius: 5px;
-}
-
-.post-votes {
-    display: flex;
-    flex-wrap: wrap;
-    width: 10%;
-}
-
-.post-votes * {
-    width: 100%;
-}
-
-.post-category-name {
-    display: inline;
-}
-
-.post-title {
-    margin: 0px;
-}
-
-.post-content {
-    margin: 0px;
-}
-
-.upvote, .downvote {
-    cursor: pointer;
-}
-
-.nav-to-comments {
-    position: absolute;
-    left: 5px;
-    bottom: 5px;
-} */
-
 .posts {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* Ensures that flexbox takes entire width of page. Thus, it is centered in the middle. */
 }
 
 .post {
@@ -88,9 +34,22 @@
     flex-direction: column;
 }
 
+.upvote, .downvote {
+    cursor: pointer;
+}
+
 .vote-count {
     margin-top: 8px;
     margin-bottom: 8px;
+}
+
+.post-category-name {
+    text-decoration: none;
+    color: black;
+}
+
+.post-category-name:hover {
+    text-decoration: underline;
 }
 
 .post-info {
