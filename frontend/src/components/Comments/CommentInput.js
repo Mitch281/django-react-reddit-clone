@@ -1,11 +1,43 @@
 import "../../style/comments.css";
-import { useContext } from "react";
+import { useContext, useState} from "react";
 import { UserContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
+import { v4 as uuid_v4 } from "uuid";
 
 const CommentInput = () => {
+
+    const [comment, setComment] = useState("");
     
-    const { loggedIn, usernameLoggedIn } = useContext(UserContext);
+    const { loggedIn, usernameLoggedIn, userIdLoggedIn } = useContext(UserContext);
+
+    const { state } = useLocation();
+    const params = useParams();
+    const postId = params.postId;
+
+    async function postComment(e) {
+        e.preventDefault();
+
+        const commentId = uuid_v4();
+        const data = {
+            id: commentId,
+            user: userIdLoggedIn,
+            parent_post: postId,
+            content: comment,
+            num_upvotes: 0,
+            num_downvotes: 0
+        }
+        const response = await fetch("http://localhost:8000/api/comments/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error("Couldn't comment!");
+        } 
+    }
 
     function determineOutput() {
         if (loggedIn) {
@@ -13,8 +45,8 @@ const CommentInput = () => {
             <div id="comment-input-flex-container">
                 <div id="comment-input">
                     <span>Commenting as {usernameLoggedIn}</span>
-                    <form>
-                        <textarea />
+                    <form onSubmit={(e) => postComment(e)}>
+                        <textarea value={comment} onChange={(e) => setComment(e.target.value)}/>
                         <input type="submit" value="Comment"></input>
                     </form>
               </div>
