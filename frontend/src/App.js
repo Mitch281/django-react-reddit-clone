@@ -15,6 +15,7 @@ import { postUpvoteToPost,
         postUsersDownvote 
 } 
 from "./fetch-data";
+import CommentInput from "./components/Comments/CommentInput";
 
 export const UserContext = createContext();
 
@@ -278,6 +279,7 @@ function App() {
                   downvote={downvote}
                   userPostDownvote={userPostDownvote}
                   />
+                  <CommentInput />
                   <Comments />
                 </>
               }

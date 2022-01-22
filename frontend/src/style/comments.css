@@ -1,0 +1,50 @@
+:root {
+    --input-border-colour: rgb(147, 213, 252);
+    --input-background-colour-focus: rgb(235, 241, 240);
+}
+
+#comment-input-flex-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 25px;
+}
+
+#comment-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+#comment-input form {
+    width: 100%;
+}
+
+#comment-input form input, #comment-input form textarea {
+    width: 100%;
+}
+
+#comment-input form textarea {
+    height: 13vh;
+}
+
+#comment-input form input, #comment-input form textarea {
+    border: none;
+    border-radius: 10px;
+}
+
+#comment-input form textarea:focus {
+    outline: none;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
+#comment-input form input {
+    height: 4vh;
+}
+
+#comment-input form input:hover {
+    background-color: var(--input-background-colour-focus);
+    cursor: pointer;
+}
