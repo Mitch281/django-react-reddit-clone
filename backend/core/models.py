@@ -47,6 +47,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
 
+    @property
+    def username(self):
+        return self.user.username
+
 class PostVotes(models.Model):
     id = models.TextField(primary_key=True)
 

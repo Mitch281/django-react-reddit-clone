@@ -1,4 +1,4 @@
-import "../../style/comments.css";
+import "../../style/comment-input.css";
 import { useContext, useState} from "react";
 import { UserContext } from "../../App";
 import { Link, useParams, useLocation } from "react-router-dom";
@@ -33,9 +33,12 @@ const CommentInput = () => {
             },
             body: JSON.stringify(data)
         });
-        if (!response.ok) {
+        if (response.ok) {
+            // Clear text box
+            setComment("");
+        } else {
             throw new Error("Couldn't comment!");
-        } 
+        }
     }
 
     function determineOutput() {

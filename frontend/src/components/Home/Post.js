@@ -32,7 +32,7 @@ const Post = (props) => {
 
     return (
         <div className="post">
-            <div className="top-post flex-container">
+            <div className="top-post-flex-container">
                 <PostVotes votes={votes} 
                 upvote={props.upvote} 
                 postId={props.id} 

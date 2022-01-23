@@ -18,6 +18,8 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ("__all__")
 
 class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
+
     class Meta:
         model = Comment
         fields = ("__all__")

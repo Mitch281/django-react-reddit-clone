@@ -1,18 +1,16 @@
-import PropTypes from "prop-types";
 import { getTimeElapsedFromCreation } from "../../date-time-functions";
+import PropTypes from "prop-types";
 
-const DateOfPost = (props) => {
-
+const DateOfComment = (props) => {
     return (
-        <span className="post-date">
+        <span className="date-from-comment">
             {getTimeElapsedFromCreation(props.dateCreated)}
         </span>
-    )
+    );
 }
 
-DateOfPost.propTypes = {
+DateOfComment.propTypes = {
     dateCreated: PropTypes.string
 }
 
-export default DateOfPost
-
+export default DateOfComment;
