@@ -15,11 +15,11 @@ import { postUpvoteToPost,
         postUsersDownvote 
 } 
 from "./fetch-data";
-import CommentInput from "./components/Comments/CommentInput";
 
 export const UserContext = createContext();
 
 function App() {
+
   const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
   const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -273,7 +273,9 @@ function App() {
               <Route exact path="post=:postId/comments" element = {
                 <>
                   <Navbar />
-                  <PostSelected upvote={upvote} 
+                  <PostSelected
+                  posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
+                  upvote={upvote} 
                   userPostVotes={userPostVotes} 
                   userPostUpvote={userPostUpvote} 
                   downvote={downvote}

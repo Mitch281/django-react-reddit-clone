@@ -10,7 +10,6 @@ const ViewComments = (props) => {
         const response = await fetch(`http://localhost:8000/api/post/num-comments/id=${props.postId}/`);
         if (response.ok) {
             const json = await response.json();
-            console.log(json);
             setNumComments(json.num_comments);
         } else {
             throw new Error ("Couldn't get number of comments!");
