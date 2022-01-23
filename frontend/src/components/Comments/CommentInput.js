@@ -1,14 +1,14 @@
 import "../../style/comment-input.css";
 import { useContext, useState} from "react";
 import { UserContext } from "../../App";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
 
-const CommentInput = () => {
+const CommentInput = (props) => {
 
     const [comment, setComment] = useState("");
     
-    const { loggedIn, usernameLoggedIn, userIdLoggedIn } = useContext(UserContext);
+    const { loggedIn, usernameLoggedIn, userIdLoggedIn, } = useContext(UserContext);
 
     const params = useParams();
     const postId = params.postId;
@@ -19,6 +19,7 @@ const CommentInput = () => {
         const commentId = uuid_v4();
         const data = {
             id: commentId,
+            username: usernameLoggedIn,
             user: userIdLoggedIn,
             parent_post: postId,
             content: comment,
@@ -34,8 +35,10 @@ const CommentInput = () => {
             body: JSON.stringify(data)
         });
         if (response.ok) {
+
             // Clear text box
             setComment("");
+            props.updateComments(data);
         } else {
             throw new Error("Couldn't comment!");
         }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; 
 import Comment from "./Comment";
 import "../../style/comments.css";
+import CommentInput from "./CommentInput";
 
 const Comments = () => {
 
@@ -24,23 +25,31 @@ const Comments = () => {
         loadComments();
     }, [params]);
 
+    // Updates comments on frontend after post is successful on backend.
+    function updateComments(newComment) {
+        setComments(comments => [...comments, newComment]);
+    }
+
 
     return (
-        <div id="comments-flex-container">
-            <div id="comments">
-                {comments.map((comment) =>
-                    <Comment
-                        key={comment.id}
-                        id={comment.id}
-                        username={comment.username}
-                        content={comment.content}
-                        numUpvotes={comment.num_upvotes}
-                        numDownvotes={comment.num_downvotes}
-                        dateCreated={comment.date_created}
-                    />
-                )}
+        <>
+            <CommentInput updateComments={updateComments}/>
+            <div id="comments-flex-container">
+                <div id="comments">
+                    {comments.map((comment) =>
+                        <Comment
+                            key={comment.id}
+                            id={comment.id}
+                            username={comment.username}
+                            content={comment.content}
+                            numUpvotes={comment.num_upvotes}
+                            numDownvotes={comment.num_downvotes}
+                            dateCreated={comment.date_created}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

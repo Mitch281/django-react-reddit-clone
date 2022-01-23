@@ -279,7 +279,6 @@ function App() {
                   downvote={downvote}
                   userPostDownvote={userPostDownvote}
                   />
-                  <CommentInput />
                   <Comments />
                 </>
               }
