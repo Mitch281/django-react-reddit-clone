@@ -7,6 +7,7 @@ import User from "./User";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { BiCommentDetail } from "react-icons/bi";
+import { useEffect, useState } from "react";
 
 const Post = (props) => {
 
@@ -14,6 +15,8 @@ const Post = (props) => {
         numUpvotes: props.numUpvotes,
         numDownvotes: props.numDownvotes
     }
+
+    const [numComments, setNumComments] = useState();
 
     let navigate = useNavigate();
 
@@ -29,6 +32,20 @@ const Post = (props) => {
             categoryId: props.categoryId
         }});
     }
+
+    async function getNumberOfComments() {
+        const response = await fetch(`http://localhost:8000/api/post/num-comments/id=${props.id}/`);
+        if (response.ok) {
+            const json = await response.json();
+            setNumComments(json.num_comments);
+        } else {
+            throw new Error ("Couldn't get number of comments!");
+        }
+    }
+
+    useEffect(() => {
+        getNumberOfComments();
+    }, []);
 
     return (
         <div className="post">
@@ -51,7 +68,7 @@ const Post = (props) => {
             <PostContent content={props.content} />
             <div className="nav-to-comments" onClick={navigateToPost}>
                 <BiCommentDetail />
-                <span>Comments</span>
+                <span>{numComments} Comments</span>
             </div>
         </div>
     )

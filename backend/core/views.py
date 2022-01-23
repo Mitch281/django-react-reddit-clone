@@ -12,6 +12,7 @@ UserSerializer,
 UserSerializerWithToken, 
 PostVotesSerializer,
 MyTokenObtainPairSerializer)
+from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
@@ -228,3 +229,16 @@ class PostVotesView(APIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+class NumberOfCommentsOnPostView(APIView):
+    """
+    Get the number of comments on a post given the post ID.
+    """
+    def get(self, request, pk):
+        comments = Comment.objects.filter(parent_post=pk)
+        num_comments = comments.count()
+        data = {"num_comments": num_comments}
+        serializer = serializers.NumberOfCommentsOnPostSerializer(data=data)
+        serializer.is_valid(True)
+        # return Response({"num_comments": num_comments})
+        return Response(serializer.data)

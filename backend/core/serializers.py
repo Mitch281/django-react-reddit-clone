@@ -34,6 +34,9 @@ class PostVotesSerializer(serializers.ModelSerializer):
         model = PostVotes
         fields = ("__all__")
 
+class NumberOfCommentsOnPostSerializer(serializers.Serializer):
+    num_comments = serializers.IntegerField()
+
 # Handle signup. For future reference, this was from https://stackoverflow.com/questions/52033003/return-token-after-registration-with-django-rest-framework-simplejwt
 class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
