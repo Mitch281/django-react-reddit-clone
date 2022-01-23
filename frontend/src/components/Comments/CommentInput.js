@@ -10,7 +10,6 @@ const CommentInput = () => {
     
     const { loggedIn, usernameLoggedIn, userIdLoggedIn } = useContext(UserContext);
 
-    const { state } = useLocation();
     const params = useParams();
     const postId = params.postId;
 

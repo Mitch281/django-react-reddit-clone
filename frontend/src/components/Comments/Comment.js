@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 const Comment = (props) => {
     return (
         <div className="comment">
-            {props.numDownvotes}
         </div>
     )
 }

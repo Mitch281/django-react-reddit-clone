@@ -24,7 +24,6 @@ const Comments = () => {
     }, [params]);
 
 
-    // TODO: GET USERNAME
     return (
         <div id="comments">
             {comments.map((comment) => 
