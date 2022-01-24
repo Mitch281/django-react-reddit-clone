@@ -1,11 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap');
+
 
 :root {
     --post-background-colour: rgb(250, 249, 249);
-    --votes-dist-to-left: 5px;
-    --votes-dist-to-top: 5px;
+    --votes-dist-to-left: 10px;
+    --votes-dist-to-top: 20px;
 }
+
+/* **************************************** Handle fonts *****************************************/
+
+.post-category-name {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+}
+
+.post-info span:not(.username) {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 300;
+    color: grey;
+}
+
+.username {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
+    color: black;
+}
+
+.nav-to-comments span {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    color: grey;
+}
+
+/*************************************************************************************************/
 
 .posts {
     display: flex;
@@ -22,6 +51,7 @@
     margin-top: 10px;
     overflow-wrap: break-word;
     border-radius: 5px;
+    padding: 20px;
 }
 
 .post-votes {
@@ -59,25 +89,20 @@
 .post-title {
     margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .post-content {
     margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
-    font-family: 'Antic Slab', serif;
+    margin-top: 0px;
 }
 
-.username, .post-date {
-    font-family: 'Nanum Myeongjo', serif;
-    font-size: small;
-    color: grey;
-}
-
-.nav-to-comments span {
-    font-family: 'Antic Slab', serif;
-    color: darkgray;
+.nav-to-comments {
+    display: inline-block; /* Ensures that width fits to text length. */
+    margin-left: 5px;
 }
 
 .nav-to-comments:hover {
     cursor: pointer;
-    background-color: grey;
+    background-color: rgb(238, 230, 230);
 }

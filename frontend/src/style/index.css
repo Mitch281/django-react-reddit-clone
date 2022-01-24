@@ -5,11 +5,6 @@ h1 {
     font-weight: 700;
 }
 
-span {
-    font-family: 'Fira Sans', sans-serif;
-    font-weight: 100;
-}
-
 :root {
     --background-colour: rgb(224, 222, 230);
 }
