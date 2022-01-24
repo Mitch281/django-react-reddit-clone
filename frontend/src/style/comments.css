@@ -1,7 +1,7 @@
 :root {
     --comment-background-colour: rgb(250, 249, 249);
     --votes-dist-to-left: 5px;
-    --votes-dist-to-top: 5px;
+    --votes-dist-to-top: 10px;
 }
 
 #comments-flex-container {
@@ -18,6 +18,23 @@
     margin-top: 40px;
 }
 
+/******************************************** Font stuff ************************************************/
+
+.comment-username {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
+    color: black;
+}
+
+.time-elapsed-from-comment {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 300;
+    color: grey;
+}
+
+/********************************************************************************************/
+
+
 .comment {
     width: 40%;
     border: 1px solid white;
@@ -26,6 +43,7 @@
     border-radius: 5px;
     position: relative;
     background: var(--comment-background-colour);
+    padding: 10px;
 }
 
 .comment-votes {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const DateOfComment = (props) => {
     return (
-        <span className="date-from-comment">
+        <span className="time-elapsed-from-comment">
             {getTimeElapsedFromCreation(props.dateCreated)}
         </span>
     );
