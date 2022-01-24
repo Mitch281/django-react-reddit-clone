@@ -41,15 +41,12 @@
     border-radius: 5px;
     height: calc(var(--navbar-height) / 1.5);
     width: 8vw;
+    cursor: pointer;
 }
 
 #top-of-dropdown button span {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-}
-
-#top-of-dropdown:hover #category-dropdown-content {
-    display: block;
 }
 
 #category-dropdown-content { /* Dropdown Nav UL */
