@@ -1,0 +1,39 @@
+#create-category-flex-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#create-category-flex-container form {
+    width: 25vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#create-category-flex-container form input {
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-radius: 10px;
+}
+
+#create-category-flex-container form input:not(:first-child) {
+    margin-top: 10px;
+}
+
+#create-category-flex-container form input:not(:last-child) {
+    padding-left: 10px;
+}
+
+#create-category-flex-container form input:focus:not(:last-child) {
+    outline: none;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
+#create-category-flex-container form input[type="submit"]:hover {
+    background-color: var(--input-background-colour-focus);
+    cursor: pointer;
+}

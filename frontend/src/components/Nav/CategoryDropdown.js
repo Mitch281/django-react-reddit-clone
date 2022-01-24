@@ -1,11 +1,15 @@
 import Categories from "./Categories";
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { BiPlus } from "react-icons/bi";
 
 const CategoryDropdown = (props) => {
 
     const [wantDropdown, setWantDropdown] = useState(false);
     const categoryDropdown = useRef(null);
+
+    const params = useParams();
 
     function determineDropdownDisplay() {
         if (wantDropdown) {
@@ -22,6 +26,11 @@ const CategoryDropdown = (props) => {
         }
     }
 
+    // Whenever the user visits a new page, we do not want the dropdown to render.
+    useEffect(() => {
+        setWantDropdown(false);
+    }, [params]);
+
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutsideDropdown);
         return () => document.removeEventListener("mousedown", handleClickOutsideDropdown);
@@ -37,6 +46,7 @@ const CategoryDropdown = (props) => {
                 </button>
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
+                    <li><Link to="/create-category/"><BiPlus />Create Category</Link></li>
                     <Categories wantDropdown={wantDropdown} />
                 </ul>
             </li>

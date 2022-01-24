@@ -59,14 +59,15 @@ const CommentInput = (props) => {
             )
         }
         return (
-        <div id="comment-not-logged-in-flex-container">
-            <div id="comment-not-logged-in">
+        <div id="comment-not-logged-in-flex-container" className="not-logged-in-message-flex-container">
+            <div id="comment-not-logged-in" className="not-logged-in-message">
                 <span>Log in or signup to leave a comment &nbsp;</span>
-                <Link to="/login/" id="nav-to-login">Login</Link>
+                <Link to="/login/">Login</Link>
                 &nbsp;
-                <Link to="/signup/" id="nav-to-signup">Signup</Link>
+                <Link to="/signup/">Signup</Link>
             </div>
-        </div>);
+        </div>
+        );
     }
 
     return (

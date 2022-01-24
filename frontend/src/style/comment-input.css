@@ -54,13 +54,13 @@
     cursor: pointer;
 }
 
-#comment-not-logged-in-flex-container {
+.not-logged-in-message-flex-container {
     display: flex;
     justify-content: center;
     margin-top: var(--gap-to-post);
 }
 
-#comment-not-logged-in a {
+.not-logged-in-message a {
     text-decoration: none;
     color: black;
     background-color: var(--button-colours);
@@ -68,6 +68,6 @@
     border-radius: 3px;
 }
 
-#comment-not-logged-in a:hover {
+.not-logged-in-message a:hover {
     background-color: rgb(147, 213, 252);
 }
