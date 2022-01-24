@@ -24,6 +24,7 @@ const Categories = () => {
         <>
             {/* This is the first category in the dropdown, which is always the home category.*/}
             <li><Link to="/">Home</Link></li>
+            <hr />
 
             {/* These are the rest of the categories.*/}
             {categories.map(category => <Category key={category.id} category={category} />)}

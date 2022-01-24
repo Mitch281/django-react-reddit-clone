@@ -47,6 +47,7 @@ const CategoryDropdown = (props) => {
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
                     <li><Link to="/create-category/"><BiPlus />Create Category</Link></li>
+                    <hr />
                     <Categories wantDropdown={wantDropdown} />
                 </ul>
             </li>
