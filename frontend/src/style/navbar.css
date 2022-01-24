@@ -1,42 +1,25 @@
 #navbar {
     background-color: white;
-
-    /* Get's rid of the whitespace between top of navbar and top of page.*/
-    /* overflow: hidden; */
-    z-index: -1;
-    height: 3em;
 }
 
-#navbar a {
-    text-decoration: none;
-    color: black;
-}
-
-#navbar-site-name {
-    float: left;
-}
-
-#navbar-site-name h1 {
-    margin-top: 3px;
-}
-
-#category-dropdown {
-    position: absolute;
-    left: 40vw; 
-    float: left;
+#navbar-nav {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    width: 100px; /* Need to specify a width so that child element (the buttons) can use 100% width. */
-    margin-top: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0px;
 }
 
-/* Width of 100% ensures that isn't two buttons in one row due to flex wrap. */
-#category-dropdown button {
-    width: 100%;
+#navbar-nav li {
+    list-style: none;
+    position: relative;
 }
 
-#navbar-auth {
-    float: right;
-    margin-top: 10px;
+#top-of-dropdown:hover #category-dropdown-content {
+    display: block;
+}
+
+#category-dropdown-content { /* Dropdown Nav UL */
+    display: none;
+    padding: 0.5rem 0 0 0.5rem;
+    position: absolute;
 }

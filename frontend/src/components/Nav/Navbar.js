@@ -28,11 +28,15 @@ const Navbar = () => {
 
     return (
         <div id="navbar">
-            <Link to="/" id="navbar-site-name"><h1 ref={ref}>Threddit</h1></Link>
-            <CategoryDropdown activeCategory={activeCategory}/>
-            <div id="navbar-auth">
-                {!loggedIn ? <><LoginButton /><SignupButton /></> : <LogoutButton />}
-            </div>
+            <ul id="navbar-nav">
+                <li id="site-name">
+                    <Link to="/" id="navbar-site-name"><h1 ref={ref}>Threddit</h1></Link>
+                </li>
+                <CategoryDropdown activeCategory={activeCategory}/>
+                <li id="navbar-auth">
+                    {!loggedIn ? <><LoginButton /><SignupButton /></> : <LogoutButton />}
+                </li>
+            </ul>
         </div>
     )
 }

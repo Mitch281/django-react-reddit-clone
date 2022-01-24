@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Category from "./Category";
 
 const Categories = () => {
-    let navigate = useNavigate();
 
     const [categories, setCategories] = useState([]);
 
@@ -21,14 +20,10 @@ const Categories = () => {
         fetchCategories();
     }, []);
 
-    function navigateToHome() {
-        navigate("/");
-    }
-
     return (
         <>
             {/* This is the first category in the dropdown, which is always the home category.*/}
-            <button type="button" onClick={navigateToHome}><span>Home</span></button>
+            <li><Link to="/">Home</Link></li>
 
             {/* These are the rest of the categories.*/}
             {categories.map(category => <Category key={category.id} category={category} />)}
