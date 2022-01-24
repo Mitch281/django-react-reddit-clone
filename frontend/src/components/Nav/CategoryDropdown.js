@@ -1,10 +1,11 @@
 import Categories from "./Categories";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const CategoryDropdown = (props) => {
 
     const [wantDropdown, setWantDropdown] = useState(false);
+    const categoryDropdown = useRef(null);
 
     function determineDropdownDisplay() {
         if (wantDropdown) {
@@ -13,10 +14,24 @@ const CategoryDropdown = (props) => {
         return {display: "none"}
     }
 
+    function handleClickOutsideDropdown(e) {
+        if (categoryDropdown.current && !categoryDropdown.current.contains(e.target)) {
+            if (wantDropdown) {
+                setWantDropdown(false);
+            }
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutsideDropdown);
+        return () => document.removeEventListener("mousedown", handleClickOutsideDropdown);
+    }, [wantDropdown]);
+
+
     return (
         <>
             {/* This shows the category at the top of the dropdown.*/}
-            <li id="top-of-dropdown">
+            <li id="top-of-dropdown" ref={categoryDropdown}>
                 <button type="button" id="category-in-focus" onClick={() => setWantDropdown(!wantDropdown)} >
                     {props.activeCategory === undefined ? <span>Home</span> : <span>{props.activeCategory}</span>}
                 </button>
