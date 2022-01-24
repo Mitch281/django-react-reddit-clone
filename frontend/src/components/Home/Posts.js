@@ -6,7 +6,7 @@ const Posts = (props) => {
     
     return (
         <>
-            <h1>Home</h1>
+            <h1 id="category-name-top-page">Home</h1>
             <div className="posts">
                 {props.posts.map((post) => <Post 
                 key={post.id}
