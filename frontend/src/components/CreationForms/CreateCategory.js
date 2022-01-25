@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import "../../style/create-category.css";
 import { v4 as uuid_v4 } from "uuid";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const CreateCategory = (props) => {
 
@@ -80,7 +80,7 @@ const CreateCategory = (props) => {
 }
 
 CreateCategory.propTypes = {
-    addCategory: propTypes.func
+    addCategory: PropTypes.func
 }
 
 export default CreateCategory;

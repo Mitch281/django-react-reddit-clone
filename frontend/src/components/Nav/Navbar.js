@@ -6,7 +6,7 @@ import "../../style/navbar.css";
 import { useContext } from "react";
 import CategoryDropdown from "./CategoryDropdown";
 import { UserContext } from "../../App";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const Navbar = (props) => {
     // TODO: check why dynamic margin left styling is not working!
@@ -32,7 +32,7 @@ const Navbar = (props) => {
 }
 
 Navbar.propTypes = {
-    categories: propTypes.array
+    categories: PropTypes.array
 }
 
 export default Navbar

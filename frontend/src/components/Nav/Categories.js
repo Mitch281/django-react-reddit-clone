@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Category from "./Category";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const Categories = (props) => {
 
@@ -17,7 +17,7 @@ const Categories = (props) => {
 }
 
 Categories.propTypes = {
-    categories: propTypes.array
+    categories: PropTypes.array
 }
 
 export default Categories

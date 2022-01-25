@@ -6,7 +6,6 @@ import Title from "./Title";
 import User from "./User";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
 import ViewComments from "./ViewComments";
 
 const Post = (props) => {

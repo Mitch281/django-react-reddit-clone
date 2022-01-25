@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const CreatePost = (props) => {
 
@@ -34,7 +34,8 @@ const CreatePost = (props) => {
 }
 
 CreatePost.propTypes = {
-    categories: propTypes.array
+    categories: PropTypes.array,
+    addPost: PropTypes.func
 }
 
 export default CreatePost;
