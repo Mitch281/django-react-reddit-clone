@@ -24,8 +24,8 @@ const Navbar = (props) => {
                 <li id="navbar-auth">
                     {loggedIn ? <LogoutButton /> : 
                         <>
-                            <Link to="/login/">Login</Link>
-                            <Link to="/signup/">Signup</Link>
+                            <Link id="nav-to-login" to="/login/">Login</Link>
+                            <Link id="nav-to-signup" to="/signup/">Signup</Link>
                         </>
                     }
                 </li>
