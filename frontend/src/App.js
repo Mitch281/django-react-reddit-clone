@@ -16,6 +16,7 @@ import { postUpvoteToPost,
 } 
 from "./fetch-data";
 import CreateCategory from "./components/CreationForms/CreateCategory";
+import CreatePost from "./components/CreationForms/CreatePost";
 
 export const UserContext = createContext();
 
@@ -299,6 +300,13 @@ function App() {
                   userPostDownvote={userPostDownvote}
                   />
                   <Comments />
+                </>
+              }
+              />
+              <Route exact path="/create-post/" element={
+                <>
+                  <Navbar categories={categories} />
+                  <CreatePost categories={categories} />
                 </>
               }
               />

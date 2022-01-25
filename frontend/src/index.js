@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/index.css';
+import "./style/create-post.css";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
