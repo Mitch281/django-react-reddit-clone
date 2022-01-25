@@ -16,6 +16,8 @@ const CommentInput = (props) => {
     async function postComment(e) {
         e.preventDefault();
 
+        const dateNow = new Date().toString();
+
         const commentId = uuid_v4();
         const data = {
             id: commentId,
@@ -24,7 +26,8 @@ const CommentInput = (props) => {
             parent_post: postId,
             content: comment,
             num_upvotes: 0,
-            num_downvotes: 0
+            num_downvotes: 0,
+            date_created: dateNow
         }
         const response = await fetch("http://localhost:8000/api/comments/", {
             method: "POST",
