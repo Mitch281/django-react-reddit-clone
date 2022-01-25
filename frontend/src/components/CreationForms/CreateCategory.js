@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import "../../style/create-category.css";
 import { v4 as uuid_v4 } from "uuid";
+import propTypes from "prop-types";
 
-const CreateCategory = () => {
+const CreateCategory = (props) => {
 
     const [categoryName, setCategoryName] = useState("");
 
@@ -65,8 +66,8 @@ const CreateCategory = () => {
             // We refresh page to cause the category to show up in the category dropdown. Note that this could probably be done
             // by setting state, but this lives in the Categories component which is not in the same tree. Thus, it could end uo
             // being a real pain. Maybe look into this in the future.
-            window.location.reload();
-
+            // window.location.reload();
+            props.addCategory(data);
             navigate(`/posts/category=${categoryName}/`, {state: {categoryId: categoryId}});
         } else {
             throw new Error("couldn't create category:(");
@@ -76,6 +77,10 @@ const CreateCategory = () => {
     return (
         determineOutput()
     );
+}
+
+CreateCategory.propTypes = {
+    addCategory: propTypes.func
 }
 
 export default CreateCategory;

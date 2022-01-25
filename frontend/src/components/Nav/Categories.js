@@ -1,24 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Category from "./Category";
+import propTypes from "prop-types";
 
-const Categories = () => {
-
-    const [categories, setCategories] = useState([]);
-
-    async function fetchCategories() {
-        const response = await fetch("http://localhost:8000/api/categories");
-        if (response.ok) {
-            const json = await response.json();
-            setCategories(json);
-        } else {
-            throw new Error("error loading categories.");
-        }
-    }
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+const Categories = (props) => {
 
     return (
         <>
@@ -27,9 +11,13 @@ const Categories = () => {
             <hr />
 
             {/* These are the rest of the categories.*/}
-            {categories.map(category => <Category key={category.id} category={category} />)}
+            {props.categories.map(category => <Category key={category.id} category={category} />)}
         </>
     );
+}
+
+Categories.propTypes = {
+    categories: propTypes.array
 }
 
 export default Categories

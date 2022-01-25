@@ -26,6 +26,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   // This keeps track of posts that users have voted on. This is needed to enforce the rule that users can only vote on a post
   // once.
@@ -62,6 +63,16 @@ function App() {
       setPosts(json);
     } else {
       throw new Error("Error loading posts.");
+    }
+  }
+
+  async function loadCategories() {
+    const response = await fetch("http://localhost:8000/api/categories");
+    if (response.ok) {
+        const json = await response.json();
+        setCategories(json);
+    } else {
+        throw new Error("error loading categories.");
     }
   }
 
@@ -215,9 +226,14 @@ function App() {
     } 
   }
 
+  function addCategory(newCategory) {
+    setCategories(categories => [...categories, newCategory]);
+  }
+
   useEffect(() => {
     loadPosts();
     loadPostVotes();
+    loadCategories();
   }, []);
 
   return (
@@ -235,7 +251,7 @@ function App() {
             <Routes>
               <Route exact path="/" element = {
                 <>
-                  <Navbar />
+                  <Navbar categories={categories} />
                   <Posts posts={posts} 
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
@@ -247,21 +263,21 @@ function App() {
               />
               <Route exact path="/login/" element = {
                 <>
-                  <Navbar />
+                  <Navbar categories={categories} />
                   <LoginPage />
                 </>
               }
               />
               <Route exact path="/signup/" element = {
                 <>
-                  <Navbar />
+                  <Navbar categories={categories} />
                   <SignupPage />
                 </>
               }
               />
               <Route exact path="posts/category=:categoryName" element = {
                 <>
-                  <Navbar />
+                  <Navbar categories={categories} />
                   <PostsByCategory upvote={upvote} 
                   userPostVotes={userPostVotes} 
                   userPostUpvote={userPostUpvote} 
@@ -273,7 +289,7 @@ function App() {
               />
               <Route exact path="post=:postId/comments" element = {
                 <>
-                  <Navbar />
+                  <Navbar categories={categories} />
                   <PostSelected
                   posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
                   upvote={upvote} 
@@ -288,8 +304,8 @@ function App() {
               />
               <Route exact path="/create-category/" element={
                 <>
-                  <Navbar />
-                  <CreateCategory />
+                  <Navbar categories={categories} />
+                  <CreateCategory addCategory={addCategory} />
                 </>
               }
               />

@@ -48,7 +48,7 @@ const CategoryDropdown = (props) => {
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
                     <li><Link to="/create-category/"><BiPlus />Create Category</Link></li>
                     <hr />
-                    <Categories wantDropdown={wantDropdown} />
+                    <Categories wantDropdown={wantDropdown} categories={props.categories} />
                 </ul>
             </li>
         </>
@@ -56,7 +56,8 @@ const CategoryDropdown = (props) => {
 }
 
 CategoryDropdown.propTypes = {
-    activeCategory: PropTypes.string
+    activeCategory: PropTypes.string,
+    categories: PropTypes.array
 }
 
 export default CategoryDropdown
