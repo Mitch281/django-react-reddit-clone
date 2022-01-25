@@ -228,6 +228,10 @@ function App() {
     } 
   }
 
+  function addPost(newPost) {
+    setPosts(posts => [...posts, newPost]);
+  }
+
   function addCategory(newCategory) {
     setCategories(categories => [...categories, newCategory]);
   }
@@ -308,7 +312,7 @@ function App() {
               <Route exact path="/create-post/" element={
                 <>
                   <Navbar categories={categories} />
-                  <CreatePost categories={categories} />
+                  <CreatePost categories={categories} addPost={addPost} />
                 </>
               }
               />

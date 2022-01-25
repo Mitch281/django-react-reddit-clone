@@ -1,13 +1,14 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { v4 as uuid_v4 } from "uuid";
 
 const CreatePost = (props) => {
 
     let navigate = useNavigate();
 
-    const {loggedIn} = useContext(UserContext);
+    const {loggedIn, usernameLoggedIn, userIdLoggedIn} = useContext(UserContext);
 
     useEffect(() => {
         if (!loggedIn) {
@@ -17,15 +18,55 @@ const CreatePost = (props) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const category = useRef(null);
+
+    async function handleAddPost(e) {
+        e.preventDefault();
+
+        const postId = uuid_v4();
+        const categoryId = category.current.value.split(",")[0];
+        const categoryName = category.current.value.split(",")[1];
+        const dateNow = new Date().toString();
+
+        const data = {
+            id: postId,
+            username: usernameLoggedIn,
+            category_name: categoryName,
+            title: title,
+            content: content,
+            num_upvotes: 0,
+            num_downvotes: 0,
+            date_created: dateNow,
+            user: userIdLoggedIn,
+            category: categoryId,
+        }
+
+        const response = await fetch("http://localhost:8000/api/posts/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            props.addPost(data);
+            navigate("/"); 
+        } else {
+            throw new Error("Couldn't add post.");
+        }
+    }
 
     return (
         <div id="create-post-flex-container">
-            <form>
+            <form onSubmit={handleAddPost} >
                 <input type="text" id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <textarea id="post-content" type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
-                <select id="select-post-category">
-                    <option value="Home">Home</option>
-                    {props.categories.map(category => <option value={category.name}>{category.name}</option>)}
+                <select id="select-post-category" ref={category}> 
+                    {props.categories.map(category => 
+                    <option key={category.id} value={`${category.id},${category.name}`}>
+                        {category.name}
+                    </option>)}
                 </select>
                 <input type="submit" value="Add Post" />
             </form>
