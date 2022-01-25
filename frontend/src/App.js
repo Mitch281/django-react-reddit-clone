@@ -17,6 +17,7 @@ import { postUpvoteToPost,
 from "./fetch-data";
 import CreateCategory from "./components/CreationForms/CreateCategory";
 import CreatePost from "./components/CreationForms/CreatePost";
+import LinkToCreatePost from "./components/Home/LinkToCreatePost";
 
 export const UserContext = createContext();
 
@@ -259,6 +260,7 @@ function App() {
                   userPostUpvote={userPostUpvote} 
                   downvote={downvote}
                   userPostDownvote={userPostDownvote} />
+                  <LinkToCreatePost />
                 </>
               }
               />

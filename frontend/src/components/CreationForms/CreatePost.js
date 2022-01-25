@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { UserContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
 
 const CreatePost = (props) => {
+
+    let navigate = useNavigate();
+
+    const {loggedIn} = useContext(UserContext);
+
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate("/login/");
+        }
+    }, []);
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");

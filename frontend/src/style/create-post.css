@@ -1,3 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@600&display=swap');
+
+#link-to-create-post {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    display: block;
+    position: fixed;
+    left: 5vw;
+    top: 10vh;
+    width: 115px;
+    height: 25px;
+    background: var(--input-background-colour-focus);
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+    line-height: 25px;
+    text-decoration: none;
+}
+
+#link-to-create-post:hover {
+    border: 2px solid var(--input-border-colour);
+}
+
 #create-post-flex-container {
     display: flex;
     justify-content: center;
