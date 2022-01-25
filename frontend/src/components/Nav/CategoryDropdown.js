@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const CategoryDropdown = (props) => {
 
@@ -43,6 +44,7 @@ const CategoryDropdown = (props) => {
             <li id="top-of-dropdown" ref={categoryDropdown}>
                 <button type="button" id="category-in-focus" onClick={() => setWantDropdown(!wantDropdown)} >
                     {props.activeCategory === undefined ? <span>Home</span> : <span>{props.activeCategory}</span>}
+                    <IoMdArrowDropdown />
                 </button>
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
