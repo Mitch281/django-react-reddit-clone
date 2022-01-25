@@ -1,6 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import LoginButton from "./LoginButton";
-import SignupButton from "./SignupButton";
 import LogoutButton from "./LogoutButton";
 import "../../style/navbar.css";
 import { useContext } from "react";
@@ -24,7 +22,12 @@ const Navbar = (props) => {
                 </li>
                 <CategoryDropdown activeCategory={activeCategory} categories={props.categories} />
                 <li id="navbar-auth">
-                    {!loggedIn ? <><LoginButton /><SignupButton /></> : <LogoutButton />}
+                    {loggedIn ? <LogoutButton /> : 
+                        <>
+                            <Link to="/login/">Login</Link>
+                            <Link to="/signup/">Signup</Link>
+                        </>
+                    }
                 </li>
             </ul>
         </div>
