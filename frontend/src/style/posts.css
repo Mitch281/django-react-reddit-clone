@@ -108,5 +108,5 @@
 }
 
 #category-name-top-page {
-    margin-left: 30vw;
+    margin-left: max(40%, 30vw);
 }
