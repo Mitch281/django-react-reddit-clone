@@ -58,7 +58,7 @@ class PostsView(APIView):
         return super().get_permissions()
 
     def get(self, request, format=None):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by("-date_created")
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
