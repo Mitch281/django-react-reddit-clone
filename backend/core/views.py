@@ -95,7 +95,7 @@ class PostsByCategoryView(APIView):
         return super().get_permissions()
 
     def get(self, request, pk, ordering=""):
-                # Default ordering (order by newest)
+         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
             posts = Post.objects.filter(category=pk).order_by("-date_created")
             
@@ -105,7 +105,7 @@ class PostsByCategoryView(APIView):
             posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
         elif ordering == "bottom":
             posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
-            
+
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 

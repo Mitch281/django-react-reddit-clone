@@ -59,7 +59,13 @@ function App() {
 
   // TODO: Catch errors properly.
   async function loadPosts(order) {
-    const response = await fetch(`http://localhost:8000/api/posts/${order}`);
+    let url;
+    if (order) {
+      url = `http://localhost:8000/api/posts/${order}`;
+    } else {
+      url = "http://localhost:8000/api/posts/"
+    }
+    const response = await fetch(url);
     if (response.ok) {
       const json = await response.json();
       setPosts(json);

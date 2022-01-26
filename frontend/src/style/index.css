@@ -19,6 +19,7 @@ p {
 body { 
     background-color: var(--background-colour);
     margin: 0px;
+    min-height: 50vh;
 }
 
 html, body {

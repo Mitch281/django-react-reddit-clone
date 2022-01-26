@@ -18,7 +18,13 @@ const PostsByCategory = (props) => {
     const [posts, setPosts] = useState([]);
 
     async function loadPostsByCategory(order) {
-        const response = await fetch(`http://localhost:8000/api/posts/category=${categoryId}/${order}/`);
+        let url;
+        if (order) {
+            url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
+        } else {
+            url = `http://localhost:8000/api/posts/category=${categoryId}/`;
+        }
+        const response = await fetch(url);
         if (response.ok) {
             const json = await response.json();
             setPosts(json);
@@ -33,7 +39,7 @@ const PostsByCategory = (props) => {
 
     useEffect(() => {
         loadPostsByCategory(order);
-    }, [params, order]);
+    }, [params]);
 
     return (
         <>
