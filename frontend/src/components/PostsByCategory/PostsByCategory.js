@@ -10,14 +10,15 @@ const PostsByCategory = (props) => {
 
     const params = useParams();
     const categoryName = params.categoryName;
+    const order = params.order;
 
     const { state } = useLocation();
     const categoryId = state.categoryId;
 
     const [posts, setPosts] = useState([]);
 
-    async function loadPostsByCategory() {
-        const response = await fetch(`http://localhost:8000/api/posts/category=${categoryId}`);
+    async function loadPostsByCategory(order) {
+        const response = await fetch(`http://localhost:8000/api/posts/category=${categoryId}/${order}/`);
         if (response.ok) {
             const json = await response.json();
             setPosts(json);
@@ -31,8 +32,8 @@ const PostsByCategory = (props) => {
     }, []);
 
     useEffect(() => {
-        loadPostsByCategory();
-    }, [params]);
+        loadPostsByCategory(order);
+    }, [params, order]);
 
     return (
         <>

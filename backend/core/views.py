@@ -62,6 +62,7 @@ class PostsView(APIView):
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
             posts = Post.objects.all().order_by("-date_created")
+
         elif ordering == "old":
             posts = Post.objects.all() # Note that django automatically orders the posts by oldest.
         elif ordering == "top":
@@ -93,8 +94,18 @@ class PostsByCategoryView(APIView):
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
-    def get(self, request, pk):
-        posts = Post.objects.filter(category=pk)
+    def get(self, request, pk, ordering=""):
+                # Default ordering (order by newest)
+        if ordering == "" or ordering == "new":
+            posts = Post.objects.filter(category=pk).order_by("-date_created")
+            
+        elif ordering == "old":
+            posts = Post.objects.filter(category=pk) # Note that django automatically orders the posts by oldest.
+        elif ordering == "top":
+            posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+        elif ordering == "bottom":
+            posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+            
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 

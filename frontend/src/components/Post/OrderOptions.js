@@ -4,7 +4,6 @@ const OrderOptions = () => {
 
     const params = useParams();
     const { state } = useLocation();
-    console.log(state);
     const categoryName = params.categoryName;
     const order = params.order;
 
