@@ -58,8 +58,8 @@ function App() {
   }, []);
 
   // TODO: Catch errors properly.
-  async function loadPosts() {
-    const response = await fetch("http://localhost:8000/api/posts/");
+  async function loadPosts(order) {
+    const response = await fetch(`http://localhost:8000/api/posts/${order}`);
     if (response.ok) {
       const json = await response.json();
       setPosts(json);
@@ -237,7 +237,7 @@ function App() {
   }
 
   useEffect(() => {
-    loadPosts();
+    loadPosts("");
     loadPostVotes();
     loadCategories();
   }, []);
@@ -258,7 +258,24 @@ function App() {
               <Route exact path="/" element = {
                 <>
                   <Navbar categories={categories} />
-                  <Posts posts={posts} 
+                  <Posts 
+                  posts={posts}
+                  loadPosts={loadPosts}
+                  upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  userPostUpvote={userPostUpvote} 
+                  downvote={downvote}
+                  userPostDownvote={userPostDownvote} />
+                  <LinkToCreatePost />
+                </>
+              }
+              />
+              <Route exact path="/:order/" element = {
+                <>
+                  <Navbar categories={categories} />
+                  <Posts 
+                  posts={posts} 
+                  loadPosts={loadPosts}
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
                   userPostUpvote={userPostUpvote} 

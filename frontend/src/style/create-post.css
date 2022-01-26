@@ -4,7 +4,7 @@
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
     display: block;
-    position: fixed;
+    position: absolute;
     left: 5vw;
     top: 10vh;
     width: fit-content;

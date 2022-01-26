@@ -60,9 +60,9 @@ class PostsView(APIView):
 
     def get(self, request, ordering=""):
         # Default ordering (order by newest)
-        if ordering == "":
+        if ordering == "" or ordering == "new":
             posts = Post.objects.all().order_by("-date_created")
-        elif ordering == "oldest":
+        elif ordering == "old":
             posts = Post.objects.all() # Note that django automatically orders the posts by oldest.
         elif ordering == "top":
             posts = Post.objects.all().extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])

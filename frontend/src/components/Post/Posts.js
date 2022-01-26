@@ -1,12 +1,23 @@
+import { useParams } from "react-router-dom";
 import Post from "./Post";
 import "../../style/posts.css";
 import PropTypes from "prop-types";
+import OrderOptions from "./OrderOptions";
+import { useEffect } from "react";
 
 const Posts = (props) => {
+
+    const params = useParams();
+    const order = params.order;
+
+    useEffect(() => {
+        props.loadPosts(order);
+    }, [order]);
     
     return (
         <>
             <h1 id="category-name-top-page">Home</h1>
+            <OrderOptions />
             <div className="posts">
                 {props.posts.map((post) => <Post 
                 key={post.id}
