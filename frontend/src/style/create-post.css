@@ -7,7 +7,7 @@
     position: fixed;
     left: 5vw;
     top: 10vh;
-    width: 115px;
+    width: fit-content;
     height: 25px;
     background: var(--input-background-colour-focus);
     padding: 10px;

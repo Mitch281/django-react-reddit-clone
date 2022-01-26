@@ -3,7 +3,6 @@
 
 :root {
     --navbar-height: 7vh;
-    --navbar-button-widths: 8vw;
     --navbar-button-border-radii: 5px;
 }
 
@@ -14,6 +13,7 @@
 
 #navbar {
     background-color: white;
+    width: 100%;
 }
 
 #navbar-nav {
@@ -29,7 +29,7 @@
 }
 
 #navbar-auth {
-    margin-left: 50vw;
+    margin-left: 50%;
 }
 
 #navbar-nav li {
@@ -42,11 +42,10 @@
     border: none;
     border-radius: var(--navbar-button-border-radii);
     height: calc(var(--navbar-height) / 1.5);
-    width: var(--navbar-button-widths);
+    width: fit-content;
     cursor: pointer;
-}
-
-#top-of-dropdown button span {
+    padding-left: 20px;
+    padding-right: 20px;
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
 }
@@ -95,8 +94,10 @@
     text-align: center;
     height: calc(var(--navbar-height) / 1.5);
     line-height: calc(var(--navbar-height) / 1.5);
-    width: var(--navbar-button-widths);
+    width: fit-content;
     border-radius:var(--navbar-button-border-radii);
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 #nav-to-login {

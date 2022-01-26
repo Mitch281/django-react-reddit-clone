@@ -42,7 +42,7 @@ const CategoryDropdown = (props) => {
             {/* This shows the category at the top of the dropdown.*/}
             <li id="top-of-dropdown" ref={categoryDropdown}>
                 <button type="button" id="category-in-focus" onClick={() => setWantDropdown(!wantDropdown)} >
-                    {props.activeCategory === undefined ? <span>Home</span> : <span>{props.activeCategory}</span>}
+                    {props.activeCategory === undefined ? "Home" : props.activeCategory}
                 </button>
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
