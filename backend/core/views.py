@@ -57,8 +57,12 @@ class PostsView(APIView):
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
-    def get(self, request, format=None):
-        posts = Post.objects.all().order_by("-date_created")
+    def get(self, request, ordering):
+        # Default ordering (order by newest)
+        if ordering == "":
+            posts = Post.objects.all().order_by("-date_created")
+        elif ordering == "oldest":
+            posts = Post.objects.all() # Note that django automatically orders the posts by oldest.
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
