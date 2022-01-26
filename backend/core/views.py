@@ -57,7 +57,7 @@ class PostsView(APIView):
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
-    def get(self, request, ordering):
+    def get(self, request, ordering=""):
         # Default ordering (order by newest)
         if ordering == "":
             posts = Post.objects.all().order_by("-date_created")

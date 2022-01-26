@@ -11,7 +11,8 @@ urlpatterns = [
     # See https://www.django-rest-framework.org/api-guide/viewsets/ for good documenation as_view params.
     path('categories/', views.CategoryView.as_view(), name='categories'),
 
-    re_path(r'^posts/(?P<ordering>[a-zA-Z\s]+)/$', views.PostsView.as_view(), name='posts'),
+    path("posts/", views.PostsView.as_view(), name="posts"),
+    re_path(r'^posts/(?P<ordering>[a-zA-Z\s]*)/$', views.PostsView.as_view(), name='posts'),
 
     re_path(r'^posts/category=(?P<pk>[0-9a-z-&]+)/$', views.PostsByCategoryView.as_view()),
 
