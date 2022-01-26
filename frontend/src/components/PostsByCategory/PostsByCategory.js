@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../App";
 import { useLocation, useParams } from "react-router-dom";
-import Post from "../Home/Post";
+import Post from "../Post/Post";
 import PropTypes from "prop-types";
 
 const PostsByCategory = (props) => {

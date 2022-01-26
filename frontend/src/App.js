@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar";
-import Posts from "./components/Home/Posts";
+import Posts from "./components/Post/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected";
@@ -17,7 +17,7 @@ import { postUpvoteToPost,
 from "./fetch-data";
 import CreateCategory from "./components/CreationForms/CreateCategory";
 import CreatePost from "./components/CreationForms/CreatePost";
-import LinkToCreatePost from "./components/Home/LinkToCreatePost";
+import LinkToCreatePost from "./components/Post/LinkToCreatePost";
 
 export const UserContext = createContext();
 

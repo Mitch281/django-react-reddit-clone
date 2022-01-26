@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Post from "../Home/Post";
+import Post from "../Post/Post";
 import PropTypes from "prop-types";
 
 const PostSelected = (props) => {
