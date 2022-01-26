@@ -302,7 +302,21 @@ function App() {
               <Route exact path="posts/category=:categoryName" element = {
                 <>
                   <Navbar categories={categories} />
-                  <PostsByCategory upvote={upvote} 
+                  <PostsByCategory 
+                  upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  userPostUpvote={userPostUpvote} 
+                  downvote={downvote}
+                  userPostDownvote={userPostDownvote}
+                  />
+                </>
+              }
+              />
+              <Route exact path="posts/category=:categoryName/:order" element = {
+                <>
+                  <Navbar categories={categories} />
+                  <PostsByCategory 
+                  upvote={upvote} 
                   userPostVotes={userPostVotes} 
                   userPostUpvote={userPostUpvote} 
                   downvote={downvote}

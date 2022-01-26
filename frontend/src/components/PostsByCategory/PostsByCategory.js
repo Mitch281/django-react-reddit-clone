@@ -37,6 +37,7 @@ const PostsByCategory = (props) => {
     return (
         <>
             <h1 id="category-name-top-page">{categoryName}</h1>
+            <OrderOptions />
             <div className="posts">
             {posts.map((post) => <Post 
                 key={post.id}
