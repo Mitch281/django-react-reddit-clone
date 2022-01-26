@@ -20,3 +20,8 @@ body {
     background-color: var(--background-colour);
     margin: 0px;
 }
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
