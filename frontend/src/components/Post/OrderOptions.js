@@ -1,7 +1,6 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 
 const OrderOptions = () => {
-
     const params = useParams();
     const { state } = useLocation();
     const categoryName = params.categoryName;
@@ -10,39 +9,124 @@ const OrderOptions = () => {
     function getOutput() {
         if (categoryName && !order) {
             return (
-                <div>
-                    <Link to="new/" state={{categoryId: state.categoryId}}>New</Link>
-                    <Link to="old/" state={{categoryId: state.categoryId}}>Old</Link>
-                    <Link to="top/" state={{categoryId: state.categoryId}}>Top</Link>
-                    <Link to="bottom/" state={{categoryId: state.categoryId}}>Bottom</Link>
+                <div id="post-sorting-options-flex-container">
+                    <div id="post-sorting-options">
+                        <span>Sort by: </span>
+                        <Link
+                            to="new/"
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "new" ? "current-post-ordering" : ""}
+                        >
+                            New
+                        </Link>
+                        <Link
+                            to="old/"
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "old" ? "current-post-ordering" : ""}
+                        >
+                            Old
+                        </Link>
+                        <Link
+                            to="top/"
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "top" ? "current-post-ordering" : ""}
+                        >
+                            Top
+                        </Link>
+                        <Link
+                            to="bottom/"
+                            state={{ categoryId: state.categoryId }}
+                            id={
+                                order === "bottom"
+                                    ? "current-post-ordering"
+                                    : ""
+                            }
+                        >
+                            Bottom
+                        </Link>
+                    </div>
                 </div>
             );
-        }
-        else if (categoryName && order) {
+        } else if (categoryName && order) {
             return (
-                <div>
-                    <Link to={`/posts/category=${categoryName}/new/`} state={{categoryId: state.categoryId}}>New</Link>
-                    <Link to={`/posts/category=${categoryName}/old/`} state={{categoryId: state.categoryId}}>Old</Link>
-                    <Link to={`/posts/category=${categoryName}/top/`} state={{categoryId: state.categoryId}}>Top</Link>
-                    <Link to={`/posts/category=${categoryName}/bottom/`} state={{categoryId: state.categoryId}}>Bottom</Link>
+                <div id="post-sorting-options-flex-container">
+                    <div id="post-sorting-options">
+                        <span>Sort by: </span>
+                        <Link
+                            to={`/posts/category=${categoryName}/new/`}
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "new" ? "current-post-ordering" : ""}
+                        >
+                            New
+                        </Link>
+                        <Link
+                            to={`/posts/category=${categoryName}/old/`}
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "old" ? "current-post-ordering" : ""}
+                        >
+                            Old
+                        </Link>
+                        <Link
+                            to={`/posts/category=${categoryName}/top/`}
+                            state={{ categoryId: state.categoryId }}
+                            id={order === "top" ? "current-post-ordering" : ""}
+                        >
+                            Top
+                        </Link>
+                        <Link
+                            to={`/posts/category=${categoryName}/bottom/`}
+                            state={{ categoryId: state.categoryId }}
+                            id={
+                                order === "bottom"
+                                    ? "current-post-ordering"
+                                    : ""
+                            }
+                        >
+                            Bottom
+                        </Link>
+                    </div>
                 </div>
             );
-        }
-        else {
+        } else {
             return (
-                <div>
-                    <Link to="/new/">New</Link>
-                    <Link to="/old/">Old</Link>
-                    <Link to="/top/">Top</Link>
-                    <Link to="/bottom/">Bottom</Link>
+                <div id="post-sorting-options-flex-container">
+                    <div id="post-sorting-options">
+                        <span>Sort by: </span>
+                        <Link
+                            to="/new/"
+                            id={order === "new" ? "current-post-ordering" : ""}
+                        >
+                            New
+                        </Link>
+                        <Link
+                            to="/old/"
+                            id={order === "old" ? "current-post-ordering" : ""}
+                        >
+                            Old
+                        </Link>
+                        <Link
+                            to="/top/"
+                            id={order === "top" ? "current-post-ordering" : ""}
+                        >
+                            Top
+                        </Link>
+                        <Link
+                            to="/bottom/"
+                            id={
+                                order === "bottom"
+                                    ? "current-post-ordering"
+                                    : ""
+                            }
+                        >
+                            Bottom
+                        </Link>
+                    </div>
                 </div>
             );
         }
     }
 
-    return (
-        getOutput()
-    );
-}
+    return getOutput();
+};
 
 export default OrderOptions;
