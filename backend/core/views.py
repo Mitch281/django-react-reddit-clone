@@ -14,6 +14,7 @@ PostVotesSerializer,
 MyTokenObtainPairSerializer)
 from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db.models.functions import Abs
 
 # Create your views here.
 
@@ -63,6 +64,11 @@ class PostsView(APIView):
             posts = Post.objects.all().order_by("-date_created")
         elif ordering == "oldest":
             posts = Post.objects.all() # Note that django automatically orders the posts by oldest.
+        elif ordering == "top":
+            posts = Post.objects.all().extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+        elif ordering == "bottom":
+            posts = Post.objects.all().extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
