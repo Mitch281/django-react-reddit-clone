@@ -5,6 +5,7 @@ import "../../style/comments.css";
 import CommentInput from "./CommentInput";
 
 const Comments = () => {
+    console.log("rerener");
 
     const params = useParams();
     const postId = params.postId;

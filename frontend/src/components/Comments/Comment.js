@@ -25,6 +25,7 @@ const Comment = (props) => {
                     dateCreated={comment.date_created}
                     replies={comment.replies}
                     nestingLevel={comment.nestingLevel}
+                    updateComments={props.updateComments}
                 />
                 )
             );
