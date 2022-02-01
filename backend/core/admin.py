@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "category", "title", "content", "num_upvotes", "num_downvotes", "date_created"]
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["id", "user", "parent_post", "content", "num_upvotes", "num_downvotes", "date_created"]
+    list_display = ["id", "user", "parent_post", "content", "num_upvotes", "num_downvotes", "date_created", "parent_comment"]
 
 class PostVotesAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "post", "upvote", "downvote"]

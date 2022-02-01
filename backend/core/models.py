@@ -44,12 +44,17 @@ class Comment(models.Model):
     num_downvotes = models.IntegerField(default=0)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
+    # Note, this will be null for comments that do not have parents i.e. top level comments.
+    parent_comment = models.ForeignKey("self", on_delete=models.DO_NOTHING, related_name="replies", blank=True, null=True)
+
     def __str__(self):
-        return self.content
+        return self.id
 
     @property
     def username(self):
         return self.user.username
+
+    # TODO: Add constraint to make sure that parent post of comment reply samea as parent comment.
 
 class PostVotes(models.Model):
     id = models.TextField(primary_key=True)

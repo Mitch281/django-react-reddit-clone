@@ -14,7 +14,6 @@ PostVotesSerializer,
 MyTokenObtainPairSerializer)
 from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.db.models.functions import Abs
 
 # Create your views here.
 
@@ -170,10 +169,17 @@ class PostComments(APIView):
 
     serializer_class = CommentSerializer
 
-    def get(self, request, pk):
-        comments = Comment.objects.filter(parent_post=pk)
-        serializer = CommentSerializer(comments, many=True)
+    def get(self, request, parent_post_id):
+        post_comments = Comment.objects.filter(parent_post=parent_post_id)
+        serializer = CommentSerializer(post_comments, many=True)
         return Response(serializer.data)
+
+@api_view(["GET"])
+def get_comment_replies(request, parent_post_id, comment_id):
+    post_comments = Comment.objects.filter(parent_post=parent_post_id)
+    replies = post_comments.get(id=comment_id).replies.all()
+    serializer = CommentSerializer(replies, many=True)
+    return Response(serializer.data)
 
 @api_view(["GET"])
 @permission_classes((permissions.IsAuthenticated, ))
