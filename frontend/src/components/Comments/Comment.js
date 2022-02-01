@@ -1,19 +1,18 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import CommentContent from "./CommentContent";
 import CommentVotes from "./CommentVotes";
 import DateOfComment from "./DateOfComment";
 import User from "./User";
+import ReplyToComment from "./ReplyToComment";
 
 const Comment = (props) => {
 
     const votes = {numUpvotes: props.numUpvotes, numDownvotes: props.numDownvotes};
+    const [wantReplyForm, setWantReplyForm] = useState(false);
 
     function renderReplies() {
         if (props.replies) {
-
-            // We indent nesting level when replies exist. If no replies exist, then the nesting level gets reset back to 
-            // 0 and we render the next root level comment.
-
             return (
                 props.replies.map((comment) => 
                 <Comment
@@ -37,6 +36,10 @@ const Comment = (props) => {
         return {marginLeft:marginLeft};
     }
 
+    function toggleReplyForm() {
+        setWantReplyForm(wantReplyForm => !wantReplyForm);
+    }
+
     return (
         <>
             <div className="comment" style={getMarginLeft()}>
@@ -44,6 +47,14 @@ const Comment = (props) => {
                 <User username={props.username} />
                 <DateOfComment dateCreated={props.dateCreated} />
                 <CommentContent content={props.content} />
+                <button type="button" onClick={toggleReplyForm}>Reply</button>
+                <ReplyToComment 
+                    wantReplyForm={wantReplyForm} 
+                    parentUsername={props.username}
+                    postId={props.postId}
+                    updateComments={props.updateComments}
+                    parentCommentId={props.id}
+                />
             </div>
             {renderReplies()}
         </>
@@ -58,7 +69,8 @@ Comment.propTypes = {
     numDownvotes: PropTypes.number,
     dateCreated: PropTypes.string,
     replies: PropTypes.array,
-    nestingLevel: PropTypes.number
+    nestingLevel: PropTypes.number,
+    updateComments: PropTypes.func
 }
 
 export default Comment

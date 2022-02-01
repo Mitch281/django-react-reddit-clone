@@ -1,6 +1,7 @@
 import "../../style/comment-input.css";
 import { useContext, useState} from "react";
 import { UserContext } from "../../App";
+import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
 
@@ -27,7 +28,8 @@ const CommentInput = (props) => {
             content: comment,
             num_upvotes: 0,
             num_downvotes: 0,
-            date_created: dateNow
+            date_created: dateNow,
+            parent_comment: null
         }
         const response = await fetch("http://localhost:8000/api/comments/", {
             method: "POST",
@@ -38,9 +40,9 @@ const CommentInput = (props) => {
             body: JSON.stringify(data)
         });
         if (response.ok) {
-
             // Clear text box
             setComment("");
+
             props.updateComments(data);
         } else {
             throw new Error("Couldn't comment!");
@@ -76,6 +78,10 @@ const CommentInput = (props) => {
     return (
         determineOutput()
     );
+}
+
+CommentInput.propTypes = {
+    updateComment: PropTypes.func
 }
 
 export default CommentInput;

@@ -60,7 +60,6 @@ const Comments = () => {
     }, [idMapping]);
 
     function getNestingLevel(comment, nestingLevel) {
-        console.log(nestingLevel);
 
         // Note that comment.parent_comment is simply the id of the parent comment due to the django naming (maybe look into 
         // changing this in future to parent_comment_id), while parentComment is the actual parent comment object. Same thing
@@ -93,6 +92,7 @@ const Comments = () => {
                             dateCreated={comment.date_created}
                             replies={comment.replies}
                             nestingLevel={comment.nestingLevel}
+                            updateComments={updateComments}
                         />
                     )}
                 </div>
