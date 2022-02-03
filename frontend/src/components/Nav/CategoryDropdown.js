@@ -9,6 +9,8 @@ const CategoryDropdown = (props) => {
     const [wantDropdown, setWantDropdown] = useState(false);
     const categoryDropdown = useRef(null);
 
+    const [filterCategoriesText, setFilterCategoriesText] = useState("");
+
     const params = useParams();
 
     function determineDropdownDisplay() {
@@ -46,9 +48,19 @@ const CategoryDropdown = (props) => {
                 </button>
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
-                    <li><Link to="/create-category/"><BiPlus />Create Category</Link></li>
+                    <li>
+                    <input type="text" placeholder="Filter categories" value={filterCategoriesText}
+                        onChange={(e) => setFilterCategoriesText(e.target.value)} />
+                    </li>
                     <hr />
-                    <Categories wantDropdown={wantDropdown} categories={props.categories} />
+                    <li>
+                        <Link to="/create-category/">
+                            <BiPlus />Create Category
+                        </Link>
+                    </li>
+                    <hr />
+                    <Categories wantDropdown={wantDropdown} 
+                    categories={props.categories} filterCategoriesText={filterCategoriesText} />
                 </ul>
             </li>
         </>

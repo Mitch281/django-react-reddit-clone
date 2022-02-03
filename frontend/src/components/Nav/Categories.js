@@ -11,13 +11,15 @@ const Categories = (props) => {
             <hr />
 
             {/* These are the rest of the categories.*/}
-            {props.categories.map(category => <Category key={category.id} category={category} />)}
+            {props.categories.map(category => <Category key={category.id} category={category} 
+            filterCategoriesText={props.filterCategoriesText} />)}
         </>
     );
 }
 
 Categories.propTypes = {
-    categories: PropTypes.array
+    categories: PropTypes.array,
+    filterCategoriesText: PropTypes.string
 }
 
 export default Categories
