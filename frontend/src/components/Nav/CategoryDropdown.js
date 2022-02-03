@@ -49,7 +49,7 @@ const CategoryDropdown = (props) => {
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
                     <li>
-                    <input type="text" placeholder="Filter categories" value={filterCategoriesText}
+                    <input type="text" placeholder="Filter categories" value={filterCategoriesText} id="filter-categories-input"
                         onChange={(e) => setFilterCategoriesText(e.target.value)} />
                     </li>
                     <hr />
