@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Post, Comment, PostVotes
+from .models import Category, Post, Comment, PostVotes, CommentVotes
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -32,6 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
 class PostVotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostVotes
+        fields = ("__all__")
+
+class CommentVotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentVotes
         fields = ("__all__")
 
 class NumberOfCommentsOnPostSerializer(serializers.Serializer):

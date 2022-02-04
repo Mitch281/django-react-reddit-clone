@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import Category, Post, Comment, PostVotes
+from .models import Category, Post, Comment, PostVotes, CommentVotes
 
 # Register your models here.
-# TODO: add admin for postvotes table.
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["id", "name"]
@@ -16,7 +15,11 @@ class CommentAdmin(admin.ModelAdmin):
 class PostVotesAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "post", "upvote", "downvote"]
 
+class CommentVotesAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "comment", "upvote", "downvote"]
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(PostVotes, PostVotesAdmin)
+admin.site.register(CommentVotes, CommentVotesAdmin)

@@ -57,18 +57,37 @@ class Comment(models.Model):
     # TODO: Add constraint to make sure that parent post of comment reply samea as parent comment.
 
 class PostVotes(models.Model):
+    """
+    Keeps track of a user's votes on all posts.
+    """
+
     id = models.TextField(primary_key=True)
-
-    # We do not want to lose votes of users that delete their accounts.
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     upvote = models.BooleanField(default=False)
     downvote = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["user", "post"], name="vote_once_constraint"),
-            models.CheckConstraint(check= (~Q(upvote=True) | ~Q(downvote=True)),
-            name="cant_upvote_and_downvote")
+            models.UniqueConstraint(fields=["user", "post"], name="vote on post once constraint"),
+            models.CheckConstraint(check=(~Q(upvote=True) | ~Q(downvote=True)),
+            name="can't upvote and downvote post")
+        ]
+
+class CommentVotes(models.Model):
+    """
+    Keeps track of a user's votes on all comments.
+    """
+
+    id = models.TextField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    upvote = models.BooleanField(default=False)
+    downvote=models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "comment"], name="vote on comment once constraint"),
+            models.CheckConstraint(check=(~Q(upvote=True) | ~Q(downvote=True)),
+            name="can't upvote and downvote a comment")
         ]

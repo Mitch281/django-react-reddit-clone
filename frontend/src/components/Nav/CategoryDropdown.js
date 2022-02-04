@@ -48,10 +48,12 @@ const CategoryDropdown = (props) => {
                 </button>
                 {/* These are all other categories including home.*/}
                 <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
+                    <hr />
                     <li>
                     <input type="text" placeholder="Filter categories" value={filterCategoriesText} id="filter-categories-input"
                         onChange={(e) => setFilterCategoriesText(e.target.value)} />
                     </li>
+                    <hr />
                     <hr />
                     <li>
                         <Link to="/create-category/">
