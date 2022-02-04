@@ -145,7 +145,7 @@
     border-radius: 5px;
 }
 
-#post-sorting-options a:not(#current-post-ordering) {
+#post-sorting-options a:not(#current-ordering) {
     color: grey;
 }
 
@@ -155,7 +155,7 @@
     color: black;
 }
 
-#current-post-ordering {
+#current-ordering {
     color: var(--input-border-colour);
     border: 2px solid var(--input-border-colour);
     background-color: var(--input-background-colour-focus);

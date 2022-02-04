@@ -15,21 +15,21 @@ const OrderOptions = () => {
                         <Link
                             to="new/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "new" ? "current-post-ordering" : ""}
+                            id={order === "new" ? "current-ordering" : ""}
                         >
                             New
                         </Link>
                         <Link
                             to="old/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "old" ? "current-post-ordering" : ""}
+                            id={order === "old" ? "current-ordering" : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to="top/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "top" ? "current-post-ordering" : ""}
+                            id={order === "top" ? "current-ordering" : ""}
                         >
                             Top
                         </Link>
@@ -38,7 +38,7 @@ const OrderOptions = () => {
                             state={{ categoryId: state.categoryId }}
                             id={
                                 order === "bottom"
-                                    ? "current-post-ordering"
+                                    ? "current-ordering"
                                     : ""
                             }
                         >
@@ -55,21 +55,21 @@ const OrderOptions = () => {
                         <Link
                             to={`/posts/category=${categoryName}/new/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "new" ? "current-post-ordering" : ""}
+                            id={order === "new" ? "current-ordering" : ""}
                         >
                             New
                         </Link>
                         <Link
                             to={`/posts/category=${categoryName}/old/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "old" ? "current-post-ordering" : ""}
+                            id={order === "old" ? "current-ordering" : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to={`/posts/category=${categoryName}/top/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "top" ? "current-post-ordering" : ""}
+                            id={order === "top" ? "current-ordering" : ""}
                         >
                             Top
                         </Link>
@@ -78,7 +78,7 @@ const OrderOptions = () => {
                             state={{ categoryId: state.categoryId }}
                             id={
                                 order === "bottom"
-                                    ? "current-post-ordering"
+                                    ? "current-ordering"
                                     : ""
                             }
                         >
@@ -94,19 +94,19 @@ const OrderOptions = () => {
                         <span>Sort by: </span>
                         <Link
                             to="/new/"
-                            id={order === "new" ? "current-post-ordering" : ""}
+                            id={order === "new" ? "current-ordering" : ""}
                         >
                             New
                         </Link>
                         <Link
                             to="/old/"
-                            id={order === "old" ? "current-post-ordering" : ""}
+                            id={order === "old" ? "current-ordering" : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to="/top/"
-                            id={order === "top" ? "current-post-ordering" : ""}
+                            id={order === "top" ? "current-ordering" : ""}
                         >
                             Top
                         </Link>
@@ -114,7 +114,7 @@ const OrderOptions = () => {
                             to="/bottom/"
                             id={
                                 order === "bottom"
-                                    ? "current-post-ordering"
+                                    ? "current-ordering"
                                     : ""
                             }
                         >
