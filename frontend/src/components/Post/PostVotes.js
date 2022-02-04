@@ -43,13 +43,13 @@ const PostVotes = (props) => {
         // User has not voted yet.
         if (!checkUserVoteAlready()) {
             if (voteType === "upvote") {
-                props.upvote(props.postId, numUpvotes, numDownvotes, "no vote")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
+                props.upvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
-                props.downvote(props.postId, numUpvotes, numDownvotes, "no vote")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "no vote", postVoteId))
+                props.downvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
@@ -57,26 +57,26 @@ const PostVotes = (props) => {
         // User is going from downvote to upvote.
         if (checkUserVoteAlready() === "downvote") {
             if (voteType === "upvote") {
-                props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
+                props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
-                props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "downvoted", postVoteId))
+                props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
 
         else if (checkUserVoteAlready() === "upvote") {
             if (voteType === "upvote") {
-                props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
+                props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
+                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
-                props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "upvoted", postVoteId))
+                props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
+                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }

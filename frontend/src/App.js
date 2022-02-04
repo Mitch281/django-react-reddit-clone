@@ -94,8 +94,8 @@ function App() {
     }
   }
 
-  async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status) {
-    const upvoted = await postUpvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status);
+  async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
+    const upvoted = await postUpvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
     if (upvoted) {
 
       // User is going from downvote to upvote.
@@ -124,11 +124,11 @@ function App() {
   }
 
   // Updates the user's votes in the case of an upvote.
-  async function userPostUpvote(userId, postId, status, postVoteId) {
+  async function userPostUpvote(userId, postId, status, postVoteId, thingToUpvote) {
 
     // User has voted on post already. Thus, postVoteId exists (is not null).
     if (postVoteId) {
-      const patchedUsersUpvote = await patchUsersUpvote(status, postVoteId);
+      const patchedUsersUpvote = await patchUsersUpvote(status, postVoteId, thingToUpvote);
       if (patchedUsersUpvote) {
 
         // User is going from downvote to upvote.
@@ -155,7 +155,7 @@ function App() {
 
     // The user has not voted on the post yet. Thus, we need to post a new vote.
     else {
-      const usersUpvotePosted = await postUsersUpvote(userId, postId);
+      const usersUpvotePosted = await postUsersUpvote(userId, postId, thingToUpvote);
       if (usersUpvotePosted.result) {
         const data = usersUpvotePosted.data;
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
@@ -165,8 +165,8 @@ function App() {
     } 
   }
 
-  async function downvote(postId, currentNumUpvotes, currentNumDownvotes, status) {
-    const downvoted = await postDownvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status);
+  async function downvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
+    const downvoted = await postDownvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
     if (downvoted) {
       
       // User is undoing downvote by downvoting again.
@@ -192,11 +192,11 @@ function App() {
     }
   }
 
-  async function userPostDownvote(userId, postId, status, postVoteId) {
+  async function userPostDownvote(userId, postId, status, postVoteId, thingToDownvote) {
 
     // User has voted on the post before.
     if (postVoteId) {
-      const patchedUsersDownvote = await patchUsersDownvote(status, postVoteId);
+      const patchedUsersDownvote = await patchUsersDownvote(status, postVoteId, thingToDownvote);
 
       if (patchedUsersDownvote) {
 
@@ -224,7 +224,7 @@ function App() {
 
     // User has not voted on post yet.
     else {
-      const usersDownvotePosted = await postUsersDownvote(userId, postId);
+      const usersDownvotePosted = await postUsersDownvote(userId, postId, thingToDownvote);
       if (usersDownvotePosted.result) {
         const data = usersDownvotePosted.data;
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
