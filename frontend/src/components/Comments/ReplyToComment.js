@@ -57,10 +57,12 @@ const ReplyToComment = (props) => {
 
     return (
         <div style={getDisplay()}>
-            <form onSubmit={postReply}>
-                <span>Reply to {props.parentUsername} as {usernameLoggedIn}</span>
-                <textarea type="text" value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="Content" />
-                <input type="submit" value="Reply" />
+            <form className="reply-to-comment-form" onSubmit={postReply}>
+                <div>
+                    <span>Reply to {props.parentUsername} as {usernameLoggedIn}</span>
+                    <textarea type="text" value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="Content" />
+                    <input type="submit" value="Reply" />
+                </div>
             </form>        
         </div>
     );

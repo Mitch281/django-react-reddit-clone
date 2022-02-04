@@ -15,7 +15,7 @@
 }
 
 #comment-input {
-    width: 40%;
+    width: 50%;
 }
 
 #comment-input form {
@@ -66,6 +66,12 @@
     background-color: var(--button-colours);
     padding: 8px;
     border-radius: 3px;
+    font-family: "Fira Sans", sans-serif;
+    font-size: 600;
+}
+
+.not-logged-in-message span {
+    font-family: "Fira Sans", sans-serif;
 }
 
 .not-logged-in-message a:hover {

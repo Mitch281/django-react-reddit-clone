@@ -17,6 +17,7 @@ p {
 }
 
 body { 
+    font-family: "Fira Sans", sans-serif;
     background-color: var(--background-colour);
     margin: 0px;
     min-height: 50vh;

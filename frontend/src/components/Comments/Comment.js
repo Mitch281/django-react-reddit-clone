@@ -48,7 +48,7 @@ const Comment = (props) => {
                 <User username={props.username} />
                 <DateOfComment dateCreated={props.dateCreated} />
                 <CommentContent content={props.content} />
-                <button type="button" onClick={toggleReplyForm}>Reply</button>
+                <button type="button" onClick={toggleReplyForm} className="reply-to-comment-button">Reply</button>
                 <ReplyToComment 
                     wantReplyForm={wantReplyForm} 
                     parentUsername={props.username}
