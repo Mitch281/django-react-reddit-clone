@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Category, Post, Comment, PostVotes
+from .models import Category, Post, Comment, PostVotes, CommentVotes
 from .serializers import (CategorySerializer, 
 PostSerializer, 
 CommentSerializer, 
@@ -137,8 +137,34 @@ class PostView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class CommentView(APIView):
+    """
+    Look at a certain comment based on its primary key.
+    """
+
+    def get_permissions(self):
+        """Set custom permissions for each action."""
+        if self.request.method in ["POST", "DELETE", "PATCH"]:
+            print("made it")
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["GET"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
+
+    def get(self, request, pk):
+        comment = Comment.objects.get(id=pk)
+        serializer = serializers.CommentSerializer(comment)
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        comment = Comment.objects.get(id=pk)
+        serializer = serializers.CommentSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommentsView(APIView):
     """
     List and create comments (across all posts).
     """
@@ -175,13 +201,6 @@ class PostComments(APIView):
         return Response(serializer.data)
 
 @api_view(["GET"])
-def get_comment_replies(request, parent_post_id, comment_id):
-    post_comments = Comment.objects.filter(parent_post=parent_post_id)
-    replies = post_comments.get(id=comment_id).replies.all()
-    serializer = CommentSerializer(replies, many=True)
-    return Response(serializer.data)
-
-@api_view(["GET"])
 @permission_classes((permissions.IsAuthenticated, ))
 def current_user(request):
     """
@@ -215,7 +234,7 @@ class UserList(APIView):
 
 class PostVoteView(APIView):
     """
-    View for the votes of one user on one specified post.
+    This view is used to patch one specified post vote object.
     """
     permission_classes = [permissions.IsAuthenticated, ]
     
@@ -249,6 +268,47 @@ class PostVotesView(APIView):
 
     def post(self, request, format=None):
         serializer = PostVotesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommentVoteView(APIView):
+    """
+    This view is used to patch one specified comment vote object.
+    """
+
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def patch(self, request, pk):
+        comment_vote = CommentVotes.objects.get(id=pk)
+        serializer = PostVotesSerializer(post_vote, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommentVotesView(APIView):
+    """
+    List all users and their votes on comments. This is needed to keep track of users' upvotes and downvotes on comments.
+    Needs to be updated whenever a comment is upvoted or downvoted.
+    """
+
+    def get_permissions(self):
+        """Set custom permissions for each action."""
+        if self.request.method in ["POST", "DELETE"]:
+            self.permission_classes = [permissions.IsAuthenticated, ]
+        elif self.request.method in ["GET"]:
+            self.permission_classes = [permissions.AllowAny, ]
+        return super().get_permissions()
+
+    def get(self, request, format=None):
+        votes = CommentVotes.objects.all()
+        serializer = serializers.CommentVotesSerializer(votes, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = serializers.CommentVotesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
