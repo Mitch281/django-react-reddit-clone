@@ -44,12 +44,12 @@ const PostVotes = (props) => {
         if (!checkUserVoteAlready()) {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
+                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
+                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
@@ -58,12 +58,12 @@ const PostVotes = (props) => {
         if (checkUserVoteAlready() === "downvote") {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
+                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
+                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
@@ -71,12 +71,12 @@ const PostVotes = (props) => {
         else if (checkUserVoteAlready() === "upvote") {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
-                .then(props.userPostUpvote(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
+                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
-                .then(props.userPostDownvote(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
+                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
@@ -106,10 +106,10 @@ PostVotes.propTypes = {
     votes: PropTypes.object,
     postId: PropTypes.string,
     upvote: PropTypes.func,
-    userPostUpvote: PropTypes.func,
+    trackUsersUpvotes: PropTypes.func,
     userPostVotes: PropTypes.array,
     downvote: PropTypes.func,
-    userPostDownvote: PropTypes.func
+    trackUsersDownvotes: PropTypes.func
 }
 
 export default PostVotes

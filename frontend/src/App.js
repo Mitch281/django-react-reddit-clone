@@ -7,10 +7,10 @@ import Posts from "./components/Post/Posts";
 import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected";
-import { postUpvoteToPost, 
+import { postUpvote, 
         patchUsersUpvote, 
         postUsersUpvote, 
-        postDownvoteToPost,  
+        postDownvote,  
         patchUsersDownvote, 
         postUsersDownvote 
 } 
@@ -95,7 +95,7 @@ function App() {
   }
 
   async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
-    const upvoted = await postUpvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
+    const upvoted = await postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
     if (upvoted) {
 
       // User is going from downvote to upvote.
@@ -124,7 +124,7 @@ function App() {
   }
 
   // Updates the user's votes in the case of an upvote.
-  async function userPostUpvote(userId, postId, status, postVoteId, thingToUpvote) {
+  async function trackUsersUpvotes(userId, postId, status, postVoteId, thingToUpvote) {
 
     // User has voted on post already. Thus, postVoteId exists (is not null).
     if (postVoteId) {
@@ -166,7 +166,7 @@ function App() {
   }
 
   async function downvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
-    const downvoted = await postDownvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
+    const downvoted = await postDownvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
     if (downvoted) {
       
       // User is undoing downvote by downvoting again.
@@ -192,7 +192,7 @@ function App() {
     }
   }
 
-  async function userPostDownvote(userId, postId, status, postVoteId, thingToDownvote) {
+  async function trackUsersDownvotes(userId, postId, status, postVoteId, thingToDownvote) {
 
     // User has voted on the post before.
     if (postVoteId) {
@@ -269,9 +269,9 @@ function App() {
                   loadPosts={loadPosts}
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
-                  userPostUpvote={userPostUpvote} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  userPostDownvote={userPostDownvote} />
+                  trackUsersDownvotes={trackUsersDownvotes} />
                   <LinkToCreatePost />
                 </>
               }
@@ -284,9 +284,9 @@ function App() {
                   loadPosts={loadPosts}
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
-                  userPostUpvote={userPostUpvote} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  userPostDownvote={userPostDownvote} />
+                  trackUsersDownvotes={trackUsersDownvotes} />
                   <LinkToCreatePost />
                 </>
               }
@@ -311,9 +311,9 @@ function App() {
                   <PostsByCategory 
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
-                  userPostUpvote={userPostUpvote} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  userPostDownvote={userPostDownvote}
+                  trackUsersDownvotes={trackUsersDownvotes}
                   />
                 </>
               }
@@ -324,9 +324,9 @@ function App() {
                   <PostsByCategory 
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
-                  userPostUpvote={userPostUpvote} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  userPostDownvote={userPostDownvote}
+                  trackUsersDownvotes={trackUsersDownvotes}
                   />
                 </>
               }
@@ -338,9 +338,9 @@ function App() {
                   posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
-                  userPostUpvote={userPostUpvote} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  userPostDownvote={userPostDownvote}
+                  trackUsersDownvotes={trackUsersDownvotes}
                   />
                   <Comments />
                 </>

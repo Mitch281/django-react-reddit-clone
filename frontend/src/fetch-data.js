@@ -1,6 +1,6 @@
 import { v4 as uuid_v4 } from "uuid";
 
-export async function postUpvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
+export async function postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
     let data;
     let apiUrl;
     
@@ -99,7 +99,7 @@ export async function patchUsersUpvote(status, postVoteId, thingToUpvote) {
   return true;
 }
 
-export async function postDownvoteToPost(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
+export async function postDownvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
   let data;
   let apiUrl;
 

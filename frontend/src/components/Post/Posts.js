@@ -31,10 +31,10 @@ const Posts = (props) => {
                 numDownvotes={post.num_downvotes}
                 dateCreated={post.date_created}
                 upvote={props.upvote}
-                userPostUpvote={props.userPostUpvote}
+                trackUsersUpvotes={props.trackUsersUpvotes}
                 userPostVotes={props.userPostVotes}
                 downvote={props.downvote}
-                userPostDownvote={props.userPostDownvote}
+                trackUsersDownvotes={props.trackUsersDownvotes}
             />)
             }
         </div>
@@ -45,10 +45,10 @@ const Posts = (props) => {
 Post.propTypes = {
     posts: PropTypes.object,
     upvote: PropTypes.func,
-    userPostUpvote: PropTypes.func,
+    trackUsersUpvotes: PropTypes.func,
     userPostVotes: PropTypes.array,
     downvote : PropTypes.func,
-    userPostDownvote : PropTypes.func
+    trackUsersDownvotes : PropTypes.func
 }
 
 export default Posts
