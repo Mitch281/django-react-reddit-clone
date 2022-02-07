@@ -37,7 +37,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # We do nothing when parent post gets deleted because we still want to see the comment replies.
-    parent_post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
+    parent_post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     content = models.CharField(max_length=1000)
     num_upvotes = models.IntegerField(default=0)

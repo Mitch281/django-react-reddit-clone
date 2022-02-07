@@ -1,13 +1,14 @@
 import { v4 as uuid_v4 } from "uuid";
 
-export async function postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
+export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
+    console.log(idOfThing);
     let data;
     let apiUrl;
     
     if (thingToUpvote === "post") {
-      apiUrl = `http://localhost:8000/api/post/id=${postId}/`;
+      apiUrl = `http://localhost:8000/api/post/id=${idOfThing}/`;
     } else {
-      // comment url.
+      apiUrl = `http://localhost:8000/api/comment/id=${idOfThing}/`;
     }
 
     // User is going from downvote to upvote.
@@ -38,7 +39,7 @@ export async function postUpvote(postId, currentNumUpvotes, currentNumDownvotes,
     return true;
 }
 
-export async function postUsersUpvote(userId, postId, thingToUpvote) {
+export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
   let apiUrl;
   let data;
 
@@ -49,10 +50,17 @@ export async function postUsersUpvote(userId, postId, thingToUpvote) {
       upvote: true,
       downvote: false,
       user: userId,
-      post: postId
+      post: idOfThing
     }
   } else {
-    // comment url.
+    apiUrl = "http://localhost:8000/api/comment-votes/";
+    data = {
+      id: uuid_v4(),
+      upvote: true,
+      downvote: false,
+      user: userId,
+      comment: idOfThing
+    }
   }
 
   const response = await fetch(apiUrl, {
@@ -69,14 +77,14 @@ export async function postUsersUpvote(userId, postId, thingToUpvote) {
   return {result: true, data: data};
 }
 
-export async function patchUsersUpvote(status, postVoteId, thingToUpvote) {
+export async function patchUsersUpvote(status, voteId, thingToUpvote) {
   let data;
   let apiUrl;
 
   if (thingToUpvote === "post") {
-    apiUrl = `http://localhost:8000/api/post-vote/${postVoteId}/`;
+    apiUrl = `http://localhost:8000/api/post-vote/${voteId}/`;
   } else {
-    // comment url.
+    apiUrl = `http://localhost:8000/api/comment-vote/${voteId}/`;
   }
 
   if (status === "no vote") {
@@ -99,14 +107,14 @@ export async function patchUsersUpvote(status, postVoteId, thingToUpvote) {
   return true;
 }
 
-export async function postDownvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
+export async function postDownvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
   let data;
   let apiUrl;
 
   if (thingToDownvote === "post") {
-    apiUrl = `http://localhost:8000/api/post/id=${postId}/`;
+    apiUrl = `http://localhost:8000/api/post/id=${idOfThing}/`;
   } else {
-    // comment url
+    apiUrl = `http://localhost:8000/api/comment/id=${idOfThing}/`;
   }
 
   // User is undoing downvote by pressing downvote again.
@@ -138,7 +146,7 @@ export async function postDownvote(postId, currentNumUpvotes, currentNumDownvote
   return true;
 }
 
-export async function postUsersDownvote(userId, postId, thingToDownvote) {
+export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
   let data;
   let apiUrl;
 
@@ -149,10 +157,17 @@ export async function postUsersDownvote(userId, postId, thingToDownvote) {
       upvote: false,
       downvote: true,
       user: userId,
-      post: postId
+      post: idOfThing
     }
   } else {
-    // comment url
+    apiUrl = "http://localhost:8000/api/comment-votes/"
+    data = {
+      id: uuid_v4(),
+      upvote: false,
+      downvote: true,
+      user: userId,
+      comment: idOfThing
+    }
   }
 
   const response = await fetch(apiUrl, {
@@ -169,14 +184,14 @@ export async function postUsersDownvote(userId, postId, thingToDownvote) {
   return {result: true, data: data};
 }
 
-export async function patchUsersDownvote(status, postVoteId, thingToDownvote) {
+export async function patchUsersDownvote(status, voteId, thingToDownvote) {
   let data;
   let apiUrl;
 
   if (thingToDownvote === "post") {
-    apiUrl = `http://localhost:8000/api/post-vote/${postVoteId}/`
+    apiUrl = `http://localhost:8000/api/post-vote/${voteId}/`
   } else {
-    // comment url
+    apiUrl = `http://localhost:8000/api/comment-vote/${voteId}/`;
   }
 
   if (status === "no vote") {

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import CommentContent from "./CommentContent";
-import CommentVotes from "./CommentVotes";
 import DateOfComment from "./DateOfComment";
 import User from "./User";
 import ReplyToComment from "./ReplyToComment";
+import CommentVotes from "./CommentVotes";
 
 const Comment = (props) => {
 
@@ -44,7 +44,15 @@ const Comment = (props) => {
     return (
         <>
             <div className="comment" style={getMarginLeft()}>
-                <CommentVotes votes={votes} />
+                <CommentVotes 
+                    votes={votes} 
+                    userCommentVotes={props.userCommentVotes} 
+                    commentId={props.id}
+                    upvote={props.upvote}
+                    downvote={props.downvote}
+                    trackUsersUpvotes={props.trackUsersUpvotes}
+                    trackUsersDownvotes={props.trackUsersDownvotes}
+                />
                 <User username={props.username} />
                 <DateOfComment dateCreated={props.dateCreated} />
                 <CommentContent content={props.content} />
@@ -71,7 +79,12 @@ Comment.propTypes = {
     dateCreated: PropTypes.string,
     replies: PropTypes.array,
     nestingLevel: PropTypes.number,
-    updateComments: PropTypes.func
+    updateComments: PropTypes.func,
+    userCommentVotes: PropTypes.array,
+    upvote: PropTypes.func,
+    downvote: PropTypes.func,
+    trackUsersUpvotes: PropTypes.func,
+    trackUsersDownvotes: PropTypes.func
 }
 
 export default Comment

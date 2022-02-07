@@ -33,7 +33,8 @@ const Post = (props) => {
     return (
         <div className="post">
             <div className="top-post-flex-container">
-                <PostVotes votes={votes} 
+                <PostVotes 
+                votes={votes} 
                 upvote={props.upvote} 
                 postId={props.id} 
                 userPostVotes={props.userPostVotes}

@@ -3,6 +3,15 @@ import { useParams } from "react-router-dom";
 import Comment from "./Comment";
 import "../../style/comments.css";
 import CommentInput from "./CommentInput";
+import { 
+    postUpvote, 
+    patchUsersUpvote, 
+    postUsersUpvote, 
+    postDownvote,  
+    patchUsersDownvote, 
+    postUsersDownvote 
+} 
+from "../../fetch-data";
 
 const Comments = () => {
 
@@ -14,6 +23,25 @@ const Comments = () => {
     const [idMapping, setIdMapping] = useState({});
     
     const [commentChain, setCommentChain] = useState([]);
+
+    // This keeps track of all votes a user has voted on. This is needed so that users cannot vote twice on a post, and
+    // to provide visual indication of what votes a user has voted on.
+    const [userCommentVotes, setUserCommentVotes] = useState([]);
+
+    useEffect(() => {
+        async function loadUserCommentVotes() {
+            const response = await fetch("http://localhost:8000/api/comment-votes/");
+            if (response.ok) {
+                const json = await response.json();
+                setUserCommentVotes(json)
+                console.log(json);
+            } else {
+                throw new Error("Couldn't load user comment votes!");
+            }
+        }
+
+        loadUserCommentVotes();
+    }, []);
 
     // Reset the comment chain whenever our comments update. This is necessary because when a user replies to a comment or makes
     // a comment, Comments rerenders but state does not refresh (as opposed to a page refresh where state does reset). Thus,
@@ -87,6 +115,152 @@ const Comments = () => {
     function updateComments(newComment) {
         setComments(comments => [...comments, newComment]);
     }
+
+    async function upvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
+        const upvoted = await postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
+
+        if (upvoted) {
+
+            // User is going from downvote to upvote.
+            if (status === "downvoted") {
+                setComments(comments.map(comment => 
+                    comment.id === commentId ? {...comment, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : comment
+                ));
+            }
+
+            // User is undoing upvote.
+            else if (status === "upvoted") {
+                setComments(comments.map(comment => 
+                    comment.id === postId ? {...comment, num_upvotes: currentNumUpvotes - 1} : comment
+                ));
+            } 
+
+            // User is going from no vote to upvote.
+            else {
+                setComments(comments.map(comment => 
+                    comment.id === commentId ? {...comment, num_upvotes: currentNumUpvotes + 1} : comment
+                ));
+            }
+        } else {
+            throw new Error("couldnt upvote comment");
+        }
+    }
+
+    async function trackUsersUpvotes(userId, commentId, status, commentVoteId, thingToUpvote) {
+        
+        // User has voted on post already. Thus, commentVodeId exists (is not null).
+        if (commentVoteId) {
+            const patchedUsersUpvote = await patchUsersUpvote(status, commentVoteId, thingToUpvote);
+            if (patchedUsersUpvote) {
+                // User is going from downvote to upvote
+                if (status === "downvoted") {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote => 
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, upvote: true, downvote: false} : userCommentVote
+                    ));
+                }
+
+                // User is undoing upvote
+                else if (status === "upvoted") {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote => 
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, upvote:false} : userCommentVote
+                    ));
+                }
+
+                // User has previously voted before, but has no current vote on the comment.
+                else {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote =>
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, upvote: true} : userCommentVote
+                    ));
+                }
+            }
+            else {
+                throw new Error("Couldn't track user's upvote on comment");
+            }
+        }
+
+        // The user has not voted on the comment yet. Thus, we need to post a new vote.
+        const usersUpvotePosted = await postUsersUpvote(userId, commentId, thingToUpvote);
+        if (usersUpvotePosted.result) {
+            const data = usersUpvotePosted.data
+            setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
+        }
+        else {
+            throw new Error("Couldn't update comment user vote");
+        }
+    }
+
+    async function downvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
+        const downvoted = await postDownvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
+        if (downvoted) {
+          
+          // User is undoing downvote by downvoting again.
+          if (status === "downvoted") {
+            setComments(comments.map(comment => 
+              comment.id === commentId ? {...comment, num_downvotes: currentNumDownvotes - 1}: comment));
+          }
+    
+          // User is going from upvote to downvote
+          else if (status === "upvoted") {
+            setComments(comments.map(comment =>
+              comment.id === commentId ? {...comment, num_upvotes: currentNumUpvotes - 1, num_downvotes: currentNumDownvotes + 1} : comment));
+          }
+    
+          // User is going from no vote to downote.
+          else {
+            setComments(comments.map(comment =>
+              comment.id === commentId ? {...comment, num_downvotes: currentNumDownvotes + 1} : comment));
+          }
+        }
+        else {
+          throw new Error("couldn't downvote.");
+        }
+    }
+
+    async function trackUsersDownvotes(userId, commentId, status, commentVoteId, thingToDownvote) {
+
+        // User has voted on the post before.
+        if (commentVoteId) {
+            const patchedUsersDownvote = await patchUsersDownvote(status, commentVoteId, thingToDownvote);
+
+            if (patchedUsersDownvote) {
+
+                //User is undoing downvote by downvoting again.
+                if (status === "downvoted") {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote => 
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, downvote: false} : userCommentVote
+                    ));
+                }
+
+                // User is going from upvote to downvote
+                else if (status === "upvoted") {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote => 
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, upvote: false, downvote: true} : userCommentVote
+                    ));
+                }
+
+                // User has previously voted before, but has no current vote on the post.
+                else {
+                    setUserCommentVotes(userCommentVotes.map(userCommentVote => 
+                        userCommentVote.id === commentVoteId ? {...userCommentVote, downvote: true} : userCommentVote
+                    ));
+                }
+            } else {
+                throw new Error("Couldn't patch users comment downvote.");
+            }
+        }
+
+        // User has not voted on comment yet.
+        else {
+            const usersDownvotePosted = await postUsersDownvote(userId, commentId, thingToDownvote);
+            if (usersDownvotePosted.result) {
+                const data = usersDownvotePosted.data;
+                setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
+            } else {
+                throw new Error("Couldn't post user comment vote");
+            }
+        }
+    }
+
     
     return (
         <>
@@ -105,6 +279,11 @@ const Comments = () => {
                             replies={comment.replies}
                             nestingLevel={comment.nestingLevel}
                             updateComments={updateComments}
+                            userCommentVotes={userCommentVotes}
+                            upvote={upvote}
+                            downvote={downvote}
+                            trackUsersUpvotes={trackUsersUpvotes}
+                            trackUsersDownvotes={trackUsersDownvotes}
                         />
                     )}
                 </div>

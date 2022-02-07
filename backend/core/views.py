@@ -158,7 +158,7 @@ class CommentView(APIView):
 
     def patch(self, request, pk):
         comment = Comment.objects.get(id=pk)
-        serializer = serializers.CommentSerializer(post, data=request.data, partial=True)
+        serializer = serializers.CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -282,7 +282,7 @@ class CommentVoteView(APIView):
 
     def patch(self, request, pk):
         comment_vote = CommentVotes.objects.get(id=pk)
-        serializer = PostVotesSerializer(post_vote, data=request.data, partial=True)
+        serializer = serializers.CommentVotesSerializer(comment_vote, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

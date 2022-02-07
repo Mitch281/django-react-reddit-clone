@@ -15,6 +15,7 @@ const PostVotes = (props) => {
         }
         const userVotes = props.userPostVotes.filter(userPostVote => userPostVote.user === userIdLoggedIn);
         const postVotedOn = userVotes.filter(userVote => userVote.post === props.postId);
+
         if (postVotedOn[0] === undefined) {
             return false;
         }
@@ -37,6 +38,7 @@ const PostVotes = (props) => {
     }
 
 
+    // TODO: Get value of checkUserVoteAlready first, store it in varaible then do checks (saves time).
     function handleVote(voteType) {
         const postVoteId = getPostVoteId();
 
@@ -54,7 +56,7 @@ const PostVotes = (props) => {
             }
         }
 
-        // User is going from downvote to upvote.
+        // User has already downvoted the post.
         if (checkUserVoteAlready() === "downvote") {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
@@ -93,6 +95,7 @@ const PostVotes = (props) => {
             return {color: "blue"}
         }
     }
+
     return (
         <div className="post-votes">
             <ImArrowUp className="upvote" onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
