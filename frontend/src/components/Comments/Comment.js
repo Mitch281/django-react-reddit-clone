@@ -14,19 +14,24 @@ const Comment = (props) => {
     function renderReplies() {
         if (props.replies) {
             return (
-                props.replies.map((comment) => 
-                <Comment
-                    key={comment.id}
-                    id={comment.id}
-                    username={comment.username}
-                    content={comment.content}
-                    numUpvotes={comment.num_upvotes}
-                    numDownvotes={comment.num_downvotes}
-                    dateCreated={comment.date_created}
-                    replies={comment.replies}
-                    nestingLevel={comment.nestingLevel}
-                    updateComments={props.updateComments}
-                />
+                    props.replies.map((comment) => 
+                    <Comment
+                        key={comment.id}
+                        id={comment.id}
+                        username={comment.username}
+                        content={comment.content}
+                        numUpvotes={comment.num_upvotes}
+                        numDownvotes={comment.num_downvotes}
+                        dateCreated={comment.date_created}
+                        replies={comment.replies}
+                        nestingLevel={comment.nestingLevel}
+                        updateComments={props.updateComments}
+                        userCommentVotes={props.userCommentVotes}
+                        upvote={props.upvote}
+                        downvote={props.downvote}
+                        trackUsersUpvotes={props.trackUsersUpvotes}
+                        trackUsersDownvotes={props.trackUsersDownvotes}
+                    />
                 )
             );
         }

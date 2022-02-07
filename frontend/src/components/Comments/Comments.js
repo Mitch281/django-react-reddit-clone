@@ -34,7 +34,6 @@ const Comments = () => {
             if (response.ok) {
                 const json = await response.json();
                 setUserCommentVotes(json)
-                console.log(json);
             } else {
                 throw new Error("Couldn't load user comment votes!");
             }
@@ -47,12 +46,13 @@ const Comments = () => {
     // a comment, Comments rerenders but state does not refresh (as opposed to a page refresh where state does reset). Thus,
     // we do not want to append to commentChain, but make the new comment chain using our new comments state.
     useEffect(() => {
+        console.log("made it");
         setCommentChain([]);
 
         // Here, we create a deep copy of comments so that when we create our recursive JSON comment chain, we do not change
         // comments when adding replies.
         setCommentsClone(JSON.parse(JSON.stringify(comments)));
-    }, [comments]);
+    }, [comments, userCommentVotes]);
 
     async function loadComments() {
         const response = await fetch(`http://localhost:8000/api/comments/post=${postId}`);
@@ -117,7 +117,7 @@ const Comments = () => {
     }
 
     async function upvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
-        const upvoted = await postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
+        const upvoted = await postUpvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
 
         if (upvoted) {
 
@@ -131,7 +131,7 @@ const Comments = () => {
             // User is undoing upvote.
             else if (status === "upvoted") {
                 setComments(comments.map(comment => 
-                    comment.id === postId ? {...comment, num_upvotes: currentNumUpvotes - 1} : comment
+                    comment.id === commentId ? {...comment, num_upvotes: currentNumUpvotes - 1} : comment
                 ));
             } 
 
@@ -176,16 +176,18 @@ const Comments = () => {
             else {
                 throw new Error("Couldn't track user's upvote on comment");
             }
-        }
-
+        } 
+        
         // The user has not voted on the comment yet. Thus, we need to post a new vote.
-        const usersUpvotePosted = await postUsersUpvote(userId, commentId, thingToUpvote);
-        if (usersUpvotePosted.result) {
-            const data = usersUpvotePosted.data
-            setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
-        }
         else {
-            throw new Error("Couldn't update comment user vote");
+            const usersUpvotePosted = await postUsersUpvote(userId, commentId, thingToUpvote);
+            if (usersUpvotePosted.result) {
+                const data = usersUpvotePosted.data
+                setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
+            }
+            else {
+                throw new Error("Couldn't update comment user vote");
+            }
         }
     }
 
