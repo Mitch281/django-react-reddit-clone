@@ -4,6 +4,7 @@ import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
+import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const CommentInput = (props) => {
 
@@ -31,21 +32,29 @@ const CommentInput = (props) => {
             date_created: dateNow,
             parent_comment: null
         }
-        const response = await fetch("http://localhost:8000/api/comments/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            // Clear text box
-            setComment("");
 
-            props.updateComments(data);
-        } else {
-            throw new Error("Couldn't comment!");
+        const accessToken = localStorage.getItem("accessToken");
+        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+        if (gotNewAccessToken) {
+            const response = await fetch("http://localhost:8000/api/comments/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                // Clear text box
+                setComment("");
+    
+                props.updateComments(data);
+            } else {
+                throw new Error("Couldn't comment!");
+            }   
+        }
+        else {
+            throw new Error("Couldn't get new access token");
         }
     }
 

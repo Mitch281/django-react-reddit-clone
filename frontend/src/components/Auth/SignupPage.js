@@ -12,7 +12,6 @@ const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // TODO: getting 500 error? Figure out why.
     async function handleSignup(e) {
         e.preventDefault();
         if (password !== confirmPassword) {

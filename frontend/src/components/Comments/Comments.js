@@ -11,7 +11,7 @@ import {
     patchUsersDownvote, 
     postUsersDownvote 
 } 
-from "../../fetch-data";
+from "../../utils/fetch-data";
 
 const Comments = () => {
 
@@ -46,7 +46,6 @@ const Comments = () => {
     // a comment, Comments rerenders but state does not refresh (as opposed to a page refresh where state does reset). Thus,
     // we do not want to append to commentChain, but make the new comment chain using our new comments state.
     useEffect(() => {
-        console.log("made it");
         setCommentChain([]);
 
         // Here, we create a deep copy of comments so that when we create our recursive JSON comment chain, we do not change

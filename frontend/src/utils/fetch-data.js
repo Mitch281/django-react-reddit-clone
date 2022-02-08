@@ -1,7 +1,7 @@
 import { v4 as uuid_v4 } from "uuid";
+import { getNewAccessTokenIfExpired } from "./auth";
 
 export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
-    console.log(idOfThing);
     let data;
     let apiUrl;
     
@@ -25,18 +25,26 @@ export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvot
     else {
       data = {num_upvotes: currentNumUpvotes + 1}
     }
-    const response = await fetch(apiUrl, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-      },
-      body: JSON.stringify(data)
-    });
-    if (!response.ok) {
-        return false;
+
+    const accessToken = localStorage.getItem("accessToken");
+    const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+    if (gotNewAccessToken) {
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+          return false;
+      }
+      return true;
     }
-    return true;
+
+    return false;
 }
 
 export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
@@ -63,18 +71,25 @@ export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
     }
   }
 
-  const response = await fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(data)
-  });
-  if (!response.ok) {
-    return false;
+  const accessToken = localStorage.getItem("accessToken");
+  const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+  if (gotNewAccessToken) {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      return false;
+    }
+    return {result: true, data: data};
   }
-  return {result: true, data: data};
+
+  return false;
 }
 
 export async function patchUsersUpvote(status, voteId, thingToUpvote) {
@@ -93,18 +108,26 @@ export async function patchUsersUpvote(status, voteId, thingToUpvote) {
   else {
     data = (status === "downvoted") ? {downvote: false, upvote: true} : {upvote: false};
   }
-  const response = await fetch(apiUrl, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(data)
-  });
-  if (!response.ok) {
-    return false;
+
+  const accessToken = localStorage.getItem("accessToken");
+  const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+  if (gotNewAccessToken) {
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      return false;
+    }
+    return true;
   }
-  return true;
+
+  return false;
 }
 
 export async function postDownvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
@@ -132,18 +155,25 @@ export async function postDownvote(idOfThing, currentNumUpvotes, currentNumDownv
     data = {num_downvotes: currentNumDownvotes + 1};
   }
 
-  const response = await fetch(apiUrl, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(data)
-  });
-  if (!response.ok) {
-      return false;
+  const accessToken = localStorage.getItem("accessToken");
+  const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+  if (gotNewAccessToken) {
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+        return false;
+    }
+    return true;
   }
-  return true;
+
+  return false;
 }
 
 export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
@@ -170,18 +200,25 @@ export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
     }
   }
 
-  const response = await fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(data)
-  });
-  if (!response.ok) {
-    return false;
+  const accessToken = localStorage.getItem("accessToken");
+  const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+  if (gotNewAccessToken) {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      return false;
+    }
+    return {result: true, data: data};
   }
-  return {result: true, data: data};
+
+  return false;
 }
 
 export async function patchUsersDownvote(status, voteId, thingToDownvote) {
@@ -200,16 +237,24 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
   else {
     data = (status === "downvoted") ? {downvote: false} : {downvote: true, upvote: false};
   }
-  const response = await fetch(apiUrl, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(data)
-  });
-  if (!response.ok) {
-    return false;
+
+  const accessToken = localStorage.getItem("accessToken");
+  const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+  if (gotNewAccessToken) {
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      return false;
+    }
+    return true;
   }
-  return true;
+
+  return false;
 }

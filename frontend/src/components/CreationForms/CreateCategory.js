@@ -4,6 +4,7 @@ import { UserContext } from "../../App";
 import "../../style/create-category.css";
 import { v4 as uuid_v4 } from "uuid";
 import PropTypes from "prop-types";
+import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const CreateCategory = (props) => {
 
@@ -53,24 +54,27 @@ const CreateCategory = (props) => {
             name: categoryName
         }
 
-        const response = await fetch("http://localhost:8000/api/categories/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-
-            // We refresh page to cause the category to show up in the category dropdown. Note that this could probably be done
-            // by setting state, but this lives in the Categories component which is not in the same tree. Thus, it could end uo
-            // being a real pain. Maybe look into this in the future.
-            // window.location.reload();
-            props.addCategory(data);
-            navigate(`/posts/category=${categoryName}/`, {state: {categoryId: categoryId}});
-        } else {
-            throw new Error("couldn't create category:(");
+        const accessToken = localStorage.getItem("accessToken");
+        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+        if (gotNewAccessToken) {
+            
+            const response = await fetch("http://localhost:8000/api/categories/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                props.addCategory(data);
+                navigate(`/posts/category=${categoryName}/`, {state: {categoryId: categoryId}});
+            } else {
+                throw new Error("couldn't create category:(");
+            }
+        }
+        else {
+            throw new Error("Couldn't get new access token");
         }
     }
 

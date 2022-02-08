@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { getTimeElapsedFromCreation } from "../../date-time-functions";
+import { getTimeElapsedFromCreation } from "../../utils/date-time-functions";
 
 const DateOfPost = (props) => {
 

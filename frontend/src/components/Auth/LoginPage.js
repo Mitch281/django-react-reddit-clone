@@ -3,6 +3,10 @@ import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import "../../style/login-signup.css";
 
+// TODO: Create a function that checks if the JWT token has expired whenever the user makes a request. If the token
+// has expired, then get a new token using the refresh token. This way, we do not need to resend a request but instead
+// just check first before sending the request.
+
 const LoginPage = () => {
 
     let navigate = useNavigate();

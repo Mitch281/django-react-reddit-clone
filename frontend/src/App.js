@@ -14,7 +14,8 @@ import { postUpvote,
         patchUsersDownvote, 
         postUsersDownvote 
 } 
-from "./fetch-data";
+from "./utils/fetch-data";
+import { getNewAccessTokenIfExpired } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory";
 import CreatePost from "./components/CreationForms/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost";
@@ -36,20 +37,29 @@ function App() {
 
   // This function relogs in a user whenever they navigate to a different page or refresh the page.
   async function reLogin() {
-    const response = await fetch("http://localhost:8000/api/current-user/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+
+    const accessToken = localStorage.getItem("accessToken");
+    const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+    if (gotNewAccessToken) {
+      const response = await fetch("http://localhost:8000/api/current-user/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+      if (response.ok) {
+        const json = await response.json();
+        setLoggedIn(true);
+        setUserIdLoggedIn(json.id);
+        setUsernameLoggedIn(json.username);
+      } else {
+        throw new Error("Can't relogin!");
       }
-    });
-    if (response.ok) {
-      const json = await response.json();
-      setLoggedIn(true);
-      setUserIdLoggedIn(json.id);
-      setUsernameLoggedIn(json.username);
-    } else {
-      throw new Error("Can't relogin!");
+    }
+    else {
+      throw new Error("Couldn't get new access token");
     }
   }
 

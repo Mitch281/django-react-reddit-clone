@@ -1,4 +1,4 @@
-import { getTimeElapsedFromCreation } from "../../date-time-functions";
+import { getTimeElapsedFromCreation } from "../../utils/date-time-functions";
 import PropTypes from "prop-types";
 
 const DateOfComment = (props) => {

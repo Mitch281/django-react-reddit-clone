@@ -3,6 +3,7 @@ import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
+import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const CreatePost = (props) => {
 
@@ -41,19 +42,27 @@ const CreatePost = (props) => {
             category: categoryId,
         }
 
-        const response = await fetch("http://localhost:8000/api/posts/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            props.addPost(data);
-            navigate("/"); 
-        } else {
-            throw new Error("Couldn't add post.");
+        const accessToken = localStorage.getItem("accessToken");
+        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+
+        if (gotNewAccessToken) {
+            const response = await fetch("http://localhost:8000/api/posts/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                props.addPost(data);
+                navigate("/"); 
+            } else {
+                throw new Error("Couldn't add post.");
+            }
+        }
+        else {
+            throw new Error("Couldn't get new access token");
         }
     }
 
