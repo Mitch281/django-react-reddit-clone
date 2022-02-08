@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { UserContext } from "../../App";
 import Category from "./Category";
 import DateOfPost from "./DateOfPost";
 import PostContent from "./PostContent";
@@ -7,6 +9,7 @@ import User from "./User";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import ViewComments from "./ViewComments";
+import DeletePost from "./DeletePost";
 
 const Post = (props) => {
 
@@ -16,6 +19,8 @@ const Post = (props) => {
     }
 
     let navigate = useNavigate();
+
+    const { userIdLoggedIn } = useContext(UserContext);
 
     // Show comments of post.
     function navigateToPost(postId)  {
@@ -51,6 +56,12 @@ const Post = (props) => {
             <Title title={props.title} />
             <PostContent content={props.content} />
             <ViewComments postId={props.id} navigateToPost={navigateToPost} />
+            {userIdLoggedIn === props.userId ? <DeletePost 
+                                                    postId={props.id} 
+                                                    userId={props.userId}
+                                                    deletePost={props.deletePost}
+                                                /> 
+            : ""}
         </div>
     )
 }
@@ -58,6 +69,10 @@ const Post = (props) => {
 Post.propTypes = {
     id : PropTypes.string,
     username : PropTypes.string,
+    userId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     categoryId : PropTypes.string,
     categoryName : PropTypes.string,
     title : PropTypes.string,

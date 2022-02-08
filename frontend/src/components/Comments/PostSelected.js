@@ -35,6 +35,7 @@ const PostSelected = (props) => {
                 key={postId}
                 id={postId}
                 username={state.username}
+                userId={post.user}
                 categoryId={post.category}
                 categoryName={post.category_name}
                 title={post.title}
@@ -47,6 +48,7 @@ const PostSelected = (props) => {
                 trackUsersUpvotes={props.trackUsersUpvotes}
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
+                deletePost={props.deletePost}
                 />
         </div>
     )
@@ -57,7 +59,8 @@ PostSelected.propTypes = {
     userPostVotes: PropTypes.array,
     trackUsersUpvotes: PropTypes.func,
     downvote: PropTypes.func,
-    trackUsersDownvotes: PropTypes.func
+    trackUsersDownvotes: PropTypes.func,
+    deletePost: PropTypes.func
 }
 
 export default PostSelected

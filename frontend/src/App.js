@@ -248,6 +248,10 @@ function App() {
     setPosts(posts => [...posts, newPost]);
   }
 
+  function deletePost(postId) {
+    setPosts(posts.filter(post => post.id !== postId));
+  }
+
   function addCategory(newCategory) {
     setCategories(categories => [...categories, newCategory]);
   }
@@ -281,7 +285,9 @@ function App() {
                   userPostVotes={userPostVotes} 
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  trackUsersDownvotes={trackUsersDownvotes} />
+                  trackUsersDownvotes={trackUsersDownvotes} 
+                  deletePost={deletePost}
+                  />
                   <LinkToCreatePost />
                 </>
               }
@@ -297,6 +303,7 @@ function App() {
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes} />
+                  deletePost={deletePost}
                   <LinkToCreatePost />
                 </>
               }
@@ -324,6 +331,7 @@ function App() {
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
+                  deletePost={deletePost}
                   />
                 </>
               }
@@ -337,6 +345,7 @@ function App() {
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
+                  deletePost={deletePost}
                   />
                 </>
               }
@@ -351,6 +360,7 @@ function App() {
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
+                  deletePost={deletePost}
                   />
                   <Comments />
                 </>

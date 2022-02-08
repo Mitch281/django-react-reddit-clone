@@ -23,6 +23,7 @@ const Posts = (props) => {
                 key={post.id}
                 id={post.id}
                 username={post.username}
+                userId={post.user}
                 categoryId={post.category}
                 categoryName={post.category_name}
                 title={post.title}
@@ -35,6 +36,7 @@ const Posts = (props) => {
                 userPostVotes={props.userPostVotes}
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
+                deletePost={props.deletePost}
             />)
             }
         </div>
@@ -48,7 +50,8 @@ Post.propTypes = {
     trackUsersUpvotes: PropTypes.func,
     userPostVotes: PropTypes.array,
     downvote : PropTypes.func,
-    trackUsersDownvotes : PropTypes.func
+    trackUsersDownvotes : PropTypes.func,
+    deletePost: PropTypes.func
 }
 
 export default Posts

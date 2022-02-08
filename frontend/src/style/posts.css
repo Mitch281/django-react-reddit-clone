@@ -114,6 +114,11 @@
     background-color: rgb(238, 230, 230);
 }
 
+.delete-post-button {
+    float: right;
+    cursor: pointer;
+}
+
 #category-name-top-page {
     display: flex;
     justify-content: center;

@@ -118,7 +118,6 @@ class PostView(APIView):
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.request.method in ["POST", "DELETE", "PATCH"]:
-            print("made it")
             self.permission_classes = [permissions.IsAuthenticated, ]
         elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
@@ -128,6 +127,16 @@ class PostView(APIView):
         post = Post.objects.get(id=pk)
         serializer = PostSerializer(post)
         return Response(serializer.data)
+
+    # Note that user_id is a string while creator_of_post_id is an int!
+    def delete(self, request, pk, user_id):
+        post = Post.objects.get(id=pk)
+        creator_of_post_id = str(post.user.id)
+        
+        if creator_of_post_id == user_id:
+            post.delete()
+            return Response(data=None, status=status.HTTP_200_OK)
+        return Response(data=None, status=status.HTTP_401_UNAUTHORIZED)
 
     def patch(self, request, pk):
         post = Post.objects.get(id=pk)
@@ -145,7 +154,6 @@ class CommentView(APIView):
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.request.method in ["POST", "DELETE", "PATCH"]:
-            print("made it")
             self.permission_classes = [permissions.IsAuthenticated, ]
         elif self.request.method in ["GET"]:
             self.permission_classes = [permissions.AllowAny, ]
