@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 const PostSelected = (props) => {
 
     const [post, setPost] = useState({});
+    const [postDeleted, setPostDeleted] = useState(false);
 
     const { state } = useLocation();
     const params = useParams();
@@ -16,8 +17,12 @@ const PostSelected = (props) => {
         if (response.ok) {
             const json = await response.json();
             setPost(json);
-        } else {
-            throw new Error("couldn't load post!");
+        }
+        else if (response.status === 500) {
+            setPostDeleted(true);
+        }
+        else {
+            throw new Error("Couldn't load post!");
         }
     }
 
@@ -29,8 +34,15 @@ const PostSelected = (props) => {
     // probably because we are sending state from router, so it doesn't change until page refresh. Solution: load post selected
     // using get request with postId.
 
-    return (
-        <div className="posts">
+    function getOutput() {
+        if (postDeleted) {
+            return (
+                <div id="post-deleted-message">Post Deleted</div>
+            );
+        }
+
+        return (
+            <div className="posts">
             <Post
                 key={postId}
                 id={postId}
@@ -51,7 +63,10 @@ const PostSelected = (props) => {
                 deletePost={props.deletePost}
                 />
         </div>
-    )
+        );
+    }
+
+    return getOutput();
 }
 
 PostSelected.propTypes = {
