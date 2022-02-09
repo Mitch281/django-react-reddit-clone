@@ -37,9 +37,10 @@ const Posts = (props) => {
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
                 deletePost={props.deletePost}
-            />)
+            />
+            )
             }
-        </div>
+            </div>
         </>
     )
 }

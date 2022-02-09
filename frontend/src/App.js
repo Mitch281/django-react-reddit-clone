@@ -302,8 +302,9 @@ function App() {
                   userPostVotes={userPostVotes} 
                   trackUsersUpvotes={trackUsersUpvotes} 
                   downvote={downvote}
-                  trackUsersDownvotes={trackUsersDownvotes} />
+                  trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
+                  />
                   <LinkToCreatePost />
                 </>
               }
