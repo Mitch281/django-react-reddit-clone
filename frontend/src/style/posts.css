@@ -119,6 +119,12 @@
     cursor: pointer;
 }
 
+.toggle-edit-post {
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 #category-name-top-page {
     display: flex;
     justify-content: center;

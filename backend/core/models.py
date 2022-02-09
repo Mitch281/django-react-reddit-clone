@@ -11,6 +11,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# TODO: Increase character length for content.
 class Post(models.Model):
     id = models.TextField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

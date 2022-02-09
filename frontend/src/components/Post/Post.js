@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../App";
 import Category from "./Category";
 import DateOfPost from "./DateOfPost";
@@ -12,6 +12,8 @@ import ViewComments from "./ViewComments";
 import DeletePost from "./DeletePost";
 
 const Post = (props) => {
+
+    const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
     const votes = {
         numUpvotes: props.numUpvotes,
@@ -54,7 +56,13 @@ const Post = (props) => {
                 </div>
             </div>
             <Title title={props.title} />
-            <PostContent content={props.content} />
+            <PostContent 
+                content={props.content} 
+                currentlyEditing={currentlyEditing} 
+                userId={props.userId} 
+                postId={props.id}
+                editPostContent={props.editPostContent} 
+            />
             <ViewComments postId={props.id} navigateToPost={navigateToPost} />
             {userIdLoggedIn === props.userId ? <DeletePost 
                                                     postId={props.id} 
@@ -62,6 +70,10 @@ const Post = (props) => {
                                                     deletePost={props.deletePost}
                                                 /> 
             : ""}
+            {userIdLoggedIn === props.userId ? 
+            <button type="button" className="toggle-edit-post" onClick={() => setCurrentlyEditing(!currentlyEditing)}>
+                Edit
+            </button> : ""}
         </div>
     )
 }
@@ -84,7 +96,8 @@ Post.propTypes = {
     trackUsersUpvotes: PropTypes.func,
     userPostVotes: PropTypes.array,
     downvote: PropTypes.func,
-    trackUsersDownvotes: PropTypes.func
+    trackUsersDownvotes: PropTypes.func,
+    editPostContent: PropTypes.func
 }
 
 export default Post

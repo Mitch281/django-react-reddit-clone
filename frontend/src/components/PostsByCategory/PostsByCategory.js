@@ -64,6 +64,7 @@ const PostsByCategory = (props) => {
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
                 deletePost={props.deletePost}
+                editPostContent={props.editPostContent}
             />
             )}
             </div>
@@ -77,7 +78,8 @@ PostsByCategory.propTypes = {
     trackUsersUpvotes: PropTypes.func,
     downvote: PropTypes.func,
     trackUsersDownvotes: PropTypes.func,
-    deletePost: PropTypes.func
+    deletePost: PropTypes.func,
+    editPostContent: PropTypes.func,
 }
 
 export default PostsByCategory

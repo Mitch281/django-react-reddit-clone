@@ -138,13 +138,35 @@ class PostView(APIView):
             return Response(data=None, status=status.HTTP_200_OK)
         return Response(data=None, status=status.HTTP_401_UNAUTHORIZED)
 
-    def patch(self, request, pk):
+    def patch(self, request, pk, user_id=""):
+
+        # We only send a user id when the user wants to edit the post.
+        if (user_id):
+            return self.edit_content_patch(request, pk, user_id)
+            
+        else:
+            return self.vote_patch(request, pk, user_id)
+
+    def vote_patch(self, request, pk, user_id):
         post = Post.objects.get(id=pk)
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def edit_content_patch(self, request, pk, user_id):
+        post = Post.objects.get(id=pk)
+        creator_of_post_id = str(post.user.id)
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        
+        if creator_of_post_id == user_id:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+            
 
 class CommentView(APIView):
     """

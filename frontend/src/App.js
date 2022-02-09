@@ -256,6 +256,12 @@ function App() {
     setCategories(categories => [...categories, newCategory]);
   }
 
+  function editPostContent(postId, newPostContent) {
+    setPosts(posts.map(post => 
+      post.id === postId ? {...post, content: newPostContent} : post
+    ));
+  }
+
   useEffect(() => {
     loadPosts("");
     loadPostVotes();
@@ -287,6 +293,7 @@ function App() {
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes} 
                   deletePost={deletePost}
+                  editPostContent={editPostContent}
                   />
                   <LinkToCreatePost />
                 </>
@@ -304,6 +311,7 @@ function App() {
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
+                  editPostContent={editPostContent}
                   />
                   <LinkToCreatePost />
                 </>
@@ -333,6 +341,7 @@ function App() {
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
+                  editPostContent={editPostContent}
                   />
                 </>
               }
@@ -347,6 +356,7 @@ function App() {
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
+                  editPostContent={editPostContent}
                   />
                 </>
               }
@@ -362,6 +372,7 @@ function App() {
                   downvote={downvote}
                   trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
+                  editPostContent={editPostContent}
                   />
                   <Comments />
                 </>

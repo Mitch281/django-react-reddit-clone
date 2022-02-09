@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 
 const PostSelected = (props) => {
 
+    // TODO: FIX BUG WHERE IF USER PRESSES EDIT POST, THE EXISTING POST CONTENT DOESN'T SHOW UP.
+
     const [post, setPost] = useState({});
     const [postDeleted, setPostDeleted] = useState(false);
 
@@ -18,6 +20,9 @@ const PostSelected = (props) => {
             const json = await response.json();
             setPost(json);
         }
+
+        // We tried to load the post but it is not there anymore. Thus, the user has deleted the post and we display a
+        // message that it has been deleted.
         else if (response.status === 500) {
             setPostDeleted(true);
         }
@@ -61,6 +66,7 @@ const PostSelected = (props) => {
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
                 deletePost={props.deletePost}
+                editPostContent={props.editPostContent}
                 />
         </div>
         );
@@ -75,7 +81,8 @@ PostSelected.propTypes = {
     trackUsersUpvotes: PropTypes.func,
     downvote: PropTypes.func,
     trackUsersDownvotes: PropTypes.func,
-    deletePost: PropTypes.func
+    deletePost: PropTypes.func,
+    editPostContent: PropTypes.func
 }
 
 export default PostSelected

@@ -45,7 +45,10 @@ const DeletePost = (props) => {
 
 DeletePost.propTypes = {
     postId: PropTypes.string,
-    userId: PropTypes.string,
+    userId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     deletePost: PropTypes.func
 }
 
