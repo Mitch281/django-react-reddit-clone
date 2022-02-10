@@ -7,6 +7,16 @@ const PostContent = (props) => {
 
     const [postContent, setPostContent] = useState(props.content);
 
+    /* This is needed for when the user looks at the comments of the post (i.e. we get to the Post component from the 
+    PostSelected component). This is because on first render, postContent is undefined while on second render, it 
+    is props.content. Thus, we need a useEffect to set the post content to props.content after second render. Note that
+    when user views posts by category or posts on home page, this useEffect hook is not needed. */
+    useEffect(() => {
+        if (props.content) {
+            setPostContent(props.content);
+        }
+    }, [props.content]);
+
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function handleEditPostContent(e) {
