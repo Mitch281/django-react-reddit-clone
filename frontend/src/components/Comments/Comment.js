@@ -6,6 +6,7 @@ import DateOfComment from "./DateOfComment";
 import User from "./User";
 import ReplyToComment from "./ReplyToComment";
 import CommentVotes from "./CommentVotes";
+import DeleteComment from "./DeleteComment";
 
 const Comment = (props) => {
 
@@ -38,6 +39,7 @@ const Comment = (props) => {
                         trackUsersUpvotes={props.trackUsersUpvotes}
                         trackUsersDownvotes={props.trackUsersDownvotes}
                         editCommentContent={props.editCommentContent}
+                        deleteComment={props.deleteComment}
                     />
                 )
             );
@@ -83,6 +85,13 @@ const Comment = (props) => {
                     parentCommentId={props.id}
                 />
                 {userIdLoggedIn === props.userId ? 
+                    <DeleteComment 
+                        deleteComment={props.deleteComment}
+                        commentId={props.id}
+                        userId={props.userId} 
+                    /> : 
+                ""}
+                {userIdLoggedIn === props.userId ? 
                 <button type="button" className="toggle-edit-comment" 
                     onClick={() => setCurrentlyEditing(!currentlyEditing)}>
                         Edit
@@ -109,7 +118,8 @@ Comment.propTypes = {
     downvote: PropTypes.func,
     trackUsersUpvotes: PropTypes.func,
     trackUsersDownvotes: PropTypes.func,
-    editCommentContent: PropTypes.func
+    editCommentContent: PropTypes.func,
+    deleteComment: PropTypes.func
 }
 
 export default Comment

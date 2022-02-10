@@ -268,6 +268,10 @@ const Comments = () => {
         ));
     }
 
+    function deleteComment(commentId) {
+        setComments(comments.filter(comment => comment.id !== commentId ));
+    }
+
     return (
         <>
             <CommentInput updateComments={updateComments}/>
@@ -292,6 +296,7 @@ const Comments = () => {
                             trackUsersUpvotes={trackUsersUpvotes}
                             trackUsersDownvotes={trackUsersDownvotes}
                             editCommentContent={editCommentContent}
+                            deleteComment={deleteComment}
                         />
                     )}
                 </div>

@@ -114,7 +114,11 @@
     color: rgb(238, 230, 230);
 }
 
-.toggle-edit-comment {
+.toggle-edit-comment, .delete-comment-button {
     float: right;
     cursor: pointer;
+}
+
+.toggle-edit-comment {
+    margin-right: 10px;
 }

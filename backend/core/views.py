@@ -181,6 +181,16 @@ class CommentView(APIView):
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
+    # Note that user_id is a string while creator_of_post_id is an int!
+    def delete(self, request, pk, user_id):
+        comment = Comment.objects.get(id=pk)
+        creator_of_comment_id = str(comment.user.id)
+        
+        if creator_of_comment_id == user_id:
+            comment.delete()
+            return Response(data=None, status=status.HTTP_200_OK)
+        return Response(data=None, status=status.HTTP_401_UNAUTHORIZED)
+
     def get(self, request, pk):
         comment = Comment.objects.get(id=pk)
         serializer = serializers.CommentSerializer(comment)
