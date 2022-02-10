@@ -18,6 +18,9 @@ const PostSelected = (props) => {
             const json = await response.json();
             setPost(json);
         }
+
+        // We tried to load the post but it is not there anymore. Thus, the user has deleted the post and we display a
+        // message that it has been deleted.
         else if (response.status === 500) {
             setPostDeleted(true);
         }
@@ -46,7 +49,7 @@ const PostSelected = (props) => {
             <Post
                 key={postId}
                 id={postId}
-                username={state.username}
+                username={post.username}
                 userId={post.user}
                 categoryId={post.category}
                 categoryName={post.category_name}
@@ -61,6 +64,7 @@ const PostSelected = (props) => {
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes}
                 deletePost={props.deletePost}
+                editPostContent={props.editPostContent}
                 />
         </div>
         );
@@ -75,7 +79,8 @@ PostSelected.propTypes = {
     trackUsersUpvotes: PropTypes.func,
     downvote: PropTypes.func,
     trackUsersDownvotes: PropTypes.func,
-    deletePost: PropTypes.func
+    deletePost: PropTypes.func,
+    editPostContent: PropTypes.func
 }
 
 export default PostSelected
