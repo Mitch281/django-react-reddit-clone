@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const PostContent = (props) => {
-
 
     const [postContent, setPostContent] = useState(props.content);
 
@@ -41,25 +40,19 @@ const PostContent = (props) => {
         }
     }
 
-    function getOutput() {
-        if (props.currentlyEditing) {
-            return(
+    return (
+        <>
+            {props.currentlyEditing ? 
                 <form className="edit-post-content" onSubmit={handleEditPostContent} >
                     <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
                     <input type="submit" value="Edit" />
                 </form>
-            );
-        }
-
-        return (
-            <p className="post-content">
-                {props.content}
-            </p>
-        );
-    }
-
-    return (
-        getOutput()
+                : 
+                <p className="post-content">
+                    {props.content}
+                </p>
+            }
+        </>
     )
 }
 

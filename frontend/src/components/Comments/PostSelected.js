@@ -51,7 +51,7 @@ const PostSelected = (props) => {
             <Post
                 key={postId}
                 id={postId}
-                username={state.username}
+                username={post.username}
                 userId={post.user}
                 categoryId={post.category}
                 categoryName={post.category_name}
