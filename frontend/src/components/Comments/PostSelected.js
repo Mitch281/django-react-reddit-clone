@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 
 const PostSelected = (props) => {
 
-    // TODO: FIX BUG WHERE IF USER PRESSES EDIT POST, THE EXISTING POST CONTENT DOESN'T SHOW UP.
-
     const [post, setPost] = useState({});
     const [postDeleted, setPostDeleted] = useState(false);
 
