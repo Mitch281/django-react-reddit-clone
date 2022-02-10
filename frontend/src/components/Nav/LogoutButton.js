@@ -3,11 +3,12 @@ import { UserContext } from "../../App";
 
 const LogoutButton = () => {
 
-    const {setUsernameLoggedIn, setLoggedIn} = useContext(UserContext);
+    const {setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn} = useContext(UserContext);
 
     function logout() {
         setLoggedIn(false);
         setUsernameLoggedIn("");
+        setUserIdLoggedIn("");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
     }

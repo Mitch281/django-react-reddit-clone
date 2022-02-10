@@ -60,7 +60,11 @@
     top: var(--votes-dist-to-top);
 }
 
-.comment-username, .comment-content {
+.upvote-comment, .downvote-comment {
+    cursor: pointer;
+}
+
+.comment-username, .comment-content, .edit-comment-content {
     margin-left: calc(var(--votes-dist-to-left) + 25px);
 }
 
@@ -108,4 +112,9 @@
     padding-top: 5px;
     padding-bottom: 5px;
     color: rgb(238, 230, 230);
+}
+
+.toggle-edit-comment {
+    float: right;
+    cursor: pointer;
 }
