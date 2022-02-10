@@ -28,7 +28,7 @@ const PostContent = (props) => {
         } 
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = getNewAccessTokenIfExpired(accessToken);
+        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
 
         if (gotNewAccessToken) {
             const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {

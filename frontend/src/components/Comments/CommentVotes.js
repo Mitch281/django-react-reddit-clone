@@ -78,7 +78,6 @@ const CommentVotes = (props) => {
         // User has already upvoted the comment.
         if (usersCurrentVote === "upvote") {
             if (voteType === "upvote") {
-                console.log("undo comment upvote");
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
                 .then(props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
                 .catch(error => console.log(error));
