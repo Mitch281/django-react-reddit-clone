@@ -39,46 +39,49 @@ const PostVotes = (props) => {
 
 
     // TODO: Get value of checkUserVoteAlready first, store it in varaible then do checks (saves time).
+    // TODO: DO NOT CALL FUNCTIONS IN .THEN! we PASS THE FUNCTIONS! sO USE ARROW FUNCTIONS TO PASS FUNCTIONS INTO 
+    // THEN.
     function handleVote(voteType) {
         const postVoteId = getPostVoteId();
+        const currentUserVote = checkUserVoteAlready();
 
         // User has not voted yet.
-        if (!checkUserVoteAlready()) {
+        if (!currentUserVote) {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
 
         // User has already downvoted the post.
-        if (checkUserVoteAlready() === "downvote") {
+        if (currentUserVote === "downvote") {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }
 
-        else if (checkUserVoteAlready() === "upvote") {
+        else if (currentUserVote === "upvote") {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
                 .catch(error => console.log(error));
             }
         }

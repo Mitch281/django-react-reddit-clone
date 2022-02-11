@@ -51,12 +51,12 @@ const CommentVotes = (props) => {
         if (!usersCurrentVote) {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
         }
@@ -65,12 +65,12 @@ const CommentVotes = (props) => {
         if (usersCurrentVote === "downvote") {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
         }
@@ -79,12 +79,12 @@ const CommentVotes = (props) => {
         if (usersCurrentVote === "upvote") {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
-                .then(props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
+                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
-                .then(props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
+                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
                 .catch(error => console.log(error));
             }
         }
