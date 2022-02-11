@@ -9,10 +9,6 @@ const DeletePost = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function deletePost() {
-        if (props.userId !== userIdLoggedIn) {
-            alert("You cannot delete this post because you did not create it!");
-            return;
-        }
 
         const accessToken = localStorage.getItem("accessToken");
         try {
@@ -36,8 +32,18 @@ const DeletePost = (props) => {
         }
     }
 
+    function performDeletePost() {
+        if (props.userId !== userIdLoggedIn) {
+            alert("You cannot delete this post because you did not create it!");
+            return;
+        }
+
+        deletePost()
+        .catch(error => console.log(error));
+    }
+
     return (
-        <BsFillTrashFill className="delete-post-button" onClick={deletePost} />
+        <BsFillTrashFill className="delete-post-button" onClick={performDeletePost} />
     );
 };
 

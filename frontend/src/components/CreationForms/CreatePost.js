@@ -21,8 +21,7 @@ const CreatePost = (props) => {
     const [content, setContent] = useState("");
     const category = useRef(null);
 
-    async function handleAddPost(e) {
-        e.preventDefault();
+    async function handleAddPost() {
 
         const postId = uuid_v4();
         const categoryId = category.current.value.split(",")[0];
@@ -44,7 +43,7 @@ const CreatePost = (props) => {
 
         const accessToken = localStorage.getItem("accessToken");
         try {
-            getNewAccessTokenIfExpired(accessToken);
+            await getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
             throw new Error(error);
         }
@@ -64,9 +63,16 @@ const CreatePost = (props) => {
         }
     }
 
+    function performAddPost(e) {
+        e.preventDefault();
+
+        handleAddPost()
+        .catch(error => console.log(error));
+    }
+
     return (
         <div id="create-post-flex-container">
-            <form onSubmit={handleAddPost} >
+            <form onSubmit={performAddPost} >
                 <input type="text" id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <textarea id="post-content" type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
                 <select id="select-post-category" ref={category}> 

@@ -19,8 +19,8 @@ const LoginPage = () => {
     // TODO: data validation.
     // TODO: error handling.
     // NOTE: State persists through router change but not through page refresh so handle that.
-    async function handleLogin(e) {
-        e.preventDefault();
+    async function handleLogin() {
+
         const response = await fetch("http://localhost:8000/api/token/", {
             method: "POST",
             headers: {
@@ -41,9 +41,16 @@ const LoginPage = () => {
         }
     }
 
+    function performLogin(e) {
+        e.preventDefault();
+
+        handleLogin()
+        .catch(error => console.log(error));
+    }
+
     return (
         <div id="login">
-            <form onSubmit={(e) => handleLogin(e)}>
+            <form onSubmit={performLogin}>
                 <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <input type="submit" value="login" />

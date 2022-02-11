@@ -18,7 +18,7 @@ const CreateCategory = (props) => {
         if (loggedIn) {
         return (
             <div id="create-category-flex-container">
-                <form onSubmit={handleCategorySubmission}>
+                <form onSubmit={performCreateCategory}>
                     <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
                     <input type="submit" value="Create Category" />
                 </form>
@@ -37,16 +37,6 @@ const CreateCategory = (props) => {
         );
     }
 
-    function handleCategorySubmission(e) {
-        e.preventDefault();
-        if ((categoryName.length) > 20) {
-            alert ("Category name must be less than or equal to 20 characters!");
-            return;
-        }
-
-        createCategory();
-    }
-
     async function createCategory() {
         const categoryId = uuid_v4();
         const data = {
@@ -56,7 +46,7 @@ const CreateCategory = (props) => {
 
         const accessToken = localStorage.getItem("accessToken");
         try {
-            getNewAccessTokenIfExpired(accessToken);
+            await getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
             throw new Error(error);
         }
@@ -75,6 +65,17 @@ const CreateCategory = (props) => {
         } else {
             throw new Error(response.status);
         }
+    }
+
+    function performCreateCategory(e) {
+        e.preventDefault();
+        if (categoryName.length > 20) {
+            alert("Category name must be less than or equal to 20 characters!");
+            return;
+        }
+
+        createCategory()
+        .catch(error => console.log(error));
     }
 
     return (

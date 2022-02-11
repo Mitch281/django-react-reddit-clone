@@ -8,7 +8,6 @@ const PostSelected = (props) => {
     const [post, setPost] = useState({});
     const [postDeleted, setPostDeleted] = useState(false);
 
-    const { state } = useLocation();
     const params = useParams();
     const postId = params.postId;
 
@@ -30,7 +29,8 @@ const PostSelected = (props) => {
     }
 
     useEffect(() => {
-        loadPost();
+        loadPost()
+        .catch(error => console.log(error));
     }, [props.posts]);
 
     // TODO: Issue where when upvoting or downvoting post in this router componenent, number of votes doesn't update. This is

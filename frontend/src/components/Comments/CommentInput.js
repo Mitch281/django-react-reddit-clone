@@ -15,8 +15,7 @@ const CommentInput = (props) => {
     const params = useParams();
     const postId = params.postId;
 
-    async function postComment(e) {
-        e.preventDefault();
+    async function postComment() {
 
         const dateNow = new Date().toString();
 
@@ -39,7 +38,7 @@ const CommentInput = (props) => {
         } catch(error) {
             throw new Error(error);
         }
-        
+
         const response = await fetch("http://localhost:8000/api/comments/", {
             method: "POST",
             headers: {
@@ -57,13 +56,20 @@ const CommentInput = (props) => {
         }   
     }
 
+    function performPostComment(e) {
+        e.preventDefault();
+
+        postComment()
+        .catch(error => console.log(error));
+    }
+
     function determineOutput() {
         if (loggedIn) {
             return (
             <div id="comment-input-flex-container">
                 <div id="comment-input">
                     <span>Commenting as {usernameLoggedIn}</span>
-                    <form onSubmit={(e) => postComment(e)}>
+                    <form onSubmit={performPostComment}>
                         <textarea value={comment} onChange={(e) => setComment(e.target.value)}/>
                         <input type="submit" value="Comment"></input>
                     </form>

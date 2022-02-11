@@ -20,12 +20,6 @@ const PostContent = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function handleEditPostContent(e) {
-        e.preventDefault();
-
-        if (props.userId !== userIdLoggedIn) {
-            alert("You do not have permission to edit this post as you did not create it!");
-            return;
-        } 
 
         const accessToken = localStorage.getItem("accessToken");
         try {
@@ -49,10 +43,22 @@ const PostContent = (props) => {
         }
     }
 
+    function performEditPostContent(e) {
+        e.preventDefault();
+
+        if (props.userId !== userIdLoggedIn) {
+            alert("You do not have permission to edit this post as you did not create it!");
+            return;
+        } 
+
+        handleEditPostContent()
+        .catch(error => console.log(error));
+    }
+
     return (
         <>
             {props.currentlyEditing ? 
-                <form className="edit-post-content" onSubmit={handleEditPostContent} >
+                <form className="edit-post-content" onSubmit={performEditPostContent} >
                     <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
                     <input type="submit" value="Edit" />
                 </form>

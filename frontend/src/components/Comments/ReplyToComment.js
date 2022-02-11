@@ -20,8 +20,7 @@ const ReplyToComment = (props) => {
     }
 
     // TODO: data validation.
-    async function postReply(e) {
-        e.preventDefault();
+    async function postReply() {
 
         const dateNow = new Date().toString();
 
@@ -64,9 +63,16 @@ const ReplyToComment = (props) => {
         }
     }
 
+    function performPostReply(e) {
+        e.preventDefault();
+
+        postReply()
+        .catch(error => console.log(error));
+    }
+
     return (
         <div style={getDisplay()}>
-            <form className="reply-to-comment-form" onSubmit={postReply}>
+            <form className="reply-to-comment-form" onSubmit={performPostReply}>
                 <div>
                     <span>Reply to {props.parentUsername} as {usernameLoggedIn}</span>
                     <textarea type="text" value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="Content" />

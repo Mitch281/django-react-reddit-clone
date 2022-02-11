@@ -38,7 +38,8 @@ const PostsByCategory = (props) => {
     }, []);
 
     useEffect(() => {
-        loadPostsByCategory(order);
+        loadPostsByCategory(order)
+        .catch(error => console.log(error));
     }, [params]);
 
     return (

@@ -17,7 +17,8 @@ const ViewComments = (props) => {
     }
 
     useEffect(() => {
-        getNumberOfComments();
+        getNumberOfComments()
+        .catch(error => console.log(error));
     }, []);
 
     return ( 
