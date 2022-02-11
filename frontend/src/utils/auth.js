@@ -19,7 +19,6 @@ function isTokenExpired(token) {
 // retreived or we do not need to get a new access token.
 export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);
-    console.log(expired);
     if (expired) {
         const refreshToken = localStorage.getItem("refreshToken");
         const response = await fetch("http://localhost:8000/api/token/refresh/", {
@@ -33,11 +32,8 @@ export async function getNewAccessTokenIfExpired(accessToken) {
             const json = await response.json();
             const newAccessToken = json.access;
             localStorage.setItem("accessToken", newAccessToken);
-            return true;
         } else {
-            return false;
+            throw new Error(response.status);
         }
     }
-
-    return true;
 }

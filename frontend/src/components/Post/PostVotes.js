@@ -37,10 +37,6 @@ const PostVotes = (props) => {
         return postVotedOn[0].id;
     }
 
-
-    // TODO: Get value of checkUserVoteAlready first, store it in varaible then do checks (saves time).
-    // TODO: DO NOT CALL FUNCTIONS IN .THEN! we PASS THE FUNCTIONS! sO USE ARROW FUNCTIONS TO PASS FUNCTIONS INTO 
-    // THEN.
     function handleVote(voteType) {
         const postVoteId = getPostVoteId();
         const currentUserVote = checkUserVoteAlready();

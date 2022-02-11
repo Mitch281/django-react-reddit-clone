@@ -39,9 +39,8 @@ function App() {
   async function reLogin() {
 
     const accessToken = localStorage.getItem("accessToken");
-    const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-
-    if (gotNewAccessToken) {
+    try {
+      await getNewAccessTokenIfExpired(accessToken);
       const response = await fetch("http://localhost:8000/api/current-user/", {
         method: "GET",
         headers: {
@@ -49,17 +48,12 @@ function App() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
       });
-      if (response.ok) {
-        const json = await response.json();
-        setLoggedIn(true);
-        setUserIdLoggedIn(json.id);
-        setUsernameLoggedIn(json.username);
-      } else {
-        throw new Error("Can't relogin!");
-      }
-    }
-    else {
-      throw new Error("Couldn't get new access token");
+      const json = await response.json();
+      setLoggedIn(true);
+      setUserIdLoggedIn(json.id);
+      setUsernameLoggedIn(json.username);
+    } catch(error) {
+      console.log(error);
     }
   }
 
@@ -105,22 +99,22 @@ function App() {
   }
 
   async function upvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
-    const upvoted = await postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
-    if (upvoted) {
+    try {
+      await postUpvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
 
       // User is going from downvote to upvote.
       if (status === "downvoted") {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1, num_downvotes: currentNumDownvotes - 1} : post
-          ));
+        ));
       }
 
       // User is undoing upvote.
       else if (status === "upvoted") {
         setPosts(posts.map(post => 
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes - 1} : post
-          ));
-      } 
+        ));
+      }
 
       // User is going from no vote to upvote.
       else {
@@ -128,8 +122,8 @@ function App() {
           post.id === postId ? {...post, num_upvotes: currentNumUpvotes + 1} : post
         ));
       }
-    } else {
-      throw new Error("couldn't upvote!");
+    } catch(error) {
+      throw new Error(error);
     }
   }
 
@@ -138,47 +132,47 @@ function App() {
 
     // User has voted on post already. Thus, postVoteId exists (is not null).
     if (postVoteId) {
-      const patchedUsersUpvote = await patchUsersUpvote(status, postVoteId, thingToUpvote);
-      if (patchedUsersUpvote) {
-
+      try {
+        await patchUsersUpvote(status, postVoteId, thingToUpvote);
         // User is going from downvote to upvote.
         if (status === "downvoted") {
           setUserPostVotes(userPostVotes.map(userPostVote => 
-            userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
-            ));
-
-        // User is undoing upvote.
-        } else if (status === "upvoted") {
-          setUserPostVotes(userPostVotes.map(userPostVote => 
-            userPostVote.id === postVoteId ? {...userPostVote, upvote: false} : userPostVote
-            ));
-
-        // User has previously voted before, but has no current vote on the post.
-        } else {
-          setUserPostVotes(userPostVotes.map(userPostVote => 
-            userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
+          userPostVote.id === postVoteId ? {...userPostVote, upvote: true, downvote: false} : userPostVote
+          ));
         }
-      } else {
-        throw new Error("Couldn't upvote and undo downvote.");
+
+      // User is undoing upvote.
+        else if (status === "upvoted") {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+          userPostVote.id === postVoteId ? {...userPostVote, upvote: false} : userPostVote
+        ));
+        }
+
+      // User has previously voted before, but has no current vote on the post.
+        else {
+          setUserPostVotes(userPostVotes.map(userPostVote => 
+          userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
+        }
+      } catch(error) {
+        throw new Error(error);
       }
     }
 
     // The user has not voted on the post yet. Thus, we need to post a new vote.
     else {
-      const usersUpvotePosted = await postUsersUpvote(userId, postId, thingToUpvote);
-      if (usersUpvotePosted.result) {
-        const data = usersUpvotePosted.data;
+      try {
+        const data = await postUsersUpvote(userId, postId, thingToUpvote);
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
-      } else {
-        throw new Error("Couldn't update user post vote.");
+      } catch(error) {
+        throw new Error(error);
       }
-    } 
+    }
   }
 
   async function downvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
-    const downvoted = await postDownvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
-    if (downvoted) {
-      
+    try {
+      await postDownvote(postId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
+
       // User is undoing downvote by downvoting again.
       if (status === "downvoted") {
         setPosts(posts.map(post => 
@@ -196,9 +190,8 @@ function App() {
         setPosts(posts.map(post =>
           post.id === postId ? {...post, num_downvotes: currentNumDownvotes + 1} : post));
       }
-    }
-    else {
-      throw new Error("couldn't downvote.");
+    } catch(error) {
+      throw new Error(error);
     }
   }
 
@@ -206,9 +199,8 @@ function App() {
 
     // User has voted on the post before.
     if (postVoteId) {
-      const patchedUsersDownvote = await patchUsersDownvote(status, postVoteId, thingToDownvote);
-
-      if (patchedUsersDownvote) {
+      try {
+        await patchUsersDownvote(status, postVoteId, thingToDownvote);
 
         // User is undoing downvote by downvoting again.
         if (status === "downvoted") {
@@ -227,21 +219,20 @@ function App() {
           setUserPostVotes(userPostVotes.map(userPostVote => 
             userPostVote.id === postVoteId ? {...userPostVote, downvote: true} : userPostVote));
         }
-      } else {
-        throw new Error("Couldn't patch user's downvote");
+      } catch(error) {
+        throw new Error(error);
       }
     }
 
     // User has not voted on post yet.
     else {
-      const usersDownvotePosted = await postUsersDownvote(userId, postId, thingToDownvote);
-      if (usersDownvotePosted.result) {
-        const data = usersDownvotePosted.data;
+      try {
+        const data = await postUsersDownvote(userId, postId, thingToDownvote);
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
-      } else {
-        throw new Error("Couldn't update user post vote.");
+      } catch(error) {
+        throw new Error(error);
       }
-    } 
+    }
   }
 
   function addPost(newPost) {

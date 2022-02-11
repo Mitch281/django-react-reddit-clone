@@ -34,28 +34,27 @@ const CommentInput = (props) => {
         }
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-        if (gotNewAccessToken) {
-            const response = await fetch("http://localhost:8000/api/comments/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                // Clear text box
-                setComment("");
-    
-                props.updateComments(data);
-            } else {
-                throw new Error("Couldn't comment!");
-            }   
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw new Error(error);
         }
-        else {
-            throw new Error("Couldn't get new access token");
-        }
+        
+        const response = await fetch("http://localhost:8000/api/comments/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            // Clear text box
+            setComment("");
+            props.updateComments(data);
+        } else {
+            throw new Error(response.status);
+        }   
     }
 
     function determineOutput() {
