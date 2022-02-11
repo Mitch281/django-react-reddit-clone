@@ -37,7 +37,7 @@ const LoginPage = () => {
             setUsernameLoggedIn(username);
             navigate("/");
         } else {
-            throw new Error("Can't login!");
+            throw new Error(response.status);
         }
     }
 

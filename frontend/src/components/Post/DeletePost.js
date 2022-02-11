@@ -15,27 +15,25 @@ const DeletePost = (props) => {
         }
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw new Error(error);
+        }
 
-        if (gotNewAccessToken) {
-            const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${props.userId}/`, {
-                method: "DELETE",
-                headers:{
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-
-            if (response.ok) {
-                props.deletePost(props.postId);
-            } else {
-                throw new Error("Couldn't delete post");
+        const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${props.userId}/`, {
+            method: "DELETE",
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
             }
-        }
-        else {
-            throw new Error("Couldn't fetch new acces token");
-        }
+        });
 
+        if (response.ok) {
+            props.deletePost(props.postId);
+        } else {
+            throw new Error(response.status);
+        }
     }
 
     return (

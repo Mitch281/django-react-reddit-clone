@@ -35,7 +35,7 @@ const SignupPage = () => {
             localStorage.setItem("refreshToken", json.token.refresh);
             navigate("/");
         } else {
-            throw new Error("failed to signup.");
+            throw new Error(response.status);
         }
     }
 

@@ -28,25 +28,24 @@ const PostContent = (props) => {
         } 
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-
-        if (gotNewAccessToken) {
-            const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({content: postContent})
-            });
-            if (response.ok) {
-                props.editPostContent(props.postId, postContent);
-            } else {
-                throw new Error("Couldn't edit post!");
-            }
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw new Error(error);
         }
-        else {
-            throw new Error("Couldn't fetch new access token!");
+
+        const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({content: postContent})
+        });
+        if (response.ok) {
+            props.editPostContent(props.postId, postContent);
+        } else {
+            throw new Error(response.status);
         }
     }
 

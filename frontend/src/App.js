@@ -53,7 +53,7 @@ function App() {
       setUserIdLoggedIn(json.id);
       setUsernameLoggedIn(json.username);
     } catch(error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -74,7 +74,7 @@ function App() {
       const json = await response.json();
       setPosts(json);
     } else {
-      throw new Error("Error loading posts.");
+      throw new Error(response.status);
     }
   }
 
@@ -84,7 +84,7 @@ function App() {
         const json = await response.json();
         setCategories(json);
     } else {
-        throw new Error("error loading categories.");
+        throw new Error(response.status);
     }
   }
 
@@ -94,7 +94,7 @@ function App() {
       const json = await response.json();
       setUserPostVotes(json);
     } else {
-      throw new Error("Couldn't load user post votes");
+      throw new Error(response.status);
     }
   }
 

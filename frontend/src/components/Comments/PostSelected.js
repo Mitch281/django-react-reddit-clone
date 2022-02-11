@@ -25,7 +25,7 @@ const PostSelected = (props) => {
             setPostDeleted(true);
         }
         else {
-            throw new Error("Couldn't load post!");
+            throw new Error(response.status);
         }
     }
 

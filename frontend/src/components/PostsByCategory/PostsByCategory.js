@@ -29,7 +29,7 @@ const PostsByCategory = (props) => {
             const json = await response.json();
             setPosts(json);
         } else {
-            throw new Error("error loading posts by category");
+            throw new Error(response.status);
         }
     }
 

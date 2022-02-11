@@ -55,26 +55,25 @@ const CreateCategory = (props) => {
         }
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-        if (gotNewAccessToken) {
-            
-            const response = await fetch("http://localhost:8000/api/categories/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                props.addCategory(data);
-                navigate(`/posts/category=${categoryName}/`, {state: {categoryId: categoryId}});
-            } else {
-                throw new Error("couldn't create category:(");
-            }
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw new Error(error);
         }
-        else {
-            throw new Error("Couldn't get new access token");
+            
+        const response = await fetch("http://localhost:8000/api/categories/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            props.addCategory(data);
+            navigate(`/posts/category=${categoryName}/`, {state: {categoryId: categoryId}});
+        } else {
+            throw new Error(response.status);
         }
     }
 

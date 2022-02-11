@@ -43,26 +43,24 @@ const CreatePost = (props) => {
         }
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-
-        if (gotNewAccessToken) {
-            const response = await fetch("http://localhost:8000/api/posts/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                props.addPost(data);
-                navigate("/"); 
-            } else {
-                throw new Error("Couldn't add post.");
-            }
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw new Error(error);
         }
-        else {
-            throw new Error("Couldn't get new access token");
+        const response = await fetch("http://localhost:8000/api/posts/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            props.addPost(data);
+            navigate("/"); 
+        } else {
+            throw new Error(response.status);
         }
     }
 

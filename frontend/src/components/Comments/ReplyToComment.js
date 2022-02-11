@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
+import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const ReplyToComment = (props) => {
 
@@ -37,6 +38,13 @@ const ReplyToComment = (props) => {
             parent_comment: props.parentCommentId
         }
 
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            getNewAccessTokenIfExpired(accessToken); 
+        } catch(error) {
+            throw new Error(error);
+        }
+
         const response = await fetch("http://localhost:8000/api/comments/", {
             method: "POST",
             headers: {
@@ -45,13 +53,14 @@ const ReplyToComment = (props) => {
             },
             body: JSON.stringify(reply)
         });
+
         if (response.ok) {
             // Clear reply text box.
             setReplyContent("");
 
             props.updateComments(reply);
         } else {
-            throw new Error("Couldn't reply!");
+            throw new Error(response.status);
         }
     }
 
