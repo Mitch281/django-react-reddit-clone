@@ -14,7 +14,7 @@ const DeletePost = (props) => {
         try {
             getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
-            throw new Error(error);
+            throw error;
         }
 
         const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${props.userId}/`, {

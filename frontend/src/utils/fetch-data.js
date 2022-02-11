@@ -30,14 +30,14 @@ export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvot
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 
   const response = await fetch(apiUrl, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      Authorization: `Berer ${localStorage.getItem("accessToken")}`
     },
     body: JSON.stringify(data)
   });
@@ -74,7 +74,7 @@ export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 
   const response = await fetch(apiUrl, {
@@ -113,7 +113,7 @@ export async function patchUsersUpvote(status, voteId, thingToUpvote) {
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 
   const response = await fetch(apiUrl, {
@@ -158,7 +158,7 @@ export async function postDownvote(idOfThing, currentNumUpvotes, currentNumDownv
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
   
   const response = await fetch(apiUrl, {
@@ -202,7 +202,7 @@ export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 
   const response = await fetch(apiUrl, {
@@ -241,7 +241,7 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
   try {
     await getNewAccessTokenIfExpired(accessToken);
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 
   const response = await fetch(apiUrl, {

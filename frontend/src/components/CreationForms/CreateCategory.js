@@ -48,7 +48,7 @@ const CreateCategory = (props) => {
         try {
             await getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
-            throw new Error(error);
+            throw error;
         }
             
         const response = await fetch("http://localhost:8000/api/categories/", {

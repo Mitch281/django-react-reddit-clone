@@ -139,7 +139,7 @@ const Comments = () => {
                 ));
             }
         } catch(error) {
-            throw new Error(error);
+            throw error;
         }
     }
 
@@ -170,7 +170,7 @@ const Comments = () => {
                     ));
                 }
             } catch (error) {
-                throw new Error(error);
+                throw error;
             }
         } 
         
@@ -180,7 +180,7 @@ const Comments = () => {
                 const data = await postUsersUpvote(userId, commentId, thingToUpvote);
                 setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
             } catch (error) {
-                throw new Error(error);
+                throw error;
             }
         }
     }
@@ -206,7 +206,7 @@ const Comments = () => {
               comment.id === commentId ? {...comment, num_downvotes: currentNumDownvotes + 1} : comment));
           }
         } catch(error) {
-            throw new Error(error);
+            throw error;
         }
     }
 
@@ -238,7 +238,7 @@ const Comments = () => {
                     ));
                 }
             } catch(error) {
-                throw new Error(error);
+                throw error;
             }
         }
 
@@ -248,7 +248,7 @@ const Comments = () => {
                 const data = await postUsersDownvote(userId, commentId, thingToDownvote);
                 setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
             } catch(error) {
-                throw new Error(error);
+                throw error;
             }
         }
     }

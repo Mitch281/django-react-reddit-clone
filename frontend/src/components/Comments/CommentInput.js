@@ -36,7 +36,7 @@ const CommentInput = (props) => {
         try {
             getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
-            throw new Error(error);
+            throw error;
         }
 
         const response = await fetch("http://localhost:8000/api/comments/", {

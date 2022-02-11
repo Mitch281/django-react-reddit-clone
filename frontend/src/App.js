@@ -53,7 +53,7 @@ function App() {
       setUserIdLoggedIn(json.id);
       setUsernameLoggedIn(json.username);
     } catch(error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -123,7 +123,7 @@ function App() {
         ));
       }
     } catch(error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -154,7 +154,7 @@ function App() {
           userPostVote.id === postVoteId ? {...userPostVote, upvote: true} : userPostVote));
         }
       } catch(error) {
-        throw new Error(error);
+        throw error;
       }
     }
 
@@ -164,7 +164,7 @@ function App() {
         const data = await postUsersUpvote(userId, postId, thingToUpvote);
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
       } catch(error) {
-        throw new Error(error);
+        throw error;
       }
     }
   }
@@ -191,7 +191,7 @@ function App() {
           post.id === postId ? {...post, num_downvotes: currentNumDownvotes + 1} : post));
       }
     } catch(error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -220,7 +220,7 @@ function App() {
             userPostVote.id === postVoteId ? {...userPostVote, downvote: true} : userPostVote));
         }
       } catch(error) {
-        throw new Error(error);
+        throw error;
       }
     }
 
@@ -230,7 +230,7 @@ function App() {
         const data = await postUsersDownvote(userId, postId, thingToDownvote);
         setUserPostVotes(userPostVotes => [...userPostVotes, data]);
       } catch(error) {
-        throw new Error(error);
+        throw error;
       }
     }
   }
