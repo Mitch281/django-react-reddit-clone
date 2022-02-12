@@ -20,6 +20,30 @@ const PostContent = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function handleEditPostContent(e) {
+
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw error;
+        }
+
+        const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({content: postContent})
+        });
+        if (response.ok) {
+            props.editPostContent(props.postId, postContent);
+        } else {
+            throw new Error(response.status);
+        }
+    }
+
+    function performEditPostContent(e) {
         e.preventDefault();
 
         if (props.userId !== userIdLoggedIn) {
@@ -27,33 +51,14 @@ const PostContent = (props) => {
             return;
         } 
 
-        const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
-
-        if (gotNewAccessToken) {
-            const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({content: postContent})
-            });
-            if (response.ok) {
-                props.editPostContent(props.postId, postContent);
-            } else {
-                throw new Error("Couldn't edit post!");
-            }
-        }
-        else {
-            throw new Error("Couldn't fetch new access token!");
-        }
+        handleEditPostContent()
+        .catch(error => console.log(error));
     }
 
     return (
         <>
             {props.currentlyEditing ? 
-                <form className="edit-post-content" onSubmit={handleEditPostContent} >
+                <form className="edit-post-content" onSubmit={performEditPostContent} >
                     <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
                     <input type="submit" value="Edit" />
                 </form>

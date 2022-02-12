@@ -11,7 +11,8 @@ const Posts = (props) => {
     const order = params.order;
 
     useEffect(() => {
-        props.loadPosts(order);
+        props.loadPosts(order)
+        .catch(error => console.log(error));
     }, [order]);
     
     return (

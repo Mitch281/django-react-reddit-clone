@@ -3,13 +3,13 @@ import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
-import { getNewAccessTokenIfExpired } from "../../utils/auth";
+import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../utils/auth";
 
 const CreatePost = (props) => {
 
     let navigate = useNavigate();
 
-    const {loggedIn, usernameLoggedIn, userIdLoggedIn} = useContext(UserContext);
+    const {loggedIn, usernameLoggedIn, userIdLoggedIn, logout} = useContext(UserContext);
 
     useEffect(() => {
         if (!loggedIn) {
@@ -21,8 +21,7 @@ const CreatePost = (props) => {
     const [content, setContent] = useState("");
     const category = useRef(null);
 
-    async function handleAddPost(e) {
-        e.preventDefault();
+    async function handleAddPost() {
 
         const postId = uuid_v4();
         const categoryId = category.current.value.split(",")[0];
@@ -43,32 +42,44 @@ const CreatePost = (props) => {
         }
 
         const accessToken = localStorage.getItem("accessToken");
-        const gotNewAccessToken = await getNewAccessTokenIfExpired(accessToken);
+        try {
+            await getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw error;
+        }
+        const response = await fetch("http://localhost:8000/api/posts/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            props.addPost(data);
+            navigate("/"); 
+        } else {
+            throw new Error(response.status);
+        }
+    }
 
-        if (gotNewAccessToken) {
-            const response = await fetch("http://localhost:8000/api/posts/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                props.addPost(data);
-                navigate("/"); 
-            } else {
-                throw new Error("Couldn't add post.");
+    function performAddPost(e) {
+        e.preventDefault();
+
+        handleAddPost()
+        .catch(error => {
+            
+            // Session expired.
+            if (error instanceof CantGetNewAccessTokenError) {
+                logout();
+                navigate("/login/");
             }
-        }
-        else {
-            throw new Error("Couldn't get new access token");
-        }
+        });
     }
 
     return (
         <div id="create-post-flex-container">
-            <form onSubmit={handleAddPost} >
+            <form onSubmit={performAddPost} >
                 <input type="text" id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <textarea id="post-content" type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
                 <select id="select-post-category" ref={category}> 

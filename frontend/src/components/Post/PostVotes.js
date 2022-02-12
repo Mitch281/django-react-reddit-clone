@@ -1,13 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../App";
+import { NoAccessTokenError } from "../../utils/auth";
 
 const PostVotes = (props) => {
+
+    let navigate = useNavigate();
+
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
-    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
 
     function checkUserVoteAlready() {
         if (!loggedIn) {
@@ -37,10 +42,6 @@ const PostVotes = (props) => {
         return postVotedOn[0].id;
     }
 
-
-    // TODO: Get value of checkUserVoteAlready first, store it in varaible then do checks (saves time).
-    // TODO: DO NOT CALL FUNCTIONS IN .THEN! we PASS THE FUNCTIONS! sO USE ARROW FUNCTIONS TO PASS FUNCTIONS INTO 
-    // THEN.
     function handleVote(voteType) {
         const postVoteId = getPostVoteId();
         const currentUserVote = checkUserVoteAlready();
@@ -50,12 +51,34 @@ const PostVotes = (props) => {
             if (voteType === "upvote") {
                 props.upvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
                 .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "no vote", "post")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "no vote", postVoteId, "post"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
 
@@ -69,7 +92,18 @@ const PostVotes = (props) => {
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "downvoted", "post")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "downvoted", postVoteId, "post"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
 
@@ -82,7 +116,18 @@ const PostVotes = (props) => {
             else {
                 props.downvote(props.postId, numUpvotes, numDownvotes, "upvoted", "post")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.postId, "upvoted", postVoteId, "post"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
     }

@@ -116,10 +116,8 @@ const Comments = () => {
     }
 
     async function upvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
-        const upvoted = await postUpvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
-
-        if (upvoted) {
-
+        try {
+            await postUpvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote);
             // User is going from downvote to upvote.
             if (status === "downvoted") {
                 setComments(comments.map(comment => 
@@ -140,8 +138,8 @@ const Comments = () => {
                     comment.id === commentId ? {...comment, num_upvotes: currentNumUpvotes + 1} : comment
                 ));
             }
-        } else {
-            throw new Error("couldnt upvote comment");
+        } catch(error) {
+            throw error;
         }
     }
 
@@ -149,8 +147,8 @@ const Comments = () => {
         
         // User has voted on post already. Thus, commentVodeId exists (is not null).
         if (commentVoteId) {
-            const patchedUsersUpvote = await patchUsersUpvote(status, commentVoteId, thingToUpvote);
-            if (patchedUsersUpvote) {
+            try {
+                await patchUsersUpvote(status, commentVoteId, thingToUpvote);
                 // User is going from downvote to upvote
                 if (status === "downvoted") {
                     setUserCommentVotes(userCommentVotes.map(userCommentVote => 
@@ -171,30 +169,26 @@ const Comments = () => {
                         userCommentVote.id === commentVoteId ? {...userCommentVote, upvote: true} : userCommentVote
                     ));
                 }
-            }
-            else {
-                throw new Error("Couldn't track user's upvote on comment");
+            } catch (error) {
+                throw error;
             }
         } 
         
         // The user has not voted on the comment yet. Thus, we need to post a new vote.
         else {
-            const usersUpvotePosted = await postUsersUpvote(userId, commentId, thingToUpvote);
-            if (usersUpvotePosted.result) {
-                const data = usersUpvotePosted.data
+            try {
+                const data = await postUsersUpvote(userId, commentId, thingToUpvote);
                 setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
-            }
-            else {
-                throw new Error("Couldn't update comment user vote");
+            } catch (error) {
+                throw error;
             }
         }
     }
 
     async function downvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote) {
-        const downvoted = await postDownvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
-        if (downvoted) {
-          
-          // User is undoing downvote by downvoting again.
+        try {
+            await postDownvote(commentId, currentNumUpvotes, currentNumDownvotes, status, thingToDownvote);
+            // User is undoing downvote by downvoting again.
           if (status === "downvoted") {
             setComments(comments.map(comment => 
               comment.id === commentId ? {...comment, num_downvotes: currentNumDownvotes - 1}: comment));
@@ -211,9 +205,8 @@ const Comments = () => {
             setComments(comments.map(comment =>
               comment.id === commentId ? {...comment, num_downvotes: currentNumDownvotes + 1} : comment));
           }
-        }
-        else {
-          throw new Error("couldn't downvote.");
+        } catch(error) {
+            throw error;
         }
     }
 
@@ -221,11 +214,10 @@ const Comments = () => {
 
         // User has voted on the post before.
         if (commentVoteId) {
-            const patchedUsersDownvote = await patchUsersDownvote(status, commentVoteId, thingToDownvote);
+            try {
+                await patchUsersDownvote(status, commentVoteId, thingToDownvote);
 
-            if (patchedUsersDownvote) {
-
-                //User is undoing downvote by downvoting again.
+                // User is undoing downvote by downvoting again.
                 if (status === "downvoted") {
                     setUserCommentVotes(userCommentVotes.map(userCommentVote => 
                         userCommentVote.id === commentVoteId ? {...userCommentVote, downvote: false} : userCommentVote
@@ -245,19 +237,18 @@ const Comments = () => {
                         userCommentVote.id === commentVoteId ? {...userCommentVote, downvote: true} : userCommentVote
                     ));
                 }
-            } else {
-                throw new Error("Couldn't patch users comment downvote.");
+            } catch(error) {
+                throw error;
             }
         }
 
         // User has not voted on comment yet.
         else {
-            const usersDownvotePosted = await postUsersDownvote(userId, commentId, thingToDownvote);
-            if (usersDownvotePosted.result) {
-                const data = usersDownvotePosted.data;
+            try {
+                const data = await postUsersDownvote(userId, commentId, thingToDownvote);
                 setUserCommentVotes(userCommentVotes => [...userCommentVotes, data]);
-            } else {
-                throw new Error("Couldn't post user comment vote");
+            } catch(error) {
+                throw error;
             }
         }
     }

@@ -12,12 +12,13 @@ const ViewComments = (props) => {
             const json = await response.json();
             setNumComments(json.num_comments);
         } else {
-            throw new Error ("Couldn't get number of comments!");
+            throw new Error (response.status);
         }
     }
 
     useEffect(() => {
-        getNumberOfComments();
+        getNumberOfComments()
+        .catch(error => console.log(error));
     }, []);
 
     return ( 

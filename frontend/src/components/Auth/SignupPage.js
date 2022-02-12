@@ -13,11 +13,6 @@ const SignupPage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     async function handleSignup(e) {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            alert("Passwords not the same!");
-            return;
-        }
 
         const response = await fetch("http://localhost:8000/api/users/", {
             method: "POST",
@@ -35,13 +30,26 @@ const SignupPage = () => {
             localStorage.setItem("refreshToken", json.token.refresh);
             navigate("/");
         } else {
-            throw new Error("failed to signup.");
+            throw new Error(response.status);
         }
+    }
+
+    function performSignup(e) {
+        e.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("Passwords not the same!");
+            return;
+        }
+
+        handleSignup()
+        .catch(error => console.log(error));
+
     }
 
     return (
         <div id="signup">
-            <form onSubmit={(e) => handleSignup(e)}>
+            <form onSubmit={performSignup}>
                 <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <input type="password" placeholder="confirm password" value={confirmPassword} 

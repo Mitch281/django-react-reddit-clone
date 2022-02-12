@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
+import { getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const ReplyToComment = (props) => {
 
@@ -19,8 +20,7 @@ const ReplyToComment = (props) => {
     }
 
     // TODO: data validation.
-    async function postReply(e) {
-        e.preventDefault();
+    async function postReply() {
 
         const dateNow = new Date().toString();
 
@@ -37,6 +37,13 @@ const ReplyToComment = (props) => {
             parent_comment: props.parentCommentId
         }
 
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            getNewAccessTokenIfExpired(accessToken); 
+        } catch(error) {
+            throw error;
+        }
+
         const response = await fetch("http://localhost:8000/api/comments/", {
             method: "POST",
             headers: {
@@ -45,19 +52,34 @@ const ReplyToComment = (props) => {
             },
             body: JSON.stringify(reply)
         });
+
         if (response.ok) {
             // Clear reply text box.
             setReplyContent("");
 
             props.updateComments(reply);
         } else {
-            throw new Error("Couldn't reply!");
+            throw new Error(response.status);
         }
+    }
+
+    function performPostReply(e) {
+        e.preventDefault();
+
+        postReply()
+        .catch(error => {
+            
+            // Session expired.
+            if (error instanceof CantGetNewAccessTokenError) {
+                logout();
+                navigate("/login/");
+            }
+        });
     }
 
     return (
         <div style={getDisplay()}>
-            <form className="reply-to-comment-form" onSubmit={postReply}>
+            <form className="reply-to-comment-form" onSubmit={performPostReply}>
                 <div>
                     <span>Reply to {props.parentUsername} as {usernameLoggedIn}</span>
                     <textarea type="text" value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="Content" />

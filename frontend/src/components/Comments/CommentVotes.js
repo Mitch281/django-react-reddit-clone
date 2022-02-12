@@ -1,14 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../App";
+import { NoAccessTokenError } from "../../utils/auth";
 
 const CommentVotes = (props) => {
+
+    let navigate = useNavigate();
 
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
-    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
 
     // Checks if the user has already voted on a comment.
     function checkUserVoteAlready() {
@@ -52,12 +56,34 @@ const CommentVotes = (props) => {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
                 .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
 
@@ -66,12 +92,34 @@ const CommentVotes = (props) => {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
                 .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
 
@@ -80,12 +128,34 @@ const CommentVotes = (props) => {
             if (voteType === "upvote") {
                 props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
                 .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
             else {
                 props.downvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
                 .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    if (error instanceof NoAccessTokenError) {
+                        navigate("/login/");
+                    }
+
+                    // User's session has expired.
+                    else if (error.message === "401") {
+                        logout();
+                        navigate("/login/");
+                    }
+                }
+                );
             }
         }
     }
