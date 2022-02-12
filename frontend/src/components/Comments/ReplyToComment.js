@@ -1,14 +1,16 @@
 import { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
-import { getNewAccessTokenIfExpired } from "../../utils/auth";
+import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../utils/auth";
 
 const ReplyToComment = (props) => {
 
+    let navigate = useNavigate();
+
     const [replyContent, setReplyContent] = useState("");
-    const { usernameLoggedIn, userIdLoggedIn } = useContext(UserContext);
+    const { usernameLoggedIn, userIdLoggedIn, logout } = useContext(UserContext);
 
     const params = useParams();
     const postId = params.postId;
