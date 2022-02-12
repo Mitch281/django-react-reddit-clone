@@ -1,41 +1,24 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import "../../style/create-category.css";
 import { v4 as uuid_v4 } from "uuid";
 import PropTypes from "prop-types";
-import { getNewAccessTokenIfExpired } from "../../utils/auth";
+import { CantGetNewAccessTokenError, getNewAccessTokenIfExpired } from "../../utils/auth";
 
 const CreateCategory = (props) => {
 
     const [categoryName, setCategoryName] = useState("");
 
-    const { loggedIn } = useContext(UserContext);
+    const { loggedIn, logout } = useContext(UserContext);
 
     let navigate = useNavigate();
 
-    function determineOutput() {
-        if (loggedIn) {
-        return (
-            <div id="create-category-flex-container">
-                <form onSubmit={performCreateCategory}>
-                    <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
-                    <input type="submit" value="Create Category" />
-                </form>
-            </div>
-        );
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate("/login/");
         }
-        return (
-            <div className="not-logged-in-message-flex-container">
-                <div className="not-logged-in-message">
-                    <span>Log in or signup to create a category &nbsp;</span>
-                    <Link to="/login/">Login</Link>
-                    &nbsp;
-                    <Link to="/signup/">Signup</Link>
-                </div>
-            </div>
-        );
-    }
+    }, []);
 
     async function createCategory() {
         const categoryId = uuid_v4();
@@ -75,11 +58,23 @@ const CreateCategory = (props) => {
         }
 
         createCategory()
-        .catch(error => console.log(error));
+        .catch(error => {
+
+            // Session expired.
+            if (error instanceof CantGetNewAccessTokenError) {
+                logout();
+                navigate("/login/");
+            }
+        });
     }
 
     return (
-        determineOutput()
+        <div id="create-category-flex-container">
+            <form onSubmit={performCreateCategory}>
+                <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+                <input type="submit" value="Create Category" />
+            </form>
+        </div>
     );
 }
 

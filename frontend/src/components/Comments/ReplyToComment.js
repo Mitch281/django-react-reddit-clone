@@ -67,7 +67,14 @@ const ReplyToComment = (props) => {
         e.preventDefault();
 
         postReply()
-        .catch(error => console.log(error));
+        .catch(error => {
+            
+            // Session expired.
+            if (error instanceof CantGetNewAccessTokenError) {
+                logout();
+                navigate("/login/");
+            }
+        });
     }
 
     return (

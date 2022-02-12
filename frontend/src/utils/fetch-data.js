@@ -37,7 +37,7 @@ export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvot
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Berer ${localStorage.getItem("accessToken")}`
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
     },
     body: JSON.stringify(data)
   });

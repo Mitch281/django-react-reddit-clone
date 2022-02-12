@@ -57,10 +57,17 @@ function App() {
     }
   }
 
+  function logout() {
+    setLoggedIn(false);
+    setUsernameLoggedIn("");
+    setUserIdLoggedIn("");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+}
+
   useEffect(() => {
     reLogin();
   }, []);
-
   // TODO: Catch errors properly.
   async function loadPosts(order) {
     let url;
@@ -268,7 +275,9 @@ function App() {
           setUsernameLoggedIn, 
           setUserIdLoggedIn,
           setLoggedIn,
-          reLogin}
+          reLogin,
+          logout
+        }
         }>
         <div className="App">
             <Routes>

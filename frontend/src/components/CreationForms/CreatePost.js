@@ -3,13 +3,13 @@ import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
-import { getNewAccessTokenIfExpired } from "../../utils/auth";
+import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../utils/auth";
 
 const CreatePost = (props) => {
 
     let navigate = useNavigate();
 
-    const {loggedIn, usernameLoggedIn, userIdLoggedIn} = useContext(UserContext);
+    const {loggedIn, usernameLoggedIn, userIdLoggedIn, logout} = useContext(UserContext);
 
     useEffect(() => {
         if (!loggedIn) {
@@ -67,7 +67,14 @@ const CreatePost = (props) => {
         e.preventDefault();
 
         handleAddPost()
-        .catch(error => console.log(error));
+        .catch(error => {
+            
+            // Session expired.
+            if (error instanceof CantGetNewAccessTokenError) {
+                logout();
+                navigate("/login/");
+            }
+        });
     }
 
     return (

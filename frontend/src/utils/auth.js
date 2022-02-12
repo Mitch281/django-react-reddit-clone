@@ -1,4 +1,22 @@
+export class CantGetNewAccessTokenError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = CantGetNewAccessTokenError;
+    }
+}
+
+export class NoAccessTokenError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = 'NoAccessTokenError';
+    }
+}
+  
+
 function isTokenExpired(token) {
+    if (!token) {
+        throw new NoAccessTokenError("Access token does not exist");
+    }
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
@@ -33,7 +51,7 @@ export async function getNewAccessTokenIfExpired(accessToken) {
             const newAccessToken = json.access;
             localStorage.setItem("accessToken", newAccessToken);
         } else {
-            throw new Error(response.status);
+            throw new CantGetNewAccessTokenError("Can't get new access token");
         }
     }
 }
