@@ -237,6 +237,7 @@ class CommentsView(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+    # TODO: cHECK IF PARENT COMMENT IS DELETED. if so return 401 error.
     def post(self, request, format=None):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
