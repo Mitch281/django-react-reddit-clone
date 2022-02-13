@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import CommentContent from "./CommentContent";
 import DateOfComment from "./DateOfComment";
@@ -8,8 +9,12 @@ import CommentVotes from "./CommentVotes";
 
 const Comment = (props) => {
 
+    const { userIdLoggedIn } = useContext(UserContext);
+
     const votes = {numUpvotes: props.numUpvotes, numDownvotes: props.numDownvotes};
+
     const [wantReplyForm, setWantReplyForm] = useState(false);
+    const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
     function renderReplies() {
         if (props.replies) {
@@ -18,6 +23,7 @@ const Comment = (props) => {
                     <Comment
                         key={comment.id}
                         id={comment.id}
+                        userId={comment.user}
                         username={comment.username}
                         content={comment.content}
                         numUpvotes={comment.num_upvotes}
@@ -31,6 +37,7 @@ const Comment = (props) => {
                         downvote={props.downvote}
                         trackUsersUpvotes={props.trackUsersUpvotes}
                         trackUsersDownvotes={props.trackUsersDownvotes}
+                        editCommentContent={props.editCommentContent}
                     />
                 )
             );
@@ -60,7 +67,13 @@ const Comment = (props) => {
                 />
                 <User username={props.username} />
                 <DateOfComment dateCreated={props.dateCreated} />
-                <CommentContent content={props.content} />
+                <CommentContent 
+                    content={props.content}
+                    currentlyEditing={currentlyEditing} 
+                    commentId={props.id}
+                    userId={props.userId}
+                    editCommentContent={props.editCommentContent}
+                />
                 <button type="button" onClick={toggleReplyForm} className="reply-to-comment-button">Reply</button>
                 <ReplyToComment 
                     wantReplyForm={wantReplyForm} 
@@ -69,6 +82,12 @@ const Comment = (props) => {
                     updateComments={props.updateComments}
                     parentCommentId={props.id}
                 />
+                {userIdLoggedIn === props.userId ? 
+                <button type="button" className="toggle-edit-comment" onClick={() => setCurrentlyEditing(!currentlyEditing)}>
+                    Edit
+                </button>
+                    : ""
+                }
             </div>
             {renderReplies()}
         </>
@@ -89,7 +108,8 @@ Comment.propTypes = {
     upvote: PropTypes.func,
     downvote: PropTypes.func,
     trackUsersUpvotes: PropTypes.func,
-    trackUsersDownvotes: PropTypes.func
+    trackUsersDownvotes: PropTypes.func,
+    editCommentContent: PropTypes.func
 }
 
 export default Comment

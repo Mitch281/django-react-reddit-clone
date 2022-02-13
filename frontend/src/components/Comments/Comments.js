@@ -253,6 +253,11 @@ const Comments = () => {
         }
     }
 
+
+    function editCommentContent(commentId, newCommentContent) {
+        setComments(comments.map(comment => 
+            comment.id === commentId ? {...comment, content: newCommentContent} : comment));
+    }
     
     return (
         <>
@@ -263,6 +268,7 @@ const Comments = () => {
                         <Comment
                             key={comment.id}
                             id={comment.id}
+                            userId={comment.user}
                             username={comment.username}
                             content={comment.content}
                             numUpvotes={comment.num_upvotes}
@@ -276,6 +282,7 @@ const Comments = () => {
                             downvote={downvote}
                             trackUsersUpvotes={trackUsersUpvotes}
                             trackUsersDownvotes={trackUsersDownvotes}
+                            editCommentContent={editCommentContent}
                         />
                     )}
                 </div>

@@ -19,7 +19,7 @@ const PostContent = (props) => {
 
     const { userIdLoggedIn } = useContext(UserContext);
 
-    async function handleEditPostContent(e) {
+    async function handleEditPostContent() {
 
         const accessToken = localStorage.getItem("accessToken");
         try {

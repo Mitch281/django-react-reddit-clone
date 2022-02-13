@@ -186,13 +186,31 @@ class CommentView(APIView):
         serializer = serializers.CommentSerializer(comment)
         return Response(serializer.data)
 
-    def patch(self, request, pk):
+    def patch(self, request, pk, user_id=""):
+        if (user_id):
+            return self.edit_content_patch(request, pk, user_id)
+        else:
+            return self.vote_patch(request, pk, user_id)
+
+    def vote_patch(self, request, pk, user_id):
         comment = Comment.objects.get(id=pk)
         serializer = serializers.CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def edit_content_patch(self, request, pk, user_id):
+        comment = Comment.objects.get(id=pk)
+        creator_of_comment_id = str(comment.user.id)
+        serializer = CommentSerializer(comment, data=request.data, partial=True)
+        
+        if creator_of_comment_id == user_id:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
 
 class CommentsView(APIView):
     """
