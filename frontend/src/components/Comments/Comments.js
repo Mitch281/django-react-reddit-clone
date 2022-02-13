@@ -254,9 +254,14 @@ const Comments = () => {
     }
 
 
-    function editCommentContent(commentId, newCommentContent) {
+    function editComment(commentId, newCommentContent) {
         setComments(comments.map(comment => 
             comment.id === commentId ? {...comment, content: newCommentContent} : comment));
+    }
+
+    function deleteComment(commentId) {
+        setComments(comments.map(comment => 
+            comment.id === commentId ? {...comment, content: null, user:null, username: null} : comment));
     }
     
     return (
@@ -282,7 +287,8 @@ const Comments = () => {
                             downvote={downvote}
                             trackUsersUpvotes={trackUsersUpvotes}
                             trackUsersDownvotes={trackUsersDownvotes}
-                            editCommentContent={editCommentContent}
+                            editComment={editComment}
+                            deleteComment={deleteComment}
                         />
                     )}
                 </div>

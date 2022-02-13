@@ -27,7 +27,7 @@ const CommentContent = (props) => {
             body: JSON.stringify({content: commentContent})
         });
         if (response.ok) {
-            props.editCommentContent(props.commentId, commentContent);
+            props.editComment(props.commentId, commentContent);
         } else {
             throw new Error(response.status);
         }
@@ -62,7 +62,7 @@ CommentContent.propTypes = {
     commentId: PropTypes.string,
     userId: PropTypes.string,
     currentlyEditing: PropTypes.bool,
-    editCommentContent: PropTypes.func
+    editComment: PropTypes.func
 }
 
 export default CommentContent;

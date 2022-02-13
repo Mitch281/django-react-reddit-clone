@@ -6,59 +6,61 @@ import DateOfComment from "./DateOfComment";
 import User from "./User";
 import ReplyToComment from "./ReplyToComment";
 import CommentVotes from "./CommentVotes";
+import DeleteComment from "./DeleteComment";
 
 const Comment = (props) => {
-
     const { userIdLoggedIn } = useContext(UserContext);
 
-    const votes = {numUpvotes: props.numUpvotes, numDownvotes: props.numDownvotes};
+    const votes = {
+        numUpvotes: props.numUpvotes,
+        numDownvotes: props.numDownvotes,
+    };
 
     const [wantReplyForm, setWantReplyForm] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
     function renderReplies() {
         if (props.replies) {
-            return (
-                    props.replies.map((comment) => 
-                    <Comment
-                        key={comment.id}
-                        id={comment.id}
-                        userId={comment.user}
-                        username={comment.username}
-                        content={comment.content}
-                        numUpvotes={comment.num_upvotes}
-                        numDownvotes={comment.num_downvotes}
-                        dateCreated={comment.date_created}
-                        replies={comment.replies}
-                        nestingLevel={comment.nestingLevel}
-                        updateComments={props.updateComments}
-                        userCommentVotes={props.userCommentVotes}
-                        upvote={props.upvote}
-                        downvote={props.downvote}
-                        trackUsersUpvotes={props.trackUsersUpvotes}
-                        trackUsersDownvotes={props.trackUsersDownvotes}
-                        editCommentContent={props.editCommentContent}
-                    />
-                )
-            );
+            return props.replies.map((comment) => (
+                <Comment
+                    key={comment.id}
+                    id={comment.id}
+                    userId={comment.user}
+                    username={comment.username}
+                    content={comment.content}
+                    numUpvotes={comment.num_upvotes}
+                    numDownvotes={comment.num_downvotes}
+                    dateCreated={comment.date_created}
+                    replies={comment.replies}
+                    nestingLevel={comment.nestingLevel}
+                    updateComments={props.updateComments}
+                    userCommentVotes={props.userCommentVotes}
+                    upvote={props.upvote}
+                    downvote={props.downvote}
+                    trackUsersUpvotes={props.trackUsersUpvotes}
+                    trackUsersDownvotes={props.trackUsersDownvotes}
+                    editComment={props.editComment}
+                    deleteComment={props.deleteComment}
+                />
+            ));
         }
     }
 
     function getMarginLeft() {
         const marginLeft = `${props.nestingLevel * 50}px`;
-        return {marginLeft:marginLeft};
+        return { marginLeft: marginLeft };
     }
 
     function toggleReplyForm() {
-        setWantReplyForm(wantReplyForm => !wantReplyForm);
+        setWantReplyForm((wantReplyForm) => !wantReplyForm);
     }
 
     return (
         <>
             <div className="comment" style={getMarginLeft()}>
-                <CommentVotes 
-                    votes={votes} 
-                    userCommentVotes={props.userCommentVotes} 
+                <CommentVotes
+                    votes={votes}
+                    userCommentVotes={props.userCommentVotes}
                     commentId={props.id}
                     upvote={props.upvote}
                     downvote={props.downvote}
@@ -67,32 +69,49 @@ const Comment = (props) => {
                 />
                 <User username={props.username} />
                 <DateOfComment dateCreated={props.dateCreated} />
-                <CommentContent 
+                <CommentContent
                     content={props.content}
-                    currentlyEditing={currentlyEditing} 
+                    currentlyEditing={currentlyEditing}
                     commentId={props.id}
                     userId={props.userId}
-                    editCommentContent={props.editCommentContent}
+                    editComment={props.editComment}
                 />
-                <button type="button" onClick={toggleReplyForm} className="reply-to-comment-button">Reply</button>
-                <ReplyToComment 
-                    wantReplyForm={wantReplyForm} 
+                <button
+                    type="button"
+                    onClick={toggleReplyForm}
+                    className="reply-to-comment-button"
+                >
+                    Reply
+                </button>
+                <ReplyToComment
+                    wantReplyForm={wantReplyForm}
                     parentUsername={props.username}
                     postId={props.postId}
                     updateComments={props.updateComments}
                     parentCommentId={props.id}
                 />
-                {userIdLoggedIn === props.userId ? 
-                <button type="button" className="toggle-edit-comment" onClick={() => setCurrentlyEditing(!currentlyEditing)}>
-                    Edit
-                </button>
-                    : ""
-                }
+                {userIdLoggedIn === props.userId ? (
+                    <DeleteComment delete={props.deleteComment}
+                    commentId={props.id} userId={props.userId} />
+                ) : (
+                    ""
+                )}
+                {userIdLoggedIn === props.userId ? (
+                    <button
+                        type="button"
+                        className="toggle-edit-comment"
+                        onClick={() => setCurrentlyEditing(!currentlyEditing)}
+                    >
+                        Edit
+                    </button>
+                ) : (
+                    ""
+                )}
             </div>
             {renderReplies()}
         </>
-    )
-}
+    );
+};
 
 Comment.propTypes = {
     id: PropTypes.string,
@@ -109,7 +128,8 @@ Comment.propTypes = {
     downvote: PropTypes.func,
     trackUsersUpvotes: PropTypes.func,
     trackUsersDownvotes: PropTypes.func,
-    editCommentContent: PropTypes.func
-}
+    editComment: PropTypes.func,
+    deleteComment: PropTypes.func
+};
 
-export default Comment
+export default Comment;

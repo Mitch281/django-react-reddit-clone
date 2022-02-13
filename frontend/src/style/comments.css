@@ -112,5 +112,11 @@
 
 .toggle-edit-comment {
     float: right;
-    cursor: pointer
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-comment { 
+    float: right;
+    cursor: pointer;
 }
