@@ -18,6 +18,7 @@ urlpatterns = [
     re_path(r'^posts/category=(?P<pk>[0-9a-z-&]+)/(?P<ordering>[a-zA-Z\s]*)/$', views.PostsByCategoryView.as_view()),
 
     re_path(r'^comment/id=(?P<pk>[0-9a-z-&]+)/$', views.CommentView.as_view()),
+    re_path(r'^comment/id=(?P<pk>[0-9a-z-&]+)/user-id=(?P<user_id>[0-9a-z-&]+)/$', views.CommentView.as_view()),
     path('comments/', views.CommentsView.as_view(), name='comments'),
 
     re_path(r'^comments/post=(?P<parent_post_id>[0-9a-z-&]+)/$', views.PostComments.as_view()),

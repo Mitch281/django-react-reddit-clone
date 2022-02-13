@@ -60,7 +60,7 @@
     top: var(--votes-dist-to-top);
 }
 
-.comment-username, .comment-content {
+.comment-username, .comment-content, .edit-comment-content-form {
     margin-left: calc(var(--votes-dist-to-left) + 25px);
 }
 
@@ -108,4 +108,15 @@
     padding-top: 5px;
     padding-bottom: 5px;
     color: rgb(238, 230, 230);
+}
+
+.toggle-edit-comment {
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-comment { 
+    float: right;
+    cursor: pointer;
 }

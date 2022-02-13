@@ -33,8 +33,7 @@ function isTokenExpired(token) {
     return expired;
 }
 
-// This function gets a new access token if necessary. It will return true either if a new access token is successfully
-// retreived or we do not need to get a new access token.
+// This function gets a new access token if necessary.
 export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);
     if (expired) {

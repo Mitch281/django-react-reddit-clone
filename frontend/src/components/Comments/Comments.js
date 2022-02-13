@@ -253,6 +253,18 @@ const Comments = () => {
         }
     }
 
+
+    function editComment(commentId, newCommentContent) {
+        setComments(comments.map(comment => 
+            comment.id === commentId ? {...comment, content: newCommentContent} : comment));
+    }
+
+    // Don't necessarily need this function, but we will call it anyway to trigger a rerender as well as for the 
+    // sake of consistency.
+    function deleteComment(commentId) {
+        setComments(comments.map(comment => 
+            comment.id === commentId ? {...comment, deleted: true} : comment));
+    }
     
     return (
         <>
@@ -263,6 +275,7 @@ const Comments = () => {
                         <Comment
                             key={comment.id}
                             id={comment.id}
+                            userId={comment.user}
                             username={comment.username}
                             content={comment.content}
                             numUpvotes={comment.num_upvotes}
@@ -270,12 +283,15 @@ const Comments = () => {
                             dateCreated={comment.date_created}
                             replies={comment.replies}
                             nestingLevel={comment.nestingLevel}
+                            deleted={comment.deleted}
                             updateComments={updateComments}
                             userCommentVotes={userCommentVotes}
                             upvote={upvote}
                             downvote={downvote}
                             trackUsersUpvotes={trackUsersUpvotes}
                             trackUsersDownvotes={trackUsersDownvotes}
+                            editComment={editComment}
+                            deleteComment={deleteComment}
                         />
                     )}
                 </div>
