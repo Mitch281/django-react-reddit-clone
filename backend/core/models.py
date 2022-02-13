@@ -45,6 +45,10 @@ class Comment(models.Model):
     num_downvotes = models.IntegerField(default=0)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
+    # Since we do not perform a complete delete on comments, we need to have a way to keep track of comments that are
+    # deleted. Thus, we need this field.
+    deleted = models.BooleanField(default=False)
+
     # Note, this will be null for comments that do not have parents i.e. top level comments.
     parent_comment = models.ForeignKey("self", on_delete=models.DO_NOTHING, related_name="replies", blank=True, null=True)
 

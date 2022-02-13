@@ -13,7 +13,7 @@ const CommentContent = (props) => {
         
         const accessToken = localStorage.getItem("accessToken");
         try {
-            getNewAccessTokenIfExpired(accessToken);
+            await getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
             throw error;
         }

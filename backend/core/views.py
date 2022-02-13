@@ -187,6 +187,7 @@ class CommentView(APIView):
         return Response(serializer.data)
 
     def patch(self, request, pk, user_id=""):
+
         if (user_id):
             return self.edit_content_patch(request, pk, user_id)
         else:
@@ -194,6 +195,10 @@ class CommentView(APIView):
 
     def vote_patch(self, request, pk, user_id):
         comment = Comment.objects.get(id=pk)
+
+        if (comment.deleted):
+            return Response(data=None, status=status.HTTP_410_GONE)
+
         serializer = serializers.CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -204,7 +209,10 @@ class CommentView(APIView):
         comment = Comment.objects.get(id=pk)
         creator_of_comment_id = str(comment.user.id)
         serializer = CommentSerializer(comment, data=request.data, partial=True)
-        
+
+        if (comment.deleted):
+            return Response(data=None, status=status.HTTP_410_GONE)
+
         if creator_of_comment_id == user_id:
             if serializer.is_valid():
                 serializer.save()

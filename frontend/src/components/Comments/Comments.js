@@ -259,9 +259,11 @@ const Comments = () => {
             comment.id === commentId ? {...comment, content: newCommentContent} : comment));
     }
 
+    // Don't necessarily need this function, but we will call it anyway to trigger a rerender as well as for the 
+    // sake of consistency.
     function deleteComment(commentId) {
         setComments(comments.map(comment => 
-            comment.id === commentId ? {...comment, content: null, user:null, username: null} : comment));
+            comment.id === commentId ? {...comment, deleted: true} : comment));
     }
     
     return (
@@ -281,6 +283,7 @@ const Comments = () => {
                             dateCreated={comment.date_created}
                             replies={comment.replies}
                             nestingLevel={comment.nestingLevel}
+                            deleted={comment.deleted}
                             updateComments={updateComments}
                             userCommentVotes={userCommentVotes}
                             upvote={upvote}

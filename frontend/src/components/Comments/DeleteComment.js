@@ -12,33 +12,33 @@ const DeleteComment = (props) => {
 
     const { userIdLoggedIn } = useContext(UserContext);
 
-    // async function handleDeleteComment() {
+    async function handleDeleteComment() {
 
-    //     const accessToken = localStorage.getItem("accessToken");
-    //     try {
-    //         getNewAccessTokenIfExpired(accessToken);
-    //     } catch(error) {
-    //         throw error;
-    //     }
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            await getNewAccessTokenIfExpired(accessToken);
+        } catch(error) {
+            throw error;
+        }
 
-    //     const response = await fetch(`http://localhost:8000/api/comment/id=${props.commentId}/user-id=${userIdLoggedIn}/`, {
-    //         method: "PATCH",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-    //         },
-    //         body: JSON.stringify({username: null, content: null, user: null})
-    //     });
-    //     if (response.ok) {
-    //         props.deleteComment(props.commentId)
-    //     } else {
-    //         throw new Error(response.status);
-    //     }
-    // }
+        const response = await fetch(`http://localhost:8000/api/comment/id=${props.commentId}/user-id=${userIdLoggedIn}/`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify({deleted: true})
+        });
+        if (response.ok) {
+            props.deleteComment(props.commentId)
+        } else {
+            throw new Error(response.status);
+        }
+    }
 
     function performDeleteComment() {
-        // handleDeleteComment()
-        // .catch(error => console.log(error));
+        handleDeleteComment()
+        .catch(error => console.log(error));
     }
 
     return (
@@ -47,7 +47,7 @@ const DeleteComment = (props) => {
 }
 
 DeleteComment.propTypes = {
-    editComment: PropTypes.func,
+    deleteComment: PropTypes.func,
     commentId: PropTypes.string,
     userId: PropTypes.string
 }
