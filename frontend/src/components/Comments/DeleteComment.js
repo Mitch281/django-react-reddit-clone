@@ -27,6 +27,7 @@ const DeleteComment = (props) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             },
+            // TODO: Make delete cmment content, user info as well.
             body: JSON.stringify({deleted: true})
         });
         if (response.ok) {

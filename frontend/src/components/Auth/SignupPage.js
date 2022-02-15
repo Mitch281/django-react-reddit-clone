@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import { BiErrorCircle } from "react-icons/bi";
+
 
 const SignupPage = () => {
 
@@ -12,7 +14,13 @@ const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    async function handleSignup(e) {
+    const [error, setError] = useState("");
+
+    async function handleSignup() {
+        
+        if (password !== confirmPassword) {
+            throw new Error("Passwords not the same");
+        }
 
         const response = await fetch("http://localhost:8000/api/users/", {
             method: "POST",
@@ -37,27 +45,51 @@ const SignupPage = () => {
     function performSignup(e) {
         e.preventDefault();
 
-        if (password !== confirmPassword) {
-            alert("Passwords not the same!");
+        handleSignup()
+        .catch(error => setError(error));
+    }
+
+    function getErrorMessage() {
+        if (!error) {
             return;
         }
-
-        handleSignup()
-        .catch(error => console.log(error));
-
+        
+        if (error.message === "400") {
+            return (
+                <div id="auth-error-flex-container">
+                    <div id="auth-error">
+                        <BiErrorCircle />
+                        <span>Username already in use!</span>
+                    </div>
+                </div>
+            );
+        }
+        else if (error.message === "Passwords not the same") {
+            return (
+                <div id="auth-error-flex-container">
+                    <div id="auth-error">
+                        <BiErrorCircle />
+                        <span>The passwords entered are not the same.</span>
+                </div>
+            </div>
+            );
+        }
     }
 
     return (
-        <div id="signup">
-            <form onSubmit={performSignup}>
-                <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <input type="password" placeholder="confirm password" value={confirmPassword} 
-                onChange={(e) => setConfirmPassword(e.target.value)} />
-                
-                <input type="submit" value="Signup" />
-            </form>
-        </div>
+        <>
+            <div id="signup">
+                <form onSubmit={performSignup}>
+                    <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" placeholder="confirm password" value={confirmPassword} 
+                    onChange={(e) => setConfirmPassword(e.target.value)} />
+                    
+                    <input type="submit" value="Signup" />
+                </form>
+            </div>
+            {getErrorMessage()}
+        </>
     )
 }
 

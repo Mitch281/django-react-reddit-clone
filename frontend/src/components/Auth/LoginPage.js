@@ -1,17 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import "../../style/login-signup.css";
-
-// TODO: Create a function that checks if the JWT token has expired whenever the user makes a request. If the token
-// has expired, then get a new token using the refresh token. This way, we do not need to resend a request but instead
-// just check first before sending the request.
+import { BiErrorCircle } from "react-icons/bi";
 
 const LoginPage = () => {
 
     let navigate = useNavigate();
 
     const {setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn} = useContext(UserContext);
+
+    const [error, setError] = useState("");
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -45,17 +44,39 @@ const LoginPage = () => {
         e.preventDefault();
 
         handleLogin()
-        .catch(error => console.log(error));
+        .catch(error => setError(error));
+    }
+
+    function getErrorMessage() {
+
+        // There is no error because the user hasn't submitted a login request yet.
+        if (!error) {
+            return;
+        }
+
+        if (error.message === "401") {
+            return (
+                <div id="auth-error-flex-container">
+                    <div id="auth-error">
+                        <BiErrorCircle />
+                        <span>Wrong username or password.</span>
+                    </div>
+                </div>
+            );
+        }
     }
 
     return (
-        <div id="login">
-            <form onSubmit={performLogin}>
-                <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <input type="submit" value="login" />
-            </form>
-        </div>
+        <>
+            <div id="login">
+                <form onSubmit={performLogin}>
+                    <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="submit" value="login" />
+                </form>
+            </div>
+            {getErrorMessage()}
+        </>
     )
 }
 
