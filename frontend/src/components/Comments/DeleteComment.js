@@ -50,7 +50,10 @@ const DeleteComment = (props) => {
 DeleteComment.propTypes = {
     deleteComment: PropTypes.func,
     commentId: PropTypes.string,
-    userId: PropTypes.string
+    userId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
 }
 
 export default DeleteComment

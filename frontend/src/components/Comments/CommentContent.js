@@ -60,7 +60,10 @@ const CommentContent = (props) => {
 CommentContent.propTypes = {
     content: PropTypes.string,
     commentId: PropTypes.string,
-    userId: PropTypes.string,
+    userId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     currentlyEditing: PropTypes.bool,
     editComment: PropTypes.func
 }

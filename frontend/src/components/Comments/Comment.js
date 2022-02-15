@@ -136,7 +136,10 @@ const Comment = (props) => {
 Comment.propTypes = {
     id: PropTypes.string,
     content: PropTypes.string,
-    userId: PropTypes.string,
+    userId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     numUpvotes: PropTypes.number,
     numDownvotes: PropTypes.number,
     dateCreated: PropTypes.string,
