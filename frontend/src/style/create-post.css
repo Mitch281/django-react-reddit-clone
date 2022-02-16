@@ -32,7 +32,6 @@
     width: 25vw;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     flex-wrap: wrap;
 }
 
@@ -55,6 +54,11 @@
     outline: none;
     border: 2px solid var(--input-border-colour);
     background-color: var(--input-background-colour-focus);
+}
+
+#create-post-flex-container form input[type="submit"] {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
 }
 
 #create-post-flex-container form input[type="submit"]:hover {
