@@ -64,13 +64,18 @@
     margin-left: calc(var(--votes-dist-to-left) + 25px);
 }
 
-.reply-to-comment-button {
+.reply-to-comment-button, .toggle-edit-comment {
     border: 0px;
     background: var(--post-background-colour);
     font-family: "Fira Sans", sans-serif;
     color: grey;
     font-weight: 600;
     cursor: pointer;
+}
+
+.toggle-edit-comment {
+    float: right;
+    margin-right: 10px;
 }
 
 .reply-to-comment-button:hover {
@@ -81,7 +86,7 @@
     margin-top: 10px;
 }
 
-.reply-to-comment-form div {
+.reply-to-comment-form div, .edit-comment-content-form div {
     border: 1px solid black;
     border-radius: 5px;
     display: flex;
@@ -89,7 +94,11 @@
     padding: 5px;
 }
 
-.reply-to-comment-form textarea {
+.edit-comment-content-form div {
+    margin: 10px;
+}
+
+.reply-to-comment-form textarea, .edit-comment-content-form textarea {
     border: 0px;
     margin-top: 15px;
     background: var(--post-background-colour);
@@ -97,7 +106,7 @@
     resize: vertical;
 }
 
-.reply-to-comment-form input[type="submit"] {
+.reply-to-comment-form input[type="submit"], .edit-comment-content-form input[type="submit"] {
     background-color: darkgrey;
     border: 1px solid black;
     border-radius: 5px;
@@ -108,12 +117,6 @@
     padding-top: 5px;
     padding-bottom: 5px;
     color: rgb(238, 230, 230);
-}
-
-.toggle-edit-comment {
-    float: right;
-    cursor: pointer;
-    margin-right: 10px;
 }
 
 .delete-comment { 

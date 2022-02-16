@@ -50,8 +50,11 @@ const CommentContent = (props) => {
         <>
             {props.currentlyEditing ? 
             <form className="edit-comment-content-form" onSubmit={performEditCommentContent} >
-                <textarea value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
-                <input type="submit" value="Edit" />
+                <div>
+                    <span>Edit Comment</span>
+                    <textarea value={commentContent} placeholder="Content" onChange={(e) => setCommentContent(e.target.value)} />
+                    <input type="submit" value="Edit" />
+                </div>
             </form> : 
             <p className="comment-content">{props.content}</p>}
         </>
