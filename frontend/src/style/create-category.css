@@ -36,3 +36,8 @@
     background-color: var(--input-background-colour-focus);
     cursor: pointer;
 }
+
+#create-category-flex-container form input[type="submit"] {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+}
