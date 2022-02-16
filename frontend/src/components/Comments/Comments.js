@@ -19,9 +19,6 @@ const Comments = () => {
     const postId = params.postId;
 
     const [comments, setComments] = useState([]);
-    const [commentsClone, setCommentsClone] = useState([]);
-    const [idMapping, setIdMapping] = useState({});
-    
     const [commentChain, setCommentChain] = useState([]);
 
     // This keeps track of all votes a user has voted on. This is needed so that users cannot vote twice on a post, and
@@ -42,17 +39,6 @@ const Comments = () => {
         loadUserCommentVotes();
     }, []);
 
-    // Reset the comment chain whenever our comments update. This is necessary because when a user replies to a comment or makes
-    // a comment, Comments rerenders but state does not refresh (as opposed to a page refresh where state does reset). Thus,
-    // we do not want to append to commentChain, but make the new comment chain using our new comments state.
-    useEffect(() => {
-        setCommentChain([]);
-
-        // Here, we create a deep copy of comments so that when we create our recursive JSON comment chain, we do not change
-        // comments when adding replies.
-        setCommentsClone(JSON.parse(JSON.stringify(comments)));
-    }, [comments, userCommentVotes]);
-
     async function loadComments() {
         const response = await fetch(`http://localhost:8000/api/comments/post=${postId}`);
         if (response.ok) {
@@ -69,43 +55,36 @@ const Comments = () => {
 
     useEffect(() => {
         if (comments.length !== 0) {
-            // This maps the comment ids to the index it shows up in comments.
-            setIdMapping(comments.reduce((accumulator, comment, i) => {
-                accumulator[comment.id] = i;
-                return accumulator;
-            }, {}));
+            setCommentChain(nestComments());
         }
-    }, [comments]);
+    }, [comments, params]);
 
-    useEffect(() => {
-        if (Object.keys(idMapping).length !== 0 && commentsClone.length !== 0) {
-            commentsClone.map((comment) => {
+    function nestComments() {
+        const commentMap = {};
+        const commentsClone = JSON.parse(JSON.stringify(comments));
 
-                // Nesting level will never change so do not need to worry about it changing comments array.
-                const nestingLevel = getNestingLevel(comment, 0);
-                comment.nestingLevel = nestingLevel;
+        commentsClone.forEach(comment => commentMap[comment.id] = comment);
 
-                if (comment.parent_comment === null) {
-                    setCommentChain(commentChain => [...commentChain, comment]);
-                    return;
-                }
-
-                // Use mapping to locate parent of comment (our loop variable) in the comments array.
-                const parentComment = commentsClone[idMapping[comment.parent_comment]];
-
+        commentsClone.forEach(comment => {
+            comment.nestingLevel = getNestingLevel(comment, commentMap, 0);
+            if (comment.parent_comment) {
+                const parentComment = commentMap[comment.parent_comment];
                 parentComment.replies = [...(parentComment.replies || []), comment];
-            });
-        }
-    }, [idMapping, commentsClone]);
+            }
+        });
 
-    function getNestingLevel(comment, nestingLevel) {
+        // Only return the root level comments.
+        return commentsClone.filter(comment => !comment.parent_comment);
+    }
+
+    function getNestingLevel(comment, mapping, nestingLevel) {
 
         // Note that comment.parent_comment is simply the id of the parent comment due to the django naming (maybe look into 
         // changing this in future to parent_comment_id), while parentComment is the actual parent comment object. Same thing
         // in above function.
         if (comment.parent_comment) {
-            const parentComment = comments[idMapping[comment.parent_comment]];
-            return getNestingLevel(parentComment, nestingLevel + 1);
+            const parentComment = mapping[comment.parent_comment];
+            return getNestingLevel(parentComment, mapping, nestingLevel + 1);
         }
         return nestingLevel;
     }
