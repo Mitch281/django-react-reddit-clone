@@ -41,7 +41,7 @@ const ReplyToComment = (props) => {
 
         const accessToken = localStorage.getItem("accessToken");
         try {
-            getNewAccessTokenIfExpired(accessToken); 
+            await getNewAccessTokenIfExpired(accessToken); 
         } catch(error) {
             throw error;
         }
@@ -59,6 +59,7 @@ const ReplyToComment = (props) => {
             // Clear reply text box.
             setReplyContent("");
 
+            props.toggleReplyForm();
             props.updateComments(reply);
         } else {
             throw new Error(response.status);
@@ -96,7 +97,8 @@ ReplyToComment.propTypes = {
     wantReplyForm: PropTypes.bool,
     parentCommentId: PropTypes.string,
     parentUsername: PropTypes.string,
-    updateComments: PropTypes.func
+    updateComments: PropTypes.func,
+    togglyReplyForm: PropTypes.func
 }
 
 export default ReplyToComment;

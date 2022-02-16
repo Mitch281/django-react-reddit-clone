@@ -101,6 +101,7 @@ const Comment = (props) => {
                         postId={props.postId}
                         updateComments={props.updateComments}
                         parentCommentId={props.id}
+                        toggleReplyForm={toggleReplyForm}
                     />
                     {userIdLoggedIn === props.userId ? (
                         <DeleteComment
