@@ -217,3 +217,9 @@
     padding-left: 5px;
     padding-right: 5px;
 }
+
+#post-deleted-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

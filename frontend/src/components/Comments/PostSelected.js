@@ -40,31 +40,35 @@ const PostSelected = (props) => {
     function getOutput() {
         if (postDeleted) {
             return (
-                <div id="post-deleted-message">Post Deleted</div>
+                <div class="posts">
+                    <div class="post">
+                        <div id="post-deleted-message">Post Deleted</div>
+                    </div>
+                </div>
             );
         }
 
         return (
             <div className="posts">
-            <Post
-                key={postId}
-                id={postId}
-                username={post.username}
-                userId={post.user}
-                categoryId={post.category}
-                categoryName={post.category_name}
-                title={post.title}
-                content={post.content}
-                numUpvotes={post.num_upvotes}
-                numDownvotes={post.num_downvotes}
-                dateCreated={post.date_created}
-                upvote={props.upvote}
-                userPostVotes={props.userPostVotes}
-                trackUsersUpvotes={props.trackUsersUpvotes}
-                downvote={props.downvote}
-                trackUsersDownvotes={props.trackUsersDownvotes}
-                deletePost={props.deletePost}
-                editPostContent={props.editPostContent}
+                <Post
+                    key={postId}
+                    id={postId}
+                    username={post.username}
+                    userId={post.user}
+                    categoryId={post.category}
+                    categoryName={post.category_name}
+                    title={post.title}
+                    content={post.content}
+                    numUpvotes={post.num_upvotes}
+                    numDownvotes={post.num_downvotes}
+                    dateCreated={post.date_created}
+                    upvote={props.upvote}
+                    userPostVotes={props.userPostVotes}
+                    trackUsersUpvotes={props.trackUsersUpvotes}
+                    downvote={props.downvote}
+                    trackUsersDownvotes={props.trackUsersDownvotes}
+                    deletePost={props.deletePost}
+                    editPostContent={props.editPostContent}
                 />
         </div>
         );
