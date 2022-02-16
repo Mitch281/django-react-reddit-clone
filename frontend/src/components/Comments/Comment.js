@@ -56,6 +56,10 @@ const Comment = (props) => {
         setWantReplyForm((wantReplyForm) => !wantReplyForm);
     }
 
+    function toggleEditForm() {
+        setCurrentlyEditing(currentlyEditing => !currentlyEditing);
+    }
+
     function getOutput() {
         if (props.deleted) {
             return (
@@ -87,6 +91,7 @@ const Comment = (props) => {
                         commentId={props.id}
                         userId={props.userId}
                         editComment={props.editComment}
+                        toggleEditForm={toggleEditForm}
                     />
                     <button
                         type="button"

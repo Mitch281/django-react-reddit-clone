@@ -28,6 +28,7 @@ const CommentContent = (props) => {
         });
         if (response.ok) {
             props.editComment(props.commentId, commentContent);
+            props.toggleEditForm();
         } else {
             throw new Error(response.status);
         }
@@ -65,7 +66,8 @@ CommentContent.propTypes = {
         PropTypes.number
     ]),
     currentlyEditing: PropTypes.bool,
-    editComment: PropTypes.func
+    editComment: PropTypes.func,
+    toggleEditForm: PropTypes.func
 }
 
 export default CommentContent;
