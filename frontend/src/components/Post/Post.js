@@ -37,6 +37,10 @@ const Post = (props) => {
         }});
     }
 
+    function toggleCurrentlyEditing() {
+        setCurrentlyEditing(currentlyEditing => !currentlyEditing);
+    }
+
     return (
         <div className="post">
             <div className="top-post-flex-container">
@@ -62,6 +66,7 @@ const Post = (props) => {
                 userId={props.userId} 
                 postId={props.id}
                 editPostContent={props.editPostContent} 
+                toggleCurrentlyEditing={toggleCurrentlyEditing}
             />
             <ViewComments postId={props.id} navigateToPost={navigateToPost} />
             {userIdLoggedIn === props.userId ? <DeletePost 

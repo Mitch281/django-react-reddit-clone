@@ -78,7 +78,7 @@
     margin-right: 10px;
 }
 
-.reply-to-comment-button:hover {
+.reply-to-comment-button:hover, .toggle-edit-comment:hover {
     background: rgb(238, 230, 230);
 }
 

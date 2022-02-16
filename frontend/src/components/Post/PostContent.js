@@ -38,6 +38,7 @@ const PostContent = (props) => {
         });
         if (response.ok) {
             props.editPostContent(props.postId, postContent);
+            props.toggleCurrentlyEditing();
         } else {
             throw new Error(response.status);
         }
@@ -58,9 +59,12 @@ const PostContent = (props) => {
     return (
         <>
             {props.currentlyEditing ? 
-                <form className="edit-post-content" onSubmit={performEditPostContent} >
-                    <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
-                    <input type="submit" value="Edit" />
+                <form className="edit-post-content-form" onSubmit={performEditPostContent} >
+                    <div>
+                        <span>Edit Post</span>
+                        <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
+                        <input type="submit" value="Edit" />
+                    </div>
                 </form>
                 : 
                 <p className="post-content">
@@ -79,7 +83,8 @@ PostContent.propTypes = {
         PropTypes.string,
         PropTypes.number
     ]),
-    editPostContent: PropTypes.func
+    editPostContent: PropTypes.func,
+    toggleCurrentlyEditing: PropTypes.func
 }
 
 export default PostContent
