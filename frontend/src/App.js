@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginPage from "./components/Auth/LoginPage";
-import SignupPage from "./components/Auth/SignupPage";
-import Navbar from "./components/Nav/Navbar";
-import Posts from "./components/Post/Posts";
-import PostsByCategory from "./components/PostsByCategory/PostsByCategory";
-import Comments from "./components/Comments/Comments";
-import PostSelected from "./components/Comments/PostSelected";
+import LoginPage from "./components/Auth/LoginPage/LoginPage";
+import SignupPage from "./components/Auth/SignupPage/SignupPage";
+import Navbar from "./components/Nav/Navbar/Navbar";
+import Posts from "./components/Post/Posts/Posts";
+import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";
+import Comments from "./components/Comments/Comments/Comments";
+import PostSelected from "./components/Comments/PostSelected/PostSelected";
 import { postUpvote, 
         patchUsersUpvote, 
         postUsersUpvote, 
@@ -16,9 +16,9 @@ import { postUpvote,
 } 
 from "./utils/fetch-data";
 import { getNewAccessTokenIfExpired } from "./utils/auth";
-import CreateCategory from "./components/CreationForms/CreateCategory";
-import CreatePost from "./components/CreationForms/CreatePost";
-import LinkToCreatePost from "./components/Post/LinkToCreatePost";
+import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
+import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
+import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
 
 export const UserContext = createContext();
 
