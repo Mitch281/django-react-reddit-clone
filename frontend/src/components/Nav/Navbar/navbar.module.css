@@ -1,0 +1,50 @@
+#navbar-site-name {
+    text-decoration: none;
+    color: black;
+}
+
+#navbar {
+    background-color: white;
+    width: 100%;
+}
+
+#navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px;
+    height: var(--navbar-height);
+}
+
+#navbar-auth {
+    margin-left: 50%;
+}
+
+#navbar-nav li {
+    list-style: none;
+    position: relative;
+}
+
+#navbar-auth {
+    display: flex;
+}
+
+#nav-to-login, #nav-to-signup {
+    display: inline-block; /* Allows text align center to work. */
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    color: black;
+    background-color:rgb(238, 238, 238);
+    text-align: center;
+    height: calc(var(--navbar-height) / 1.5);
+    line-height: calc(var(--navbar-height) / 1.5);
+    width: fit-content;
+    border-radius:var(--navbar-button-border-radii);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#nav-to-login {
+    margin-right: 1em;
+}

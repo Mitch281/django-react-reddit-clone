@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../App";
-import "../../../style/create-category.css";
 import { v4 as uuid_v4 } from "uuid";
 import PropTypes from "prop-types";
 import { CantGetNewAccessTokenError, getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./create-category.module.css";
 
 const CreateCategory = (props) => {
 
@@ -69,7 +69,7 @@ const CreateCategory = (props) => {
     }
 
     return (
-        <div id="create-category-flex-container">
+        <div id={styles["create-category-flex-container"]}>
             <form onSubmit={performCreateCategory}>
                 <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
                 <input type="submit" value="Create Category" />

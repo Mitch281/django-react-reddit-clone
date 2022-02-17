@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
+import styles from "./category-dropdown.module.css";
 
 const CategoryDropdown = (props) => {
 
@@ -42,15 +43,15 @@ const CategoryDropdown = (props) => {
     return (
         <>
             {/* This shows the category at the top of the dropdown.*/}
-            <li id="top-of-dropdown" ref={categoryDropdown}>
-                <button type="button" id="category-in-focus" onClick={() => setWantDropdown(!wantDropdown)} >
+            <li id={styles["top-of-dropdown"]} ref={categoryDropdown}>
+                <button type="button" id={styles["category-in-focus"]} onClick={() => setWantDropdown(!wantDropdown)} >
                     {props.activeCategory === undefined ? "Home" : props.activeCategory}
                 </button>
                 {/* These are all other categories including home.*/}
-                <ul id="category-dropdown-content" style={determineDropdownDisplay()}>
+                <ul id={styles["category-dropdown-content"]} style={determineDropdownDisplay()}>
                     <hr />
                     <li>
-                    <input type="text" placeholder="Filter categories" value={filterCategoriesText} id="filter-categories-input"
+                    <input type="text" placeholder="Filter categories" value={filterCategoriesText} id={styles["filter-categories-input"]}
                         onChange={(e) => setFilterCategoriesText(e.target.value)} />
                     </li>
                     <hr />

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../../utils/auth";
+import styles from "./create-post.module.css";
 
 const CreatePost = (props) => {
 
@@ -78,11 +79,11 @@ const CreatePost = (props) => {
     }
 
     return (
-        <div id="create-post-flex-container">
+        <div id={styles["create-post-flex-container"]}>
             <form onSubmit={performAddPost} >
                 <input type="text" id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-                <textarea id="post-content" type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
-                <select id="select-post-category" ref={category}> 
+                <textarea id={styles["post-content"]} type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
+                <select id={styles["select-post-category"]} ref={category}> 
                     {props.categories.map(category => 
                     <option key={category.id} value={`${category.id},${category.name}`}>
                         {category.name}

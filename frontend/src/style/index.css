@@ -12,6 +12,8 @@
     --gap-to-post: 25px;
     --button-colours: rgb(235, 241, 240);
     --comment-background-colour: rgb(250, 249, 249);
+    --navbar-height: 7vh;
+    --navbar-button-border-radii: 5px;
 }
 
 
