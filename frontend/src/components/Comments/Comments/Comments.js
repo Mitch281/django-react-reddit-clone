@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; 
 import Comment from "../Comment/Comment";
-import "../../../style/comments.css";
 import CommentInput from "../CommentInput/CommentInput";
 import { 
     postUpvote, 
@@ -12,6 +11,7 @@ import {
     postUsersDownvote 
 } 
 from "../../../utils/fetch-data";
+import styles from "./comments.module.css";
 
 const Comments = () => {
 
@@ -248,8 +248,8 @@ const Comments = () => {
     return (
         <>
             <CommentInput updateComments={updateComments}/>
-            <div id="comments-flex-container">
-                <div id="comments">
+            <div id={styles["comments-flex-container"]}>
+                <div id={styles["comments"]}>
                     {commentChain.map((comment) =>
                         <Comment
                             key={comment.id}

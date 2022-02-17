@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
+import styles from "./user.module.css";
 
 const User = (props) => {
     return (
-        <span className="comment-username">{props.username} &nbsp;</span>
+        <span className={styles["comment-username"]}>{props.username} &nbsp;</span>
     );
 }
 

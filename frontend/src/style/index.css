@@ -1,6 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap');
 
+:root {
+    --post-background-colour: rgb(250, 249, 249);
+    --votes-dist-to-left: 10px;
+    --votes-dist-to-top: 20px;
+    --navbar-height: 7vh;
+    --navbar-button-border-radii: 5px;
+    --input-border-colour: rgb(147, 213, 252);
+    --input-background-colour-focus: rgb(235, 241, 240);
+    --gap-to-post: 25px;
+    --button-colours: rgb(235, 241, 240);
+    --comment-background-colour: rgb(250, 249, 249);
+}
+
 
 h1 {
     font-family: 'Fira Sans', sans-serif;

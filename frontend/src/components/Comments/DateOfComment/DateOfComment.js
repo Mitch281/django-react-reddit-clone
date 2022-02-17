@@ -1,9 +1,10 @@
 import { getTimeElapsedFromCreation } from "../../../utils/date-time-functions";
 import PropTypes from "prop-types";
+import styles from "./date-of-comment.module.css";
 
 const DateOfComment = (props) => {
     return (
-        <span className="time-elapsed-from-comment">
+        <span className={styles["time-elapsed-from-comment"]}>
             {getTimeElapsedFromCreation(props.dateCreated)}
         </span>
     );

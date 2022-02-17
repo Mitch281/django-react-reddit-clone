@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginPage from "./components/Auth/LoginPage/LoginPage";
-import SignupPage from "./components/Auth/SignupPage/SignupPage";
+import LoginPage from "./components/Auth/LoginPage";
+import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar/Navbar";
 import Posts from "./components/Post/Posts/Posts";
 import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";

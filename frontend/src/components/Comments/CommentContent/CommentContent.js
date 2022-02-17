@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./comment-content.module.css";
 
 const CommentContent = (props) => {
 
@@ -49,14 +50,14 @@ const CommentContent = (props) => {
     return (
         <>
             {props.currentlyEditing ? 
-            <form className="edit-comment-content-form" onSubmit={performEditCommentContent} >
+            <form className={styles["edit-comment-content-form"]} onSubmit={performEditCommentContent} >
                 <div>
                     <span>Edit Comment</span>
                     <textarea value={commentContent} placeholder="Content" onChange={(e) => setCommentContent(e.target.value)} />
                     <input type="submit" value="Edit" />
                 </div>
             </form> : 
-            <p className="comment-content">{props.content}</p>}
+            <p className={styles["comment-content"]}>{props.content}</p>}
         </>
     );
 }

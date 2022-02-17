@@ -1,0 +1,6 @@
+.comment-username {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
+    color: black;
+    margin-left: calc(var(--votes-dist-to-left) + 25px);
+}

@@ -1,0 +1,34 @@
+.comment {
+    width: 50%;
+    border: 1px solid white;
+    margin-top: 10px;
+    overflow-wrap: break-word;
+    border-radius: 5px;
+    position: relative;
+    background: var(--comment-background-colour);
+    padding: 10px;
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    .comment {
+        width: 80%;
+    }
+}
+
+.toggle-edit-comment {
+    float: right;
+    margin-right: 10px;
+}
+
+.reply-to-comment-button, .toggle-edit-comment {
+    border: 0px;
+    background: var(--post-background-colour);
+    font-family: "Fira Sans", sans-serif;
+    color: grey;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.reply-to-comment-button:hover, .toggle-edit-comment:hover {
+    background: rgb(238, 230, 230);
+}

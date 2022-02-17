@@ -7,6 +7,7 @@ import User from "../User/User";
 import ReplyToComment from "../ReplyToComment/ReplyToComment";
 import CommentVotes from "../CommentVotes/CommentVotes";
 import DeleteComment from "../DeleteComment/DeleteComment";
+import styles from "./comment.module.css";
 
 const Comment = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
@@ -64,7 +65,7 @@ const Comment = (props) => {
         if (props.deleted) {
             return (
             <>
-                <div className="comment" style={getMarginLeft()}>
+                <div className={styles["comment"]} style={getMarginLeft()}>
                     <span>Deleted</span>
                 </div>
                 {renderReplies()}
@@ -73,7 +74,7 @@ const Comment = (props) => {
         }
         return (
             <>
-                <div className="comment" style={getMarginLeft()}>
+                <div className={styles["comment"]} style={getMarginLeft()}>
                     <CommentVotes
                         votes={votes}
                         userCommentVotes={props.userCommentVotes}
@@ -96,7 +97,7 @@ const Comment = (props) => {
                     <button
                         type="button"
                         onClick={toggleReplyForm}
-                        className="reply-to-comment-button"
+                        className={styles["reply-to-comment-button"]}
                     >
                         Reply
                     </button>
@@ -120,7 +121,7 @@ const Comment = (props) => {
                     {userIdLoggedIn === props.userId ? (
                         <button
                             type="button"
-                            className="toggle-edit-comment"
+                            className={styles["toggle-edit-comment"]}
                             onClick={() =>
                                 setCurrentlyEditing(!currentlyEditing)
                             }

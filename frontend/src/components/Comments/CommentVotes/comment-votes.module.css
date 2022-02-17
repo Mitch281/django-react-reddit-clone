@@ -1,0 +1,7 @@
+.comment-votes {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: var(--votes-dist-to-left);
+    top: var(--votes-dist-to-top);
+}

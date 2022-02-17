@@ -1,10 +1,10 @@
-import "../../../style/comment-input.css";
 import { useContext, useState} from "react";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./comment-input.module.css";
 
 const CommentInput = (props) => {
 
@@ -34,7 +34,7 @@ const CommentInput = (props) => {
 
         const accessToken = localStorage.getItem("accessToken");
         try {
-            getNewAccessTokenIfExpired(accessToken);
+            await getNewAccessTokenIfExpired(accessToken);
         } catch(error) {
             throw error;
         }
@@ -66,8 +66,8 @@ const CommentInput = (props) => {
     function determineOutput() {
         if (loggedIn) {
             return (
-            <div id="comment-input-flex-container">
-                <div id="comment-input">
+            <div id={styles["comment-input-flex-container"]}>
+                <div id={styles["comment-input"]}>
                     <span>Commenting as {usernameLoggedIn}</span>
                     <form onSubmit={performPostComment}>
                         <textarea value={comment} onChange={(e) => setComment(e.target.value)}/>
@@ -78,8 +78,8 @@ const CommentInput = (props) => {
             )
         }
         return (
-        <div id="comment-not-logged-in-flex-container" className="not-logged-in-message-flex-container">
-            <div id="comment-not-logged-in" className="not-logged-in-message">
+        <div id={styles["comment-not-logged-in-flex-container"]} className={styles["not-logged-in-message-flex-container"]}>
+            <div id={styles["comment-not-logged-in"]} className={styles["not-logged-in-message"]}>
                 <span>Log in or signup to leave a comment &nbsp;</span>
                 <Link to="/login/">Login</Link>
                 &nbsp;

@@ -1,0 +1,43 @@
+:root {
+    --votes-dist-to-left: 5px;
+    --votes-dist-to-top: 10px;
+}
+
+.edit-comment-content-form, .comment-content {
+    margin-left: calc(var(--votes-dist-to-left) + 25px);
+}
+
+
+.edit-comment-content-form div {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 10px;
+}
+
+.edit-comment-content-form textarea {
+    border: 0px;
+    margin-top: 15px;
+    background: var(--post-background-colour);
+    outline: none;
+    resize: vertical;
+}
+
+.edit-comment-content-form input[type="submit"] {
+    background-color: darkgrey;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    width: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgb(238, 230, 230);
+}
+
+.toggle-edit-comment:hover {
+    background: rgb(238, 230, 230);
+}

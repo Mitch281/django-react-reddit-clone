@@ -4,6 +4,7 @@ import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../../utils/auth";
+import styles from "./reply-to-comment.module.css";
 
 const ReplyToComment = (props) => {
 
@@ -82,7 +83,7 @@ const ReplyToComment = (props) => {
 
     return (
         <div style={getDisplay()}>
-            <form className="reply-to-comment-form" onSubmit={performPostReply}>
+            <form className={styles["reply-to-comment-form"]} onSubmit={performPostReply}>
                 <div>
                     <span>Reply to {props.parentUsername} as {usernameLoggedIn}</span>
                     <textarea type="text" value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="Content" />

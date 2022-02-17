@@ -7,6 +7,7 @@ import { UserContext } from "../../../App";
 import { BsFillTrashFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./delete-comment.module.css";
 
 const DeleteComment = (props) => {
 
@@ -43,7 +44,7 @@ const DeleteComment = (props) => {
     }
 
     return (
-        <BsFillTrashFill className="delete-comment" onClick={performDeleteComment} />
+        <BsFillTrashFill className={styles["delete-comment"]} onClick={performDeleteComment} />
     );
 }
 

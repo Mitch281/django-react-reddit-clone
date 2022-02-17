@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../App";
+import { UserContext } from "../../App";
 import { BiErrorCircle } from "react-icons/bi";
-
+import styles from "./login-signup.module.css";
 
 const SignupPage = () => {
 
@@ -56,8 +56,8 @@ const SignupPage = () => {
         
         if (error.message === "400") {
             return (
-                <div id="auth-error-flex-container">
-                    <div id="auth-error">
+                <div id={styles["auth-error-flex-container"]}>
+                    <div id={styles["auth-error"]}>
                         <BiErrorCircle />
                         <span>Username already in use!</span>
                     </div>
@@ -66,8 +66,8 @@ const SignupPage = () => {
         }
         else if (error.message === "Passwords not the same") {
             return (
-                <div id="auth-error-flex-container">
-                    <div id="auth-error">
+                <div id={styles["auth-error-flex-container"]}>
+                    <div id={styles["auth-error"]}>
                         <BiErrorCircle />
                         <span>The passwords entered are not the same.</span>
                 </div>
@@ -78,7 +78,7 @@ const SignupPage = () => {
 
     return (
         <>
-            <div id="signup">
+            <div id={[styles["signup"]]}>
                 <form onSubmit={performSignup}>
                     <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />

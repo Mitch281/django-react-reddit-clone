@@ -2,13 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap');
 
-
-:root {
-    --post-background-colour: rgb(250, 249, 249);
-    --votes-dist-to-left: 10px;
-    --votes-dist-to-top: 20px;
-}
-
 /* **************************************** Handle fonts *****************************************/
 
 .post-category-name {
