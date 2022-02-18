@@ -38,7 +38,7 @@ const ReplyToComment = (props) => {
             num_downvotes: 0,
             date_created: dateNow,
             parent_comment: props.parentCommentId,
-            hidden: true,
+            hidden: false,
             num_replies: 0
         }
 
