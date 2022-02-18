@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import styles from "./category.module.css";
 
 const Category = (props) => {
 
@@ -9,7 +10,7 @@ const Category = (props) => {
         <Link 
         to={`/posts/category=${props.categoryName}/`}
         state={{categoryId: props.categoryId}}
-        className="post-category-name">
+        className={styles["post-category-name"]}>
             t/{props.categoryName} &nbsp;
         </Link>
     )

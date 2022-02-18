@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import Post from "../Post/Post";
 import PropTypes from "prop-types";
 import OrderOptions from "../OrderOptions/OrderOptions";
+import styles from "../Posts/posts.module.css";
 
 const PostsByCategory = (props) => {
     const { reLogin } = useContext(UserContext);
@@ -45,9 +46,9 @@ const PostsByCategory = (props) => {
 
     return (
         <>
-            <h1 id="category-name-top-page">{categoryName}</h1>
+            <h1 id={styles["category-name-top-page"]}>{categoryName}</h1>
             <OrderOptions />
-            <div className="posts">
+            <div className={styles["posts"]}>
             {posts.map((post) => <Post 
                 key={post.id}
                 id={post.id}

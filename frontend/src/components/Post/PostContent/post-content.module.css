@@ -1,0 +1,37 @@
+.edit-post-content-form {
+    margin: 10px;
+}
+
+.edit-post-content-form div {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.edit-post-content-form textarea {
+    border: 0px;
+    margin-top: 15px;
+    background: var(--post-background-colour);
+    outline: none;
+    resize: vertical;
+}
+
+.edit-post-content-form input[type="submit"] {
+    background-color: darkgrey;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    width: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgb(238, 230, 230);
+}
+
+.post-content {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    margin-top: 0px;
+}

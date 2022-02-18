@@ -1,0 +1,21 @@
+.post-votes {
+    position: absolute;
+    left: var(--votes-dist-to-left);
+    top: var(--votes-dist-to-top);
+    
+    /* To make pattern of top arrow then votes then bottom arrow */
+    display: flex;
+    flex-direction: column;
+}
+
+.vote-count {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
+    color: black;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.upvote, .downvote {
+    cursor: pointer;
+}

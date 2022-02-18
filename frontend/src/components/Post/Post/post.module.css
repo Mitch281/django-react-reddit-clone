@@ -1,0 +1,43 @@
+.post {
+    background: var(--post-background-colour);
+    position: relative; /* Ensures that position absolute for post votes works. */
+    border: 1px solid white;
+    width: 50%;
+    margin-top: 10px;
+    overflow-wrap: break-word;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Detects mobile devices. Reference: https://stackoverflow.com/questions/42025632/how-to-detect-only-with-css-mobile-screens */
+@media only screen and (hover: none) and (pointer: coarse) {
+    .post {
+        width: 80%;
+    }
+}
+
+.post-info {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+}
+
+.post-info span:not(.username) {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 300;
+    color: grey;
+}
+
+.toggle-edit-post {
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 0px;
+    background: var(--post-background-colour);
+    font-family: "Fira Sans", sans-serif;
+    color: grey;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.toggle-edit-post:hover {
+    background: rgb(238, 230, 230);
+}

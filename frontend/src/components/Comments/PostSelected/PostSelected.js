@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Post from "../../Post/Post/Post";
 import PropTypes from "prop-types";
+import styles from "./post-selected.module.css";
 
 const PostSelected = (props) => {
 
@@ -40,16 +41,16 @@ const PostSelected = (props) => {
     function getOutput() {
         if (postDeleted) {
             return (
-                <div class="posts">
-                    <div class="post">
-                        <div id="post-deleted-message">Post Deleted</div>
+                <div className={styles["posts"]}>
+                    <div className={styles["post"]}>
+                        <div id={styles["post-deleted-message"]}>Post Deleted</div>
                     </div>
                 </div>
             );
         }
 
         return (
-            <div className="posts">
+            <div className={styles["posts"]}>
                 <Post
                     key={postId}
                     id={postId}

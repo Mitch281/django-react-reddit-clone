@@ -1,4 +1,5 @@
 import { Link, useParams, useLocation } from "react-router-dom";
+import styles from "./order-options.module.css";
 
 const OrderOptions = () => {
     const params = useParams();
@@ -9,27 +10,27 @@ const OrderOptions = () => {
     function getOutput() {
         if (categoryName && !order) {
             return (
-                <div id="post-sorting-options-flex-container">
-                    <div id="post-sorting-options">
+                <div id={styles["post-sorting-options-flex-container"]}>
+                    <div id={styles["post-sorting-options"]}>
                         <span>Sort by: </span>
                         <Link
                             to="new/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "new" ? "current-ordering" : ""}
+                            id={order === "new" ? styles["current-ordering"] : ""}
                         >
                             New
                         </Link>
                         <Link
                             to="old/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "old" ? "current-ordering" : ""}
+                            id={order === "old" ? styles["current-ordering"] : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to="top/"
                             state={{ categoryId: state.categoryId }}
-                            id={order === "top" ? "current-ordering" : ""}
+                            id={order === "top" ? styles["current-ordering"] : ""}
                         >
                             Top
                         </Link>
@@ -38,7 +39,7 @@ const OrderOptions = () => {
                             state={{ categoryId: state.categoryId }}
                             id={
                                 order === "bottom"
-                                    ? "current-ordering"
+                                    ? styles["current-ordering"]
                                     : ""
                             }
                         >
@@ -49,27 +50,27 @@ const OrderOptions = () => {
             );
         } else if (categoryName && order) {
             return (
-                <div id="post-sorting-options-flex-container">
-                    <div id="post-sorting-options">
+                <div id={styles["post-sorting-options-flex-container"]}>
+                    <div id={styles["post-sorting-options"]}>
                         <span>Sort by: </span>
                         <Link
                             to={`/posts/category=${categoryName}/new/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "new" ? "current-ordering" : ""}
+                            id={order === "new" ? styles["current-ordering"] : ""}
                         >
                             New
                         </Link>
                         <Link
                             to={`/posts/category=${categoryName}/old/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "old" ? "current-ordering" : ""}
+                            id={order === "old" ? styles["current-ordering"] : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to={`/posts/category=${categoryName}/top/`}
                             state={{ categoryId: state.categoryId }}
-                            id={order === "top" ? "current-ordering" : ""}
+                            id={order === "top" ? styles["current-ordering"] : ""}
                         >
                             Top
                         </Link>
@@ -78,7 +79,7 @@ const OrderOptions = () => {
                             state={{ categoryId: state.categoryId }}
                             id={
                                 order === "bottom"
-                                    ? "current-ordering"
+                                    ? styles["current-ordering"]
                                     : ""
                             }
                         >
@@ -89,24 +90,24 @@ const OrderOptions = () => {
             );
         } else {
             return (
-                <div id="post-sorting-options-flex-container">
-                    <div id="post-sorting-options">
+                <div id={styles["post-sorting-options-flex-container"]}>
+                    <div id={styles["post-sorting-options"]}>
                         <span>Sort by: </span>
                         <Link
                             to="/new/"
-                            id={order === "new" ? "current-ordering" : ""}
+                            id={order === "new" ? styles["current-ordering"] : ""}
                         >
                             New
                         </Link>
                         <Link
                             to="/old/"
-                            id={order === "old" ? "current-ordering" : ""}
+                            id={order === "old" ? styles["current-ordering"] : ""}
                         >
                             Old
                         </Link>
                         <Link
                             to="/top/"
-                            id={order === "top" ? "current-ordering" : ""}
+                            id={order === "top" ? styles["current-ordering"] : ""}
                         >
                             Top
                         </Link>
@@ -114,7 +115,7 @@ const OrderOptions = () => {
                             to="/bottom/"
                             id={
                                 order === "bottom"
-                                    ? "current-ordering"
+                                    ? styles["current-ordering"]
                                     : ""
                             }
                         >

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { BiCommentDetail } from "react-icons/bi";
+import styles from "./view-comments.module.css";
 
 const ViewComments = (props) => {
 
@@ -22,7 +23,7 @@ const ViewComments = (props) => {
     }, []);
 
     return ( 
-        <div className="nav-to-comments" onClick={() => props.navigateToPost(props.postId)}>
+        <div className={styles["nav-to-comments"]} onClick={() => props.navigateToPost(props.postId)}>
             <BiCommentDetail />
             <span>{numComments} {numComments === 1 ? "Comment" : "Comments"}</span>
         </div>

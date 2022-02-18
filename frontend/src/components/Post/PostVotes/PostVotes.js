@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
 import { NoAccessTokenError } from "../../../utils/auth";
+import styles from "./post-votes.module.css";
 
 const PostVotes = (props) => {
 
@@ -145,10 +146,10 @@ const PostVotes = (props) => {
     }
 
     return (
-        <div className="post-votes">
-            <ImArrowUp className="upvote" onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
+        <div className={styles["post-votes"]}>
+            <ImArrowUp className={styles["upvote"]} onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
             <span className="vote-count">{numUpvotes - numDownvotes}</span>
-            <ImArrowDown className="downvote" onClick={() => handleVote("downvote")} style={determineDownArrowColour()} />
+            <ImArrowDown className={styles["downvote"]} onClick={() => handleVote("downvote")} style={determineDownArrowColour()} />
         </div>
     )
 }

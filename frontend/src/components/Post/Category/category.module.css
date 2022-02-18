@@ -1,0 +1,10 @@
+.post-category-name {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    color: black;
+}
+
+.post-category-name:hover {
+    text-decoration: underline;
+}

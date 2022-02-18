@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
+import styles from "./title.module.css";
 
 const Title = (props) => {
     return (
-        <h1 className="post-title">
+        <h1 className={styles["post-title"]}>
             {props.title}
         </h1>
     )

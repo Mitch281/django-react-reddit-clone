@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+import styles from "./user.module.css";
 
 const User = (props) => {
     return (
         <span>
-            Posted by <span className="username">{props.username}</span> &nbsp;
+            Posted by <span className={styles["username"]}>{props.username}</span> &nbsp;
         </span>
     )
 }

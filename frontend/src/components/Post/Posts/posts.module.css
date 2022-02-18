@@ -1,0 +1,11 @@
+#category-name-top-page {
+    display: flex;
+    justify-content: center;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensures that flexbox takes entire width of page. Thus, it is centered in the middle. */
+}

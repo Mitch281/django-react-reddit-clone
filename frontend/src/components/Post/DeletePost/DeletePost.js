@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./delete-post.module.css";
 
 const DeletePost = (props) => {
 
@@ -43,7 +44,7 @@ const DeletePost = (props) => {
     }
 
     return (
-        <BsFillTrashFill className="delete-post-button" onClick={performDeletePost} />
+        <BsFillTrashFill className={styles["delete-post-button"]} onClick={performDeletePost} />
     );
 };
 

@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
+import styles from "./post-content.module.css";
 
 const PostContent = (props) => {
 
@@ -59,7 +60,7 @@ const PostContent = (props) => {
     return (
         <>
             {props.currentlyEditing ? 
-                <form className="edit-post-content-form" onSubmit={performEditPostContent} >
+                <form className={styles["edit-post-content-form"]} onSubmit={performEditPostContent} >
                     <div>
                         <span>Edit Post</span>
                         <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)} />
@@ -67,7 +68,7 @@ const PostContent = (props) => {
                     </div>
                 </form>
                 : 
-                <p className="post-content">
+                <p className={styles["post-content"]}>
                     {props.content}
                 </p>
             }

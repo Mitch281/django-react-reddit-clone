@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import Post from "../Post/Post";
-import "../../../style/posts.css";
 import PropTypes from "prop-types";
 import OrderOptions from "../OrderOptions/OrderOptions";
 import { useEffect } from "react";
+import styles from "./posts.module.css";
 
 const Posts = (props) => {
 
@@ -17,9 +17,9 @@ const Posts = (props) => {
     
     return (
         <>
-            <h1 id="category-name-top-page">Home</h1>
+            <h1 id={styles["category-name-top-page"]}>Home</h1>
             <OrderOptions />
-            <div className="posts">
+            <div className={styles["posts"]}>
                 {props.posts.map((post) => <Post 
                 key={post.id}
                 id={post.id}

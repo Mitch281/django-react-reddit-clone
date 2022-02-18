@@ -1,0 +1,5 @@
+.post-title {
+    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

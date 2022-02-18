@@ -1,0 +1,30 @@
+#post-deleted-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensures that flexbox takes entire width of page. Thus, it is centered in the middle. */
+}
+
+.post {
+    background: var(--post-background-colour);
+    position: relative; /* Ensures that position absolute for post votes works. */
+    border: 1px solid white;
+    width: 50%;
+    margin-top: 10px;
+    overflow-wrap: break-word;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Detects mobile devices. Reference: https://stackoverflow.com/questions/42025632/how-to-detect-only-with-css-mobile-screens */
+@media only screen and (hover: none) and (pointer: coarse) {
+    .post {
+        width: 80%;
+    }
+}

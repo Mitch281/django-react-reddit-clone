@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import ViewComments from "../ViewComments/ViewComments";
 import DeletePost from "../DeletePost/DeletePost";
+import styles from "./post.module.css";
 
 const Post = (props) => {
 
@@ -42,8 +43,8 @@ const Post = (props) => {
     }
 
     return (
-        <div className="post">
-            <div className="top-post-flex-container">
+        <div className={styles["post"]}>
+            <div className={styles["top-post-flex-container"]}>
                 <PostVotes 
                 votes={votes} 
                 upvote={props.upvote} 
@@ -53,7 +54,7 @@ const Post = (props) => {
                 downvote={props.downvote}
                 trackUsersDownvotes={props.trackUsersDownvotes} 
                 />
-                <div className="post-info">
+                <div className={styles["post-info"]}>
                     <Category categoryId={props.categoryId} categoryName={props.categoryName} />
                     <User username={props.username} />
                     <DateOfPost dateCreated={props.dateCreated} />
@@ -76,7 +77,7 @@ const Post = (props) => {
                                                 /> 
             : ""}
             {userIdLoggedIn === props.userId ? 
-            <button type="button" className="toggle-edit-post" onClick={() => setCurrentlyEditing(!currentlyEditing)}>
+            <button type="button" className={styles["toggle-edit-post"]} onClick={() => setCurrentlyEditing(!currentlyEditing)}>
                 Edit
             </button> : ""}
         </div>
