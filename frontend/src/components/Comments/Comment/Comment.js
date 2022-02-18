@@ -70,17 +70,17 @@ const Comment = (props) => {
         if (props.numReplies === 0) {
             return;
         }
-        
+
         if (props.hidden) {
             return (
-                <button type="button" onClick={() => props.toggleHidden(props.id, props.hidden)}>
+                <button type="button" className={styles["hide-replies-button"]} onClick={() => props.toggleHidden(props.id, props.hidden)}>
                     Show {props.numReplies} Replies
                 </button>
             );
         }
 
         return (
-            <button type="button" onClick={() => props.toggleHidden(props.id, props.hidden)}>
+            <button type="button" className={styles["hide-replies-button"]} onClick={() => props.toggleHidden(props.id, props.hidden)}>
                 Hide {props.numReplies} Replies
             </button>
         );

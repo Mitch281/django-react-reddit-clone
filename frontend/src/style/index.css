@@ -15,6 +15,7 @@
     --comment-background-colour: rgb(250, 249, 249);
     --navbar-height: 7vh;
     --navbar-button-border-radii: 5px;
+    --background-colour: rgb(224, 222, 230);
 }
 
 
@@ -26,10 +27,6 @@ h1 {
 p {
     font-family: 'Fira Sans', sans-serif;
     font-weight: 300;
-}
-
-:root {
-    --background-colour: rgb(224, 222, 230);
 }
 
 body { 

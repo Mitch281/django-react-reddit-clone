@@ -36,6 +36,14 @@
     background: rgb(238, 230, 230);
 }
 
-.hide-replies {
+.hide-replies-button {
     margin-top: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: blue;
+}
+
+.hide-replies-button:hover {
+    text-decoration: underline;
 }
