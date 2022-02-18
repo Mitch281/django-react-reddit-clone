@@ -65,8 +65,10 @@ const Comment = (props) => {
         if (props.deleted) {
             return (
             <>
-                <div className={styles["comment"]} style={getMarginLeft()}>
-                    <span>Deleted</span>
+                <div className={styles["comment-container"]}>
+                    <div className={styles["comment"]} style={getMarginLeft()}>
+                        <span>Deleted</span>
+                    </div>
                 </div>
                 {renderReplies()}
             </>
@@ -74,63 +76,66 @@ const Comment = (props) => {
         }
         return (
             <>
-                <div className={styles["comment"]} style={getMarginLeft()}>
-                    <CommentVotes
-                        votes={votes}
-                        userCommentVotes={props.userCommentVotes}
-                        commentId={props.id}
-                        upvote={props.upvote}
-                        downvote={props.downvote}
-                        trackUsersUpvotes={props.trackUsersUpvotes}
-                        trackUsersDownvotes={props.trackUsersDownvotes}
-                    />
-                    <User username={props.username} />
-                    <DateOfComment dateCreated={props.dateCreated} />
-                    <CommentContent
-                        content={props.content}
-                        currentlyEditing={currentlyEditing}
-                        commentId={props.id}
-                        userId={props.userId}
-                        editComment={props.editComment}
-                        toggleEditForm={toggleEditForm}
-                    />
-                    <button
-                        type="button"
-                        onClick={toggleReplyForm}
-                        className={styles["reply-to-comment-button"]}
-                    >
-                        Reply
-                    </button>
-                    <ReplyToComment
-                        wantReplyForm={wantReplyForm}
-                        parentUsername={props.username}
-                        postId={props.postId}
-                        updateComments={props.updateComments}
-                        parentCommentId={props.id}
-                        toggleReplyForm={toggleReplyForm}
-                    />
-                    {userIdLoggedIn === props.userId ? (
-                        <DeleteComment
-                            deleteComment={props.deleteComment}
+                <div className={styles["comment-container"]} style={getMarginLeft()}>
+                    <div className={styles["comment"]}>
+                        <CommentVotes
+                            votes={votes}
+                            userCommentVotes={props.userCommentVotes}
+                            commentId={props.id}
+                            upvote={props.upvote}
+                            downvote={props.downvote}
+                            trackUsersUpvotes={props.trackUsersUpvotes}
+                            trackUsersDownvotes={props.trackUsersDownvotes}
+                        />
+                        <User username={props.username} />
+                        <DateOfComment dateCreated={props.dateCreated} />
+                        <CommentContent
+                            content={props.content}
+                            currentlyEditing={currentlyEditing}
                             commentId={props.id}
                             userId={props.userId}
+                            editComment={props.editComment}
+                            toggleEditForm={toggleEditForm}
                         />
-                    ) : (
-                        ""
-                    )}
-                    {userIdLoggedIn === props.userId ? (
                         <button
                             type="button"
-                            className={styles["toggle-edit-comment"]}
-                            onClick={() =>
-                                setCurrentlyEditing(!currentlyEditing)
-                            }
+                            onClick={toggleReplyForm}
+                            className={styles["reply-to-comment-button"]}
                         >
-                            Edit
+                            Reply
                         </button>
-                    ) : (
-                        ""
-                    )}
+                        <ReplyToComment
+                            wantReplyForm={wantReplyForm}
+                            parentUsername={props.username}
+                            postId={props.postId}
+                            updateComments={props.updateComments}
+                            parentCommentId={props.id}
+                            toggleReplyForm={toggleReplyForm}
+                        />
+                        {userIdLoggedIn === props.userId ? (
+                            <DeleteComment
+                                deleteComment={props.deleteComment}
+                                commentId={props.id}
+                                userId={props.userId}
+                            />
+                        ) : (
+                            ""
+                        )}
+                        {userIdLoggedIn === props.userId ? (
+                            <button
+                                type="button"
+                                className={styles["toggle-edit-comment"]}
+                                onClick={() =>
+                                    setCurrentlyEditing(!currentlyEditing)
+                                }
+                            >
+                                Edit
+                            </button>
+                        ) : (
+                            ""
+                        )}
+                    </div>
+                    <button type="button" className={styles["hide-replies"]}>Hide Replies</button>
                 </div>
                 {renderReplies()}
             </>

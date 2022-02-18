@@ -1,12 +1,15 @@
-.comment {
+.comment-container {
     width: 50%;
-    border: 1px solid white;
+    position: relative;
+}
+
+.comment {
+    border: 1px solid white;    
+    background: var(--comment-background-colour);
+    border-radius: 5px;
+    padding: 10px;
     margin-top: 10px;
     overflow-wrap: break-word;
-    border-radius: 5px;
-    position: relative;
-    background: var(--comment-background-colour);
-    padding: 10px;
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
@@ -31,4 +34,8 @@
 
 .reply-to-comment-button:hover, .toggle-edit-comment:hover {
     background: rgb(238, 230, 230);
+}
+
+.hide-replies {
+    margin-top: 5px;
 }
