@@ -21,7 +21,7 @@ const Comment = (props) => {
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
     function renderReplies() {
-        if (props.replies) {
+        if (props.replies && !props.hidden) {
             return props.replies.map((comment) => (
                 <Comment
                     key={comment.id}
@@ -35,6 +35,8 @@ const Comment = (props) => {
                     replies={comment.replies}
                     nestingLevel={comment.nestingLevel}
                     deleted={comment.deleted}
+                    numReplies={comment.num_replies}
+                    hidden={comment.hidden}
                     updateComments={props.updateComments}
                     userCommentVotes={props.userCommentVotes}
                     upvote={props.upvote}
@@ -43,9 +45,12 @@ const Comment = (props) => {
                     trackUsersDownvotes={props.trackUsersDownvotes}
                     editComment={props.editComment}
                     deleteComment={props.deleteComment}
+                    toggleHidden={props.toggleHidden}
                 />
             ));
         }
+
+        return;
     }
 
     function getMarginLeft() {
@@ -61,14 +66,35 @@ const Comment = (props) => {
         setCurrentlyEditing(currentlyEditing => !currentlyEditing);
     }
 
+    function hideOrShowReplies() {
+        if (props.numReplies === 0) {
+            return;
+        }
+        
+        if (props.hidden) {
+            return (
+                <button type="button" onClick={() => props.toggleHidden(props.id, props.hidden)}>
+                    Show {props.numReplies} Replies
+                </button>
+            );
+        }
+
+        return (
+            <button type="button" onClick={() => props.toggleHidden(props.id, props.hidden)}>
+                Hide {props.numReplies} Replies
+            </button>
+        );
+    }
+
     function getOutput() {
         if (props.deleted) {
             return (
             <>
-                <div className={styles["comment-container"]}>
-                    <div className={styles["comment"]} style={getMarginLeft()}>
+                <div className={styles["comment-container"]} style={getMarginLeft()}>
+                    <div className={styles["comment"]}>
                         <span>Deleted</span>
                     </div>
+                    {hideOrShowReplies()}
                 </div>
                 {renderReplies()}
             </>
@@ -135,7 +161,7 @@ const Comment = (props) => {
                             ""
                         )}
                     </div>
-                    <button type="button" className={styles["hide-replies"]}>Hide Replies</button>
+                    {hideOrShowReplies()}
                 </div>
                 {renderReplies()}
             </>
@@ -158,6 +184,8 @@ Comment.propTypes = {
     replies: PropTypes.array,
     nestingLevel: PropTypes.number,
     deleted: PropTypes.bool,
+    numReplies: PropTypes.number,
+    hidden: PropTypes.bool,
     updateComments: PropTypes.func,
     userCommentVotes: PropTypes.array,
     upvote: PropTypes.func,
@@ -166,6 +194,7 @@ Comment.propTypes = {
     trackUsersDownvotes: PropTypes.func,
     editComment: PropTypes.func,
     deleteComment: PropTypes.func,
+    toggleHidden: PropTypes.func
 };
 
 export default Comment;

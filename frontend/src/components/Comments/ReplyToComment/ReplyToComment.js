@@ -37,7 +37,9 @@ const ReplyToComment = (props) => {
             num_upvotes: 0,
             num_downvotes: 0,
             date_created: dateNow,
-            parent_comment: props.parentCommentId
+            parent_comment: props.parentCommentId,
+            hidden: true,
+            num_replies: 0
         }
 
         const accessToken = localStorage.getItem("accessToken");

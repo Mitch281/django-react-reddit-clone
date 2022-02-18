@@ -91,6 +91,7 @@ const Comments = () => {
 
     // Updates comments on frontend after post is successful on backend.
     function updateComments(newComment) {
+        console.log(newComment);
         setComments(comments => [...comments, newComment]);
     }
 
@@ -244,6 +245,11 @@ const Comments = () => {
         setComments(comments.map(comment => 
             comment.id === commentId ? {...comment, deleted: true} : comment));
     }
+
+    function toggleHidden(commentId, currentHidden) {
+        setComments(comments.map(comment => 
+            comment.id === commentId ? {...comment, hidden: !currentHidden}: comment));
+    }
     
     return (
         <>
@@ -263,6 +269,8 @@ const Comments = () => {
                             replies={comment.replies}
                             nestingLevel={comment.nestingLevel}
                             deleted={comment.deleted}
+                            numReplies={comment.num_replies}
+                            hidden={comment.hidden}
                             updateComments={updateComments}
                             userCommentVotes={userCommentVotes}
                             upvote={upvote}
@@ -271,6 +279,7 @@ const Comments = () => {
                             trackUsersDownvotes={trackUsersDownvotes}
                             editComment={editComment}
                             deleteComment={deleteComment}
+                            toggleHidden={toggleHidden}
                         />
                     )}
                 </div>

@@ -29,7 +29,9 @@ const CommentInput = (props) => {
             num_upvotes: 0,
             num_downvotes: 0,
             date_created: dateNow,
-            parent_comment: null
+            parent_comment: null,
+            hidden: false,
+            num_replies: 0
         }
 
         const accessToken = localStorage.getItem("accessToken");
