@@ -13,7 +13,7 @@
 
 .reply-to-comment-form textarea {
     border: 0px;
-    margin-top: 15px;
+    margin: 15px 0px;
     background: var(--post-background-colour);
     outline: none;
     resize: vertical;

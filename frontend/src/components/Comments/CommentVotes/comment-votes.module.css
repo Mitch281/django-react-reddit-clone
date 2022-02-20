@@ -5,3 +5,16 @@
     left: var(--votes-dist-to-left);
     top: var(--votes-dist-to-top);
 }
+
+.comment-vote-count {
+    margin: 4px auto;
+}
+
+.upvote, .downvote {
+    display: block;
+    cursor: pointer;
+}
+
+.upvote {
+    margin-top: 5px;
+}

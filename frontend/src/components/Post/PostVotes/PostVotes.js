@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ImArrowUp, ImArrowDown } from "react-icons/im";
+import { HiArrowSmUp, HiArrowSmDown } from "react-icons/hi";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
@@ -147,9 +147,9 @@ const PostVotes = (props) => {
 
     return (
         <div className={styles["post-votes"]}>
-            <ImArrowUp className={styles["upvote"]} onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
-            <span className="vote-count">{numUpvotes - numDownvotes}</span>
-            <ImArrowDown className={styles["downvote"]} onClick={() => handleVote("downvote")} style={determineDownArrowColour()} />
+            <HiArrowSmUp size={25} className={styles["upvote"]} onClick={() => handleVote("upvote")} style={determineUpArrowColour()} />
+            <span className={styles["vote-count"]}>{numUpvotes - numDownvotes}</span>
+            <HiArrowSmDown size={25} className={styles["downvote"]} onClick={() => handleVote("downvote")} style={determineDownArrowColour()} />
         </div>
     )
 }
