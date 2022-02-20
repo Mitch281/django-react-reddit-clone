@@ -13,6 +13,7 @@ const Categories = (props) => {
             {/* These are the rest of the categories.*/}
             {props.categories.map(category => <Category key={category.id} category={category} 
             filterCategoriesText={props.filterCategoriesText} />)}
+            <hr />
         </>
     );
 }
