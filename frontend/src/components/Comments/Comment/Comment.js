@@ -22,32 +22,36 @@ const Comment = (props) => {
 
     function renderReplies() {
         if (props.replies && !props.hidden) {
-            return props.replies.map((comment) => (
-                <Comment
-                    key={comment.id}
-                    id={comment.id}
-                    userId={comment.user}
-                    username={comment.username}
-                    content={comment.content}
-                    numUpvotes={comment.num_upvotes}
-                    numDownvotes={comment.num_downvotes}
-                    dateCreated={comment.date_created}
-                    replies={comment.replies}
-                    nestingLevel={comment.nestingLevel}
-                    deleted={comment.deleted}
-                    numReplies={comment.num_replies}
-                    hidden={comment.hidden}
-                    updateComments={props.updateComments}
-                    userCommentVotes={props.userCommentVotes}
-                    upvote={props.upvote}
-                    downvote={props.downvote}
-                    trackUsersUpvotes={props.trackUsersUpvotes}
-                    trackUsersDownvotes={props.trackUsersDownvotes}
-                    editComment={props.editComment}
-                    deleteComment={props.deleteComment}
-                    toggleHidden={props.toggleHidden}
-                />
-            ));
+            return (
+                <div className={styles["replies"]}>
+                    {props.replies.map((comment) => (
+                        <Comment
+                            key={comment.id}
+                            id={comment.id}
+                            userId={comment.user}
+                            username={comment.username}
+                            content={comment.content}
+                            numUpvotes={comment.num_upvotes}
+                            numDownvotes={comment.num_downvotes}
+                            dateCreated={comment.date_created}
+                            replies={comment.replies}
+                            nestingLevel={comment.nestingLevel}
+                            deleted={comment.deleted}
+                            numReplies={comment.num_replies}
+                            hidden={comment.hidden}
+                            updateComments={props.updateComments}
+                            userCommentVotes={props.userCommentVotes}
+                            upvote={props.upvote}
+                            downvote={props.downvote}
+                            trackUsersUpvotes={props.trackUsersUpvotes}
+                            trackUsersDownvotes={props.trackUsersDownvotes}
+                            editComment={props.editComment}
+                            deleteComment={props.deleteComment}
+                            toggleHidden={props.toggleHidden}
+                        />
+                    ))}
+                </div>
+            );
         }
 
         return;
@@ -90,19 +94,19 @@ const Comment = (props) => {
         if (props.deleted) {
             return (
             <>
-                <div className={styles["comment-container"]} style={getMarginLeft()}>
+                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`} style={getMarginLeft()}>
                     <div className={styles["comment"]}>
                         <span>Deleted</span>
                     </div>
                     {hideOrShowReplies()}
+                    {renderReplies()}
                 </div>
-                {renderReplies()}
             </>
             );
         }
         return (
             <>
-                <div className={styles["comment-container"]} style={getMarginLeft()}>
+                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`} style={getMarginLeft()}>
                     <div className={styles["comment"]}>
                         <CommentVotes
                             votes={votes}
@@ -162,8 +166,8 @@ const Comment = (props) => {
                         )}
                     </div>
                     {hideOrShowReplies()}
+                    {renderReplies()}
                 </div>
-                {renderReplies()}
             </>
         );
     }

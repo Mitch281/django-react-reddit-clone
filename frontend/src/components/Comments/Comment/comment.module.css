@@ -1,5 +1,10 @@
-.comment-container {
+.root {
     width: 50%;
+    position: relative;
+}
+
+.comment-container:not(.root) {
+    width: 100%;
     position: relative;
 }
 
@@ -12,9 +17,15 @@
     overflow-wrap: break-word;
 }
 
+.replies {
+    border-left: 1px solid black;
+    border-collapse: collapse;
+}
+
 @media only screen and (hover: none) and (pointer: coarse) {
-    .comment {
-        width: 80%;
+    .root {
+        width: 50%;
+        position: relative;
     }
 }
 

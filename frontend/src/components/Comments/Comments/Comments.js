@@ -280,6 +280,7 @@ const Comments = () => {
                             editComment={editComment}
                             deleteComment={deleteComment}
                             toggleHidden={toggleHidden}
+                            isRootComment={true}
                         />
                     )}
                 </div>
