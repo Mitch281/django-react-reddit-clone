@@ -6,6 +6,7 @@
 .comment-container:not(.root) {
     width: 100%;
     position: relative;
+    margin-left: 50px;
 }
 
 .comment {

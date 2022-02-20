@@ -57,11 +57,6 @@ const Comment = (props) => {
         return;
     }
 
-    function getMarginLeft() {
-        const marginLeft = `${props.nestingLevel * 50}px`;
-        return { marginLeft: marginLeft };
-    }
-
     function toggleReplyForm() {
         setWantReplyForm((wantReplyForm) => !wantReplyForm);
     }
@@ -94,7 +89,7 @@ const Comment = (props) => {
         if (props.deleted) {
             return (
             <>
-                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`} style={getMarginLeft()}>
+                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`}>
                     <div className={styles["comment"]}>
                         <span>Deleted</span>
                     </div>
@@ -106,7 +101,7 @@ const Comment = (props) => {
         }
         return (
             <>
-                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`} style={getMarginLeft()}>
+                <div className={props.isRootComment ? `${styles["comment-container"]} ${styles["root"]}` : `${styles["comment-container"]}`}>
                     <div className={styles["comment"]}>
                         <CommentVotes
                             votes={votes}
