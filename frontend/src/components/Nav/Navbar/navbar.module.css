@@ -48,3 +48,13 @@
 #nav-to-login {
     margin-right: 1em;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #navbar-auth {
+        margin-left: 15%;
+    }
+    
+    #navbar-nav {
+        padding-left: 10px;
+    }
+}

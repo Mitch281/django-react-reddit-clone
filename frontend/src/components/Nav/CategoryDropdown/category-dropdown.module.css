@@ -56,3 +56,8 @@
 #filter-categories-input:focus {
     outline: none;
 }
+
+#category-in-focus {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

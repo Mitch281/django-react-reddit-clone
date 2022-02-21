@@ -59,3 +59,9 @@ https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-in
     background-color: rgba(255, 0, 0, 0.2);
     padding: 10px;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #login form, #signup form{
+        width: 80vw;
+    }
+}

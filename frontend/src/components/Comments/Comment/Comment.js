@@ -9,6 +9,8 @@ import CommentVotes from "../CommentVotes/CommentVotes";
 import DeleteComment from "../DeleteComment/DeleteComment";
 import styles from "./comment.module.css";
 
+// TODO: Get rid of nesting level prop on frontend and backend (not needed anymore).
+
 const Comment = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
 
@@ -193,7 +195,8 @@ Comment.propTypes = {
     trackUsersDownvotes: PropTypes.func,
     editComment: PropTypes.func,
     deleteComment: PropTypes.func,
-    toggleHidden: PropTypes.func
+    toggleHidden: PropTypes.func,
+    isRootComment: PropTypes.bool
 };
 
 export default Comment;

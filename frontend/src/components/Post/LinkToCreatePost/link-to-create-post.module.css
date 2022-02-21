@@ -19,3 +19,11 @@
 #link-to-create-post:hover {
     border: 2px solid var(--input-border-colour);
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #link-to-create-post {
+        border-radius: 50%;
+        left: 0;
+        padding: 5px;
+    }
+}

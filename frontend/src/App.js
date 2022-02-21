@@ -343,6 +343,7 @@ function App() {
                   deletePost={deletePost}
                   editPostContent={editPostContent}
                   />
+                  <LinkToCreatePost />
                 </>
               }
               />
@@ -358,6 +359,7 @@ function App() {
                   deletePost={deletePost}
                   editPostContent={editPostContent}
                   />
+                  <LinkToCreatePost />
                 </>
               }
               />
