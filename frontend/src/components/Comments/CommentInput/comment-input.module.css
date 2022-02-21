@@ -70,3 +70,9 @@
 .not-logged-in-message a:hover {
     background-color: rgb(147, 213, 252);
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #comment-input {
+        width: 80%;
+    }
+}

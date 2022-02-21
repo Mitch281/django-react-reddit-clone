@@ -23,13 +23,6 @@
     border-collapse: collapse;
 }
 
-@media only screen and (hover: none) and (pointer: coarse) {
-    .root {
-        width: 50%;
-        position: relative;
-    }
-}
-
 .toggle-edit-comment {
     float: right;
     margin-right: 10px;
@@ -58,4 +51,14 @@
 
 .hide-replies-button:hover {
     text-decoration: underline;
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    .root {
+        width: 60%;
+    }
+
+    .comment-container:not(.root) {
+        margin-left: 25px;
+    }
 }

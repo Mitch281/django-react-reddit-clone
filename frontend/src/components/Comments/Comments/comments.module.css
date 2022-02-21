@@ -11,3 +11,13 @@
     align-items: center;
     margin-top: 40px;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #comments {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+        margin-left: 40px;
+    }
+}
