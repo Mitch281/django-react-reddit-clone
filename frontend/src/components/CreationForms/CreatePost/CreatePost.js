@@ -81,7 +81,7 @@ const CreatePost = (props) => {
     return (
         <div id={styles["create-post-flex-container"]}>
             <form onSubmit={performAddPost} >
-                <input type="text" id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+                <input type="text" id={styles["post-title"]} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <textarea id={styles["post-content"]} type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
                 <select id={styles["select-post-category"]} ref={category}> 
                     {props.categories.map(category => 

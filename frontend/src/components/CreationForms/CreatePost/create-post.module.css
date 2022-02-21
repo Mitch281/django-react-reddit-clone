@@ -67,3 +67,9 @@
 #create-post-flex-container select {
     cursor: pointer;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #create-post-flex-container form {
+        width: 80vw;
+    }
+}

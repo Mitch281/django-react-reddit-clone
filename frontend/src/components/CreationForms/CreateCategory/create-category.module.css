@@ -41,3 +41,9 @@
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #create-category-flex-container form {
+        width: 80vw;
+    }
+}
