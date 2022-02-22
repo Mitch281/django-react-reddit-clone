@@ -3,11 +3,16 @@ import { useEffect, useState } from "react";
 import Post from "../../Post/Post/Post";
 import PropTypes from "prop-types";
 import styles from "./post-selected.module.css";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import ClipLoader from "react-spinners/ClipLoader";
+import {constants} from "../../../constants";
 
 const PostSelected = (props) => {
 
     const [post, setPost] = useState({});
     const [postDeleted, setPostDeleted] = useState(false);
+
+    const [error, setError] = useState("");
 
     const params = useParams();
     const postId = params.postId;
@@ -31,7 +36,7 @@ const PostSelected = (props) => {
 
     useEffect(() => {
         loadPost()
-        .catch(error => console.log(error));
+        .catch(error => setError(error));
     }, [props.posts]);
 
     // TODO: Issue where when upvoting or downvoting post in this router componenent, number of votes doesn't update. This is
@@ -39,7 +44,22 @@ const PostSelected = (props) => {
     // using get request with postId.
 
     function getOutput() {
-        if (postDeleted) {
+
+        if (error.message) {
+            return  <div className={styles["posts"]}>
+                        <ErrorMessage errorMessage={"Could not load post. Please try again later"} />
+                    </div>
+        }
+
+        else if (Object.keys(post).length === 0) {
+            return (
+                <div className={styles["posts"]}>
+                    <ClipLoader color={constants.loaderColour} loading={true} size={150} />
+                </div>
+            );
+        }
+
+        else if (postDeleted) {
             return (
                 <div className={styles["posts"]}>
                     <div className={styles["post"]}>

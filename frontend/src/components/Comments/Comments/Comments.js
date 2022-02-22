@@ -12,6 +12,9 @@ import {
 } 
 from "../../../utils/fetch-data";
 import styles from "./comments.module.css";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import ClipLoader from "react-spinners/ClipLoader";
+import {constants} from "../../../constants";
 
 const Comments = () => {
 
@@ -24,6 +27,8 @@ const Comments = () => {
     // This keeps track of all votes a user has voted on. This is needed so that users cannot vote twice on a post, and
     // to provide visual indication of what votes a user has voted on.
     const [userCommentVotes, setUserCommentVotes] = useState([]);
+
+    const [error, setError] = useState("");
 
     useEffect(() => {
         async function loadUserCommentVotes() {
@@ -45,12 +50,13 @@ const Comments = () => {
             const json = await response.json();
             setComments(json);
         } else {
-            throw new Error("couldn't fetch comments.");
+            throw new Error(response.status);
         }
     }
 
     useEffect(() => {
-        loadComments();
+        loadComments()
+        .catch(error => setError(error));
     }, [params]);
 
     useEffect(() => {
@@ -250,43 +256,65 @@ const Comments = () => {
         setComments(comments.map(comment => 
             comment.id === commentId ? {...comment, hidden: !currentHidden}: comment));
     }
+
+    function getOutput() {
+        if (error.message) {
+            return (
+                <div id={styles["comments-flex-container"]}>
+                    <ErrorMessage errorMessage={"Could not load comments. Please try again later."} />
+                </div>
+            );
+        }
+        else if (comments.length === 0) {
+            return (
+                <div id={styles["comments-flex-container"]}>
+                    <ClipLoader css={"margin-top: 50px"} color={constants.loaderColour} loading={true} size={150}/>
+                </div>
+            );
+        }
+        else {
+            return (
+                <>
+                    <CommentInput updateComments={updateComments}/>
+                    <div id={styles["comments-flex-container"]}>
+                        <div id={styles["comments"]}>
+                            {commentChain.map((comment) =>
+                                <Comment
+                                    key={comment.id}
+                                    id={comment.id}
+                                    userId={comment.user}
+                                    username={comment.username}
+                                    content={comment.content}
+                                    numUpvotes={comment.num_upvotes}
+                                    numDownvotes={comment.num_downvotes}
+                                    dateCreated={comment.date_created}
+                                    replies={comment.replies}
+                                    nestingLevel={comment.nestingLevel}
+                                    deleted={comment.deleted}
+                                    numReplies={comment.num_replies}
+                                    hidden={comment.hidden}
+                                    updateComments={updateComments}
+                                    userCommentVotes={userCommentVotes}
+                                    upvote={upvote}
+                                    downvote={downvote}
+                                    trackUsersUpvotes={trackUsersUpvotes}
+                                    trackUsersDownvotes={trackUsersDownvotes}
+                                    editComment={editComment}
+                                    deleteComment={deleteComment}
+                                    toggleHidden={toggleHidden}
+                                    isRootComment={true}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </>
+            );
+        }
+    }
     
     return (
-        <>
-            <CommentInput updateComments={updateComments}/>
-            <div id={styles["comments-flex-container"]}>
-                <div id={styles["comments"]}>
-                    {commentChain.map((comment) =>
-                        <Comment
-                            key={comment.id}
-                            id={comment.id}
-                            userId={comment.user}
-                            username={comment.username}
-                            content={comment.content}
-                            numUpvotes={comment.num_upvotes}
-                            numDownvotes={comment.num_downvotes}
-                            dateCreated={comment.date_created}
-                            replies={comment.replies}
-                            nestingLevel={comment.nestingLevel}
-                            deleted={comment.deleted}
-                            numReplies={comment.num_replies}
-                            hidden={comment.hidden}
-                            updateComments={updateComments}
-                            userCommentVotes={userCommentVotes}
-                            upvote={upvote}
-                            downvote={downvote}
-                            trackUsersUpvotes={trackUsersUpvotes}
-                            trackUsersDownvotes={trackUsersDownvotes}
-                            editComment={editComment}
-                            deleteComment={deleteComment}
-                            toggleHidden={toggleHidden}
-                            isRootComment={true}
-                        />
-                    )}
-                </div>
-            </div>
-        </>
-    )
+        getOutput()
+    );
 }
 
 export default Comments

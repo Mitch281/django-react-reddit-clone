@@ -1,0 +1,20 @@
+#error-message {
+    width: 80vw;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--error-message-colour);
+    border: 1px solid black;
+    padding: 5px;
+    position: relative;
+    margin-top: 10px;
+}
+
+#error-message button {
+    background-color: var(--error-message-colour);
+    border: 0;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}

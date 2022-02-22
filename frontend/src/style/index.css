@@ -16,6 +16,7 @@
     --navbar-height: 7vh;
     --navbar-button-border-radii: 5px;
     --background-colour: rgb(224, 222, 230);
+    --error-message-colour: rgba(255, 0, 0, 0.2);
 }
 
 

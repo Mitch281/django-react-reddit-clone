@@ -35,6 +35,8 @@ function App() {
   // once.
   const [userPostVotes, setUserPostVotes] = useState([]);
 
+  const [postLoadingError, setPostLoadingError] = useState("");
+
   // This function relogs in a user whenever they navigate to a different page or refresh the page.
   async function reLogin() {
 
@@ -68,7 +70,7 @@ function App() {
   useEffect(() => {
     reLogin();
   }, []);
-  // TODO: Catch errors properly.
+
   async function loadPosts(order) {
     let url;
     if (order) {
