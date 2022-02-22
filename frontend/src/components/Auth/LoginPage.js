@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import styles from "./login-signup.module.css";
-import { BiErrorCircle } from "react-icons/bi";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const LoginPage = () => {
 
@@ -56,14 +56,17 @@ const LoginPage = () => {
 
         if (error.message === "401") {
             return (
-                <div id={styles["auth-error-flex-container"]}>
-                    <div id={styles["auth-error"]}>
-                        <BiErrorCircle />
-                        <span>Wrong username or password.</span>
-                    </div>
+                <div id={styles["login"]}>
+                    <ErrorMessage errorMessage={"Wrong username or password."} />
                 </div>
             );
         }
+        
+        return (
+            <div id={styles["login"]}>
+                <ErrorMessage errorMessage={"Couldn't login. Please try again later"} />
+            </div>
+        );
     }
 
     return (

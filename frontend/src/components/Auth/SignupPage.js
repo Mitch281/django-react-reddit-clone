@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-import { BiErrorCircle } from "react-icons/bi";
 import styles from "./login-signup.module.css";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const SignupPage = () => {
 
@@ -56,24 +56,24 @@ const SignupPage = () => {
         
         if (error.message === "400") {
             return (
-                <div id={styles["auth-error-flex-container"]}>
-                    <div id={styles["auth-error"]}>
-                        <BiErrorCircle />
-                        <span>Username already in use!</span>
-                    </div>
+                <div id={styles["login"]}>
+                    <ErrorMessage errorMessage={"Username already in use!"} />
                 </div>
             );
         }
         else if (error.message === "Passwords not the same") {
             return (
-                <div id={styles["auth-error-flex-container"]}>
-                    <div id={styles["auth-error"]}>
-                        <BiErrorCircle />
-                        <span>The passwords entered are not the same.</span>
+                <div id={styles["signup"]}>
+                    <ErrorMessage errorMessage={"Passwords entered are not the same!"} />
                 </div>
-            </div>
             );
         }
+
+        return (
+            <div id={styles["signup"]}>
+                <ErrorMessage errorMessage={"Could't signup. Please try again later."} />
+            </div>
+        );
     }
 
     return (

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./error-message.module.css";
+import { BiErrorCircle } from "react-icons/bi";
 
 const ErrorMessage = (props) => {
 
@@ -20,6 +21,7 @@ const ErrorMessage = (props) => {
         <>
             {wantErrorMessage ?         
                 <div id={styles["error-message"]}>
+                    <BiErrorCircle />
                     <span>{props.errorMessage}</span>
                     <button type="button" onClick={closeErrorMessage}>X</button>
                 </div> : ""

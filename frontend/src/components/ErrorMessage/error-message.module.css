@@ -1,12 +1,14 @@
 #error-message {
-    width: 80vw;
+    width: inherit;
     position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--error-message-colour);
     border: 1px solid black;
-    padding: 5px;
+    padding-right: 2%;
+    padding-top: 15px;
+    padding-bottom: 15px;
     position: relative;
     margin-top: 10px;
 }
@@ -16,5 +18,5 @@
     border: 0;
     cursor: pointer;
     position: absolute;
-    right: 10px;
+    right: 1%;
 }
