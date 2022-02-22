@@ -95,6 +95,7 @@ const CategoryDropdown = (props) => {
                         wantDropdown={wantDropdown}
                         categories={props.categories}
                         filterCategoriesText={filterCategoriesText}
+                        categoryLoadingError={props.categoryLoadingError}
                     />
                 </ul>
             </li>
@@ -105,6 +106,7 @@ const CategoryDropdown = (props) => {
 CategoryDropdown.propTypes = {
     activeCategory: PropTypes.string,
     categories: PropTypes.array,
+    categoryLoadingError: PropTypes.instanceOf(Error)
 };
 
 export default CategoryDropdown;

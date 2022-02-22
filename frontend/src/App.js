@@ -36,6 +36,7 @@ function App() {
   const [userPostVotes, setUserPostVotes] = useState([]);
 
   const [postLoadingError, setPostLoadingError] = useState("");
+  const [categoryLoadingError, setCategoryLoadingError] = useState("");
 
   // This function relogs in a user whenever they navigate to a different page or refresh the page.
   async function reLogin() {
@@ -263,9 +264,9 @@ function App() {
   }
 
   useEffect(() => {
-    loadPosts("");
+    loadPosts("").catch(error => setPostLoadingError(error));
     loadPostVotes();
-    loadCategories();
+    loadCategories().catch(error => setCategoryLoadingError(error));
   }, []);
 
   return (
@@ -285,7 +286,7 @@ function App() {
             <Routes>
               <Route exact path="/" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <Posts 
                   posts={posts}
                   loadPosts={loadPosts}
@@ -296,6 +297,7 @@ function App() {
                   trackUsersDownvotes={trackUsersDownvotes} 
                   deletePost={deletePost}
                   editPostContent={editPostContent}
+                  postLoadingError={postLoadingError}
                   />
                   <LinkToCreatePost />
                 </>
@@ -303,7 +305,7 @@ function App() {
               />
               <Route exact path="/:order/" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <Posts 
                   posts={posts} 
                   loadPosts={loadPosts}
@@ -314,6 +316,7 @@ function App() {
                   trackUsersDownvotes={trackUsersDownvotes}
                   deletePost={deletePost}
                   editPostContent={editPostContent}
+                  postLoadingError={postLoadingError}
                   />
                   <LinkToCreatePost />
                 </>
@@ -321,21 +324,21 @@ function App() {
               />
               <Route exact path="/login/" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <LoginPage />
                 </>
               }
               />
               <Route exact path="/signup/" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <SignupPage />
                 </>
               }
               />
               <Route exact path="posts/category=:categoryName" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <PostsByCategory 
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
@@ -351,7 +354,7 @@ function App() {
               />
               <Route exact path="posts/category=:categoryName/:order" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <PostsByCategory 
                   upvote={upvote} 
                   userPostVotes={userPostVotes} 
@@ -367,7 +370,7 @@ function App() {
               />
               <Route exact path="post=:postId/comments" element = {
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <PostSelected
                   posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
                   upvote={upvote} 
@@ -384,7 +387,7 @@ function App() {
               />
               <Route exact path="/create-post/" element={
                 <>
-                  <Navbar categories={categories} />
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
                   <CreatePost categories={categories} addPost={addPost} />
                 </>
               }

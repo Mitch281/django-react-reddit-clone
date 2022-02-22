@@ -7,8 +7,7 @@ import PropTypes from "prop-types";
 import styles from "./navbar.module.css";
 
 const Navbar = (props) => {
-
-    const {loggedIn} = useContext(UserContext);
+    const { loggedIn } = useContext(UserContext);
 
     const params = useParams();
     const activeCategory = params.categoryName;
@@ -17,24 +16,37 @@ const Navbar = (props) => {
         <div id={styles["navbar"]}>
             <ul id={styles["navbar-nav"]}>
                 <li>
-                    <Link to="/" id={styles["navbar-site-name"]}><h1>Threddit</h1></Link>
+                    <Link to="/" id={styles["navbar-site-name"]}>
+                        <h1>Threddit</h1>
+                    </Link>
                 </li>
-                <CategoryDropdown activeCategory={activeCategory} categories={props.categories} />
+                <CategoryDropdown
+                    activeCategory={activeCategory}
+                    categories={props.categories}
+                    categoryLoadingError={props.categoryLoadingError}
+                />
                 <li id={styles["navbar-auth"]}>
-                    {loggedIn ? <LogoutButton /> : 
+                    {loggedIn ? (
+                        <LogoutButton />
+                    ) : (
                         <>
-                            <Link id={styles["nav-to-login"]} to="/login/">Login</Link>
-                            <Link id={styles["nav-to-signup"]} to="/signup/">Signup</Link>
+                            <Link id={styles["nav-to-login"]} to="/login/">
+                                Login
+                            </Link>
+                            <Link id={styles["nav-to-signup"]} to="/signup/">
+                                Signup
+                            </Link>
                         </>
-                    }
+                    )}
                 </li>
             </ul>
         </div>
-    )
-}
+    );
+};
 
 Navbar.propTypes = {
-    categories: PropTypes.array
-}
+    categories: PropTypes.array,
+    categoryLoadingError: PropTypes.instanceOf(Error)
+};
 
-export default Navbar
+export default Navbar;
