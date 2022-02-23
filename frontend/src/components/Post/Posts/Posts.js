@@ -16,7 +16,7 @@ const Posts = (props) => {
 
     useEffect(() => {
         props.loadPosts(order).catch((error) => setError(error));
-    }, [order]);
+    }, []);
 
     function getOutput() {
         

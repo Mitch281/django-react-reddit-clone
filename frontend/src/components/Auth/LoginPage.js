@@ -12,10 +12,11 @@ const LoginPage = () => {
     const { setUsernameLoggedIn, loggedIn, setLoggedIn, setUserIdLoggedIn } =
         useContext(UserContext);
 
-    const [error, setError] = useState("");
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [error, setError] = useState();
 
     const [loading, setLoading] = useState(false);
 

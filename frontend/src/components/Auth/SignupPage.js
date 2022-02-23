@@ -16,7 +16,7 @@ const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState();
 
     const [loading, setLoading] = useState(false);
 

@@ -28,7 +28,9 @@ const Comments = () => {
     // to provide visual indication of what votes a user has voted on.
     const [userCommentVotes, setUserCommentVotes] = useState([]);
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState();
+    
+    const [commentsLoading, setCommentsLoading] = useState(false);
 
     useEffect(() => {
         async function loadUserCommentVotes() {
@@ -45,6 +47,7 @@ const Comments = () => {
     }, []);
 
     async function loadComments() {
+        setCommentsLoading(true);
         const response = await fetch(`http://localhost:8000/api/comments/post=${postId}`);
         if (response.ok) {
             const json = await response.json();
@@ -56,6 +59,7 @@ const Comments = () => {
 
     useEffect(() => {
         loadComments()
+        .then(() => setCommentsLoading(false))
         .catch(error => setError(error));
     }, [params]);
 
@@ -258,58 +262,56 @@ const Comments = () => {
     }
 
     function getOutput() {
-        if (error.message) {
+        if (error) {
             return (
                 <div id={styles["comments-flex-container"]}>
                     <ErrorMessage errorMessage={"Could not load comments. Please try again later."} />
                 </div>
             );
         }
-        else if (comments.length === 0) {
+        else if (commentsLoading) {
             return (
                 <div id={styles["comments-flex-container"]}>
                     <ClipLoader css={"margin-top: 50px"} color={constants.loaderColour} loading={true} size={150}/>
                 </div>
             );
         }
-        else {
-            return (
-                <>
-                    <CommentInput updateComments={updateComments}/>
-                    <div id={styles["comments-flex-container"]}>
-                        <div id={styles["comments"]}>
-                            {commentChain.map((comment) =>
-                                <Comment
-                                    key={comment.id}
-                                    id={comment.id}
-                                    userId={comment.user}
-                                    username={comment.username}
-                                    content={comment.content}
-                                    numUpvotes={comment.num_upvotes}
-                                    numDownvotes={comment.num_downvotes}
-                                    dateCreated={comment.date_created}
-                                    replies={comment.replies}
-                                    nestingLevel={comment.nestingLevel}
-                                    deleted={comment.deleted}
-                                    numReplies={comment.num_replies}
-                                    hidden={comment.hidden}
-                                    updateComments={updateComments}
-                                    userCommentVotes={userCommentVotes}
-                                    upvote={upvote}
-                                    downvote={downvote}
-                                    trackUsersUpvotes={trackUsersUpvotes}
-                                    trackUsersDownvotes={trackUsersDownvotes}
-                                    editComment={editComment}
-                                    deleteComment={deleteComment}
-                                    toggleHidden={toggleHidden}
-                                    isRootComment={true}
-                                />
-                            )}
-                        </div>
+        return (
+            <>
+                <CommentInput updateComments={updateComments}/>
+                <div id={styles["comments-flex-container"]}>
+                    <div id={styles["comments"]}>
+                        {commentChain.map((comment) =>
+                            <Comment
+                                key={comment.id}
+                                id={comment.id}
+                                userId={comment.user}
+                                username={comment.username}
+                                content={comment.content}
+                                numUpvotes={comment.num_upvotes}
+                                numDownvotes={comment.num_downvotes}
+                                dateCreated={comment.date_created}
+                                replies={comment.replies}
+                                nestingLevel={comment.nestingLevel}
+                                deleted={comment.deleted}
+                                numReplies={comment.num_replies}
+                                hidden={comment.hidden}
+                                updateComments={updateComments}
+                                userCommentVotes={userCommentVotes}
+                                upvote={upvote}
+                                downvote={downvote}
+                                trackUsersUpvotes={trackUsersUpvotes}
+                                trackUsersDownvotes={trackUsersDownvotes}
+                                editComment={editComment}
+                                deleteComment={deleteComment}
+                                toggleHidden={toggleHidden}
+                                isRootComment={true}
+                            />
+                        )}
                     </div>
-                </>
-            );
-        }
+                </div>
+            </>
+        );
     }
     
     return (
