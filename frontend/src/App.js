@@ -35,8 +35,8 @@ function App() {
   // once.
   const [userPostVotes, setUserPostVotes] = useState([]);
 
-  const [postLoadingError, setPostLoadingError] = useState("");
-  const [categoryLoadingError, setCategoryLoadingError] = useState("");
+  const [postLoadingError, setPostLoadingError] = useState();
+  const [categoryLoadingError, setCategoryLoadingError] = useState();
 
   // This function relogs in a user whenever they navigate to a different page or refresh the page.
   async function reLogin() {

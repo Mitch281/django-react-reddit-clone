@@ -12,7 +12,7 @@ const Posts = (props) => {
     const params = useParams();
     const order = params.order;
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState();
 
     useEffect(() => {
         props.loadPosts(order).catch((error) => setError(error));
@@ -23,7 +23,7 @@ const Posts = (props) => {
         // Note that "error" happens when we load posts after the user presses an order (i.e. we load posts in this component)
         // while "postLoadingError" happens when the user visits the home page and consequentially, posts are loaded
         // in the App component.
-        if (error.message || props.postLoadingError.message) {
+        if (error || props.postLoadingError) {
             return (
                 <div className={styles["posts"]} style={{"margin-top": "100px"}}>
                     <ErrorMessage errorMessage="Could not load posts. Please try again later." />
@@ -89,7 +89,7 @@ Post.propTypes = {
     trackUsersDownvotes: PropTypes.func,
     deletePost: PropTypes.func,
     editPostContent: PropTypes.func,
-    postLoadingError: PropTypes.error
+    postLoadingError: PropTypes.instanceOf(Error)
 };
 
 export default Posts;
