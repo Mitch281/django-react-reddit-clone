@@ -20,9 +20,12 @@ const PostsByCategory = (props) => {
     const categoryId = state.categoryId;
 
     const [posts, setPosts] = useState([]);
-    const [error, setError] = useState("");
+    const [error, setError] = useState();
+
+    const [loading, setLoading] = useState(false);
 
     async function loadPostsByCategory(order) {
+        setLoading(true);
         let url;
         if (order) {
             url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
@@ -43,11 +46,13 @@ const PostsByCategory = (props) => {
     }, []);
 
     useEffect(() => {
-        loadPostsByCategory(order).catch((error) => setError(error));
+        loadPostsByCategory(order)
+        .then(() => setLoading(false))
+        .catch((error) => setError(error));
     }, [params]);
 
     function getOutput() {
-        if (error.message) {
+        if (error) {
             return (
                 <div
                     className={styles["posts"]}
@@ -56,7 +61,7 @@ const PostsByCategory = (props) => {
                     <ErrorMessage errorMessage="Could not load posts. Please try again later." />
                 </div>
             );
-        } else if (posts.length === 0) {
+        } else if (loading) {
             return (
                 <div className={styles["posts"]}>
                     <ClipLoader
