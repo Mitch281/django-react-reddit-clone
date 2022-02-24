@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import styles from "./login-signup.module.css";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -120,6 +120,9 @@ const SignupPage = () => {
                     ) : (
                         <input type="submit" value="Signup" />
                     )}
+                    <span>Already have an account? &nbsp;
+                        <Link to="/login/" id={styles["login-link"]}>Login</Link>
+                    </span>
                 </form>
             </div>
             {getErrorMessage()}

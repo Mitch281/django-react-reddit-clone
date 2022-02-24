@@ -17,6 +17,7 @@ https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-in
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 #login form input, #signup form input {
@@ -26,10 +27,6 @@ https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-in
     border-radius: 10px;
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-}
-
-#login form input:not(:first-child), #signup form input:not(:first-child) {
-    margin-top: 10px;
 }
 
 /* Shift placeholder text to right. */
@@ -58,6 +55,16 @@ https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-in
 #auth-error {
     background-color: rgba(255, 0, 0, 0.2);
     padding: 10px;
+}
+
+#signup-link, #login-link {
+    text-decoration: none;
+    color: blue;
+    cursor: pointer;
+}
+
+#signup-link:hover, #login-link:hover {
+    text-decoration: underline;
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
