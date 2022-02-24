@@ -387,6 +387,23 @@ function App() {
                 </>
               }
               />
+              <Route exact path="post=:postId/comments/:order" element={
+                <>
+                  <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />
+                  <PostSelected
+                  posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
+                  upvote={upvote} 
+                  userPostVotes={userPostVotes} 
+                  trackUsersUpvotes={trackUsersUpvotes} 
+                  downvote={downvote}
+                  trackUsersDownvotes={trackUsersDownvotes}
+                  deletePost={deletePost}
+                  editPostContent={editPostContent}
+                  />
+                  <Comments />
+                </>
+              }
+              />
               <Route exact path="/create-post/" element={
                 <>
                   <Navbar categories={categories} categoryLoadingError={categoryLoadingError} />

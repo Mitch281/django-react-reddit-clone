@@ -261,7 +261,7 @@ class PostComments(APIView):
         elif ordering == "top":
             post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
         elif ordering == "bottom":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
 
         serializer = CommentSerializer(post_comments, many=True)
         return Response(serializer.data)
