@@ -252,8 +252,17 @@ class PostComments(APIView):
 
     serializer_class = CommentSerializer
 
-    def get(self, request, parent_post_id):
-        post_comments = Comment.objects.filter(parent_post=parent_post_id)
+    def get(self, request, parent_post_id, ordering=""):
+        # Default ordering (ordering by newest).
+        if ordering == "" or ordering == "new":
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).order_by("-date_created")
+        elif ordering == "old":
+            post_comments = Comment.objects.filter(parent_post=parent_post_id) # Note that django automatically filters by oldest comments.
+        elif ordering == "top":
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+        elif ordering == "bottom":
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+
         serializer = CommentSerializer(post_comments, many=True)
         return Response(serializer.data)
 

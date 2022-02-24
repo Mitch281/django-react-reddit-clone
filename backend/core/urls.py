@@ -22,6 +22,7 @@ urlpatterns = [
     path('comments/', views.CommentsView.as_view(), name='comments'),
 
     re_path(r'^comments/post=(?P<parent_post_id>[0-9a-z-&]+)/$', views.PostComments.as_view()),
+    re_path(r'^comments/post=(?P<parent_post_id>[0-9a-z-&]+)/(?P<ordering>[a-zA-Z\s]*)/$', views.PostComments.as_view()),
 
     re_path(r'^post/id=(?P<pk>[0-9a-z-&]+)/$', views.PostView.as_view()),
     re_path(r'^post/id=(?P<pk>[0-9a-z-&]+)/user-id=(?P<user_id>[0-9a-z-&]+)/$', views.PostView.as_view()),
