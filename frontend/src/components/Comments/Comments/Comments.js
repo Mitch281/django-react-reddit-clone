@@ -15,11 +15,13 @@ import styles from "./comments.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import {constants} from "../../../constants";
+import OrderOptions from "../../OrderOptions/OrderOptions";
 
 const Comments = () => {
 
     const params = useParams();
     const postId = params.postId;
+    const order = params.order;
 
     const [comments, setComments] = useState([]);
     const [commentChain, setCommentChain] = useState([]);
@@ -46,9 +48,15 @@ const Comments = () => {
         loadUserCommentVotes();
     }, []);
 
-    async function loadComments() {
+    async function loadComments(order) {
         setCommentsLoading(true);
-        const response = await fetch(`http://localhost:8000/api/comments/post=${postId}`);
+        let url;
+        if (order) {
+            url = `http://localhost:8000/api/comments/post=${postId}/${order}/`;
+        } else {
+            url = `http://localhost:8000/api/comments/post=${postId}/`;
+        }
+        const response = await fetch(url);
         if (response.ok) {
             const json = await response.json();
             setComments(json);
@@ -58,10 +66,10 @@ const Comments = () => {
     }
 
     useEffect(() => {
-        loadComments()
+        loadComments(order)
         .then(() => setCommentsLoading(false))
         .catch(error => setError(error));
-    }, [params]);
+    }, [postId, order]);
 
     useEffect(() => {
         if (comments.length !== 0) {
@@ -279,6 +287,7 @@ const Comments = () => {
         return (
             <>
                 <CommentInput updateComments={updateComments}/>
+                <OrderOptions orderingType="comments" />
                 <div id={styles["comments-flex-container"]}>
                     <div id={styles["comments"]}>
                         {commentChain.map((comment) =>
