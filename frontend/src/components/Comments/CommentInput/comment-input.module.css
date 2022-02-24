@@ -5,6 +5,7 @@
     justify-content: center;
     width: 100%;
     margin-top: var(--gap-to-post);
+    margin-bottom: 35px;
 }
 
 #comment-input {
@@ -51,6 +52,7 @@
     display: flex;
     justify-content: center;
     margin-top: var(--gap-to-post);
+    margin-bottom: 35px;
 }
 
 .not-logged-in-message a {

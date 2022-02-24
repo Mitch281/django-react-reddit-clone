@@ -1,15 +1,15 @@
-#post-sorting-options-flex-container {
+#sorting-options-flex-container {
     display: flex;
     justify-content: center;
 }
 
-#post-sorting-options {
+#sorting-options {
     display: flex;
     width: 50%;
     justify-content: space-evenly;
 }
 
-#post-sorting-options a {
+#sorting-options a {
     text-decoration: none;
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
@@ -17,18 +17,18 @@
     padding-right: 5px;
 }
 
-#post-sorting-options a:hover {
+#sorting-options a:hover {
     background-color: rgb(238, 230, 230);
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 5px;
 }
 
-#post-sorting-options a:not(#current-ordering) {
+#sorting-options a:not(#current-ordering) {
     color: grey;
 }
 
-#post-sorting-options span {
+#sorting-options span {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
     color: black;
