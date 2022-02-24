@@ -15,7 +15,7 @@ import styles from "./comments.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import {constants} from "../../../constants";
-import OrderOptions from "../../../OrderOptions/OrderOptions";
+import OrderOptions from "../../OrderOptions/OrderOptions";
 
 const Comments = () => {
 

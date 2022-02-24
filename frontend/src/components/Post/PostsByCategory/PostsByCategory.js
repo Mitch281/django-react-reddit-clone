@@ -3,7 +3,7 @@ import { UserContext } from "../../../App";
 import { useLocation, useParams } from "react-router-dom";
 import Post from "../Post/Post";
 import PropTypes from "prop-types";
-import OrderOptions from "../../../OrderOptions/OrderOptions";
+import OrderOptions from "../../OrderOptions/OrderOptions";
 import styles from "../Posts/posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../../constants";

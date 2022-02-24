@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Post from "../Post/Post";
 import PropTypes from "prop-types";
-import OrderOptions from "../../../OrderOptions/OrderOptions";
+import OrderOptions from "../../OrderOptions/OrderOptions";
 import { useState, useEffect } from "react";
 import styles from "./posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";

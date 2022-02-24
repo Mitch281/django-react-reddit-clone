@@ -3,10 +3,11 @@ import styles from "./order-options.module.css";
 
 const OrderOptions = () => {
     const params = useParams();
+    const order = params.order;
+    const postId = params.postId;
+
     const { state, pathname } = useLocation();
     const categoryName = params.categoryName;
-    const order = params.order;
-
     function getPostOrderingOutput() {
         if (categoryName && !order) {
             return (
@@ -150,30 +151,81 @@ const OrderOptions = () => {
     }
 
     function getCommentOrderingOutput() {
+        if (!order) {
+            return (
+                <div id={styles["sorting-options-flex-container"]}>
+                    <div id={styles["sorting-options"]}>
+                        <span>Sort by: </span>
+                        <Link
+                            to="new/"
+                            id={
+                                order === "new"
+                                    ? styles["current-ordering"]
+                                    : ""
+                            }
+                        >
+                            New
+                        </Link>
+                        <Link
+                            to="old/"
+                            id={
+                                order === "old"
+                                    ? styles["current-ordering"]
+                                    : ""
+                            }
+                        >
+                            Old
+                        </Link>
+                        <Link
+                            to="top/"
+                            id={
+                                order === "top"
+                                    ? styles["current-ordering"]
+                                    : ""
+                            }
+                        >
+                            Top
+                        </Link>
+                        <Link
+                            to="bottom/"
+                            id={
+                                order === "bottom"
+                                    ? styles["current-ordering"]
+                                    : ""
+                            }
+                        >
+                            Bottom
+                        </Link>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div id={styles["sorting-options-flex-container"]}>
                 <div id={styles["sorting-options"]}>
                     <span>Sort by: </span>
                     <Link
-                        to="new/"
+                        to={`/post=${postId}/comments/new/`}
                         id={order === "new" ? styles["current-ordering"] : ""}
                     >
                         New
                     </Link>
                     <Link
-                        to="old/"
+                        to={`/post=${postId}/comments/old/`}
+
                         id={order === "old" ? styles["current-ordering"] : ""}
                     >
                         Old
                     </Link>
                     <Link
-                        to="top/"
+                        to={`/post=${postId}/comments/top/`}
                         id={order === "top" ? styles["current-ordering"] : ""}
                     >
                         Top
                     </Link>
                     <Link
-                        to="bottom/"
+                        to={`/post=${postId}/comments/bottom/`}
                         id={
                             order === "bottom" ? styles["current-ordering"] : ""
                         }
@@ -187,7 +239,9 @@ const OrderOptions = () => {
 
     return (
         <>
-            {pathname.includes("comments") ? getCommentOrderingOutput() : getPostOrderingOutput()}
+            {pathname.includes("comments")
+                ? getCommentOrderingOutput()
+                : getPostOrderingOutput()}
         </>
     );
 };
