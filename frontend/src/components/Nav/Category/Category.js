@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 
 const Category = (props) => {
 
+    const filterCategoriesText = props.filterCategoriesText.toLowerCase();
+
     function filterCategories() {
 
         // Don't do any filtering if filter text is empty.
         if (props.filterCategoriesText === "") {
             return;
         }
-        if (!props.category.name.includes(props.filterCategoriesText)) {
+        if (!props.category.name.toLowerCase().includes(filterCategoriesText)) {
             return {display:"none"}
         }
         return;
