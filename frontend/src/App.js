@@ -7,7 +7,10 @@ import Posts from "./components/Post/Posts/Posts";
 import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected/PostSelected";
-import { postUpvote, 
+import {fetchPosts, 
+        fetchCategories,
+        fetchUsersVotesOnPosts,
+        postUpvote, 
         patchUsersUpvote, 
         postUsersUpvote, 
         postDownvote,  
@@ -75,38 +78,36 @@ function App() {
   }, []);
 
   async function loadPosts(order) {
-    let url;
-    if (order) {
-      url = `http://localhost:8000/api/posts/${order}`;
-    } else {
-      url = "http://localhost:8000/api/posts/"
-    }
-    const response = await fetch(url);
-    if (response.ok) {
-      const json = await response.json();
+    try {
+      const json = await fetchPosts(order);
       setPosts(json);
-    } else {
-      throw new Error(response.status);
+    } catch(error) {
+      throw error;
     }
   }
 
   async function loadCategories() {
-    const response = await fetch("http://localhost:8000/api/categories");
-    if (response.ok) {
-        const json = await response.json();
-        setCategories(json);
-    } else {
-        throw new Error(response.status);
+    try {
+      const json = await fetchCategories();
+      setCategories(json);
+    } catch(error) {
+      throw error;
     }
   }
 
   async function loadPostVotes() {
-    const response = await fetch("http://localhost:8000/api/post-votes/");
-    if (response.ok) {
-      const json = await response.json();
+    // const response = await fetch("http://localhost:8000/api/post-votes/");
+    // if (response.ok) {
+    //   const json = await response.json();
+    //   setUserPostVotes(json);
+    // } else {
+    //   throw new Error(response.status);
+    // }
+    try {
+      const json = await fetchUsersVotesOnPosts();
       setUserPostVotes(json);
-    } else {
-      throw new Error(response.status);
+    } catch(error) {
+      throw error;
     }
   }
 

@@ -1,6 +1,68 @@
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired } from "./auth";
 
+export async function fetchPosts(order) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/posts/${order}`;
+  } else {
+    url = "http://localhost:8000/api/posts/";
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchPostsByCategory(order, categoryId) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
+  } else {
+    url = `http://localhost:8000/api/posts/category=${categoryId}/`;
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchPost(postId) {
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}`);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status); 
+  }
+}
+
+export async function fetchCategories() {
+  const response = await fetch("http://localhost:8000/api/categories");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchUsersVotesOnPosts() {
+  const response = await fetch("http://localhost:8000/api/post-votes/");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
 export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
   let data;
   let apiUrl;

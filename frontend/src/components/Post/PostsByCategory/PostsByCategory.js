@@ -8,6 +8,7 @@ import styles from "../Posts/posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../../constants";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import { fetchPostsByCategory } from "../../../utils/fetch-data";
 
 const PostsByCategory = (props) => {
     const { reLogin } = useContext(UserContext);
@@ -26,18 +27,11 @@ const PostsByCategory = (props) => {
 
     async function loadPostsByCategory(order) {
         setLoading(true);
-        let url;
-        if (order) {
-            url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
-        } else {
-            url = `http://localhost:8000/api/posts/category=${categoryId}/`;
-        }
-        const response = await fetch(url);
-        if (response.ok) {
-            const json = await response.json();
+        try {
+            const json = await fetchPostsByCategory(order, categoryId);
             setPosts(json);
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 
