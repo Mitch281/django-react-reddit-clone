@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { BiCommentDetail } from "react-icons/bi";
+import { fetchNumberOfCommentsOnPost } from "../../../utils/fetch-data";
 import styles from "./view-comments.module.css";
 
 const ViewComments = (props) => {
@@ -8,12 +9,11 @@ const ViewComments = (props) => {
     const [numComments, setNumComments] = useState();
     
     async function getNumberOfComments() {
-        const response = await fetch(`http://localhost:8000/api/post/num-comments/id=${props.postId}/`);
-        if (response.ok) {
-            const json = await response.json();
+        try {
+            const json = await fetchNumberOfCommentsOnPost(props.postId);
             setNumComments(json.num_comments);
-        } else {
-            throw new Error (response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

@@ -18,7 +18,7 @@ import {fetchPosts,
         postUsersDownvote 
 } 
 from "./utils/fetch-data";
-import { getNewAccessTokenIfExpired } from "./utils/auth";
+import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
 import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
@@ -48,15 +48,14 @@ function App() {
 
     const accessToken = localStorage.getItem("accessToken");
     try {
+      // Get new access token using the refresh token if the access token is expired.
       await getNewAccessTokenIfExpired(accessToken);
-      const response = await fetch("http://localhost:8000/api/current-user/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      });
-      const json = await response.json();
+
+      // Get the access token. This should always work because if our access token has expired, then the 
+      // getNewAccessTokenIfExpired function above will get a new access token using the refresh token, and so
+      // we will be able to use that access token to get the current user information.
+      const json = await verifyCurrentUser();
+
       setLoggedIn(true);
       setUserIdLoggedIn(json.id);
       setUsernameLoggedIn(json.username);
@@ -96,13 +95,6 @@ function App() {
   }
 
   async function loadPostVotes() {
-    // const response = await fetch("http://localhost:8000/api/post-votes/");
-    // if (response.ok) {
-    //   const json = await response.json();
-    //   setUserPostVotes(json);
-    // } else {
-    //   throw new Error(response.status);
-    // }
     try {
       const json = await fetchUsersVotesOnPosts();
       setUserPostVotes(json);

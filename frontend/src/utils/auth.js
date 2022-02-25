@@ -33,6 +33,22 @@ function isTokenExpired(token) {
     return expired;
 }
 
+export async function verifyCurrentUser() {
+    const response = await fetch("http://localhost:8000/api/current-user/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    });
+    if (response.ok) {
+        const json = await response.json();
+        return json;
+    } else {
+        throw new Error(response.status);
+    }
+}
+
 // This function gets a new access token if necessary.
 export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);

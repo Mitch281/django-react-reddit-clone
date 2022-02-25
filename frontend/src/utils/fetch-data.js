@@ -490,3 +490,13 @@ export async function fetchDeleteComment(commentId, userIdLoggedIn) {
     throw new Error(response.status);
   }
 }
+
+export async function fetchNumberOfCommentsOnPost(postId) {
+  const response = await fetch(`http://localhost:8000/api/post/num-comments/id=${postId}/`);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
