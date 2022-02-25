@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired, CantGetNewAccessTokenError } from "../../../utils/auth";
 import styles from "./reply-to-comment.module.css";
+import { postReplyToComment } from "../../../utils/fetch-data";
 
 const ReplyToComment = (props) => {
 
@@ -42,30 +43,15 @@ const ReplyToComment = (props) => {
             num_replies: 0
         }
 
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken); 
-        } catch(error) {
-            throw error;
-        }
-
-        const response = await fetch("http://localhost:8000/api/comments/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(reply)
-        });
-
-        if (response.ok) {
+            await postReplyToComment(reply);
             // Clear reply text box.
             setReplyContent("");
 
             props.toggleReplyForm();
             props.updateComments(reply);
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

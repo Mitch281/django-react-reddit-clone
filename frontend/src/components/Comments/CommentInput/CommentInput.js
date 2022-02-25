@@ -3,8 +3,8 @@ import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
-import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./comment-input.module.css";
+import { postComment } from "../../../utils/fetch-data";
 
 const CommentInput = (props) => {
 
@@ -15,7 +15,7 @@ const CommentInput = (props) => {
     const params = useParams();
     const postId = params.postId;
 
-    async function postComment() {
+    async function handleCommentSubmission() {
 
         const dateNow = new Date().toString();
 
@@ -34,34 +34,19 @@ const CommentInput = (props) => {
             num_replies: 0
         }
 
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
-        } catch(error) {
+            await postComment(data);
+            setComment(""); // Clear text box.
+            props.updateComments(data);
+        } catch (error) {
             throw error;
         }
-
-        const response = await fetch("http://localhost:8000/api/comments/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            // Clear text box
-            setComment("");
-            props.updateComments(data);
-        } else {
-            throw new Error(response.status);
-        }   
     }
 
     function performPostComment(e) {
         e.preventDefault();
 
-        postComment()
+        handleCommentSubmission()
         .catch(error => console.log(error));
     }
 

@@ -8,7 +8,9 @@ import {
     postUsersUpvote, 
     postDownvote,  
     patchUsersDownvote, 
-    postUsersDownvote 
+    postUsersDownvote, 
+    fetchUsersVotesOnComments,
+    fetchComments
 } 
 from "../../../utils/fetch-data";
 import styles from "./comments.module.css";
@@ -34,34 +36,26 @@ const Comments = () => {
     
     const [commentsLoading, setCommentsLoading] = useState(false);
 
-    useEffect(() => {
-        async function loadUserCommentVotes() {
-            const response = await fetch("http://localhost:8000/api/comment-votes/");
-            if (response.ok) {
-                const json = await response.json();
-                setUserCommentVotes(json)
-            } else {
-                throw new Error("Couldn't load user comment votes!");
-            }
+    async function loadUserCommentVotes() {
+        try {
+            const json = await fetchUsersVotesOnComments();
+            setUserCommentVotes(json);
+        } catch(error) {
+            throw error;
         }
+    }
 
+    useEffect(() => {
         loadUserCommentVotes();
     }, []);
 
     async function loadComments(order) {
         setCommentsLoading(true);
-        let url;
-        if (order) {
-            url = `http://localhost:8000/api/comments/post=${postId}/${order}/`;
-        } else {
-            url = `http://localhost:8000/api/comments/post=${postId}/`;
-        }
-        const response = await fetch(url);
-        if (response.ok) {
-            const json = await response.json();
+        try {
+            const json = await fetchComments(order, postId);
             setComments(json);
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

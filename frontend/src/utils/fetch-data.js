@@ -318,3 +318,70 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
     throw new Error(response.status);
   }
 }
+
+export async function fetchComments(order, postId) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/comments/post=${postId}/${order}/`;
+  } else {
+    url = `http://localhost:8000/api/comments/post=${postId}/`;
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchUsersVotesOnComments() {
+  const response = await fetch("http://localhost:8000/api/comment-votes/");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function postComment(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/comments/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(data)
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function postReplyToComment(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken); 
+  } catch(error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/comments/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
