@@ -385,3 +385,108 @@ export async function postReplyToComment(data) {
     throw new Error(response.status);
   }
 }
+
+export async function postPost(data) {  
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch (error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/posts/", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchDeletePost(postId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`, {
+      method: "DELETE",
+      headers:{
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+      }
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function editPost(newPostContent, postId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({content: newPostContent})
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function postCategory(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch (error) {
+      throw error;
+  }
+
+  const response = await fetch("http://localhost:8000/api/categories/", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchDeleteComment(commentId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      // TODO: Make delete cmment content, user info as well.
+      body: JSON.stringify({deleted: true})
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}

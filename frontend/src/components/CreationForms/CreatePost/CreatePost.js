@@ -11,6 +11,7 @@ import styles from "./create-post.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../../constants";
+import { postPost } from "../../../utils/fetch-data";
 
 const CreatePost = (props) => {
     let navigate = useNavigate();
@@ -52,25 +53,12 @@ const CreatePost = (props) => {
             category: categoryId,
         };
 
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
-        } catch (error) {
-            throw error;
-        }
-        const response = await fetch("http://localhost:8000/api/posts/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
+            await postPost(data);
             props.addPost(data);
             navigate("/");
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

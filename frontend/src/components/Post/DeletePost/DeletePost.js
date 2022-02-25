@@ -2,34 +2,19 @@ import { BsFillTrashFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
-import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./delete-post.module.css";
+import { fetchDeletePost } from "../../../utils/fetch-data";
 
 const DeletePost = (props) => {
 
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function deletePost() {
-
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
+            await fetchDeletePost(props.postId, userIdLoggedIn);
+            props.deletePost(props.postId);
         } catch(error) {
             throw error;
-        }
-
-        const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${props.userId}/`, {
-            method: "DELETE",
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
-
-        if (response.ok) {
-            props.deletePost(props.postId);
-        } else {
-            throw new Error(response.status);
         }
     }
 
