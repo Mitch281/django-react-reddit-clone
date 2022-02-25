@@ -5,6 +5,7 @@ import styles from "./login-signup.module.css";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../constants";
+import { login } from "../../utils/auth";
 
 const LoginPage = () => {
     let navigate = useNavigate();
@@ -25,24 +26,16 @@ const LoginPage = () => {
     // NOTE: State persists through router change but not through page refresh so handle that.
     async function handleLogin() {
         setLoading(true);
-
-        const response = await fetch("http://localhost:8000/api/token/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username: username, password: password }),
-        });
-        if (response.ok) {
-            const json = await response.json();
-            localStorage.setItem("accessToken", json.access);
-            localStorage.setItem("refreshToken", json.refresh);
-            setLoggedIn(true);
-            setUserIdLoggedIn(json.user_id);
-            setUsernameLoggedIn(username);
-            navigate("/");
-        } else {
-            throw new Error(response.status);
+        try {
+            const json = await login(username, password);
+                localStorage.setItem("accessToken", json.access);
+                localStorage.setItem("refreshToken", json.refresh);
+                setLoggedIn(true);
+                setUserIdLoggedIn(json.user_id);
+                setUsernameLoggedIn(username);
+                navigate("/");
+        } catch(error) {
+            throw error;
         }
     }
 
