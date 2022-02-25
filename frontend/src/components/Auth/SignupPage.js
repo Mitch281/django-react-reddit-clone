@@ -5,6 +5,7 @@ import styles from "./login-signup.module.css";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../constants";
+import { signup } from "../../utils/auth";
 
 const SignupPage = () => {
     let navigate = useNavigate("/");
@@ -27,23 +28,16 @@ const SignupPage = () => {
             throw new Error("Passwords not the same");
         }
 
-        const response = await fetch("http://localhost:8000/api/users/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username: username, password: password }),
-        });
-        if (response.ok) {
-            const json = await response.json();
-            setLoggedIn(true);
-            setUsernameLoggedIn(json.username);
-            setUserIdLoggedIn(json.id);
-            localStorage.setItem("accessToken", json.token.access);
-            localStorage.setItem("refreshToken", json.token.refresh);
-            navigate("/");
-        } else {
-            throw new Error(response.status);
+        try {
+            const json = await signup(username, password);
+                setLoggedIn(true);
+                setUsernameLoggedIn(json.username);
+                setUserIdLoggedIn(json.id);
+                localStorage.setItem("accessToken", json.token.access);
+                localStorage.setItem("refreshToken", json.token.refresh);
+                navigate("/");
+        } catch(error) {
+            throw error;
         }
     }
 

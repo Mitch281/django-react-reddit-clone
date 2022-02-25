@@ -7,7 +7,10 @@ import Posts from "./components/Post/Posts/Posts";
 import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected/PostSelected";
-import { postUpvote, 
+import {fetchPosts, 
+        fetchCategories,
+        fetchUsersVotesOnPosts,
+        postUpvote, 
         patchUsersUpvote, 
         postUsersUpvote, 
         postDownvote,  
@@ -15,7 +18,7 @@ import { postUpvote,
         postUsersDownvote 
 } 
 from "./utils/fetch-data";
-import { getNewAccessTokenIfExpired } from "./utils/auth";
+import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
 import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
@@ -45,15 +48,14 @@ function App() {
 
     const accessToken = localStorage.getItem("accessToken");
     try {
+      // Get new access token using the refresh token if the access token is expired.
       await getNewAccessTokenIfExpired(accessToken);
-      const response = await fetch("http://localhost:8000/api/current-user/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      });
-      const json = await response.json();
+
+      // Get the access token. This should always work because if our access token has expired, then the 
+      // getNewAccessTokenIfExpired function above will get a new access token using the refresh token, and so
+      // we will be able to use that access token to get the current user information.
+      const json = await verifyCurrentUser();
+
       setLoggedIn(true);
       setUserIdLoggedIn(json.id);
       setUsernameLoggedIn(json.username);
@@ -75,38 +77,29 @@ function App() {
   }, []);
 
   async function loadPosts(order) {
-    let url;
-    if (order) {
-      url = `http://localhost:8000/api/posts/${order}`;
-    } else {
-      url = "http://localhost:8000/api/posts/"
-    }
-    const response = await fetch(url);
-    if (response.ok) {
-      const json = await response.json();
+    try {
+      const json = await fetchPosts(order);
       setPosts(json);
-    } else {
-      throw new Error(response.status);
+    } catch(error) {
+      throw error;
     }
   }
 
   async function loadCategories() {
-    const response = await fetch("http://localhost:8000/api/categories");
-    if (response.ok) {
-        const json = await response.json();
-        setCategories(json);
-    } else {
-        throw new Error(response.status);
+    try {
+      const json = await fetchCategories();
+      setCategories(json);
+    } catch(error) {
+      throw error;
     }
   }
 
   async function loadPostVotes() {
-    const response = await fetch("http://localhost:8000/api/post-votes/");
-    if (response.ok) {
-      const json = await response.json();
+    try {
+      const json = await fetchUsersVotesOnPosts();
       setUserPostVotes(json);
-    } else {
-      throw new Error(response.status);
+    } catch(error) {
+      throw error;
     }
   }
 

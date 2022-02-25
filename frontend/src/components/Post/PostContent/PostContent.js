@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
-import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./post-content.module.css";
+import { editPost } from "../../../utils/fetch-data";
 
 const PostContent = (props) => {
 
@@ -21,27 +21,12 @@ const PostContent = (props) => {
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function handleEditPostContent() {
-
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
-        } catch(error) {
-            throw error;
-        }
-
-        const response = await fetch(`http://localhost:8000/api/post/id=${props.postId}/user-id=${userIdLoggedIn}/`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({content: postContent})
-        });
-        if (response.ok) {
+            await editPost(postContent, props.postId, userIdLoggedIn);
             props.editPostContent(props.postId, postContent);
             props.toggleCurrentlyEditing();
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

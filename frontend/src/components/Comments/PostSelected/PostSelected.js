@@ -6,36 +6,31 @@ import styles from "./post-selected.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import {constants} from "../../../constants";
+import { fetchPost } from "../../../utils/fetch-data";
 
 const PostSelected = (props) => {
 
     const [post, setPost] = useState({});
-    const [postDeleted, setPostDeleted] = useState(false);
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
 
     const params = useParams();
     const postId = params.postId;
 
     async function loadPost() {
-        const response = await fetch(`http://localhost:8000/api/post/id=${postId}`);
-        if (response.ok) {
-            const json = await response.json();
+        setLoading(true);
+        try {
+            const json = await fetchPost(postId);
             setPost(json);
-        }
-
-        // We tried to load the post but it is not there anymore. Thus, the user has deleted the post and we display a
-        // message that it has been deleted.
-        else if (response.status === 500) {
-            setPostDeleted(true);
-        }
-        else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 
     useEffect(() => {
         loadPost()
+        .then(() => setLoading(false))
         .catch(error => setError(error));
     }, [props.posts]);
 
@@ -45,26 +40,29 @@ const PostSelected = (props) => {
 
     function getOutput() {
 
-        if (error.message) {
-            return  <div className={styles["posts"]}>
-                        <ErrorMessage errorMessage={"Could not load post. Please try again later"} />
+        if (error) {
+            if (error.message !== "500") {
+                return  <div className={styles["posts"]}>
+                    <ErrorMessage errorMessage={"Could not load post. Please try again later"} />
+                </div>
+            } 
+            
+            // Post deleted.
+            else {
+                return (
+                    <div className={styles["posts"]}>
+                        <div className={styles["post"]}>
+                            <div id={styles["post-deleted-message"]}>Post Deleted</div>
+                        </div>
                     </div>
+                );
+            }
         }
 
-        else if (Object.keys(post).length === 0) {
+        else if (loading) {
             return (
                 <div className={styles["posts"]}>
                     <ClipLoader color={constants.loaderColour} loading={true} size={150} />
-                </div>
-            );
-        }
-
-        else if (postDeleted) {
-            return (
-                <div className={styles["posts"]}>
-                    <div className={styles["post"]}>
-                        <div id={styles["post-deleted-message"]}>Post Deleted</div>
-                    </div>
                 </div>
             );
         }

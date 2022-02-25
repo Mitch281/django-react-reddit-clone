@@ -11,6 +11,7 @@ import styles from "./create-category.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../../constants";
+import { postCategory } from "../../../utils/fetch-data";
 
 const CreateCategory = (props) => {
     const [categoryName, setCategoryName] = useState("");
@@ -36,28 +37,14 @@ const CreateCategory = (props) => {
             name: categoryName,
         };
 
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
-        } catch (error) {
-            throw error;
-        }
-
-        const response = await fetch("http://localhost:8000/api/categories/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
+            await postCategory(data);
             props.addCategory(data);
             navigate(`/posts/category=${categoryName}/`, {
                 state: { categoryId: categoryId },
             });
-        } else {
-            throw new Error(response.status);
+        } catch(error) {
+            throw error;
         }
     }
 

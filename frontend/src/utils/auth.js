@@ -33,6 +33,22 @@ function isTokenExpired(token) {
     return expired;
 }
 
+export async function verifyCurrentUser() {
+    const response = await fetch("http://localhost:8000/api/current-user/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    });
+    if (response.ok) {
+        const json = await response.json();
+        return json;
+    } else {
+        throw new Error(response.status);
+    }
+}
+
 // This function gets a new access token if necessary.
 export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);
@@ -52,5 +68,37 @@ export async function getNewAccessTokenIfExpired(accessToken) {
         } else {
             throw new CantGetNewAccessTokenError("Can't get new access token");
         }
+    }
+}
+
+export async function login(username, password) {
+    const response = await fetch("http://localhost:8000/api/token/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+    });
+    if (response.ok) {
+        const json = await response.json();
+        return json;
+    } else {
+        throw new Error(response.status);
+    }
+}
+
+export async function signup(username, password) {
+    const response = await fetch("http://localhost:8000/api/users/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+    });
+    if (response.ok) {
+        const json = await response.json();
+        return json;
+    } else {
+        throw new Error(response.status);
     }
 }

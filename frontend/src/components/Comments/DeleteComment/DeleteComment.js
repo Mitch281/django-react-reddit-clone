@@ -6,35 +6,19 @@ import { useContext } from "react";
 import { UserContext } from "../../../App";
 import { BsFillTrashFill } from "react-icons/bs";
 import PropTypes from "prop-types";
-import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./delete-comment.module.css";
+import { fetchDeleteComment } from "../../../utils/fetch-data";
 
 const DeleteComment = (props) => {
 
     const { userIdLoggedIn } = useContext(UserContext);
 
     async function handleDeleteComment() {
-
-        const accessToken = localStorage.getItem("accessToken");
         try {
-            await getNewAccessTokenIfExpired(accessToken);
+            await fetchDeleteComment(props.commentId, userIdLoggedIn);
+            props.deleteComment(props.commentId);
         } catch(error) {
             throw error;
-        }
-
-        const response = await fetch(`http://localhost:8000/api/comment/id=${props.commentId}/user-id=${userIdLoggedIn}/`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            // TODO: Make delete cmment content, user info as well.
-            body: JSON.stringify({deleted: true})
-        });
-        if (response.ok) {
-            props.deleteComment(props.commentId)
-        } else {
-            throw new Error(response.status);
         }
     }
 

@@ -1,6 +1,68 @@
 import { v4 as uuid_v4 } from "uuid";
 import { getNewAccessTokenIfExpired } from "./auth";
 
+export async function fetchPosts(order) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/posts/${order}`;
+  } else {
+    url = "http://localhost:8000/api/posts/";
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchPostsByCategory(order, categoryId) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
+  } else {
+    url = `http://localhost:8000/api/posts/category=${categoryId}/`;
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchPost(postId) {
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}`);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status); 
+  }
+}
+
+export async function fetchCategories() {
+  const response = await fetch("http://localhost:8000/api/categories");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchUsersVotesOnPosts() {
+  const response = await fetch("http://localhost:8000/api/post-votes/");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
 export async function postUpvote(idOfThing, currentNumUpvotes, currentNumDownvotes, status, thingToUpvote) {
   let data;
   let apiUrl;
@@ -253,6 +315,188 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
     body: JSON.stringify(data)
   });
   if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchComments(order, postId) {
+  let url;
+  if (order) {
+    url = `http://localhost:8000/api/comments/post=${postId}/${order}/`;
+  } else {
+    url = `http://localhost:8000/api/comments/post=${postId}/`;
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchUsersVotesOnComments() {
+  const response = await fetch("http://localhost:8000/api/comment-votes/");
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(response.status);
+  }
+}
+
+export async function postComment(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/comments/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(data)
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function postReplyToComment(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken); 
+  } catch(error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/comments/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function postPost(data) {  
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch (error) {
+      throw error;
+  }
+  const response = await fetch("http://localhost:8000/api/posts/", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchDeletePost(postId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`, {
+      method: "DELETE",
+      headers:{
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+      }
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function editPost(newPostContent, postId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({content: newPostContent})
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function postCategory(data) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch (error) {
+      throw error;
+  }
+
+  const response = await fetch("http://localhost:8000/api/categories/", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchDeleteComment(commentId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+
+  const response = await fetch(`http://localhost:8000/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      // TODO: Make delete cmment content, user info as well.
+      body: JSON.stringify({deleted: true})
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
+export async function fetchNumberOfCommentsOnPost(postId) {
+  const response = await fetch(`http://localhost:8000/api/post/num-comments/id=${postId}/`);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
     throw new Error(response.status);
   }
 }
