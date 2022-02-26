@@ -26,11 +26,11 @@ const PostsByCategory = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    // Get the posts by category on component load.
+    // Get the posts by category on component load and whenever posts prop changes.
     useEffect(() => {
         setPostsByCategory(props.posts.filter(post => 
             post.category === categoryId));
-    }, []);
+    }, [props.posts]);
     
 
     async function sortPosts(order) {

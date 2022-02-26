@@ -10,7 +10,7 @@ const PostSelected = (props) => {
     const params = useParams();
     const postId = params.postId;
 
-    // Get post selected on component load.
+    // Get post selected on component load and whenever posts changes.
     useEffect(() => {
         setPostSelected(props.posts.find((post) => post.id === postId));
     }, [props.posts]);
