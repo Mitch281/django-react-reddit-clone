@@ -386,6 +386,27 @@ export async function postReplyToComment(data) {
   }
 }
 
+export async function editComment(newCommentContent, commentId, userIdLoggedIn) {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+      await getNewAccessTokenIfExpired(accessToken);
+  } catch(error) {
+      throw error;
+  }
+  
+  const response = await fetch(`http://localhost:8000/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`, {
+    method: "PATCH",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify({content: newCommentContent})
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+}
+
 export async function postPost(data) {  
   const accessToken = localStorage.getItem("accessToken");
   try {

@@ -1,41 +1,32 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
-import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./comment-content.module.css";
-// TODO: move api call to fetch-data.js
+import { editComment } from "../../../utils/fetch-data";
+import ClipLoader from "react-spinners/ClipLoader";
+import { constants } from "../../../constants";
+import { CantGetNewAccessTokenError } from "../../../utils/auth";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 const CommentContent = (props) => {
-
     const [commentContent, setCommentContent] = useState(props.content);
 
     const { userIdLoggedIn } = useContext(UserContext);
 
-    async function handleEditCommentContent() {
-        
-        const accessToken = localStorage.getItem("accessToken");
-        try {
-            await getNewAccessTokenIfExpired(accessToken);
-        } catch(error) {
-            throw error;
-        }
+    const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
 
-        const response = await fetch(`http://localhost:8000/api/comment/id=${props.commentId}/user-id=${userIdLoggedIn}/`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({content: commentContent})
-        });
-        if (response.ok) {
+    async function handleEditCommentContent() {
+        try {
+            await editComment(commentContent, props.commentId, userIdLoggedIn);
             props.editComment(props.commentId, commentContent);
             props.toggleEditForm();
-        } else {
-            throw new Error(response.status);
+        } catch (error) {
+            throw error;
         }
     }
 
-    function performEditCommentContent(e) {
+    async function performEditCommentContent(e) {
+        setLoading(true);
         e.preventDefault();
 
         if (props.userId !== userIdLoggedIn) {
@@ -43,35 +34,72 @@ const CommentContent = (props) => {
             return;
         }
 
-        handleEditCommentContent()
-        .catch(error => console.log(error));
+        try {
+            await handleEditCommentContent();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    function getErrorMessage() {
+        if (!error) {
+            return;
+        }
+        
+        if (error instanceof CantGetNewAccessTokenError) {
+            return <ErrorMessage errorMessage="Session expired. Please login again." />
+        }
+        else if (error.message === "401") {
+            return <ErrorMessage errorMessage="Cannot edit this comment as you did not create it!" />  
+        }
+        else {
+            return <ErrorMessage errorMessage="Could not edit comment. Please try again later." />
+        }
     }
 
     return (
         <>
-            {props.currentlyEditing ? 
-            <form className={styles["edit-comment-content-form"]} onSubmit={performEditCommentContent} >
-                <div>
-                    <span>Edit Comment</span>
-                    <textarea value={commentContent} placeholder="Content" onChange={(e) => setCommentContent(e.target.value)} />
-                    <input type="submit" value="Edit" />
-                </div>
-            </form> : 
-            <p className={styles["comment-content"]}>{props.content}</p>}
+            {props.currentlyEditing ? (
+                <form
+                    className={styles["edit-comment-content-form"]}
+                    onSubmit={performEditCommentContent}
+                >
+                    <div>
+                        <span>Edit Comment</span>
+                        <textarea
+                            value={commentContent}
+                            placeholder="Content"
+                            onChange={(e) => setCommentContent(e.target.value)}
+                        />
+                        {loading ? (
+                            <ClipLoader
+                                color={constants.loaderColour}
+                                loading={true}
+                                size={20}
+                                css={"margin-top: 10px"}
+                            />
+                        ) : (
+                            <input type="submit" value="Edit" />
+                        )}
+                        {getErrorMessage()}
+                    </div>
+                </form>
+            ) : (
+                <p className={styles["comment-content"]}>{props.content}</p>
+            )}
         </>
     );
-}
+};
 
 CommentContent.propTypes = {
     content: PropTypes.string,
     commentId: PropTypes.string,
-    userId: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
+    userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     currentlyEditing: PropTypes.bool,
     editComment: PropTypes.func,
-    toggleEditForm: PropTypes.func
-}
+    toggleEditForm: PropTypes.func,
+};
 
 export default CommentContent;
