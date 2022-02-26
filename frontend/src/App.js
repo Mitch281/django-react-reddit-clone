@@ -534,6 +534,7 @@ function App() {
                                         }
                                     />
                                     <PostsByCategory
+                                        posts={posts}
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}
@@ -561,6 +562,7 @@ function App() {
                                         }
                                     />
                                     <PostsByCategory
+                                        posts={posts}
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}

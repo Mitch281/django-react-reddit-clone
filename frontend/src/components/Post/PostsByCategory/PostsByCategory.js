@@ -11,6 +11,7 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import { fetchPostsByCategory } from "../../../utils/fetch-data";
 
 const PostsByCategory = (props) => {
+    console.log("re render");
     const { reLogin } = useContext(UserContext);
 
     const params = useParams();
@@ -20,34 +21,48 @@ const PostsByCategory = (props) => {
     const { state } = useLocation();
     const categoryId = state.categoryId;
 
-    const [posts, setPosts] = useState([]);
+    const [postsByCategory, setPostsByCategory] = useState([]);
     const [error, setError] = useState();
 
     const [loading, setLoading] = useState(false);
 
-    async function loadPostsByCategory(order) {
+    // Get the posts by category on component load.
+    useEffect(() => {
+        setPostsByCategory(props.posts.filter(post => 
+            post.category === categoryId));
+    }, []);
+    
+
+    async function sortPosts(order) {
         try {
             const json = await fetchPostsByCategory(order, categoryId);
-            setPosts(json);
+            setPostsByCategory(json);
         } catch(error) {
             throw error;
         }
     }
 
-    useEffect(() => {
-        reLogin();
-    }, []);
-
     useEffect(async () => {
+
+        // We only want this to run when order is defined (i.e. we do not want this function to run when user first 
+        // visits posts by category.)
+        if (!order) {
+            return;
+        }
+
         setLoading(true);
         try {
-            await loadPostsByCategory(order);
+            await sortPosts(order);
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
-    }, [params]);
+    }, [order]);
+
+    useEffect(() => {
+        reLogin();
+    }, []);
 
     function getOutput() {
         if (error) {
@@ -77,7 +92,7 @@ const PostsByCategory = (props) => {
                 <h1 id={styles["category-name-top-page"]}>{categoryName}</h1>
                 <OrderOptions />
                 <div className={styles["posts"]}>
-                    {posts.map((post) => (
+                    {postsByCategory.map((post) => (
                         <Post
                             key={post.id}
                             id={post.id}
@@ -110,6 +125,7 @@ const PostsByCategory = (props) => {
 };
 
 PostsByCategory.propTypes = {
+    posts: PropTypes.array,
     upvote: PropTypes.func,
     userPostVotes: PropTypes.array,
     trackUsersUpvotes: PropTypes.func,
