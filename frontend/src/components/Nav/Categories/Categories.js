@@ -26,7 +26,7 @@ const Categories = (props) => {
             );
         }
 
-        else if (props.categories.length === 0) {
+        else if (props.categoriesLoading) {
             return (
                 <li>
                     <ClipLoader
@@ -61,7 +61,8 @@ const Categories = (props) => {
 Categories.propTypes = {
     categories: PropTypes.array,
     filterCategoriesText: PropTypes.string,
-    categoryLoadingError: PropTypes.instanceOf(Error)
+    categoryLoadingError: PropTypes.instanceOf(Error),
+    categoriesLoading: PropTypes.bool
 }
 
 export default Categories

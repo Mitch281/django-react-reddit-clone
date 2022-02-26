@@ -23,6 +23,7 @@ const Navbar = (props) => {
                 <CategoryDropdown
                     activeCategory={activeCategory}
                     categories={props.categories}
+                    categoriesLoading={props.categoriesLoading}
                     categoryLoadingError={props.categoryLoadingError}
                 />
                 <li id={styles["navbar-auth"]}>

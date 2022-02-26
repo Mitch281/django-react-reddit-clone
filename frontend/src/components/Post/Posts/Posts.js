@@ -12,10 +12,21 @@ const Posts = (props) => {
     const params = useParams();
     const order = params.order;
 
+    // These values are important for when the user navigates to a specific order. Thus, we load posts in the Posts component 
+    // instead of the App component. Thus, we need new error and loading values distinct to the ones defined in the App 
+    // component.
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        props.loadPosts(order).catch((error) => setError(error));
+    useEffect(async () => {
+        setLoading(true);
+        try {
+            await props.loadPosts(order);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }, [order]);
 
     function getOutput() {
@@ -30,7 +41,7 @@ const Posts = (props) => {
                 </div>
             );
         } 
-        else if (props.posts.length === 0) {
+        else if (loading || props.postsLoading) {
             return (
                 <div className={styles["posts"]}>
                     <ClipLoader
@@ -89,7 +100,8 @@ Post.propTypes = {
     trackUsersDownvotes: PropTypes.func,
     deletePost: PropTypes.func,
     editPostContent: PropTypes.func,
-    postLoadingError: PropTypes.instanceOf(Error)
+    postLoadingError: PropTypes.instanceOf(Error),
+    postsLoading: PropTypes.bool
 };
 
 export default Posts;
