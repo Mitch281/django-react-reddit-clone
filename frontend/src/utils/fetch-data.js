@@ -33,16 +33,6 @@ export async function fetchPostsByCategory(order, categoryId) {
   }
 }
 
-export async function fetchPost(postId) {
-  const response = await fetch(`http://localhost:8000/api/post/id=${postId}`);
-  if (response.ok) {
-    const json = await response.json();
-    return json;
-  } else {
-    throw new Error(response.status); 
-  }
-}
-
 export async function fetchCategories() {
   const response = await fetch("http://localhost:8000/api/categories");
   if (response.ok) {
