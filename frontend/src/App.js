@@ -23,8 +23,6 @@ import CreateCategory from "./components/CreationForms/CreateCategory/CreateCate
 import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
 
-// TODO: Fix error where user stuck on loading screen if there are no categories or posts (on home page).
-
 export const UserContext = createContext();
 
 function App() {

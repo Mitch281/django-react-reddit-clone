@@ -11,7 +11,7 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import { fetchPostsByCategory } from "../../../utils/fetch-data";
 
 const PostsByCategory = (props) => {
-    console.log("re render");
+    console.log(props.posts);
     const { reLogin } = useContext(UserContext);
 
     const params = useParams();
@@ -30,7 +30,7 @@ const PostsByCategory = (props) => {
     useEffect(() => {
         setPostsByCategory(props.posts.filter(post => 
             post.category === categoryId));
-    }, [props.posts]);
+    }, [props.posts, categoryId]);
     
 
     async function sortPosts(order) {
