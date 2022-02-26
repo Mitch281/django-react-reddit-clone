@@ -65,7 +65,7 @@ const PostsByCategory = (props) => {
     }, []);
 
     function getOutput() {
-        if (error) {
+        if (error || props.postLoadingError) {
             return (
                 <div
                     className={styles["posts"]}
@@ -74,7 +74,7 @@ const PostsByCategory = (props) => {
                     <ErrorMessage errorMessage="Could not load posts. Please try again later." />
                 </div>
             );
-        } else if (loading) {
+        } else if (loading || props.postsLoading) {
             return (
                 <div className={styles["posts"]}>
                     <ClipLoader
@@ -133,6 +133,8 @@ PostsByCategory.propTypes = {
     trackUsersDownvotes: PropTypes.func,
     deletePost: PropTypes.func,
     editPostContent: PropTypes.func,
+    postsLoading: PropTypes.bool,
+    postLoadingError: PropTypes.instanceOf(Error)
 };
 
 export default PostsByCategory;

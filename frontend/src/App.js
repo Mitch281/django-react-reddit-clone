@@ -542,6 +542,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postsLoading={postsLoading}
+                                        postsLoadingError={postLoadingError}
                                     />
                                     <LinkToCreatePost />
                                 </>
@@ -570,6 +572,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postsLoading={postsLoading}
+                                        postsLoadingError={postLoadingError}
                                     />
                                     <LinkToCreatePost />
                                 </>
@@ -598,6 +602,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postsLoading={postsLoading}
+                                        postsLoadingError={postLoadingError}
                                     />
                                     <Comments />
                                 </>
@@ -626,6 +632,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postsLoading={postsLoading}
+                                        postsLoadingError={postLoadingError}
                                     />
                                     <Comments />
                                 </>
