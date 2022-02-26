@@ -3,7 +3,7 @@ import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import { getNewAccessTokenIfExpired } from "../../../utils/auth";
 import styles from "./comment-content.module.css";
-
+// TODO: move api call to fetch-data.js
 const CommentContent = (props) => {
 
     const [commentContent, setCommentContent] = useState(props.content);

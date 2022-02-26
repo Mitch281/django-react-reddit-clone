@@ -22,7 +22,6 @@ const SignupPage = () => {
     const [loading, setLoading] = useState(false);
 
     async function handleSignup() {
-        setLoading(true);
 
         if (password !== confirmPassword) {
             throw new Error("Passwords not the same");
@@ -41,15 +40,18 @@ const SignupPage = () => {
         }
     }
 
-    function performSignup(e) {
+    async function performSignup(e) {
+        setLoading(true);
         e.preventDefault();
 
-        handleSignup().catch((error) => setError(error));
+        try {
+            await handleSignup();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }
-
-    useEffect(() => {
-        setLoading(false);
-    }, [error, loggedIn]);
 
     function getErrorMessage() {
         if (!error) {

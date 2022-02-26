@@ -19,7 +19,6 @@ const PostSelected = (props) => {
     const postId = params.postId;
 
     async function loadPost() {
-        setLoading(true);
         try {
             const json = await fetchPost(postId);
             setPost(json);
@@ -28,10 +27,15 @@ const PostSelected = (props) => {
         }
     }
 
-    useEffect(() => {
-        loadPost()
-        .then(() => setLoading(false))
-        .catch(error => setError(error));
+    useEffect(async () => {
+        setLoading(true);
+        try {
+            await loadPost();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }, [props.posts]);
 
     // TODO: Issue where when upvoting or downvoting post in this router componenent, number of votes doesn't update. This is

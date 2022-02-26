@@ -25,7 +25,6 @@ const LoginPage = () => {
     // TODO: error handling.
     // NOTE: State persists through router change but not through page refresh so handle that.
     async function handleLogin() {
-        setLoading(true);
         try {
             const json = await login(username, password);
                 localStorage.setItem("accessToken", json.access);
@@ -39,15 +38,18 @@ const LoginPage = () => {
         }
     }
 
-    function performLogin(e) {
+    async function performLogin(e) {
+        setLoading(true);
         e.preventDefault();
 
-        handleLogin().catch((error) => setError(error));
+        try {
+            await handleLogin();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }
-
-    useEffect(() => {
-        setLoading(false);
-    }, [error, loggedIn]);
 
     function getErrorMessage() {
         // There is no error because the user hasn't submitted a login request yet or the request was successful.

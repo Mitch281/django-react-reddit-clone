@@ -26,7 +26,6 @@ const PostsByCategory = (props) => {
     const [loading, setLoading] = useState(false);
 
     async function loadPostsByCategory(order) {
-        setLoading(true);
         try {
             const json = await fetchPostsByCategory(order, categoryId);
             setPosts(json);
@@ -39,10 +38,15 @@ const PostsByCategory = (props) => {
         reLogin();
     }, []);
 
-    useEffect(() => {
-        loadPostsByCategory(order)
-        .then(() => setLoading(false))
-        .catch((error) => setError(error));
+    useEffect(async () => {
+        setLoading(true);
+        try {
+            await loadPostsByCategory(order);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }, [params]);
 
     function getOutput() {
