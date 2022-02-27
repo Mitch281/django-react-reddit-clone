@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { HiArrowSmUp, HiArrowSmDown } from "react-icons/hi";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../../App";
 import { NoAccessTokenError } from "../../../utils/auth";
 import styles from "./comment-votes.module.css";
@@ -14,6 +14,8 @@ const CommentVotes = (props) => {
     const numDownvotes = props.votes.numDownvotes;
 
     const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
+
+    const [error, setError] = useState();
 
     // Checks if the user has already voted on a comment.
     function checkUserVoteAlready() {
@@ -48,115 +50,96 @@ const CommentVotes = (props) => {
         return commentVotedOn[0].id;
     }
 
-    function handleVote(voteType) {
+    async function noVoteToUpvote(commentVoteId) {
+        try {
+            await props.upvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment");
+            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment")
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function noVoteToDownvote(commentVoteId) {
+        try {
+            await props.downvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment");
+            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment");
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function downvoteToUpvote(commentVoteId) {
+        try {
+            await props.upvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment");
+            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment");
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function downvoteToDownvote(commentVoteId) {
+        try {
+            await props.downvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment");
+            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment");
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function upvoteToUpvote(commentVoteId) {
+        try {
+            await props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment");
+            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment");
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function upvoteToDownvote(commentVoteId) {
+        try {
+            await props.downvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment");
+            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment");
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    async function handleVote(voteType) {
+        if (!loggedIn) {
+            navigate("/login/");
+            return;
+        }
+        
         const commentVoteId = getCommentVoteId();
         const usersCurrentVote = checkUserVoteAlready();
 
         // User has not voted yet.
         if (!usersCurrentVote) {
             if (voteType === "upvote") {
-                props.upvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
-                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                await noVoteToUpvote(commentVoteId);
             }
             else {
-                props.downvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment")
-                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                noVoteToDownvote(commentVoteId);
             }
         }
 
         // User has already downvoted the comment.
         if (usersCurrentVote === "downvote") {
             if (voteType === "upvote") {
-                props.upvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
-                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                await downvoteToUpvote(commentVoteId);
             }
             else {
-                props.downvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment")
-                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                await downvoteToDownvote(commentVoteId);
             }
         }
 
         // User has already upvoted the comment.
         if (usersCurrentVote === "upvote") {
             if (voteType === "upvote") {
-                props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
-                .then(() => props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                await upvoteToUpvote(commentVoteId);
             }
             else {
-                props.downvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment")
-                .then(() => props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment"))
-                .catch(error => {
-                    if (error instanceof NoAccessTokenError) {
-                        navigate("/login/");
-                    }
-
-                    // User's session has expired.
-                    else if (error.message === "401") {
-                        logout();
-                        navigate("/login/");
-                    }
-                }
-                );
+                await upvoteToDownvote(commentVoteId);
             }
         }
     }
