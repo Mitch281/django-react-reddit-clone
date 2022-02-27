@@ -6,9 +6,7 @@
     justify-content: center;
     background-color: var(--error-message-colour);
     border: 1px solid black;
-    padding-right: 2%;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 10px;
     position: relative;
     margin-top: 10px;
 }
