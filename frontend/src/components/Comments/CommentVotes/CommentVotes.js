@@ -3,11 +3,12 @@ import { HiArrowSmUp, HiArrowSmDown } from "react-icons/hi";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { UserContext } from "../../../App";
-import { NoAccessTokenError } from "../../../utils/auth";
 import styles from "./comment-votes.module.css";
+import ErrorMessageModal from "../../ErrorMessage/ErrorMessageModal";
+import { v4 as uuid_v4 } from "uuid";
+import { CantGetNewAccessTokenError } from "../../../utils/auth";
 
 const CommentVotes = (props) => {
-
     let navigate = useNavigate();
 
     const numUpvotes = props.votes.numUpvotes;
@@ -25,24 +26,30 @@ const CommentVotes = (props) => {
 
         // Gets all the votes on comments of the user currently logged in. Then further filters this to get the vote
         // of the user on the specific comment that is being rendered.
-        const userVotes = props.userCommentVotes.filter(userCommentVote => userCommentVote.user === userIdLoggedIn);
-        const commentVotedOn = userVotes.filter(userVote => userVote.comment === props.commentId);
-        
+        const userVotes = props.userCommentVotes.filter(
+            (userCommentVote) => userCommentVote.user === userIdLoggedIn
+        );
+        const commentVotedOn = userVotes.filter(
+            (userVote) => userVote.comment === props.commentId
+        );
+
         if (commentVotedOn[0] === undefined) {
             return false;
-        }
-        else if (commentVotedOn[0].upvote) {
+        } else if (commentVotedOn[0].upvote) {
             return "upvote";
-        }
-        else if (commentVotedOn[0].downvote) {
+        } else if (commentVotedOn[0].downvote) {
             return "downvote";
         }
     }
 
     // Gets the id of commentVote object is the user has voted on the comment already.
     function getCommentVoteId() {
-        const userVotes = props.userCommentVotes.filter(userCommentVote => userCommentVote.user === userIdLoggedIn);
-        const commentVotedOn = userVotes.filter(userVote => userVote.comment === props.commentId);
+        const userVotes = props.userCommentVotes.filter(
+            (userCommentVote) => userCommentVote.user === userIdLoggedIn
+        );
+        const commentVotedOn = userVotes.filter(
+            (userVote) => userVote.comment === props.commentId
+        );
 
         if (commentVotedOn[0] === undefined) {
             return null;
@@ -52,8 +59,20 @@ const CommentVotes = (props) => {
 
     async function noVoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment");
-            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment")
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
+                "comment"
+            );
+            await props.trackUsersUpvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "no vote",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -61,8 +80,20 @@ const CommentVotes = (props) => {
 
     async function noVoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(props.commentId, numUpvotes, numDownvotes, "no vote", "comment");
-            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "no vote", commentVoteId, "comment");
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
+                "comment"
+            );
+            await props.trackUsersDownvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "no vote",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -70,8 +101,20 @@ const CommentVotes = (props) => {
 
     async function downvoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment");
-            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment");
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
+                "comment"
+            );
+            await props.trackUsersUpvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "downvoted",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -79,8 +122,20 @@ const CommentVotes = (props) => {
 
     async function downvoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(props.commentId, numUpvotes, numDownvotes, "downvoted", "comment");
-            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "downvoted", commentVoteId, "comment");
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
+                "comment"
+            );
+            await props.trackUsersDownvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "downvoted",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -88,8 +143,20 @@ const CommentVotes = (props) => {
 
     async function upvoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment");
-            await props.trackUsersUpvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment");
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
+                "comment"
+            );
+            await props.trackUsersUpvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "upvoted",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -97,8 +164,20 @@ const CommentVotes = (props) => {
 
     async function upvoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(props.commentId, numUpvotes, numDownvotes, "upvoted", "comment");
-            await props.trackUsersDownvotes(userIdLoggedIn, props.commentId, "upvoted", commentVoteId, "comment");
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
+                "comment"
+            );
+            await props.trackUsersDownvotes(
+                userIdLoggedIn,
+                props.commentId,
+                "upvoted",
+                commentVoteId,
+                "comment"
+            );
         } catch (error) {
             setError(error);
         }
@@ -109,7 +188,7 @@ const CommentVotes = (props) => {
             navigate("/login/");
             return;
         }
-        
+
         const commentVoteId = getCommentVoteId();
         const usersCurrentVote = checkUserVoteAlready();
 
@@ -117,8 +196,7 @@ const CommentVotes = (props) => {
         if (!usersCurrentVote) {
             if (voteType === "upvote") {
                 await noVoteToUpvote(commentVoteId);
-            }
-            else {
+            } else {
                 noVoteToDownvote(commentVoteId);
             }
         }
@@ -127,8 +205,7 @@ const CommentVotes = (props) => {
         if (usersCurrentVote === "downvote") {
             if (voteType === "upvote") {
                 await downvoteToUpvote(commentVoteId);
-            }
-            else {
+            } else {
                 await downvoteToDownvote(commentVoteId);
             }
         }
@@ -137,8 +214,7 @@ const CommentVotes = (props) => {
         if (usersCurrentVote === "upvote") {
             if (voteType === "upvote") {
                 await upvoteToUpvote(commentVoteId);
-            }
-            else {
+            } else {
                 await upvoteToDownvote(commentVoteId);
             }
         }
@@ -146,26 +222,51 @@ const CommentVotes = (props) => {
 
     function determineUpArrowColour() {
         if (checkUserVoteAlready() === "upvote") {
-            return {color: "orange"};
+            return { color: "orange" };
         }
     }
 
     function determineDownArrowColour() {
         if (checkUserVoteAlready() === "downvote") {
-            return {color: "blue"};
+            return { color: "blue" };
         }
     }
 
+    function getErrorMessage() {
+        if (!error) {
+            return;
+        }
+
+        if (error instanceof CantGetNewAccessTokenError) {
+            return <ErrorMessageModal key={uuid_v4()} errorMessage="Session expired. Please login again." />;
+        }
+
+        return <ErrorMessageModal key={uuid_v4()} errorMessage="Couldn't vote on comment. Please try again later." />;
+    }
+
     return (
-    <div className={styles["comment-votes"]}>
-        <HiArrowSmUp size={20} className={styles["upvote"]} style={determineUpArrowColour()} onClick={() => handleVote("upvote")} />
-        <span className={styles["comment-vote-count"]}>
-            {numUpvotes - numDownvotes}
-        </span>
-        <HiArrowSmDown size={20} className={styles["downvote"]} style={determineDownArrowColour()} onClick={() => handleVote("downvote")} />
-    </div>
+        <>
+            <div className={styles["comment-votes"]}>
+                <HiArrowSmUp
+                    size={20}
+                    className={styles["upvote"]}
+                    style={determineUpArrowColour()}
+                    onClick={() => handleVote("upvote")}
+                />
+                <span className={styles["comment-vote-count"]}>
+                    {numUpvotes - numDownvotes}
+                </span>
+                <HiArrowSmDown
+                    size={20}
+                    className={styles["downvote"]}
+                    style={determineDownArrowColour()}
+                    onClick={() => handleVote("downvote")}
+                />
+            </div>
+            {getErrorMessage()}
+        </>
     );
-}
+};
 
 CommentVotes.propTypes = {
     votes: PropTypes.object,
@@ -174,7 +275,7 @@ CommentVotes.propTypes = {
     upvote: PropTypes.func,
     downvote: PropTypes.func,
     trackUsersUpvotes: PropTypes.func,
-    trackUsersDownvotes: PropTypes.func
-}
+    trackUsersDownvotes: PropTypes.func,
+};
 
 export default CommentVotes;
