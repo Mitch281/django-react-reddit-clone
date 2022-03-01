@@ -86,7 +86,7 @@ const SignupPage = () => {
     return (
         <>
             <div id={[styles["signup"]]}>
-                <form onSubmit={performSignup}>
+                <form id={styles["signup-form"]} onSubmit={performSignup}>
                     <input
                         type="text"
                         placeholder="username"

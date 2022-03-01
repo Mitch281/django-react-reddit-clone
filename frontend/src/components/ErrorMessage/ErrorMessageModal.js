@@ -14,7 +14,7 @@ const ErrorMessageModal = (props) => {
         setTimeout(() => {
             setRenderError(false);
         }, RENDER_TIME);
-    }, [props.errorMessage]);
+    }, []);
 
     return (
         <>

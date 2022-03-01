@@ -79,7 +79,7 @@ const LoginPage = () => {
     return (
         <>
             <div id={styles["login"]}>
-                <form onSubmit={performLogin}>
+                <form id={styles["login-form"]} onSubmit={performLogin}>
                     <input
                         type="text"
                         placeholder="username"

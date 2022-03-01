@@ -67,7 +67,7 @@ https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-in
     text-decoration: underline;
 }
 
-form span {
+#login-form span, #signup-form span {
     width: 100%;
     text-align: center;
 }
