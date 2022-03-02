@@ -17,10 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
 
-# TODO: Make sure that only the CREATORS of posts can delete them.
-# TODO: Maybe create my own permission class.
 # TODO: Make ordering case insensitive.
-# TODO: Does returning 401 bad errors return all types of errors? e.g: 401 error.
 class CategoryView(APIView):
     """
     List and create categories.
@@ -237,7 +234,6 @@ class CommentsView(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
-    # TODO: cHECK IF PARENT COMMENT IS DELETED. if so return 401 error.
     def post(self, request, format=None):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():

@@ -58,8 +58,6 @@ class Comment(models.Model):
     def username(self):
         return self.user.username
 
-    # TODO: Add constraint to make sure that parent post of comment reply samea as parent comment.
-
 class PostVotes(models.Model):
     """
     Keeps track of a user's votes on all posts.

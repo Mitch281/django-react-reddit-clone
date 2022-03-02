@@ -21,9 +21,6 @@ const LoginPage = () => {
 
     const [loading, setLoading] = useState(false);
 
-    // TODO: data validation.
-    // TODO: error handling.
-    // NOTE: State persists through router change but not through page refresh so handle that.
     async function handleLogin() {
         try {
             const json = await login(username, password);
