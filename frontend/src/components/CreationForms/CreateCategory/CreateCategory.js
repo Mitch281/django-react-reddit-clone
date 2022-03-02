@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../App";
 import { v4 as uuid_v4 } from "uuid";
 import PropTypes from "prop-types";
-import {
-    CantGetNewAccessTokenError,
-    getNewAccessTokenIfExpired,
-} from "../../../utils/auth";
+import { CantGetNewAccessTokenError } from "../../../utils/auth";
 import styles from "./create-category.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -43,25 +40,26 @@ const CreateCategory = (props) => {
             navigate(`/posts/category=${categoryName}/`, {
                 state: { categoryId: categoryId },
             });
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     }
 
-    function performCreateCategory(e) {
+    async function performCreateCategory(e) {
         e.preventDefault();
         if (categoryName.length > 20) {
             alert("Category name must be less than or equal to 20 characters!");
             return;
         }
 
-        createCategory()
-            .catch((error) => setError(error));
+        try {
+            await createCategory()
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }
-
-    useEffect(() => {
-        setLoading(false);
-    }, [error]);
 
     function getErrorMessage() {
         if (!error) {

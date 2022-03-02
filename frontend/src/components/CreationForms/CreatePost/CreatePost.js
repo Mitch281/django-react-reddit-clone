@@ -3,10 +3,7 @@ import { UserContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { v4 as uuid_v4 } from "uuid";
-import {
-    getNewAccessTokenIfExpired,
-    CantGetNewAccessTokenError,
-} from "../../../utils/auth";
+import { CantGetNewAccessTokenError } from "../../../utils/auth";
 import styles from "./create-post.module.css";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -57,21 +54,22 @@ const CreatePost = (props) => {
             await postPost(data);
             props.addPost(data);
             navigate("/");
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     }
 
-    function performAddPost(e) {
+    async function performAddPost(e) {
         e.preventDefault();
 
-        handleAddPost()
-            .catch((error) => setError(error));
+        try {
+            await handleAddPost();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     }
-
-    useEffect(() => {
-        setLoading(false);
-    }, [error]);
 
     function getErrorMessage() {
         if (!error) {
