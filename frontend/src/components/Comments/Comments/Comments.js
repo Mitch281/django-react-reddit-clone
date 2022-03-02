@@ -259,7 +259,7 @@ const Comments = () => {
     // sake of consistency.
     function deleteComment(commentId) {
         setComments(comments.map(comment => 
-            comment.id === commentId ? {...comment, deleted: true} : comment));
+            comment.id === commentId ? {...comment, deleted: true, content: null, user: null} : comment));
     }
 
     function toggleHidden(commentId, currentHidden) {
