@@ -8,4 +8,5 @@
     background-color: var(--error-message-colour);
     padding: 15px 10px;
     text-align: center;
+    z-index: 1;
 }
