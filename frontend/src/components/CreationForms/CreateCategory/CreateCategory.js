@@ -47,13 +47,9 @@ const CreateCategory = (props) => {
 
     async function performCreateCategory(e) {
         e.preventDefault();
-        if (categoryName.length > 20) {
-            alert("Category name must be less than or equal to 20 characters!");
-            return;
-        }
 
         try {
-            await createCategory()
+            await createCategory();
         } catch (error) {
             setError(error);
         } finally {
@@ -70,6 +66,10 @@ const CreateCategory = (props) => {
         if (error instanceof CantGetNewAccessTokenError) {
             logout();
             navigate("/login/");
+        } else if (categoryName.length > 20) {
+            return (
+                <ErrorMessage errorMessage="Category names must be less than 20 characters!" />
+            );
         } else if (error.message === "400") {
             return (
                 <ErrorMessage errorMessage="This category has already been created." />

@@ -1,9 +1,8 @@
-// TODO: fix issue where NaN years ago is returned when post is just created.
 export function getTimeElapsedFromCreation(pythonDateTimeObject) {
     const dateCreated = Date.parse(pythonDateTimeObject);
     const dateToday = new Date();
 
-    const secondsElapsed = Math.round(((dateToday.getTime() - dateCreated) / 1000));
+    const secondsElapsed = 0 || Math.round(((dateToday.getTime() - dateCreated) / 1000));
     const minutesElapsed = Math.round(secondsElapsed / 60);
     const hoursElapsed = Math.round(secondsElapsed / (60 * 60));
     const daysElapsed = Math.round(secondsElapsed / ( 60 * 60 * 24));

@@ -80,6 +80,10 @@ const CreatePost = (props) => {
         if (error instanceof CantGetNewAccessTokenError) {
             logout();
             navigate("/login/");
+        } else if (title.length > 100) {
+            return <ErrorMessage errorMessage="Title must be less than 100 characters." />
+        } else if (content.length > 1000) {
+            return <ErrorMessage errorMessage="Content length must be less than 1000 characters." />
         }
 
         return (
