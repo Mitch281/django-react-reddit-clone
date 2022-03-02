@@ -45,6 +45,10 @@
     padding-right: 20px;
 }
 
+#nav-to-login:hover, #nav-to-signup:hover {
+    border: 1px solid var(--input-border-colour);
+}
+
 #nav-to-login {
     margin-right: 1em;
 }

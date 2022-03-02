@@ -18,3 +18,7 @@
 .upvote {
     margin-top: 5px;
 }
+
+.upvote:hover, .downvote:hover {
+    background-color: rgb(238, 230, 230);
+}

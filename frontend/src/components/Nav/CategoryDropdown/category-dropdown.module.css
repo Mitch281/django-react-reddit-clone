@@ -62,4 +62,8 @@
 #category-in-focus {
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
+
+#category-in-focus:hover {
+    border: 1px solid var(--input-border-colour);
+}
