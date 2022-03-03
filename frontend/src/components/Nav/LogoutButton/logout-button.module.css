@@ -12,3 +12,7 @@
     cursor: pointer;
     border: 0px;
 }
+
+#logout-button:hover {
+    border: 1px solid var(--input-border-colour);
+}
