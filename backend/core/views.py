@@ -14,6 +14,7 @@ PostVotesSerializer,
 MyTokenObtainPairSerializer)
 from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db.models.functions import Lower
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ class CategoryView(APIView):
         return super().get_permissions()
 
     def get(self, request, format=None):
-        categories = Category.objects.order_by("name")
+        categories = Category.objects.order_by(Lower("name"))
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
