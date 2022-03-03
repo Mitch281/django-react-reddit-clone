@@ -53,6 +53,7 @@
     justify-content: center;
     margin-top: var(--gap-to-post);
     margin-bottom: 35px;
+    text-align: center;
 }
 
 .not-logged-in-message a {
@@ -66,7 +67,7 @@
 }
 
 .not-logged-in-message span {
-    font-family: "Fira Sans", sans-serif;
+    margin-bottom: 20px;
 }
 
 .not-logged-in-message a:hover {
@@ -76,5 +77,10 @@
 @media only screen and (hover: none) and (pointer: coarse) {
     #comment-input {
         width: 80%;
+    }
+
+    .not-logged-in-message span {
+        display: block; /* Prevent overlapping of log in and sign up buttons with text. */
+        font-family: "Fira Sans", sans-serif;
     }
 }
