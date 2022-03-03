@@ -7,6 +7,7 @@ import styles from "./post-votes.module.css";
 import ErrorMessageModal from "../../ErrorMessage/ErrorMessageModal";
 import { v4 as uuid_v4 } from "uuid";
 import { CantGetNewAccessTokenError } from "../../../utils/auth";
+import { constants } from "../../../constants";
 
 const PostVotes = (props) => {
     let navigate = useNavigate();
@@ -221,9 +222,11 @@ const PostVotes = (props) => {
     }
 
     function getErrorMessage() {
-        if (!error) {
-            return;
-        }
+
+        // Controls how long to render error message for (<ERROR_MODAL_RENDER_TIME> in this case).
+        setTimeout(() => {
+            setError(null)
+        }, constants.ERROR_MODAL_RENDER_TIME);
 
         if (error instanceof CantGetNewAccessTokenError) {
             return <ErrorMessageModal key={uuid_v4()} errorMessage="Session expired. Please login again." />;
@@ -251,7 +254,7 @@ const PostVotes = (props) => {
                     style={determineDownArrowColour()}
                 />
             </div>
-            {getErrorMessage()}
+            {error ? getErrorMessage() : ""}
         </>
     );
 };

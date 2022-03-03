@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { UserContext } from "../../../App";
 import styles from "./comment-votes.module.css";
-import ErrorMessageModal from "../../ErrorMessage/ErrorMessageModal";
 import { v4 as uuid_v4 } from "uuid";
 import { CantGetNewAccessTokenError } from "../../../utils/auth";
+import { constants } from "../../../constants";
+import ErrorMessageModal from "../../ErrorMessage/ErrorMessageModal";
 
 const CommentVotes = (props) => {
     let navigate = useNavigate();
@@ -233,14 +234,22 @@ const CommentVotes = (props) => {
     }
 
     function getErrorMessage() {
-        if (!error) {
-            return;
-        }
+
+        // This controls how long to render error for. In this case, we render the error for <ERROR_MODAL_RENDER_TIME> ms.
+        setTimeout(() => {
+            setError(null)
+        }, constants.ERROR_MODAL_RENDER_TIME);
 
         if (error instanceof CantGetNewAccessTokenError) {
+            setTimeout(() => {
+                setError(null);
+            }, [3000]);
             return <ErrorMessageModal key={uuid_v4()} errorMessage="Session expired. Please login again." />;
         }
 
+        setTimeout(() => {
+            setError(null);
+        }, [3000]);
         return <ErrorMessageModal key={uuid_v4()} errorMessage="Couldn't vote on comment. Please try again later." />;
     }
 
@@ -263,7 +272,7 @@ const CommentVotes = (props) => {
                     onClick={() => handleVote("downvote")}
                 />
             </div>
-            {getErrorMessage()}
+            {error ? getErrorMessage() : ""}
         </>
     );
 };

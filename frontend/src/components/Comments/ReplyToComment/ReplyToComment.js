@@ -72,9 +72,11 @@ const ReplyToComment = (props) => {
     }
 
     function getErrorMessage() {
-        if (!error) {
-            return;
-        }
+        
+        // Controls how long to render error message for.
+        setTimeout(() => {
+            setError(null);
+        }, constants.ERROR_MODAL_RENDER_TIME);
 
         if (error instanceof CantGetNewAccessTokenError) {
             return (
@@ -118,7 +120,7 @@ const ReplyToComment = (props) => {
                     </div>
                 </form>
             </div>
-            {getErrorMessage()}
+            {error ? getErrorMessage() : ""}
         </>
     );
 };
