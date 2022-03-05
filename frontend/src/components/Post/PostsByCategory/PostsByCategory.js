@@ -42,7 +42,7 @@ const PostsByCategory = (props) => {
         }
     }
 
-    useEffect(async () => {
+    useEffect(() => {
 
         // We only want this to run when order is defined (i.e. we do not want this function to run when user first 
         // visits posts by category.)
@@ -50,9 +50,13 @@ const PostsByCategory = (props) => {
             return;
         }
 
+        async function getSortedPosts() {
+            await sortPosts(order);
+        }
+
         setLoading(true);
         try {
-            await sortPosts(order);
+            getSortedPosts();
         } catch (error) {
             setError(error);
         } finally {

@@ -12,7 +12,7 @@ const ViewComments = (props) => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
 
-    async function getNumberOfComments() {
+    async function loadNumberOfComments() {
         try {
             const json = await fetchNumberOfCommentsOnPost(props.postId);
             setNumComments(json.num_comments);
@@ -21,9 +21,13 @@ const ViewComments = (props) => {
         }
     }
 
-    useEffect(async () => {
+    useEffect(() => {
+        async function getNumberOfComments() {
+            await loadNumberOfComments();
+        }
+
         try {
-            await getNumberOfComments();
+            getNumberOfComments();
         } catch (error) {
             setError(error);
         } finally {

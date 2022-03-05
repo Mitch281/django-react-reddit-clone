@@ -18,10 +18,13 @@ const Posts = (props) => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
 
-    useEffect(async () => {
+    useEffect(() => {
         setLoading(true);
-        try {
+        async function getPosts() {
             await props.loadPosts(order);
+        }
+        try {
+            getPosts();
         } catch (error) {
             setError(error);
         } finally {

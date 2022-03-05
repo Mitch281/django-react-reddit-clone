@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../App";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./login-signup.module.css";
@@ -10,7 +10,7 @@ import { login } from "../../utils/auth";
 const LoginPage = () => {
     let navigate = useNavigate();
 
-    const { setUsernameLoggedIn, loggedIn, setLoggedIn, setUserIdLoggedIn } =
+    const { setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn } =
         useContext(UserContext);
 
 

@@ -49,14 +49,25 @@ const Comments = () => {
         loadUserCommentVotes();
     }, []);
 
-    async function loadComments(order) {
-        try {
-            const json = await fetchComments(order, postId);
-            setComments(json);
-        } catch(error) {
-            throw error;
+    useEffect(() => {
+        setCommentsLoading(true);
+        async function loadComments(order) {
+            try {
+                const json = await fetchComments(order, postId);
+                setComments(json);
+            } catch(error) {
+                throw error;
+            }
         }
-    }
+
+        try {
+            loadComments(order);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setCommentsLoading(false);
+        }
+    }, [postId, order]);
 
     useEffect(async () => {
         setCommentsLoading(true);
@@ -107,7 +118,6 @@ const Comments = () => {
 
     // Updates comments on frontend after post is successful on backend.
     function updateComments(newComment) {
-        console.log(newComment);
         setComments(comments => [...comments, newComment]);
     }
 

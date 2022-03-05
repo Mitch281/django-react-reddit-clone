@@ -376,11 +376,23 @@ function App() {
         );
     }
 
+    async function getPosts() {
+        await loadPosts("");
+    }
+
+    async function getCategories() {
+        await loadCategories();
+    }
+    
+    async function getPostVotes() {
+        await loadPostVotes();
+    }
+
     // Load posts on page load.
-    useEffect(async () => {
+    useEffect(() => {
         setPostsLoading(true);
         try {
-            await loadPosts("");
+            getPosts();
         } catch (error) {
             setPostLoadingError(error);
         } finally {
@@ -389,10 +401,10 @@ function App() {
     }, []);
 
     // Load categories on page load.
-    useEffect(async () => {
+    useEffect(() => {
         setCategoriesLoading(true);
         try {
-            await loadCategories("");
+            getCategories();
         } catch (error) {
             setCategoryLoadingError(error);
         } finally {
@@ -401,9 +413,9 @@ function App() {
     }, []);
 
     // Load post votes on page load.
-    useEffect(async () => {
+    useEffect(() => {
         try {
-            await loadPostVotes("");
+            getPostVotes();
         } catch (error) {
             throw error;
         }
