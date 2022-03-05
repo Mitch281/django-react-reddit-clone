@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "",
+  "proxy": "https://reddit-clone-backend-restapi.herokuapp.com",
   "eslintConfig": {
     "extends": [
       "react-app",
