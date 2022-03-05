@@ -398,6 +398,7 @@ function App() {
         } finally {
             setPostsLoading(false);
         }
+        // eslint-disable-next-line
     }, []);
 
     // Load categories on page load.
@@ -410,6 +411,7 @@ function App() {
         } finally {
             setCategoriesLoading(false);
         }
+        // eslint-disable-next-line
     }, []);
 
     // Load post votes on page load.
@@ -419,6 +421,7 @@ function App() {
         } catch (error) {
             throw error;
         }
+        // eslint-disable-next-line
     }, []);
 
     return (
