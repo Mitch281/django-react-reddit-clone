@@ -62,10 +62,12 @@ const PostsByCategory = (props) => {
         } finally {
             setLoading(false);
         }
+        // eslint-disable-next-line
     }, [order]);
 
     useEffect(() => {
         reLogin();
+        // eslint-disable-next-line
     }, []);
 
     function getOutput() {

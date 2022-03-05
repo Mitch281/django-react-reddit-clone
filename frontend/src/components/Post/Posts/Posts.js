@@ -30,6 +30,7 @@ const Posts = (props) => {
         } finally {
             setLoading(false);
         }
+        // eslint-disable-next-line
     }, [order]);
 
     function getOutput() {

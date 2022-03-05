@@ -44,6 +44,7 @@ const CategoryDropdown = (props) => {
                 "mousedown",
                 handleClickOutsideDropdown
             );
+        // eslint-disable-next-line
     }, [wantDropdown]);
 
     return (

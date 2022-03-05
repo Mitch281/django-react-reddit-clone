@@ -15,7 +15,7 @@ const PostVotes = (props) => {
     const numUpvotes = props.votes.numUpvotes;
     const numDownvotes = props.votes.numDownvotes;
 
-    const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     const [error, setError] = useState();
 

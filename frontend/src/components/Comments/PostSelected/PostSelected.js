@@ -18,6 +18,7 @@ const PostSelected = (props) => {
         if (props.posts.length !== 0) {
             setPostSelected(props.posts.find((post) => post.id === postId));
         }
+        // eslint-disable-next-line
     }, [props.posts]);
 
     function getOutput() {

@@ -69,7 +69,7 @@ const Comments = () => {
         }
     }, [postId, order]);
 
-    useEffect(async () => {
+    useEffect(() => {
         setCommentsLoading(true);
         async function loadComments(order) {
             try {
@@ -79,7 +79,7 @@ const Comments = () => {
                 throw error;
             }
         }
-        
+
         try {
             loadComments(order);
         } catch (error) {
@@ -93,6 +93,7 @@ const Comments = () => {
         if (comments.length !== 0) {
             setCommentChain(nestComments());
         }
+        // eslint-disable-next-line
     }, [comments, params]);
 
     function nestComments() {

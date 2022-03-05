@@ -24,6 +24,7 @@ const CreateCategory = (props) => {
         if (!loggedIn) {
             navigate("/login/");
         }
+        // eslint-disable-next-line
     }, []);
 
     async function createCategory() {

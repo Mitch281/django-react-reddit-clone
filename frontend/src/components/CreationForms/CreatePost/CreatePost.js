@@ -20,6 +20,7 @@ const CreatePost = (props) => {
         if (!loggedIn) {
             navigate("/login/");
         }
+        // eslint-disable-next-line
     }, []);
 
     const [title, setTitle] = useState("");

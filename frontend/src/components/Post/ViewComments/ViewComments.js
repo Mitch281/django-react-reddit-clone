@@ -33,6 +33,7 @@ const ViewComments = (props) => {
         } finally {
             setLoading(false);
         }
+        // eslint-disable-next-line
     }, []);
 
     function getOutput() {
