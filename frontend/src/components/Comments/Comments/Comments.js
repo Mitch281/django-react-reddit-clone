@@ -71,8 +71,17 @@ const Comments = () => {
 
     useEffect(async () => {
         setCommentsLoading(true);
+        async function loadComments(order) {
+            try {
+                const json = await fetchComments(order, postId);
+                setComments(json);
+            } catch(error) {
+                throw error;
+            }
+        }
+        
         try {
-            await loadComments(order);
+            loadComments(order);
         } catch (error) {
             setError(error);
         } finally {
