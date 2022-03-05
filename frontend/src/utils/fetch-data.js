@@ -4,9 +4,9 @@ import { getNewAccessTokenIfExpired } from "./auth";
 export async function fetchPosts(order) {
     let url;
     if (order) {
-        url = `http://localhost:8000/api/posts/${order}`;
+        url = `https://reddit-clone-backend-restapi.herokuapp.com/api/posts/${order}`;
     } else {
-        url = "http://localhost:8000/api/posts/";
+        url = "https://reddit-clone-backend-restapi.herokuapp.com/api/posts/";
     }
     const response = await fetch(url);
     if (response.ok) {
@@ -20,9 +20,9 @@ export async function fetchPosts(order) {
 export async function fetchPostsByCategory(order, categoryId) {
     let url;
     if (order) {
-        url = `http://localhost:8000/api/posts/category=${categoryId}/${order}/`;
+        url = `https://reddit-clone-backend-restapi.herokuapp.com/api/posts/category=${categoryId}/${order}/`;
     } else {
-        url = `http://localhost:8000/api/posts/category=${categoryId}/`;
+        url = `https://reddit-clone-backend-restapi.herokuapp.com/api/posts/category=${categoryId}/`;
     }
     const response = await fetch(url);
     if (response.ok) {
@@ -34,7 +34,7 @@ export async function fetchPostsByCategory(order, categoryId) {
 }
 
 export async function fetchCategories() {
-    const response = await fetch("http://localhost:8000/api/categories");
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/categories");
     if (response.ok) {
         const json = await response.json();
         return json;
@@ -44,7 +44,7 @@ export async function fetchCategories() {
 }
 
 export async function fetchUsersVotesOnPosts() {
-    const response = await fetch("http://localhost:8000/api/post-votes/");
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/post-votes/");
     if (response.ok) {
         const json = await response.json();
         return json;
@@ -64,9 +64,9 @@ export async function postUpvote(
     let apiUrl;
 
     if (thingToUpvote === "post") {
-        apiUrl = `http://localhost:8000/api/post/id=${idOfThing}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/post/id=${idOfThing}/`;
     } else {
-        apiUrl = `http://localhost:8000/api/comment/id=${idOfThing}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/comment/id=${idOfThing}/`;
     }
 
     // User is going from downvote to upvote.
@@ -112,7 +112,7 @@ export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
     let data;
 
     if (thingToUpvote === "post") {
-        apiUrl = "http://localhost:8000/api/post-votes/";
+        apiUrl = "https://reddit-clone-backend-restapi.herokuapp.com/api/post-votes/";
         data = {
             id: uuid_v4(),
             upvote: true,
@@ -121,7 +121,7 @@ export async function postUsersUpvote(userId, idOfThing, thingToUpvote) {
             post: idOfThing,
         };
     } else {
-        apiUrl = "http://localhost:8000/api/comment-votes/";
+        apiUrl = "https://reddit-clone-backend-restapi.herokuapp.com/api/comment-votes/";
         data = {
             id: uuid_v4(),
             upvote: true,
@@ -158,9 +158,9 @@ export async function patchUsersUpvote(status, voteId, thingToUpvote) {
     let apiUrl;
 
     if (thingToUpvote === "post") {
-        apiUrl = `http://localhost:8000/api/post-vote/${voteId}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/post-vote/${voteId}/`;
     } else {
-        apiUrl = `http://localhost:8000/api/comment-vote/${voteId}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/comment-vote/${voteId}/`;
     }
 
     if (status === "no vote") {
@@ -203,9 +203,9 @@ export async function postDownvote(
     let apiUrl;
 
     if (thingToDownvote === "post") {
-        apiUrl = `http://localhost:8000/api/post/id=${idOfThing}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/post/id=${idOfThing}/`;
     } else {
-        apiUrl = `http://localhost:8000/api/comment/id=${idOfThing}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/comment/id=${idOfThing}/`;
     }
 
     // User is undoing downvote by pressing downvote again.
@@ -251,7 +251,7 @@ export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
     let apiUrl;
 
     if (thingToDownvote === "post") {
-        apiUrl = "http://localhost:8000/api/post-votes/";
+        apiUrl = "https://reddit-clone-backend-restapi.herokuapp.com/api/post-votes/";
         data = {
             id: uuid_v4(),
             upvote: false,
@@ -260,7 +260,7 @@ export async function postUsersDownvote(userId, idOfThing, thingToDownvote) {
             post: idOfThing,
         };
     } else {
-        apiUrl = "http://localhost:8000/api/comment-votes/";
+        apiUrl = "https://reddit-clone-backend-restapi.herokuapp.com/api/comment-votes/";
         data = {
             id: uuid_v4(),
             upvote: false,
@@ -297,9 +297,9 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
     let apiUrl;
 
     if (thingToDownvote === "post") {
-        apiUrl = `http://localhost:8000/api/post-vote/${voteId}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/post-vote/${voteId}/`;
     } else {
-        apiUrl = `http://localhost:8000/api/comment-vote/${voteId}/`;
+        apiUrl = `https://reddit-clone-backend-restapi.herokuapp.com/api/comment-vote/${voteId}/`;
     }
 
     if (status === "no vote") {
@@ -334,9 +334,9 @@ export async function patchUsersDownvote(status, voteId, thingToDownvote) {
 export async function fetchComments(order, postId) {
     let url;
     if (order) {
-        url = `http://localhost:8000/api/comments/post=${postId}/${order}/`;
+        url = `https://reddit-clone-backend-restapi.herokuapp.com/api/comments/post=${postId}/${order}/`;
     } else {
-        url = `http://localhost:8000/api/comments/post=${postId}/`;
+        url = `https://reddit-clone-backend-restapi.herokuapp.com/api/comments/post=${postId}/`;
     }
     const response = await fetch(url);
     if (response.ok) {
@@ -348,7 +348,7 @@ export async function fetchComments(order, postId) {
 }
 
 export async function fetchUsersVotesOnComments() {
-    const response = await fetch("http://localhost:8000/api/comment-votes/");
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/comment-votes/");
     if (response.ok) {
         const json = await response.json();
         return json;
@@ -364,7 +364,7 @@ export async function postComment(data) {
     } catch (error) {
         throw error;
     }
-    const response = await fetch("http://localhost:8000/api/comments/", {
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/comments/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -384,7 +384,7 @@ export async function postReplyToComment(data) {
     } catch (error) {
         throw error;
     }
-    const response = await fetch("http://localhost:8000/api/comments/", {
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/comments/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -411,7 +411,7 @@ export async function editComment(
     }
 
     const response = await fetch(
-        `http://localhost:8000/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`,
+        `https://reddit-clone-backend-restapi.herokuapp.com/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`,
         {
             method: "PATCH",
             headers: {
@@ -433,7 +433,7 @@ export async function postPost(data) {
     } catch (error) {
         throw error;
     }
-    const response = await fetch("http://localhost:8000/api/posts/", {
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/posts/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -455,7 +455,7 @@ export async function fetchDeletePost(postId, userIdLoggedIn) {
     }
 
     const response = await fetch(
-        `http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`,
+        `https://reddit-clone-backend-restapi.herokuapp.com/api/post/id=${postId}/user-id=${userIdLoggedIn}/`,
         {
             method: "DELETE",
             headers: {
@@ -478,7 +478,7 @@ export async function editPost(newPostContent, postId, userIdLoggedIn) {
     }
 
     const response = await fetch(
-        `http://localhost:8000/api/post/id=${postId}/user-id=${userIdLoggedIn}/`,
+        `https://reddit-clone-backend-restapi.herokuapp.com/api/post/id=${postId}/user-id=${userIdLoggedIn}/`,
         {
             method: "PATCH",
             headers: {
@@ -502,7 +502,7 @@ export async function postCategory(data) {
         throw error;
     }
 
-    const response = await fetch("http://localhost:8000/api/categories/", {
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/categories/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -524,7 +524,7 @@ export async function fetchDeleteComment(commentId, userIdLoggedIn) {
     }
 
     const response = await fetch(
-        `http://localhost:8000/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`,
+        `https://reddit-clone-backend-restapi.herokuapp.com/api/comment/id=${commentId}/user-id=${userIdLoggedIn}/`,
         {
             method: "PATCH",
             headers: {
@@ -541,7 +541,7 @@ export async function fetchDeleteComment(commentId, userIdLoggedIn) {
 
 export async function fetchNumberOfCommentsOnPost(postId) {
     const response = await fetch(
-        `http://localhost:8000/api/post/num-comments/id=${postId}/`
+        `https://reddit-clone-backend-restapi.herokuapp.com/api/post/num-comments/id=${postId}/`
     );
     if (response.ok) {
         const json = await response.json();
