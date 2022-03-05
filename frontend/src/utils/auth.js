@@ -34,7 +34,7 @@ function isTokenExpired(token) {
 }
 
 export async function verifyCurrentUser() {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/current-user/", {
+    const response = await fetch("/api/current-user/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);
     if (expired) {
         const refreshToken = localStorage.getItem("refreshToken");
-        const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/token/refresh/", {
+        const response = await fetch("/api/token/refresh/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ export async function getNewAccessTokenIfExpired(accessToken) {
 }
 
 export async function login(username, password) {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/token/", {
+    const response = await fetch("/api/token/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export async function login(username, password) {
 }
 
 export async function signup(username, password) {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/users/", {
+    const response = await fetch("/api/users/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
