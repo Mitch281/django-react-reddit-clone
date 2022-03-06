@@ -34,7 +34,7 @@ export async function fetchPostsByCategory(order, categoryId) {
 }
 
 export async function fetchCategories() {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/categories");
+    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/categories/");
     if (response.ok) {
         const json = await response.json();
         return json;

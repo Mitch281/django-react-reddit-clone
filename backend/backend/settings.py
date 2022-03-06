@@ -151,7 +151,8 @@ REST_FRAMEWORK = {
 
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000'
+     'http://localhost:3000',
+     'https://6224096eed92bb000781eda9--quirky-engelbart-89d81c.netlify.app/',
 ]
 
 django_heroku.settings(locals())
