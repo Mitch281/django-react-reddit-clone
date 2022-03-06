@@ -51,17 +51,17 @@ const PostsByCategory = (props) => {
         }
 
         async function getSortedPosts() {
-            await sortPosts(order);
+            setLoading(true);
+            try {
+                await sortPosts(order);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
         }
 
-        setLoading(true);
-        try {
-            getSortedPosts();
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
+        getSortedPosts();
         // eslint-disable-next-line
     }, [order]);
 

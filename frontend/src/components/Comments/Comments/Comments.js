@@ -50,43 +50,19 @@ const Comments = () => {
     }, []);
 
     useEffect(() => {
-        setCommentsLoading(true);
         async function loadComments(order) {
+            setCommentsLoading(true);
             try {
                 const json = await fetchComments(order, postId);
                 setComments(json);
             } catch(error) {
-                throw error;
+                setError(error);
+            } finally {
+                setCommentsLoading(false);
             }
         }
 
-        try {
-            loadComments(order);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setCommentsLoading(false);
-        }
-    }, [postId, order]);
-
-    useEffect(() => {
-        setCommentsLoading(true);
-        async function loadComments(order) {
-            try {
-                const json = await fetchComments(order, postId);
-                setComments(json);
-            } catch(error) {
-                throw error;
-            }
-        }
-
-        try {
-            loadComments(order);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setCommentsLoading(false);
-        }
+        loadComments();
     }, [postId, order]);
 
     useEffect(() => {

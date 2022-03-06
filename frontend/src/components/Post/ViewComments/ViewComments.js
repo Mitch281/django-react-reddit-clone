@@ -13,11 +13,14 @@ const ViewComments = (props) => {
     const [loading, setLoading] = useState(false);
 
     async function loadNumberOfComments() {
+        setLoading(true);
         try {
             const json = await fetchNumberOfCommentsOnPost(props.postId);
             setNumComments(json.num_comments);
         } catch (error) {
-            throw error;
+            setError(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -26,13 +29,7 @@ const ViewComments = (props) => {
             await loadNumberOfComments();
         }
 
-        try {
-            getNumberOfComments();
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
+        getNumberOfComments();
         // eslint-disable-next-line
     }, []);
 

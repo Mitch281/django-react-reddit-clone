@@ -377,50 +377,50 @@ function App() {
     }
 
     async function getPosts() {
-        await loadPosts("");
-    }
-
-    async function getCategories() {
-        await loadCategories();
-    }
-    
-    async function getPostVotes() {
-        await loadPostVotes();
-    }
-
-    // Load posts on page load.
-    useEffect(() => {
         setPostsLoading(true);
         try {
-            getPosts();
+            await loadPosts("");
         } catch (error) {
             setPostLoadingError(error);
         } finally {
             setPostsLoading(false);
         }
-        // eslint-disable-next-line
-    }, []);
+    }
 
-    // Load categories on page load.
-    useEffect(() => {
+    async function getCategories() {
         setCategoriesLoading(true);
         try {
-            getCategories();
+            await loadCategories();
         } catch (error) {
             setCategoryLoadingError(error);
         } finally {
             setCategoriesLoading(false);
         }
+    }
+    
+    async function getPostVotes() {
+        try {
+            await loadPostVotes();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Load posts on page load.
+    useEffect(() => {
+        getPosts();
+        // eslint-disable-next-line
+    }, []);
+
+    // Load categories on page load.
+    useEffect(() => {
+        getCategories();
         // eslint-disable-next-line
     }, []);
 
     // Load post votes on page load.
     useEffect(() => {
-        try {
-            getPostVotes();
-        } catch (error) {
-            throw error;
-        }
+        getPostVotes();
         // eslint-disable-next-line
     }, []);
 
