@@ -1,4 +1,5 @@
 <h1>Reddit Clone</h1>
+https://threddit.netlify.app/
 <p>
 This repository is a reddit clone written in django and react, using a postgresql database. The backend simply serves as a rest api to the frontend using the django rest       framework. The styling of the application was completed mostly with css modules, although styled components were used with for loading indicators. No state management libraries were used. For authentication, JWT was used.
 </p>
