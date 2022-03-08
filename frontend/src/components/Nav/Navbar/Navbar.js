@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import LogoutButton from "../LogoutButton/LogoutButton";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
@@ -11,15 +11,33 @@ const Navbar = (props) => {
 
     const params = useParams();
     const activeCategory = params.categoryName;
+    const [width, setWidth] = useState(window.innerWidth);
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleWindowSizeChange);
+        return () => {
+            window.removeEventListener("resize", handleWindowSizeChange);
+        };
+    }, []);
+
+    const isMobile = width <= 768;
 
     return (
         <div id={styles["navbar"]}>
             <ul id={styles["navbar-nav"]}>
-                <li>
-                    <Link to="/" id={styles["navbar-site-name"]}>
-                        <h1>Threddit</h1>
-                    </Link>
-                </li>
+                {!isMobile ? (
+                    <li>
+                        <Link to="/" id={styles["navbar-site-name"]}>
+                            <h1>Threddit</h1>
+                        </Link>
+                    </li>
+                ) : (
+                    ""
+                )}
                 <CategoryDropdown
                     activeCategory={activeCategory}
                     categories={props.categories}
@@ -47,7 +65,7 @@ const Navbar = (props) => {
 
 Navbar.propTypes = {
     categories: PropTypes.array,
-    categoryLoadingError: PropTypes.instanceOf(Error)
+    categoryLoadingError: PropTypes.instanceOf(Error),
 };
 
 export default Navbar;

@@ -31,3 +31,9 @@
     padding-bottom: 5px;
     color: rgb(238, 230, 230);
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    .reply-to-comment-form input[type="submit"] {
+        width: 100%;
+    }
+}

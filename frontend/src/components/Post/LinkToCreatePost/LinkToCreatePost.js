@@ -19,12 +19,6 @@ const LinkToCreatePost = () => {
 
     const isMobile = width <= 768;
 
-    // return (
-    //     <Link to="/create-post/" id={styles["link-to-create-post"]}>
-    //         <IoMdAdd /> Add Post
-    //     </Link>
-    // );
-
     return (
         <>
             {isMobile ? (
