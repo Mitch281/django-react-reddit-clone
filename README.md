@@ -24,6 +24,7 @@ This repository is a reddit clone written in django and react, using a postgresq
   <li>Ability to show and hide replies.</li>
   <li>Ability to upvote and downvote posts and comments.</li>
   <li>Ability to sort posts and comments (sort by new, old, best, worst).</li>
+  <li>Responsive Design.</li>
 </ul>
 <h3>Potential Future Features</h3>
 <ul>
