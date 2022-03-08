@@ -11,7 +11,6 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import { fetchPostsByCategory } from "../../../utils/fetch-data";
 
 const PostsByCategory = (props) => {
-    console.log(props.posts);
     const { reLogin } = useContext(UserContext);
 
     const params = useParams();
