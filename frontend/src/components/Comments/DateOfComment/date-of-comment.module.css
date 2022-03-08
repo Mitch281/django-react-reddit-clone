@@ -3,3 +3,10 @@
     font-weight: 300;
     color: grey;
 }
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    .time-elapsed-from-comment {
+        display: inline-block;
+        margin-left: calc(var(--votes-dist-to-left) + 25px);
+    }
+}
