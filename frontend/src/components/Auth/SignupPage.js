@@ -116,7 +116,7 @@ const SignupPage = () => {
                     ) : (
                         <input type="submit" value="Signup" />
                     )}
-                    <span>Already have an account? &nbsp;
+                    <span id={styles["already-have-an-account"]}>Already have an account? &nbsp;
                         <Link to="/login/" id={styles["login-link"]}>Login</Link>
                     </span>
                 </form>

@@ -99,7 +99,7 @@ const LoginPage = () => {
                     ) : (
                         <input type="submit" value="Login" />
                     )}
-                    <span>Don't have an account? &nbsp;
+                    <span id={styles["dont-have-an-account"]}>Don't have an account? &nbsp;
                         <Link id={styles["signup-link"]} to="/signup/">Signup</Link>
                     </span>
                 </form>
