@@ -55,18 +55,18 @@ const PostVotes = (props) => {
 
     async function noVoteToUpvote(postVoteId) {
         try {
-            await props.upvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "no vote",
-                "post"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.postId,
                 "no vote",
                 postVoteId,
+                "post"
+            );
+            await props.upvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
                 "post"
             );
         } catch (error) {
@@ -76,18 +76,18 @@ const PostVotes = (props) => {
 
     async function noVoteToDownvote(postVoteId) {
         try {
-            await props.downvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "no vote",
-                "post"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.postId,
                 "no vote",
                 postVoteId,
+                "post"
+            );
+            await props.downvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
                 "post"
             );
         } catch (error) {
@@ -97,18 +97,18 @@ const PostVotes = (props) => {
 
     async function downvoteToUpvote(postVoteId) {
         try {
-            await props.upvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "downvoted",
-                "post"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.postId,
                 "downvoted",
                 postVoteId,
+                "post"
+            );
+            await props.upvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
                 "post"
             );
         } catch (error) {
@@ -118,18 +118,18 @@ const PostVotes = (props) => {
 
     async function downvoteToDownvote(postVoteId) {
         try {
-            await props.downvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "downvoted",
-                "post"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.postId,
                 "downvoted",
                 postVoteId,
+                "post"
+            );
+            await props.downvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
                 "post"
             );
         } catch (error) {
@@ -139,18 +139,18 @@ const PostVotes = (props) => {
 
     async function upvoteToUpvote(postVoteId) {
         try {
-            await props.upvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "upvoted",
-                "post"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.postId,
                 "upvoted",
                 postVoteId,
+                "post"
+            );
+            await props.upvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
                 "post"
             );
         } catch (error) {
@@ -160,18 +160,18 @@ const PostVotes = (props) => {
 
     async function upvoteToDownvote(postVoteId) {
         try {
-            await props.downvote(
-                props.postId,
-                numUpvotes,
-                numDownvotes,
-                "upvoted",
-                "post"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.postId,
                 "upvoted",
                 postVoteId,
+                "post"
+            );
+            await props.downvote(
+                props.postId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
                 "post"
             );
         } catch (error) {

@@ -60,18 +60,18 @@ const CommentVotes = (props) => {
 
     async function noVoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "no vote",
-                "comment"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "no vote",
                 commentVoteId,
+                "comment"
+            );
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
                 "comment"
             );
         } catch (error) {
@@ -81,18 +81,18 @@ const CommentVotes = (props) => {
 
     async function noVoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "no vote",
-                "comment"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "no vote",
                 commentVoteId,
+                "comment"
+            );
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "no vote",
                 "comment"
             );
         } catch (error) {
@@ -102,18 +102,18 @@ const CommentVotes = (props) => {
 
     async function downvoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "downvoted",
-                "comment"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "downvoted",
                 commentVoteId,
+                "comment"
+            );
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
                 "comment"
             );
         } catch (error) {
@@ -123,18 +123,18 @@ const CommentVotes = (props) => {
 
     async function downvoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "downvoted",
-                "comment"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "downvoted",
                 commentVoteId,
+                "comment"
+            );
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "downvoted",
                 "comment"
             );
         } catch (error) {
@@ -144,18 +144,18 @@ const CommentVotes = (props) => {
 
     async function upvoteToUpvote(commentVoteId) {
         try {
-            await props.upvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "upvoted",
-                "comment"
-            );
             await props.trackUsersUpvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "upvoted",
                 commentVoteId,
+                "comment"
+            );
+            await props.upvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
                 "comment"
             );
         } catch (error) {
@@ -165,18 +165,18 @@ const CommentVotes = (props) => {
 
     async function upvoteToDownvote(commentVoteId) {
         try {
-            await props.downvote(
-                props.commentId,
-                numUpvotes,
-                numDownvotes,
-                "upvoted",
-                "comment"
-            );
             await props.trackUsersDownvotes(
                 userIdLoggedIn,
                 props.commentId,
                 "upvoted",
                 commentVoteId,
+                "comment"
+            );
+            await props.downvote(
+                props.commentId,
+                numUpvotes,
+                numDownvotes,
+                "upvoted",
                 "comment"
             );
         } catch (error) {
