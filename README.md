@@ -4,6 +4,15 @@ https://threddit.netlify.app/
 This repository is a reddit clone written in django and react, using a postgresql database. The backend simply serves as a rest api to the frontend using the django rest       framework. The styling of the application was completed mostly with css modules, although styled components were used with for loading indicators. No state management libraries were used. For authentication, JWT was used.
 </p>
 <h2>Project Description</h2>
+<h3>Installation</h3>
+<p>
+  First, clone this repository onto your local machine like so:
+  <code>
+    git clone https://github.com/Mitch281/django-react-reddit-clone.git
+  </code>
+  Now we will install the backend and frontend dependencies.
+</p>
+<h4>Backend</h4>
 <h3>Technologies Used</h3>
 <h4>Backend</h4>
 <ul>
