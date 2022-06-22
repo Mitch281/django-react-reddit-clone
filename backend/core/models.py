@@ -4,6 +4,8 @@ from django.db.models import Q
 
 # Create your models here.
 
+# TODO: make number of comments a property of posts rather than making requests for it.
+
 class Category(models.Model):
     id = models.TextField(primary_key=True)
     name = models.CharField(max_length=20, unique=True)
