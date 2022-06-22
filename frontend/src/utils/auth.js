@@ -1,3 +1,5 @@
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
 export class CantGetNewAccessTokenError extends Error {
     constructor(message) {
         super(message);
@@ -34,7 +36,7 @@ function isTokenExpired(token) {
 }
 
 export async function verifyCurrentUser() {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/current-user/", {
+    const response = await fetch(`${API_ENDPOINT}/current-user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +56,7 @@ export async function getNewAccessTokenIfExpired(accessToken) {
     const expired = isTokenExpired(accessToken);
     if (expired) {
         const refreshToken = localStorage.getItem("refreshToken");
-        const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/token/refresh/", {
+        const response = await fetch(`${API_ENDPOINT}/token/refresh/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,7 +74,7 @@ export async function getNewAccessTokenIfExpired(accessToken) {
 }
 
 export async function login(username, password) {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/token/", {
+    const response = await fetch(`${API_ENDPOINT}/token/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -88,7 +90,7 @@ export async function login(username, password) {
 }
 
 export async function signup(username, password) {
-    const response = await fetch("https://reddit-clone-backend-restapi.herokuapp.com/api/users/", {
+    const response = await fetch(`${API_ENDPOINT}/users/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
