@@ -3,12 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar/Navbar";
-import Posts from "./components/Post/Posts/Posts";
+import Posts from "./features/posts/Posts";
 import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments/Comments";
 import PostSelected from "./components/Comments/PostSelected/PostSelected";
 import {
-    fetchPosts,
     fetchCategories,
     fetchUsersVotesOnPosts,
     postUpvote,
@@ -74,15 +73,6 @@ function App() {
     useEffect(() => {
         reLogin();
     }, []);
-
-    async function loadPosts(order) {
-        try {
-            const json = await fetchPosts(order);
-            setPosts(json);
-        } catch (error) {
-            throw error;
-        }
-    }
 
     async function loadCategories() {
         try {
@@ -376,17 +366,6 @@ function App() {
         );
     }
 
-    async function getPosts() {
-        setPostsLoading(true);
-        try {
-            await loadPosts("");
-        } catch (error) {
-            setPostLoadingError(error);
-        } finally {
-            setPostsLoading(false);
-        }
-    }
-
     async function getCategories() {
         setCategoriesLoading(true);
         try {
@@ -405,12 +384,6 @@ function App() {
             throw error;
         }
     }
-
-    // Load posts on page load.
-    useEffect(() => {
-        getPosts();
-        // eslint-disable-next-line
-    }, []);
 
     // Load categories on page load.
     useEffect(() => {
@@ -453,8 +426,6 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        posts={posts}
-                                        loadPosts={loadPosts}
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}
@@ -484,8 +455,6 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        posts={posts}
-                                        loadPosts={loadPosts}
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}
