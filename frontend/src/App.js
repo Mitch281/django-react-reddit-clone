@@ -4,9 +4,8 @@ import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar/Navbar";
 import Posts from "./features/posts/Posts";
-import PostsByCategory from "./components/Post/PostsByCategory/PostsByCategory";
 import Comments from "./components/Comments/Comments/Comments";
-import PostSelected from "./components/Comments/PostSelected/PostSelected";
+import PostSelected from "./features/posts/PostSelected";
 import {
     fetchCategories,
     fetchUsersVotesOnPosts,
@@ -573,20 +572,7 @@ function App() {
                                             categoryLoadingError
                                         }
                                     />
-                                    <PostSelected
-                                        posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
-                                        upvote={upvote}
-                                        userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postsLoading={postsLoading}
-                                        postsLoadingError={postLoadingError}
-                                    />
+                                    <PostSelected />
                                     <Comments />
                                 </>
                             }
@@ -603,20 +589,7 @@ function App() {
                                             categoryLoadingError
                                         }
                                     />
-                                    <PostSelected
-                                        posts={posts} // We only pass this as a props so that any change to the post selected will render without page refresh.
-                                        upvote={upvote}
-                                        userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postsLoading={postsLoading}
-                                        postsLoadingError={postLoadingError}
-                                    />
+                                    <PostSelected />
                                     <Comments />
                                 </>
                             }

@@ -32,6 +32,12 @@ export const fetchPostsByCategory = createAsyncThunk("posts/fetchPostsByCategory
     const response = await fetch(url);
     const json = await response.json();
     return json;
+});
+
+export const fetchSinglePost = createAsyncThunk("posts/fetchSinglePost", async (postId) => {
+    const response = await fetch(`${API_ENDPOINT}/post/id=${postId}`);
+    const json = await response.json();
+    return json;
 })
 
 const postsSlice = createSlice({
@@ -59,6 +65,17 @@ const postsSlice = createSlice({
                 postsAdapter.setAll(state, action.payload);
             })
             .addCase(fetchPostsByCategory.rejected, (state, action) => {
+                state.status = "rejected";
+                state.error = action.error.message;
+            })
+            .addCase(fetchSinglePost.pending, (state, action) => {
+                state.status = "pending";
+            })
+            .addCase(fetchSinglePost.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                postsAdapter.setOne(state, action.payload);
+            })
+            .addCase(fetchSinglePost.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
             })
