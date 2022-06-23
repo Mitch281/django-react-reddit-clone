@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts, selectPostById } from "./postsSlice";
+import { fetchPosts, fetchPostsByCategory, selectPostById } from "./postsSlice";
 import OrderOptions from "../../components/OrderOptions/OrderOptions";
 import { useState, useEffect, useContext } from "react";
 import styles from "./posts.module.css";
@@ -92,16 +92,25 @@ const Posts = () => {
     const params = useParams();
     const order = params.order;
 
+    const { state } = useLocation();
+    let categoryId;
+    if (state) {
+        categoryId = state.categoryId;
+    }
+
     const dispatch = useDispatch();
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
 
     useEffect(() => {
-        if (postStatus === "idle") {
-            dispatch(fetchPosts());
+        // Check if there is a category ID so that we do not accidently fetch posts twice.
+        if (!categoryId) {
+            dispatch(fetchPosts(order));
+        } else {
+            dispatch(fetchPostsByCategory({ order: order, categoryId: categoryId }));
         }
         // eslint-disable-next-line
-    }, [postStatus, dispatch, order]);
+    }, [dispatch, order, categoryId]);
 
     let content;
 
@@ -130,7 +139,7 @@ const Posts = () => {
 
     return (
         <>
-            <h1 id={styles["category-name-top-page"]}>Home</h1>
+            <h1 id={styles["category-name-top-page"]}>{params.categoryName ? params.categoryName : "Home"}</h1>
             <OrderOptions />
             <div className={styles["posts"]}>{content}</div>
         </>

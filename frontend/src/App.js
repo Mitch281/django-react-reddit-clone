@@ -515,8 +515,7 @@ function App() {
                                             categoryLoadingError
                                         }
                                     />
-                                    <PostsByCategory
-                                        posts={posts}
+                                    <Posts
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}
@@ -526,8 +525,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postLoadingError={postLoadingError}
                                         postsLoading={postsLoading}
-                                        postsLoadingError={postLoadingError}
                                     />
                                     <LinkToCreatePost />
                                 </>
@@ -545,8 +544,7 @@ function App() {
                                             categoryLoadingError
                                         }
                                     />
-                                    <PostsByCategory
-                                        posts={posts}
+                                    <Posts
                                         upvote={upvote}
                                         userPostVotes={userPostVotes}
                                         trackUsersUpvotes={trackUsersUpvotes}
@@ -556,8 +554,8 @@ function App() {
                                         }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
+                                        postLoadingError={postLoadingError}
                                         postsLoading={postsLoading}
-                                        postsLoadingError={postLoadingError}
                                     />
                                     <LinkToCreatePost />
                                 </>
