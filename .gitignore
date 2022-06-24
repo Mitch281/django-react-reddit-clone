@@ -3,3 +3,7 @@
 
 # Database
 db.sqlite3
+
+jsconfig.json
+
+.vscode/settings.json

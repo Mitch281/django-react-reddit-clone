@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import { selectPostById } from "./postsSlice";
 import { useState, useContext } from "react";
-import styles from "./posts.module.css";
+import styles from "./styles/posts.module.css";
 import { UserContext } from "../../App";
 import Category from "../../components/Post/Category/Category";
 import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
 import PostContent from "../../components/Post/PostContent/PostContent";
-import PostVotes from "../../components/Post/PostVotes/PostVotes";
+import PostVotes from "./PostVotes";
 import Title from "../../components/Post/Title/Title";
 import User from "../../components/Comments/User/User";
 import ViewComments from "../../components/Post/ViewComments/ViewComments";
@@ -27,7 +27,7 @@ const Post = ({ postId }) => {
     return (
         <div className={styles["post"]}>
             <div className={styles["top-post-flex-container"]}>
-                <PostVotes votes={votes} postId={postId} />
+                <PostVotes postId={postId} />
                 <div className={styles["post-info"]}>
                     <Category
                         categoryId={post.category}

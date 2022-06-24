@@ -30,6 +30,7 @@ urlpatterns = [
 
     path('post-votes/', views.PostVotesView.as_view()),
     re_path(r'^post-vote/(?P<pk>[0-9a-z-&]+)/$', views.PostVoteView().as_view()),
+    re_path(r'^post-votes?user=(?P<user_id>[0-9a-z-&]+)/$', views.PostVoteView.as_view(), name="users votes on posts"),
 
     path('comment-votes/', views.CommentVotesView.as_view()),
     re_path(r'^comment-vote/(?P<pk>[0-9a-z-&]+)/$', views.CommentVoteView().as_view()),

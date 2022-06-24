@@ -3,7 +3,7 @@ import { UserContext } from "../../../App";
 import Category from "../Category/Category";
 import DateOfPost from "../DateOfPost/DateOfPost";
 import PostContent from "..//PostContent/PostContent";
-import PostVotes from "../PostVotes/PostVotes";
+import PostVotes from "../../../features/posts/PostVotes";
 import Title from "../Title/Title";
 import User from "../User/User";
 import { useNavigate } from "react-router-dom";

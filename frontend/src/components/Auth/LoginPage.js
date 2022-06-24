@@ -29,7 +29,7 @@ const LoginPage = () => {
                 setLoggedIn(true);
                 setUserIdLoggedIn(json.user_id);
                 setUsernameLoggedIn(username);
-                navigate("/");
+                navigate("/", { state: { userId: json.user_id }});
         } catch(error) {
             throw error;
         }

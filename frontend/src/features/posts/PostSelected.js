@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSinglePost, selectPostById } from "./postsSlice";
 import { useState, useContext, useEffect } from "react";
-import styles from "./posts.module.css";
+import styles from "./styles/posts.module.css";
 import { UserContext } from "../../App";
 import Category from "../../components/Post/Category/Category";
 import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
 import PostContent from "../../components/Post/PostContent/PostContent";
-import PostVotes from "../../components/Post/PostVotes/PostVotes";
+import PostVotes from "./PostVotes";
 import Title from "../../components/Post/Title/Title";
 import User from "../../components/Comments/User/User";
 import ViewComments from "../../components/Post/ViewComments/ViewComments";

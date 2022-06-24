@@ -324,8 +324,12 @@ class PostVotesView(APIView):
             self.permission_classes = [permissions.AllowAny, ]
         return super().get_permissions()
 
-    def get(self, request, format=None):
-        votes = PostVotes.objects.all()
+    def get(self, request):
+        user_id = request.GET.get("user", "")
+        if user_id:
+            votes = PostVotes.objects.filter(user=user_id)
+        else:
+            votes = PostVotes.objects.all()
         serializer = PostVotesSerializer(votes, many=True)
         return Response(serializer.data)
 
