@@ -56,7 +56,6 @@ export const fetchSinglePost = createAsyncThunk(
 export const upvotePost = createAsyncThunk(
     "posts/upvotePost",
     async (postInformation) => {
-        console.log(postInformation);
         const { post, currentVote } = postInformation;
         const url = `${API_ENDPOINT}/post/id=${post.id}/`;
         const numUpvotes = post.num_upvotes;

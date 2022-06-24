@@ -4,7 +4,7 @@ import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./components/Nav/Navbar/Navbar";
 import Posts from "./features/posts/Posts";
-import Comments from "./components/Comments/Comments/Comments";
+import Comments from "./features/comments/Comments";
 import PostSelected from "./features/posts/PostSelected";
 import {
     fetchCategories,

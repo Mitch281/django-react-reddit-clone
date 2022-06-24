@@ -8,7 +8,7 @@ import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
 import PostContent from "../../components/Post/PostContent/PostContent";
 import PostVotes from "./PostVotes";
 import Title from "../../components/Post/Title/Title";
-import User from "../../components/Comments/User/User";
+import User from "../../components/Comments/User/Author";
 import ViewComments from "../../components/Post/ViewComments/ViewComments";
 import DeletePost from "../../components/Post/DeletePost/DeletePost";
 import { useParams } from "react-router-dom";

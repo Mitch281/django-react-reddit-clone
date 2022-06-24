@@ -3,7 +3,7 @@ import { UserContext } from "../../../App";
 import PropTypes from "prop-types";
 import CommentContent from "../CommentContent/CommentContent";
 import DateOfComment from "../DateOfComment/DateOfComment";
-import User from "../User/User";
+import User from "../User/Author";
 import ReplyToComment from "../ReplyToComment/ReplyToComment";
 import CommentVotes from "../CommentVotes/CommentVotes";
 import DeleteComment from "../DeleteComment/DeleteComment";

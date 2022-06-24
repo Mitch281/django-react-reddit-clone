@@ -259,7 +259,6 @@ const CommentVotes = (props) => {
                 <HiArrowSmUp
                     size={20}
                     className={styles["upvote"]}
-                    style={determineUpArrowColour()}
                     onClick={() => handleVote("upvote")}
                 />
                 <span className={styles["comment-vote-count"]}>
@@ -268,7 +267,6 @@ const CommentVotes = (props) => {
                 <HiArrowSmDown
                     size={20}
                     className={styles["downvote"]}
-                    style={determineDownArrowColour()}
                     onClick={() => handleVote("downvote")}
                 />
             </div>
