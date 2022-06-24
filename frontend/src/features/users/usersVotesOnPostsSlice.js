@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { v4 as uuid_v4 } from "uuid";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -16,16 +17,19 @@ const initialState = usersVotesOnPostsAdapter.getInitialState({
 export const fetchUsersVotesOnPosts = createAsyncThunk(
     "usersVotesOnPosts/fetchUsersVotesOnPosts",
     async (userId) => {
-        const response = await fetch(`${API_ENDPOINT}/post-votes?user=${userId}`);
+        const response = await fetch(
+            `${API_ENDPOINT}/post-votes?user=${userId}`
+        );
         const json = await response.json();
         return json;
     }
-)
+);
 
 export const trackUsersUpvote = createAsyncThunk(
     "usersVotesOnPosts/trackUsersUpvote",
     async (upvoteInformation) => {
-        const { usersVoteOnPostId, usersCurrentVote } = upvoteInformation;
+        const { usersVoteOnPostId, currentVote, userId, postId } =
+            upvoteInformation;
         let data;
         let url;
         let method;
@@ -34,28 +38,35 @@ export const trackUsersUpvote = createAsyncThunk(
         if (usersVoteOnPostId) {
             url = `${API_ENDPOINT}/post-vote/${usersVoteOnPostId}/`;
             method = "PATCH";
-            if (usersCurrentVote === "upvote") {
-                data = {upvote: false };
-            } else if (usersCurrentVote === "downvote") {
+            if (currentVote === "upvote") {
+                data = { upvote: false };
+            } else if (currentVote === "downvote") {
                 data = {
                     upvote: true,
-                    downvote: false
-                }
+                    downvote: false,
+                };
             } else {
-                data = { upvote: true }
+                data = { upvote: true };
             }
         } else {
             url = `${API_ENDPOINT}/post-votes/`;
             method = "POST";
-            data = { upvote: true }
+            data = {
+                id: uuid_v4(),
+                upvote: true,
+                downvote: false,
+                user: userId,
+                post: postId,
+            };
         }
 
         const response = await fetch(url, {
             method: method,
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
         if (!response.ok) {
             Promise.reject("Could not upvote!");
@@ -68,37 +79,47 @@ export const trackUsersUpvote = createAsyncThunk(
 export const trackUsersDownvote = createAsyncThunk(
     "usersVotesOnPosts/trackUsersDownvote",
     async (downvoteInformation) => {
-        const { usersVoteOnPostId, usersCurrentVote } = downvoteInformation;
+        const { usersVoteOnPostId, currentVote, userId, postId } =
+            downvoteInformation;
         let data;
         let url;
         let method;
+
+        console.log(currentVote);
 
         // User has voted already.
         if (usersVoteOnPostId) {
             url = `${API_ENDPOINT}/post-vote/${usersVoteOnPostId}/`;
             method = "PATCH";
-            if (usersCurrentVote === "downvote") {
+            if (currentVote === "downvote") {
                 data = { downvote: false };
-            } else if (usersCurrentVote === "upvote") {
+            } else if (currentVote === "upvote") {
                 data = {
                     upvote: false,
-                    downvote: true
+                    downvote: true,
                 };
             } else {
-                data = { downvote: true }
+                data = { downvote: true };
             }
         } else {
             url = `${API_ENDPOINT}/post-votes/`;
             method = "POST";
-            data = { downvote: true }
+            data = {
+                id: uuid_v4(),
+                upvote: false,
+                downvote: true,
+                user: userId,
+                post: postId,
+            };
         }
 
         const response = await fetch(url, {
             method: method,
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
         if (!response.ok) {
             Promise.reject("Could not upvote!");
@@ -106,7 +127,7 @@ export const trackUsersDownvote = createAsyncThunk(
         const json = await response.json();
         return json;
     }
-)
+);
 
 const usersVotesOnPostsSlice = createSlice({
     name: "usersVotesOnPosts",
@@ -125,7 +146,13 @@ const usersVotesOnPostsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-    }
+            .addCase(trackUsersUpvote.fulfilled, (state, action) => {
+                usersVotesOnPostsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(trackUsersDownvote.fulfilled, (state, action) => {
+                usersVotesOnPostsAdapter.upsertOne(state, action.payload);
+            })
+    },
 });
 
 export default usersVotesOnPostsSlice.reducer;
@@ -133,5 +160,5 @@ export default usersVotesOnPostsSlice.reducer;
 export const {
     selectAll: selectAllUsersVotesOnPosts,
     selectById: selectUsersVoteOnPostById,
-    selectIds: selectUsersVoteOnPostsIds
+    selectIds: selectUsersVoteOnPostsIds,
 } = usersVotesOnPostsAdapter.getSelectors((state) => state.usersVotesOnPosts);

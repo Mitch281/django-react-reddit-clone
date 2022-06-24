@@ -22,7 +22,7 @@ import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
 
 export const UserContext = createContext();
-
+//TODO: HANDLE TOKEN REFRESH WHEN TOKEN EXPIRES FOR NEW CODE!
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");

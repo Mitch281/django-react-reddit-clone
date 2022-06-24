@@ -1,27 +1,50 @@
 import { useContext } from "react";
 import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../App";
-import { selectAllUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
+import {
+    selectAllUsersVotesOnPosts,
+    trackUsersDownvote,
+    trackUsersUpvote,
+} from "../users/usersVotesOnPostsSlice";
 import { downvotePost, selectPostById, upvotePost } from "./postsSlice";
 import styles from "./styles/post-votes.module.css";
 
+const VoteTypes = {
+    Upvote: "upvote",
+    Downvote: "downvote",
+};
+
+// TODO: VOTING LOGIC IS WORKING ON SERVER, NOW MAKE THE APPROPRIATE CHANGES ON FRONTEND IN REDUCERS OR EXTRA REDUCERS
+// TO CAUSE RERENDER.
 const PostVotes = ({ postId }) => {
     const dispatch = useDispatch();
-    const post = useSelector(state => selectPostById(state, postId));
+    const post = useSelector((state) => selectPostById(state, postId));
 
     const numUpvotes = post.num_upvotes;
     const numDownvotes = post.num_downvotes;
 
-    const { loggedIn } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     const usersVotesOnPosts = useSelector(selectAllUsersVotesOnPosts);
 
     async function upvote() {
+        const currentVote = getCurrentVote();
+        const usersVoteOnPostId = getUsersVoteOnPostId();
         try {
-            await dispatch(upvotePost({ post: post, currentVote: "upvote"})).unwrap();
+            await dispatch(
+                upvotePost({ post: post, currentVote: currentVote })
+            ).unwrap();
+            await dispatch(
+                trackUsersUpvote({
+                    usersVoteOnPostId: usersVoteOnPostId,
+                    currentVote: currentVote,
+                    userId: userIdLoggedIn,
+                    postId: postId,
+                })
+            ).unwrap();
         } catch (error) {
             toast.error(error.message, {
                 position: "bottom-center",
@@ -36,8 +59,20 @@ const PostVotes = ({ postId }) => {
     }
 
     async function downvote() {
+        const currentVote = getCurrentVote();
+        const usersVoteOnPostId = getUsersVoteOnPostId();
         try {
-            await dispatch(downvotePost({ post: post, currentVote: "upvote" })).unwrap();
+            await dispatch(
+                downvotePost({ post: post, currentVote: currentVote })
+            ).unwrap();
+            await dispatch(
+                trackUsersDownvote({
+                    usersVoteOnPostId: usersVoteOnPostId,
+                    currentVote: currentVote,
+                    userId: userIdLoggedIn,
+                    postId: postId,
+                })
+            ).unwrap();
         } catch (error) {
             toast.error(error.message, {
                 position: "bottom-center",
@@ -51,16 +86,39 @@ const PostVotes = ({ postId }) => {
         }
     }
 
-    function getUpvoteArrowColour() {
-        if (!loggedIn) {
+    function getUsersVoteOnPostId() {
+        const usersVoteOnPost = usersVotesOnPosts.find(
+            (usersVoteOnPost) => usersVoteOnPost.post === postId
+        );
+        if (!usersVoteOnPost) {
             return;
         }
-        const usersVoteOnPost = usersVotesOnPosts.find(usersVoteOnPost => usersVoteOnPost.post === postId);
+        return usersVoteOnPost.id;
+    }
+
+    function getCurrentVote() {
+        const usersVoteOnPost = usersVotesOnPosts.find(
+            (usersVoteOnPost) => usersVoteOnPost.post === postId
+        );
         if (!usersVoteOnPost) {
             return;
         }
         if (usersVoteOnPost.upvote) {
-            return { color: "orange" }
+            return VoteTypes.Upvote;
+        } else if (usersVoteOnPost.downvote) {
+            return VoteTypes.Downvote;
+        }
+
+        return;
+    }
+
+    function getUpvoteArrowColour() {
+        if (!loggedIn) {
+            return;
+        }
+        const currentVote = getCurrentVote();
+        if (currentVote === VoteTypes.Upvote) {
+            return { color: "orange" };
         }
         return;
     }
@@ -69,16 +127,12 @@ const PostVotes = ({ postId }) => {
         if (!loggedIn) {
             return;
         }
-        const usersVoteOnPost = usersVotesOnPosts.find(usersVoteOnPost => usersVoteOnPost.post === postId);
-        if (!usersVoteOnPost) {
-            return;
-        }
-        if (usersVoteOnPost.downvote) {
-            return { color: "blue" }
+        const currentVote = getCurrentVote();
+        if (currentVote === VoteTypes.Downvote) {
+            return { color: "blue" };
         }
         return;
     }
-
 
     return (
         <>

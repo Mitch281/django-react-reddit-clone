@@ -56,6 +56,7 @@ export const fetchSinglePost = createAsyncThunk(
 export const upvotePost = createAsyncThunk(
     "posts/upvotePost",
     async (postInformation) => {
+        console.log(postInformation);
         const { post, currentVote } = postInformation;
         const url = `${API_ENDPOINT}/post/id=${post.id}/`;
         const numUpvotes = post.num_upvotes;
@@ -76,7 +77,8 @@ export const upvotePost = createAsyncThunk(
         const response = await fetch(url, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(data)
         });
@@ -112,7 +114,8 @@ export const downvotePost = createAsyncThunk(
         const response = await fetch(url, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(data)
         });
@@ -161,10 +164,16 @@ const postsSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(upvotePost.fulfilled, (state, action) => {
-                state.status = "fulfilled";
+                postsAdapter.upsertOne(state, action.payload);
             })
             .addCase(upvotePost.rejected, (state, action) => {
                 // We do not change status here because this would cause posts to unrender.
+                state.error = action.error.message;
+            })
+            .addCase(downvotePost.fulfilled, (state, action) => {
+                postsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(downvotePost.rejected, (state, action) => {
                 state.error = action.error.message;
             })
     },
