@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,8 +17,6 @@ const VoteTypes = {
     Downvote: "downvote",
 };
 
-// TODO: VOTING LOGIC IS WORKING ON SERVER, NOW MAKE THE APPROPRIATE CHANGES ON FRONTEND IN REDUCERS OR EXTRA REDUCERS
-// TO CAUSE RERENDER.
 const PostVotes = ({ postId }) => {
     const dispatch = useDispatch();
     const post = useSelector((state) => selectPostById(state, postId));

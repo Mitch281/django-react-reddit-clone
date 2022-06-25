@@ -1,88 +1,39 @@
+import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSinglePost, selectPostById } from "./postsSlice";
-import { useState, useContext, useEffect } from "react";
-import styles from "./styles/posts.module.css";
-import { UserContext } from "../../App";
-import Category from "../../components/Post/Category/Category";
-import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
-import PostContent from "../../components/Post/PostContent/PostContent";
-import PostVotes from "./PostVotes";
-import Title from "../../components/Post/Title/Title";
-import User from "../../components/Comments/User/Author";
-import ViewComments from "../../components/Post/ViewComments/ViewComments";
-import DeletePost from "../../components/Post/DeletePost/DeletePost";
 import { useParams } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { constants } from "../../constants";
-import ClipLoader from "react-spinners/ClipLoader";
+import Post from "./Post";
+import { fetchSinglePost, selectAllPosts } from "./postsSlice";
+import styles from "./styles/posts.module.css";
+import { UserContext } from "../../App";
+import { fetchUsersVotesOnPosts } from "../../utils/fetch-data";
 
-// TODO: FIX ISSUE WHERE IF REFRESH PAGE, POST IS NOT FETCHED.
+//TODO: FIX ISSUE WHERE userIdLoggedIn is undefined when accessing from context (even though we relogin on page refresh?)
 const PostSelected = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const postId = params.postId;
-    const [currentlyEditing, setCurrentlyEditing] = useState(false);
+    const posts = useSelector(selectAllPosts);
     const postStatus = useSelector((state) => state.posts.status);
-    const { userIdLoggedIn } = useContext(UserContext);
 
-    const post = useSelector((state) => {
-        if (state.posts.length === 0) {
-            return null;
-        }
-        return selectPostById(state, postId);
-    });
+    // const { userIdLoggedIn } = useContext(UserContext);
 
+    // When we refresh the page, our store is refrshed and thus, there are no posts loaded. Thus, we simply load the post we 
+    // want.
     useEffect(() => {
-        if (!post) {
+        if (posts.length === 0) {
             dispatch(fetchSinglePost(postId));
+
+            // Since we refreshed the page, our data on the user's votes is gone. Thus, we re fetch this.
+            // dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
         }
     }, [dispatch]);
 
     let content = null;
-    if (post) {
-        const votes = {
-            numUpvotes: post.num_upvotes,
-            numDownvotes: post.num_downvotes,
-        };
-        content = (
-            <div className={styles["post"]}>
-                <div className={styles["top-post-flex-container"]}>
-                    <PostVotes votes={votes} postId={postId} />
-                    <div className={styles["post-info"]}>
-                        <Category
-                            categoryId={post.category}
-                            categoryName={post.category_name}
-                        />
-                        <User username={post.username} />
-                        <DateOfPost dateCreated={post.date_created} />
-                    </div>
-                </div>
-                <Title title={post.title} />
-                <PostContent
-                    content={post.content}
-                    currentlyEditing={currentlyEditing}
-                    userId={post.user}
-                    postId={postId}
-                />
-                <ViewComments postId={postId} />
-                {userIdLoggedIn === post.user ? (
-                    <DeletePost postId={postId} userId={post.user} />
-                ) : (
-                    ""
-                )}
-                {userIdLoggedIn === post.user ? (
-                    <button
-                        type="button"
-                        className={styles["toggle-edit-post"]}
-                        onClick={() => setCurrentlyEditing(!currentlyEditing)}
-                    >
-                        Edit
-                    </button>
-                ) : (
-                    ""
-                )}
-            </div>
-        );
+    if (postStatus === "fulfilled" || posts.length > 0) {
+        content = <Post postId={postId} />
     } else if (postStatus === "pending") {
         content = (
             <div className={styles["posts"]}>

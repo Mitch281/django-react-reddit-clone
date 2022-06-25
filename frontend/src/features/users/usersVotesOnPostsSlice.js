@@ -84,9 +84,7 @@ export const trackUsersDownvote = createAsyncThunk(
         let data;
         let url;
         let method;
-
-        console.log(currentVote);
-
+        
         // User has voted already.
         if (usersVoteOnPostId) {
             url = `${API_ENDPOINT}/post-vote/${usersVoteOnPostId}/`;

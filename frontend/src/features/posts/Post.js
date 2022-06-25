@@ -22,7 +22,7 @@ const Post = ({ postId }) => {
     let editButton;
     let deleteButton;
 
-    if (userIdLoggedIn === post.user) {
+    if (userIdLoggedIn && userIdLoggedIn === post.user) {
         editButton = (
             <button
                 type="button"
@@ -49,9 +49,7 @@ const Post = ({ postId }) => {
             </div>
             <Title title={post.title} />
             <PostContent
-                content={post.content}
                 currentlyEditing={currentlyEditing}
-                userId={post.user}
                 postId={postId}
             />
             <ViewComments postId={postId} />

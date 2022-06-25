@@ -30,6 +30,7 @@ const Posts = () => {
     const postIds = useSelector(selectPostIds);
     const usersVotesOnPostsStatus = useSelector(state => state.usersVotesOnPosts.status);
 
+    // Once the user logs in, we want to fetch all of their votes.
     useEffect(() => {
         if (userIdLoggedIn) {
             dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));

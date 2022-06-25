@@ -20,7 +20,7 @@ export const fetchPosts = createAsyncThunk(
     async (order) => {
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/posts/${order}`;
+            url = `${API_ENDPOINT}/posts/${order}/`;
         } else {
             url = `${API_ENDPOINT}/posts/`;
         }
@@ -49,7 +49,8 @@ export const fetchPostsByCategory = createAsyncThunk(
 export const fetchSinglePost = createAsyncThunk(
     "posts/fetchSinglePost",
     async (postId) => {
-        const response = await fetch(`${API_ENDPOINT}/post/id=${postId}`);
+        console.log("made it");
+        const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/`);
         const json = await response.json();
         return json;
     }
@@ -166,7 +167,9 @@ const postsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-            .addCase(fetchPostsByCategory.pending, state => state.status = "pending")
+            .addCase(fetchPostsByCategory.pending, (state, action) => {
+                state.status = "pending"
+            })
             .addCase(fetchPostsByCategory.fulfilled, (state, action) => {
                 state.status = "fulfilled";
                 postsAdapter.setAll(state, action.payload);
@@ -175,7 +178,9 @@ const postsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-            .addCase(fetchSinglePost.pending, state => state.status = "pending")
+            .addCase(fetchSinglePost.pending, (state, action) => {
+                state.status = "pending"
+            })
             .addCase(fetchSinglePost.fulfilled, (state, action) => {
                 state.status = "fulfilled";
                 postsAdapter.setOne(state, action.payload);

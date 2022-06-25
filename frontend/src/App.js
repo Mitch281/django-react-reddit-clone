@@ -82,269 +82,6 @@ function App() {
         }
     }
 
-    async function loadPostVotes() {
-        try {
-            const json = await fetchUsersVotesOnPosts();
-            setUserPostVotes(json);
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async function upvote(
-        postId,
-        currentNumUpvotes,
-        currentNumDownvotes,
-        status,
-        thingToUpvote
-    ) {
-        try {
-            await postUpvote(
-                postId,
-                currentNumUpvotes,
-                currentNumDownvotes,
-                status,
-                thingToUpvote
-            );
-
-            // User is going from downvote to upvote.
-            if (status === "downvoted") {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? {
-                                  ...post,
-                                  num_upvotes: currentNumUpvotes + 1,
-                                  num_downvotes: currentNumDownvotes - 1,
-                              }
-                            : post
-                    )
-                );
-            }
-
-            // User is undoing upvote.
-            else if (status === "upvoted") {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? { ...post, num_upvotes: currentNumUpvotes - 1 }
-                            : post
-                    )
-                );
-            }
-
-            // User is going from no vote to upvote.
-            else {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? { ...post, num_upvotes: currentNumUpvotes + 1 }
-                            : post
-                    )
-                );
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    // Updates the user's votes in the case of an upvote.
-    async function trackUsersUpvotes(
-        userId,
-        postId,
-        status,
-        postVoteId,
-        thingToUpvote
-    ) {
-        // User has voted on post already. Thus, postVoteId exists (is not null).
-        if (postVoteId) {
-            try {
-                await patchUsersUpvote(status, postVoteId, thingToUpvote);
-                // User is going from downvote to upvote.
-                if (status === "downvoted") {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? {
-                                      ...userPostVote,
-                                      upvote: true,
-                                      downvote: false,
-                                  }
-                                : userPostVote
-                        )
-                    );
-                }
-
-                // User is undoing upvote.
-                else if (status === "upvoted") {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? { ...userPostVote, upvote: false }
-                                : userPostVote
-                        )
-                    );
-                }
-
-                // User has previously voted before, but has no current vote on the post.
-                else {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? { ...userPostVote, upvote: true }
-                                : userPostVote
-                        )
-                    );
-                }
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        // The user has not voted on the post yet. Thus, we need to post a new vote.
-        else {
-            try {
-                const data = await postUsersUpvote(
-                    userId,
-                    postId,
-                    thingToUpvote
-                );
-                setUserPostVotes((userPostVotes) => [...userPostVotes, data]);
-            } catch (error) {
-                throw error;
-            }
-        }
-    }
-
-    async function downvote(
-        postId,
-        currentNumUpvotes,
-        currentNumDownvotes,
-        status,
-        thingToDownvote
-    ) {
-        try {
-            await postDownvote(
-                postId,
-                currentNumUpvotes,
-                currentNumDownvotes,
-                status,
-                thingToDownvote
-            );
-
-            // User is undoing downvote by downvoting again.
-            if (status === "downvoted") {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? {
-                                  ...post,
-                                  num_downvotes: currentNumDownvotes - 1,
-                              }
-                            : post
-                    )
-                );
-            }
-
-            // User is going from upvote to downvote
-            else if (status === "upvoted") {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? {
-                                  ...post,
-                                  num_upvotes: currentNumUpvotes - 1,
-                                  num_downvotes: currentNumDownvotes + 1,
-                              }
-                            : post
-                    )
-                );
-            }
-
-            // User is going from no vote to downote.
-            else {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId
-                            ? {
-                                  ...post,
-                                  num_downvotes: currentNumDownvotes + 1,
-                              }
-                            : post
-                    )
-                );
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async function trackUsersDownvotes(
-        userId,
-        postId,
-        status,
-        postVoteId,
-        thingToDownvote
-    ) {
-        // User has voted on the post before.
-        if (postVoteId) {
-            try {
-                await patchUsersDownvote(status, postVoteId, thingToDownvote);
-
-                // User is undoing downvote by downvoting again.
-                if (status === "downvoted") {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? { ...userPostVote, downvote: false }
-                                : userPostVote
-                        )
-                    );
-
-                    // User is going from upvote to downvote.
-                } else if (status === "upvoted") {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? {
-                                      ...userPostVote,
-                                      upvote: false,
-                                      downvote: true,
-                                  }
-                                : userPostVote
-                        )
-                    );
-
-                    // User has previously voted before, but has no current vote on the post.
-                } else {
-                    setUserPostVotes(
-                        userPostVotes.map((userPostVote) =>
-                            userPostVote.id === postVoteId
-                                ? { ...userPostVote, downvote: true }
-                                : userPostVote
-                        )
-                    );
-                }
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        // User has not voted on post yet.
-        else {
-            try {
-                const data = await postUsersDownvote(
-                    userId,
-                    postId,
-                    thingToDownvote
-                );
-                setUserPostVotes((userPostVotes) => [...userPostVotes, data]);
-            } catch (error) {
-                throw error;
-            }
-        }
-    }
-
     function addPost(newPost) {
         setPosts((posts) => [...posts, newPost]);
     }
@@ -375,24 +112,10 @@ function App() {
             setCategoriesLoading(false);
         }
     }
-    
-    async function getPostVotes() {
-        try {
-            await loadPostVotes();
-        } catch (error) {
-            throw error;
-        }
-    }
 
     // Load categories on page load.
     useEffect(() => {
         getCategories();
-        // eslint-disable-next-line
-    }, []);
-
-    // Load post votes on page load.
-    useEffect(() => {
-        getPostVotes();
         // eslint-disable-next-line
     }, []);
 
@@ -425,13 +148,7 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        upvote={upvote}
                                         userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
                                         postLoadingError={postLoadingError}
@@ -454,13 +171,7 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        upvote={upvote}
                                         userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
                                         postLoadingError={postLoadingError}
@@ -515,13 +226,7 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        upvote={upvote}
                                         userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
                                         postLoadingError={postLoadingError}
@@ -544,13 +249,7 @@ function App() {
                                         }
                                     />
                                     <Posts
-                                        upvote={upvote}
                                         userPostVotes={userPostVotes}
-                                        trackUsersUpvotes={trackUsersUpvotes}
-                                        downvote={downvote}
-                                        trackUsersDownvotes={
-                                            trackUsersDownvotes
-                                        }
                                         deletePost={deletePost}
                                         editPostContent={editPostContent}
                                         postLoadingError={postLoadingError}
