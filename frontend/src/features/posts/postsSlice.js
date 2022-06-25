@@ -11,6 +11,8 @@ const postsAdapter = createEntityAdapter();
 const initialState = postsAdapter.getInitialState({
     status: "idle",
     error: null,
+    editPostStatus: "idle",
+    editPostError: null
 });
 
 export const fetchPosts = createAsyncThunk(
@@ -127,6 +129,26 @@ export const downvotePost = createAsyncThunk(
     }
 )
 
+export const editPost = createAsyncThunk(
+    "posts/EditPost",
+    async (editPostInformation) => {
+        const { postId, userId, newPostContent } = editPostInformation;
+        const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/user-id=${userId}/`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify({ content: newPostContent })
+        });
+        if (!response.ok) {
+            Promise.reject(response.status);
+        }
+        const json = await response.json();
+        return json;
+    }
+)
+
 const postsSlice = createSlice({
     name: "posts",
     initialState,
@@ -165,15 +187,19 @@ const postsSlice = createSlice({
             .addCase(upvotePost.fulfilled, (state, action) => {
                 postsAdapter.upsertOne(state, action.payload);
             })
-            .addCase(upvotePost.rejected, (state, action) => {
-                // We do not change status here because this would cause posts to unrender.
-                state.error = action.error.message;
-            })
             .addCase(downvotePost.fulfilled, (state, action) => {
                 postsAdapter.upsertOne(state, action.payload);
             })
-            .addCase(downvotePost.rejected, (state, action) => {
-                state.error = action.error.message;
+            .addCase(editPost.fulfilled, (state, action) => {
+                state.editPostStatus = "fulfilled";
+                postsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(editPost.pending, (state, action) => {
+                state.editPostStatus = "pending";
+            })
+            .addCase(editPost.rejected, (state, action) => {
+                state.editPostStatus = "rejected";
+                state.editPostError = action.error.message;
             })
     },
 });

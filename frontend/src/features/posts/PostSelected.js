@@ -16,6 +16,7 @@ import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { constants } from "../../constants";
 import ClipLoader from "react-spinners/ClipLoader";
 
+// TODO: FIX ISSUE WHERE IF REFRESH PAGE, POST IS NOT FETCHED.
 const PostSelected = () => {
     const dispatch = useDispatch();
     const params = useParams();

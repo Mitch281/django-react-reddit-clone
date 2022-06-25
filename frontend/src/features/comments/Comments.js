@@ -12,6 +12,7 @@ import { selectAllComments } from "./commentsSlice";
 import styles from "./styles/comments.module.css";
 import { fetchComments } from "./commentsSlice";
 
+// TODO: FIX ISSUE WHERE NOTHING IS RETURNED IF THERE IS NO COMMENTS
 const Comments = () => {
     const params = useParams();
     const postId = params.postId;

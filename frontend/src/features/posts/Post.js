@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { selectPostById } from "./postsSlice";
 import { useState, useContext } from "react";
-import styles from "./styles/posts.module.css";
+import styles from "./styles/post.module.css";
 import { UserContext } from "../../App";
 import Category from "../../components/Post/Category/Category";
 import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
-import PostContent from "../../components/Post/PostContent/PostContent";
+import PostContent from "./PostContent";
 import PostVotes from "./PostVotes";
 import Title from "../../components/Post/Title/Title";
 import User from "../../components/Comments/User/Author";
@@ -17,12 +17,22 @@ const Post = ({ postId }) => {
 
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
-    const votes = {
-        numUpvotes: post.num_upvotes,
-        numDownvotes: post.num_downvotes,
-    };
-
     const { userIdLoggedIn } = useContext(UserContext);
+
+    let editButton;
+    let deleteButton;
+
+    if (userIdLoggedIn === post.user) {
+        editButton = (
+            <button
+                type="button"
+                className={styles["toggle-edit-post"]}
+                onClick={() => setCurrentlyEditing(!currentlyEditing)}
+            >
+                Edit
+            </button>
+        );
+    }
 
     return (
         <div className={styles["post"]}>
@@ -45,22 +55,7 @@ const Post = ({ postId }) => {
                 postId={postId}
             />
             <ViewComments postId={postId} />
-            {userIdLoggedIn === post.user ? (
-                <DeletePost postId={postId} userId={post.user} />
-            ) : (
-                ""
-            )}
-            {userIdLoggedIn === post.user ? (
-                <button
-                    type="button"
-                    className={styles["toggle-edit-post"]}
-                    onClick={() => setCurrentlyEditing(!currentlyEditing)}
-                >
-                    Edit
-                </button>
-            ) : (
-                ""
-            )}
+            {editButton}
         </div>
     );
 };
