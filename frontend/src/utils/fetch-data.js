@@ -45,16 +45,6 @@ export async function fetchCategories() {
     }
 }
 
-export async function fetchUsersVotesOnPosts() {
-    const response = await fetch(`${API_ENDPOINT}/post-votes/`);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
 export async function postUpvote(
     idOfThing,
     currentNumUpvotes,
@@ -341,16 +331,6 @@ export async function fetchComments(order, postId) {
         url = `${API_ENDPOINT}/comments/post=${postId}/`;
     }
     const response = await fetch(url);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
-export async function fetchUsersVotesOnComments() {
-    const response = await fetch(`${API_ENDPOINT}/comment-votes/`);
     if (response.ok) {
         const json = await response.json();
         return json;

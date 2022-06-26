@@ -8,7 +8,7 @@ import Post from "./Post";
 import { fetchSinglePost, selectAllPosts } from "./postsSlice";
 import styles from "./styles/posts.module.css";
 import { UserContext } from "../../App";
-import { fetchUsersVotesOnPosts } from "../../utils/fetch-data";
+import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
 
 //TODO: FIX ISSUE WHERE userIdLoggedIn is undefined when accessing from context (even though we relogin on page refresh?)
 const PostSelected = () => {
@@ -18,7 +18,7 @@ const PostSelected = () => {
     const posts = useSelector(selectAllPosts);
     const postStatus = useSelector((state) => state.posts.status);
 
-    // const { userIdLoggedIn } = useContext(UserContext);
+    const { userIdLoggedIn } = useContext(UserContext);
 
     // When we refresh the page, our store is refrshed and thus, there are no posts loaded. Thus, we simply load the post we 
     // want.
@@ -27,7 +27,7 @@ const PostSelected = () => {
             dispatch(fetchSinglePost(postId));
 
             // Since we refreshed the page, our data on the user's votes is gone. Thus, we re fetch this.
-            // dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
+            dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
         }
     }, [dispatch]);
 

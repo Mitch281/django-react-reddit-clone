@@ -8,13 +8,6 @@ import Comments from "./features/comments/Comments";
 import PostSelected from "./features/posts/PostSelected";
 import {
     fetchCategories,
-    fetchUsersVotesOnPosts,
-    postUpvote,
-    patchUsersUpvote,
-    postUsersUpvote,
-    postDownvote,
-    patchUsersDownvote,
-    postUsersDownvote,
 } from "./utils/fetch-data";
 import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";

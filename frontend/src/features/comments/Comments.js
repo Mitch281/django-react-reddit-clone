@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -11,8 +11,9 @@ import { constants } from "../../constants";
 import { selectAllComments } from "./commentsSlice";
 import styles from "./styles/comments.module.css";
 import { fetchComments } from "./commentsSlice";
+import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
+import { UserContext } from "../../App";
 
-// TODO: FIX ISSUE WHERE NOTHING IS RETURNED IF THERE IS NO COMMENTS
 const Comments = () => {
     const params = useParams();
     const postId = params.postId;
@@ -24,9 +25,15 @@ const Comments = () => {
 
     const [commentChain, setCommentChain] = useState([]);
 
+    const { userIdLoggedIn } = useContext(UserContext);
+
     useEffect(() => {
         dispatch(fetchComments({ order: order, postId: postId }));
     }, [order, dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
+    }, [dispatch]);
 
     // Once we fetch the comments, we will put them in their nested structure.
     useEffect(() => {
@@ -67,8 +74,10 @@ const Comments = () => {
     }
 
     let content;
-
-    if (commentStatus === "rejected") {
+    
+    if (comments.length === 0) {
+        content = null;
+    } else if (commentStatus === "rejected") {
         toast.error("Could not fetch comments!", {
             position: "bottom-center",
             autoClose: 3000,

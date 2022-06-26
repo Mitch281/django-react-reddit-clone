@@ -49,7 +49,6 @@ export const fetchPostsByCategory = createAsyncThunk(
 export const fetchSinglePost = createAsyncThunk(
     "posts/fetchSinglePost",
     async (postId) => {
-        console.log("made it");
         const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/`);
         const json = await response.json();
         return json;

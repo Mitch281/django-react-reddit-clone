@@ -13,6 +13,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../../App";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
+import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
 
 const Posts = () => {
     const { userIdLoggedIn } = useContext(UserContext);
@@ -31,6 +32,9 @@ const Posts = () => {
     const usersVotesOnPostsStatus = useSelector(state => state.usersVotesOnPosts.status);
 
     // Once the user logs in, we want to fetch all of their votes.
+    // TODO: Maybe think about moving these calls. It doesn't
+    // really belong here. Although, posts is always loaded since user is redirected to root ("/"), which always
+    // renders posts, so maybe it does belong here? TBD
     useEffect(() => {
         if (userIdLoggedIn) {
             dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));

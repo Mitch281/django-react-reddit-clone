@@ -29,6 +29,79 @@ export const fetchComments = createAsyncThunk(
     }
 )
 
+export const upvoteComment = createAsyncThunk(
+    "comments/upvoteComment",
+    async (commentInformation) => {
+        const { comment, currentVote } = commentInformation;
+        const url = `${API_ENDPOINT}/comment/id=${comment.id}/`;
+        const numUpvotes = comment.num_upvotes;
+        const numDownvotes = comment.num_downvotes;
+        let data;
+
+        if (currentVote === "downvote") {
+            data = {
+                num_upvotes: numUpvotes + 1,
+                num_downvotes: numDownvotes - 1,
+            };
+        } else if (currentVote === "upvote") {
+            data = { num_upvotes: numUpvotes - 1 };
+        } else {
+            data = { num_upvotes: numUpvotes + 1 };
+        }
+
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            const json = await response.json();
+            return json;
+        } else {
+            Promise.reject("Could not upvote!");
+        }
+    }
+);
+
+export const downvoteComment = createAsyncThunk(
+    "comments/downvoteComment",
+    async (commentInformation) => {
+        const { comment, currentVote } = commentInformation;
+        const url = `${API_ENDPOINT}/comment/id=${comment.id}/`;
+        const numUpvotes = comment.num_upvotes;
+        const numDownvotes = comment.num_downvotes;
+        let data;
+
+        if (currentVote === "upvote") {
+            data = {
+                num_upvotes: numUpvotes - 1,
+                num_downvotes: numDownvotes + 1
+            }
+        } else if (currentVote === "downvote") {
+            data = { num_downvotes: numDownvotes - 1};
+        } else {
+            data = { num_downvotes: numDownvotes + 1};
+        }
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            const json = await response.json();
+            return json;
+        } else {
+            return Promise.reject("Could not downvote!");
+        }
+    }
+)
+
 const commentsSlice = createSlice({
     name: "comments",
     initialState,
@@ -45,6 +118,12 @@ const commentsSlice = createSlice({
             .addCase(fetchComments.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
+            })
+            .addCase(upvoteComment.fulfilled, (state, action) => {
+                commentsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(downvoteComment.fulfilled, (state, action) => {
+                commentsAdapter.upsertOne(state, action.payload);
             })
     }     
 });

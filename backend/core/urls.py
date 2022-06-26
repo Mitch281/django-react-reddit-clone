@@ -34,6 +34,7 @@ urlpatterns = [
 
     path('comment-votes/', views.CommentVotesView.as_view()),
     re_path(r'^comment-vote/(?P<pk>[0-9a-z-&]+)/$', views.CommentVoteView().as_view()),
+    re_path(r'^comment-vote?user=(?P<user_id>[0-9a-z-&]+)/$', views.CommentVoteView.as_view(), name="users votes on comments"),
 
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

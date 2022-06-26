@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Category, Post, Comment, PostVotes, CommentVotes
-from .serializers import (CategorySerializer, 
+from .serializers import (CategorySerializer, CommentVotesSerializer, 
 PostSerializer, 
 CommentSerializer, 
 UserSerializer, 
@@ -370,8 +370,12 @@ class CommentVotesView(APIView):
         return super().get_permissions()
 
     def get(self, request, format=None):
-        votes = CommentVotes.objects.all()
-        serializer = serializers.CommentVotesSerializer(votes, many=True)
+        user_id = request.GET.get("user", "")
+        if (user_id):
+            votes = CommentVotes.objects.filter(user=user_id)
+        else:
+            votes = CommentVotes.objects.all()
+        serializer = CommentVotesSerializer(votes, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):

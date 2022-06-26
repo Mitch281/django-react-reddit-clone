@@ -11,11 +11,7 @@ import {
 } from "../users/usersVotesOnPostsSlice";
 import { downvotePost, selectPostById, upvotePost } from "./postsSlice";
 import styles from "./styles/post-votes.module.css";
-
-const VoteTypes = {
-    Upvote: "upvote",
-    Downvote: "downvote",
-};
+import { VoteTypes } from "../../constants";
 
 const PostVotes = ({ postId }) => {
     const dispatch = useDispatch();
