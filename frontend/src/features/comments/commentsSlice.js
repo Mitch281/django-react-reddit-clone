@@ -11,6 +11,8 @@ const commentsAdapter = createEntityAdapter();
 const initialState = commentsAdapter.getInitialState({
     status: "idle",
     error: null,
+    makeCommentOnPostStatus: "idle",
+    makeCommentOnPostError: null
 });
 
 export const fetchComments = createAsyncThunk(
@@ -102,6 +104,25 @@ export const downvoteComment = createAsyncThunk(
     }
 )
 
+export const makeCommentOnPost = createAsyncThunk(
+    "comments/makeCommentOnPost",
+    async (newComment) => {
+        const response = await fetch(`${API_ENDPOINT}/comments/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify(newComment),
+        });
+        if (!response.ok) {
+            Promise.reject("Could not make comment!");
+        }
+        const json = await response.json();
+        return json;
+    }
+)
+
 const commentsSlice = createSlice({
     name: "comments",
     initialState,
@@ -124,6 +145,17 @@ const commentsSlice = createSlice({
             })
             .addCase(downvoteComment.fulfilled, (state, action) => {
                 commentsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(makeCommentOnPost.fulfilled, (state, action) => {
+                state.makeCommentOnPostStatus = "fulfilled";
+                commentsAdapter.addOne(state, action.payload);
+            })
+            .addCase(makeCommentOnPost.pending, (state, action) => {
+                state.makeCommentOnPostStatus = "pending";
+            })
+            .addCase(makeCommentOnPost.rejected, (state, action) => {
+                state.makeCommentOnPostStatus = "rejected";
+                state.makeCommentOnPostError = action.error.message;
             })
     }     
 });

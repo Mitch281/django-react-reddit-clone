@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../../App";
+import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
-import styles from "./comment-input.module.css";
-import { postComment } from "../../../utils/fetch-data";
+import styles from "./styles/comment-input.module.css";
+import { postComment } from "../../utils/fetch-data";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../../constants";
-import { CantGetNewAccessTokenError } from "../../../utils/auth";
-import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import { constants } from "../../constants";
+import { CantGetNewAccessTokenError } from "../../utils/auth";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const CommentInput = (props) => {
     const [comment, setComment] = useState("");

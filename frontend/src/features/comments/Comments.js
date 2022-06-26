@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
-import CommentInput from "../../components/Comments/CommentInput/CommentInput";
+import CommentInput from "./CommentInput";
 import OrderOptions from "../../components/OrderOptions/OrderOptions";
 import { constants } from "../../constants";
 import { selectAllComments } from "./commentsSlice";
