@@ -13,7 +13,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../../App";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
-import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
 
 const Posts = () => {
     const { userIdLoggedIn } = useContext(UserContext);

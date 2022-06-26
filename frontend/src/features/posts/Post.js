@@ -1,16 +1,15 @@
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectPostById } from "./postsSlice";
-import { useState, useContext } from "react";
-import styles from "./styles/post.module.css";
 import { UserContext } from "../../App";
-import Category from "../../components/Post/Category/Category";
-import DateOfPost from "../../components/Post/DateOfPost/DateOfPost";
-import PostContent from "./PostContent";
-import PostVotes from "./PostVotes";
-import Title from "../../components/Post/Title/Title";
-import User from "../../components/Comments/User/Author";
+import PostAuthor from "../../common/posts/PostAuthor";
+import Category from "../../common/posts/Category";
+import DateOfPost from "../../common/posts/DateOfPost";
+import Title from "../../common/posts/Title";
 import ViewComments from "../../components/Post/ViewComments/ViewComments";
-import DeletePost from "../../components/Post/DeletePost/DeletePost";
+import PostContent from "./PostContent";
+import { selectPostById } from "./postsSlice";
+import PostVotes from "./PostVotes";
+import styles from "./styles/post.module.css";
 
 const Post = ({ postId }) => {
     const post = useSelector((state) => selectPostById(state, postId));
@@ -43,7 +42,7 @@ const Post = ({ postId }) => {
                         categoryId={post.category}
                         categoryName={post.category_name}
                     />
-                    <User username={post.username} />
+                    <PostAuthor username={post.username} />
                     <DateOfPost dateCreated={post.date_created} />
                 </div>
             </div>
