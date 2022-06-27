@@ -12,7 +12,7 @@ const initialState = postsAdapter.getInitialState({
     status: "idle",
     error: null,
     editPostStatus: "idle",
-    editPostError: null
+    editPostError: null,
 });
 
 export const fetchPosts = createAsyncThunk(
@@ -130,7 +130,7 @@ export const downvotePost = createAsyncThunk(
 )
 
 export const editPost = createAsyncThunk(
-    "posts/EditPost",
+    "posts/editPost",
     async (editPostInformation) => {
         const { postId, userId, newPostContent } = editPostInformation;
         const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/user-id=${userId}/`, {
@@ -143,6 +143,25 @@ export const editPost = createAsyncThunk(
         });
         if (!response.ok) {
             Promise.reject(response.status);
+        }
+        const json = await response.json();
+        return json;
+    }
+)
+
+export const deletePost = createAsyncThunk(
+    "posts/deletePost",
+    async (deleteInformation) => {
+        const { postId, userId } = deleteInformation;
+        const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/user-id=${userId}/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        });
+        if (!response.ok) {
+            return Promise.reject(response.status);
         }
         const json = await response.json();
         return json;
@@ -204,6 +223,9 @@ const postsSlice = createSlice({
             .addCase(editPost.rejected, (state, action) => {
                 state.editPostStatus = "rejected";
                 state.editPostError = action.error.message;
+            })
+            .addCase(deletePost.fulfilled, (state, action) => {
+                postsAdapter.removeOne(state, action.payload.id);
             })
     },
 });

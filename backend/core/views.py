@@ -133,7 +133,11 @@ class PostView(APIView):
         
         if creator_of_post_id == user_id:
             post.delete()
-            return Response(data=None, status=status.HTTP_200_OK)
+
+            # Return the id of the post that was just deleted.
+            data = {"id": pk}
+
+            return Response(data=data, status=status.HTTP_200_OK)
         return Response(data=None, status=status.HTTP_401_UNAUTHORIZED)
 
     def patch(self, request, pk, user_id=""):

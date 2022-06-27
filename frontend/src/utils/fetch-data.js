@@ -428,54 +428,6 @@ export async function postPost(data) {
     }
 }
 
-export async function fetchDeletePost(postId, userIdLoggedIn) {
-    const accessToken = localStorage.getItem("accessToken");
-    try {
-        await getNewAccessTokenIfExpired(accessToken);
-    } catch (error) {
-        throw error;
-    }
-
-    const response = await fetch(
-        `${API_ENDPOINT}/post/id=${postId}/user-id=${userIdLoggedIn}/`,
-        {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }
-    );
-    if (!response.ok) {
-        throw new Error(response.status);
-    }
-}
-
-export async function editPost(newPostContent, postId, userIdLoggedIn) {
-    const accessToken = localStorage.getItem("accessToken");
-    try {
-        await getNewAccessTokenIfExpired(accessToken);
-    } catch (error) {
-        throw error;
-    }
-
-    const response = await fetch(
-        `${API_ENDPOINT}/post/id=${postId}/user-id=${userIdLoggedIn}/`,
-        {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ content: newPostContent }),
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error(response.status);
-    }
-}
-
 export async function postCategory(data) {
     const accessToken = localStorage.getItem("accessToken");
     try {

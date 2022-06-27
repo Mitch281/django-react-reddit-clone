@@ -10,6 +10,7 @@ import PostContent from "./PostContent";
 import { selectPostById } from "./postsSlice";
 import PostVotes from "./PostVotes";
 import styles from "./styles/post.module.css";
+import DeletePost from "./DeletePost";
 
 const Post = ({ postId }) => {
     const post = useSelector((state) => selectPostById(state, postId));
@@ -31,6 +32,7 @@ const Post = ({ postId }) => {
                 Edit
             </button>
         );
+        deleteButton = <DeletePost postId={postId} />;
     }
 
     return (
@@ -47,12 +49,10 @@ const Post = ({ postId }) => {
                 </div>
             </div>
             <Title title={post.title} />
-            <PostContent
-                currentlyEditing={currentlyEditing}
-                postId={postId}
-            />
-            <ViewComments postId={postId} />
+            <PostContent currentlyEditing={currentlyEditing} postId={postId} />
+            {deleteButton}
             {editButton}
+            <ViewComments postId={postId} />
         </div>
     );
 };
