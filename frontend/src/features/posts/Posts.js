@@ -61,7 +61,6 @@ const Posts = () => {
                 fetchPostsByCategory({ order: order, categoryId: categoryId })
             );
         }
-        // eslint-disable-next-line
     }, [dispatch, order, categoryId]);
 
     let content;

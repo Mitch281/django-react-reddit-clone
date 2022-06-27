@@ -2,13 +2,10 @@ import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
-import Navbar from "./components/Nav/Navbar/Navbar";
+import Navbar from "./common/nav/Navbar";
 import Posts from "./features/posts/Posts";
 import Comments from "./features/comments/Comments";
 import PostSelected from "./features/posts/PostSelected";
-import {
-    fetchCategories,
-} from "./utils/fetch-data";
 import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
@@ -66,19 +63,6 @@ function App() {
         reLogin();
     }, []);
 
-    async function loadCategories() {
-        try {
-            const json = await fetchCategories();
-            setCategories(json);
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    function addPost(newPost) {
-        setPosts((posts) => [...posts, newPost]);
-    }
-
     function deletePost(postId) {
         setPosts(posts.filter((post) => post.id !== postId));
     }
@@ -94,23 +78,6 @@ function App() {
             )
         );
     }
-
-    async function getCategories() {
-        setCategoriesLoading(true);
-        try {
-            await loadCategories();
-        } catch (error) {
-            setCategoryLoadingError(error);
-        } finally {
-            setCategoriesLoading(false);
-        }
-    }
-
-    // Load categories on page load.
-    useEffect(() => {
-        getCategories();
-        // eslint-disable-next-line
-    }, []);
 
     return (
         <Router>

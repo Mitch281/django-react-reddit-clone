@@ -1,16 +1,13 @@
-import { Link, useParams } from "react-router-dom";
-import LogoutButton from "../LogoutButton/LogoutButton";
+import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 import { useContext, useState, useEffect } from "react";
-import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
-import { UserContext } from "../../../App";
-import PropTypes from "prop-types";
-import styles from "./navbar.module.css";
+import CategoryDropdown from "../../features/categories/CategoryDropdown";
+import { UserContext } from "../../App";
+import styles from "./styles/navbar.module.css";
 
-const Navbar = (props) => {
+const Navbar = () => {
     const { loggedIn } = useContext(UserContext);
 
-    const params = useParams();
-    const activeCategory = params.categoryName;
     const [width, setWidth] = useState(window.innerWidth);
 
     function handleWindowSizeChange() {
@@ -38,12 +35,7 @@ const Navbar = (props) => {
                 ) : (
                     ""
                 )}
-                <CategoryDropdown
-                    activeCategory={activeCategory}
-                    categories={props.categories}
-                    categoriesLoading={props.categoriesLoading}
-                    categoryLoadingError={props.categoryLoadingError}
-                />
+                <CategoryDropdown />
                 <li id={styles["navbar-auth"]}>
                     {loggedIn ? (
                         <LogoutButton />
@@ -61,11 +53,6 @@ const Navbar = (props) => {
             </ul>
         </div>
     );
-};
-
-Navbar.propTypes = {
-    categories: PropTypes.array,
-    categoryLoadingError: PropTypes.instanceOf(Error),
 };
 
 export default Navbar;

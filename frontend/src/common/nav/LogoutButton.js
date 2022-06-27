@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { UserContext } from "../../../App";
-import styles from "./logout-button.module.css";
+import { UserContext } from "../../App";
+import styles from "./styles/logout-button.module.css";
 
 const LogoutButton = () => {
 
