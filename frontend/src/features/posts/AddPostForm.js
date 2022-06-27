@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast, ToastContainer } from "react-toastify";
@@ -9,8 +9,10 @@ import { UserContext } from "../../App";
 import { addNewPost } from "./postsSlice";
 import styles from "./styles/add-post-form.module.css";
 import { constants } from "../../constants";
+import { selectAllCategories } from "../categories/categoriesSlice";
 
-const AddPostForm = ({ categories }) => {
+// TODO: VALDIATE INPUT
+const AddPostForm = () => {
     let navigate = useNavigate();
     const { loggedIn, usernameLoggedIn, userIdLoggedIn } =
         useContext(UserContext);
@@ -24,6 +26,8 @@ const AddPostForm = ({ categories }) => {
     }, []);
 
     const dispatch = useDispatch();
+    const categories = useSelector(selectAllCategories);
+
     const [title, setTitle] = useState("");
     const [postContent, setPostContent] = useState("");
     const category = useRef(null);

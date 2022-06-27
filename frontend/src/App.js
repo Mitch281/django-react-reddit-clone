@@ -1,5 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+} from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import SignupPage from "./components/Auth/SignupPage";
 import Navbar from "./common/nav/Navbar";
@@ -7,7 +11,7 @@ import Posts from "./features/posts/Posts";
 import Comments from "./features/comments/Comments";
 import PostSelected from "./features/posts/PostSelected";
 import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
-import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
+import CreateCategoryForm from "./features/categories/CreateCategoryForm";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
 import AddPostForm from "./features/posts/AddPostForm";
 
@@ -18,18 +22,7 @@ function App() {
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
 
-    const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
-
-    // This keeps track of posts that users have voted on. This is needed to enforce the rule that users can only vote on a post
-    // once.
-    const [userPostVotes, setUserPostVotes] = useState([]);
-
-    const [postsLoading, setPostsLoading] = useState(false);
-    const [categoriesLoading, setCategoriesLoading] = useState(false);
-
-    const [postLoadingError, setPostLoadingError] = useState();
-    const [categoryLoadingError, setCategoryLoadingError] = useState();
 
     // This function relogs in a user whenever they navigate to a different page or refresh the page.
     async function reLogin() {
@@ -63,22 +56,6 @@ function App() {
         reLogin();
     }, []);
 
-    function deletePost(postId) {
-        setPosts(posts.filter((post) => post.id !== postId));
-    }
-
-    function addCategory(newCategory) {
-        setCategories((categories) => [...categories, newCategory]);
-    }
-
-    function editPostContent(postId, newPostContent) {
-        setPosts(
-            posts.map((post) =>
-                post.id === postId ? { ...post, content: newPostContent } : post
-            )
-        );
-    }
-
     return (
         <Router>
             <UserContext.Provider
@@ -100,20 +77,8 @@ function App() {
                             path="/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
-                                    <Posts
-                                        userPostVotes={userPostVotes}
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postLoadingError={postLoadingError}
-                                        postsLoading={postsLoading}
-                                    />
+                                    <Navbar />
+                                    <Posts />
                                     <LinkToCreatePost />
                                 </>
                             }
@@ -123,20 +88,8 @@ function App() {
                             path="/:order/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
-                                    <Posts
-                                        userPostVotes={userPostVotes}
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postLoadingError={postLoadingError}
-                                        postsLoading={postsLoading}
-                                    />
+                                    <Navbar />
+                                    <Posts />
                                     <LinkToCreatePost />
                                 </>
                             }
@@ -146,13 +99,7 @@ function App() {
                             path="/login/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
+                                    <Navbar />
                                     <LoginPage />
                                 </>
                             }
@@ -162,13 +109,7 @@ function App() {
                             path="/signup/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
+                                    <Navbar />
                                     <SignupPage />
                                 </>
                             }
@@ -178,20 +119,8 @@ function App() {
                             path="posts/category=:categoryName"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
-                                    <Posts
-                                        userPostVotes={userPostVotes}
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postLoadingError={postLoadingError}
-                                        postsLoading={postsLoading}
-                                    />
+                                    <Navbar />
+                                    <Posts />
                                     <LinkToCreatePost />
                                 </>
                             }
@@ -201,20 +130,8 @@ function App() {
                             path="posts/category=:categoryName/:order"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
-                                    <Posts
-                                        userPostVotes={userPostVotes}
-                                        deletePost={deletePost}
-                                        editPostContent={editPostContent}
-                                        postLoadingError={postLoadingError}
-                                        postsLoading={postsLoading}
-                                    />
+                                    <Navbar />
+                                    <Posts />
                                     <LinkToCreatePost />
                                 </>
                             }
@@ -224,13 +141,7 @@ function App() {
                             path="post=:postId/comments"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
+                                    <Navbar />
                                     <PostSelected />
                                     <Comments />
                                 </>
@@ -241,13 +152,7 @@ function App() {
                             path="post=:postId/comments/:order"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
+                                    <Navbar />
                                     <PostSelected />
                                     <Comments />
                                 </>
@@ -258,13 +163,7 @@ function App() {
                             path="/create-post/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
+                                    <Navbar />
                                     <AddPostForm categories={categories} />
                                 </>
                             }
@@ -274,14 +173,8 @@ function App() {
                             path="/create-category/"
                             element={
                                 <>
-                                    <Navbar
-                                        categories={categories}
-                                        categoriesLoading={categoriesLoading}
-                                        categoryLoadingError={
-                                            categoryLoadingError
-                                        }
-                                    />
-                                    <CreateCategory addCategory={addCategory} />
+                                    <Navbar />
+                                    <CreateCategoryForm />
                                 </>
                             }
                         />

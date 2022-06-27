@@ -25,6 +25,25 @@ export const fetchCategories = createAsyncThunk(
     }
 );
 
+export const createCategory = createAsyncThunk(
+    "categories/createCategory",
+    async (newCategory) => {
+        const response = await fetch(`${API_ENDPOINT}/categories/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify(newCategory),
+        });
+        if (!response.ok) {
+            Promise.reject(response.status);
+        }
+        const json = await response.json();
+        return json;
+    }
+)
+
 const categoriesSlice = createSlice({
     name: "categories",
     initialState,
@@ -41,7 +60,10 @@ const categoriesSlice = createSlice({
             .addCase(fetchCategories.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
-            });
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                categoriesAdapter.addOne(state, action.payload);
+            })
     },
 });
 

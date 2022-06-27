@@ -3,64 +3,6 @@ import { getNewAccessTokenIfExpired } from "./auth";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
-export async function fetchPosts(order) {
-    let url;
-    if (order) {
-        url = `${API_ENDPOINT}/posts/${order}`;
-    } else {
-        url = `${API_ENDPOINT}/posts/`;
-    }
-    const response = await fetch(url);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
-export async function fetchPostsByCategory(order, categoryId) {
-    let url;
-    if (order) {
-        url = `${API_ENDPOINT}/posts/category=${categoryId}/${order}/`;
-    } else {
-        url = `${API_ENDPOINT}/posts/category=${categoryId}/`;
-    }
-    const response = await fetch(url);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
-export async function fetchCategories() {
-    const response = await fetch(`${API_ENDPOINT}/categories/`);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
-export async function fetchComments(order, postId) {
-    let url;
-    if (order) {
-        url = `${API_ENDPOINT}/comments/post=${postId}/${order}/`;
-    } else {
-        url = `${API_ENDPOINT}/comments/post=${postId}/`;
-    }
-    const response = await fetch(url);
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
-    }
-}
-
 export async function postReplyToComment(data) {
     const accessToken = localStorage.getItem("accessToken");
     try {
