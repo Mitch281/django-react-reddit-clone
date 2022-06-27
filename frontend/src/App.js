@@ -11,8 +11,8 @@ import {
 } from "./utils/fetch-data";
 import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategory from "./components/CreationForms/CreateCategory/CreateCategory";
-import CreatePost from "./components/CreationForms/CreatePost/CreatePost";
 import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
+import AddPostForm from "./features/posts/AddPostForm";
 
 export const UserContext = createContext();
 //TODO: HANDLE TOKEN REFRESH WHEN TOKEN EXPIRES FOR NEW CODE!
@@ -298,10 +298,7 @@ function App() {
                                             categoryLoadingError
                                         }
                                     />
-                                    <CreatePost
-                                        categories={categories}
-                                        addPost={addPost}
-                                    />
+                                    <AddPostForm categories={categories} />
                                 </>
                             }
                         />

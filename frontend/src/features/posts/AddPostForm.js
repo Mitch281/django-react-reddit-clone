@@ -1,0 +1,126 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuid_v4 } from "uuid";
+import { UserContext } from "../../App";
+import { addNewPost } from "./postsSlice";
+import styles from "./styles/add-post-form.module.css";
+import { constants } from "../../constants";
+
+const AddPostForm = ({ categories }) => {
+    let navigate = useNavigate();
+    const { loggedIn, usernameLoggedIn, userIdLoggedIn } =
+        useContext(UserContext);
+
+    useEffect(() => {
+        if (!loggedIn) {
+            // TODO: SET SOME STATE HERE TO LET USER KNOW THEY WERE NAVIGATED HERE
+            // BECAUSE THEY NEED TO BE LOGGED IN TO ADD A POST.
+            navigate("/login/");
+        }
+    }, []);
+
+    const dispatch = useDispatch();
+    const [title, setTitle] = useState("");
+    const [postContent, setPostContent] = useState("");
+    const category = useRef(null);
+    const [addPostStatus, setAddPostStatus] = useState("idle");
+
+    async function handleAddPost(e) {
+        e.preventDefault();
+        setAddPostStatus("pending");
+
+        const categoryName = category.current.value.split(",")[1];
+        const categoryId = category.current.value.split(",")[0];
+
+        const newPost = {
+            id: uuid_v4(),
+            username: usernameLoggedIn,
+            category_name: categoryName,
+            title: title,
+            content: postContent,
+            date_created: new Date().toString(),
+            user: userIdLoggedIn,
+            category: categoryId,
+        };
+
+        try {
+            await dispatch(addNewPost(newPost)).unwrap();
+            // TODO: ADD STATE HERE TO DISPLAY MESSAGE THAT POST WAS SUCCESSFULLY ADDED.
+            navigate("/");
+        } catch (error) {
+            toast.error("Could not add post!", {
+                position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } finally {
+            setAddPostStatus("idle");
+        }
+    }
+
+    const loader = (
+        <ClipLoader
+            id={styles["loader"]}
+            color={constants.loaderColour}
+            loading={true}
+            size={20}
+            css={"float: right;"}
+        />
+    );
+
+    let submitButton;
+    if (addPostStatus === "pending") {
+        submitButton = loader;
+    } else {
+        submitButton = <input type="submit" value="Add Post" />;
+    }
+
+    const content = (
+        <div id={styles["create-post-flex-container"]}>
+            <form onSubmit={handleAddPost}>
+                <input
+                    type="text"
+                    id={styles["post-title"]}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Title"
+                />
+                <textarea
+                    id={styles["post-content"]}
+                    type="text"
+                    value={postContent}
+                    onChange={(e) => setPostContent(e.target.value)}
+                    placeholder="Content"
+                />
+                <select id={styles["select-post-category"]} ref={category}>
+                    {categories.map((category) => (
+                        <option
+                            key={category.id}
+                            value={`${category.id},${category.name}`}
+                        >
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
+                {submitButton}
+            </form>
+        </div>
+    );
+
+    return (
+        <>
+            {content}
+            <ToastContainer />
+        </>
+    );
+};
+
+export default AddPostForm;

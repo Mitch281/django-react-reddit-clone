@@ -129,6 +129,25 @@ export const downvotePost = createAsyncThunk(
     }
 )
 
+export const addNewPost = createAsyncThunk(
+    "posts/addNewPost",
+    async (newPost) => {
+        const response = await fetch(`${API_ENDPOINT}/posts/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify(newPost),
+        });
+        if (!response.ok) {
+            Promise.reject(response.status);
+        }
+        const json = await response.json();
+        return json;
+    }
+)
+
 export const editPost = createAsyncThunk(
     "posts/editPost",
     async (editPostInformation) => {
@@ -212,6 +231,9 @@ const postsSlice = createSlice({
             })
             .addCase(downvotePost.fulfilled, (state, action) => {
                 postsAdapter.upsertOne(state, action.payload);
+            })
+            .addCase(addNewPost.fulfilled, (state, action) => {
+                postsAdapter.addOne(state, action.payload);
             })
             .addCase(editPost.fulfilled, (state, action) => {
                 state.editPostStatus = "fulfilled";

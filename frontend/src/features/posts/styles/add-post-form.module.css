@@ -1,0 +1,75 @@
+#link-to-create-post {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    display: block;
+    position: absolute;
+    left: 5vw;
+    top: 10vh;
+    width: fit-content;
+    height: 25px;
+    background: var(--input-background-colour-focus);
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+    line-height: 25px;
+    text-decoration: none;
+}
+
+#link-to-create-post:hover {
+    border: 2px solid var(--input-border-colour);
+}
+
+#create-post-flex-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#create-post-flex-container form {
+    width: 25vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#create-post-flex-container input, #create-post-flex-container textarea, #create-post-flex-container select {
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-radius: 10px;
+}
+
+#create-post-flex-container form input[type="submit"], #post-content, #select-post-category {
+    margin-top: 10px;
+}
+
+#post-title, #post-content, #select-post-category {
+    padding-left: 10px;
+}
+
+#post-title:focus, #post-content:focus, #select-post-category:focus {
+    outline: none;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
+#create-post-flex-container form input[type="submit"] {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+}
+
+#create-post-flex-container form input[type="submit"]:hover {
+    background-color: var(--input-background-colour-focus);
+    cursor: pointer;
+}
+
+#create-post-flex-container select {
+    cursor: pointer;
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    #create-post-flex-container form {
+        width: 80vw;
+    }
+}
