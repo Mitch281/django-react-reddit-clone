@@ -105,6 +105,7 @@ const Comments = () => {
                 commentId={comment.id}
                 replies={comment.replies}
                 isRootComment={true}
+                isHidden={false}
             />
         ));
     }

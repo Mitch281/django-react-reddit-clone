@@ -126,7 +126,23 @@ export const makeCommentOnPost = createAsyncThunk(
 const commentsSlice = createSlice({
     name: "comments",
     initialState,
-    reducers: {},
+    reducers: {
+        toggleHidden: {
+            reducer(state, action) {
+                commentsAdapter.updateOne(state, action.payload);
+            }, 
+            prepare(commentId, isHidden) {
+                return {
+                    payload: {
+                        id: commentId,
+                        changes: {
+                            is_hidden: !isHidden
+                        }
+                    }
+                }
+            }
+        }
+    },
     extraReducers(builder) {
         builder
             .addCase(fetchComments.pending, (state, action) => {
@@ -161,6 +177,8 @@ const commentsSlice = createSlice({
 });
 
 export default commentsSlice.reducer;
+
+export const { toggleHidden } = commentsSlice.actions;
 
 export const {
     selectAll: selectAllComments,

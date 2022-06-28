@@ -22,7 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
     num_replies = serializers.SerializerMethodField("get_num_replies")
-    hidden = serializers.SerializerMethodField("get_hidden")
+    is_hidden = serializers.SerializerMethodField("get_hidden")
 
     class Meta:
         model = Comment

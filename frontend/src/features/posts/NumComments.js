@@ -6,7 +6,6 @@ import { BiCommentDetail } from "react-icons/bi";
 
 const NumComments = ({ postId }) => {
     const post = useSelector((state) => selectPostById(state, postId));
-    console.log(post);
 
     return (
         <Link
