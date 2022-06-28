@@ -15,7 +15,7 @@ MyTokenObtainPairSerializer)
 from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db.models.functions import Lower
-
+from django.db.models import Count, F
 # Create your views here.
 
 # TODO: Make ordering case insensitive.
@@ -58,14 +58,13 @@ class PostsView(APIView):
     def get(self, request, ordering=""):
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
-            posts = Post.objects.all().order_by("-date_created")
-
+            posts = Post.objects.annotate(num_comments=Count("comment")).all()
         elif ordering == "old":
-            posts = Post.objects.all() # Note that django automatically orders the posts by oldest.
+            posts = Post.objects.annotate(num_comments=Count("comment")).all().order_by("date_created") # Note that django automatically orders the posts by oldest.
         elif ordering == "top":
-            posts = Post.objects.all().extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes") - F("num_downvotes")).order_by("-net_number_votes")
         elif ordering == "bottom":
-            posts = Post.objects.all().extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")-F("num_downvotes")).order_by("net_number_votes")
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
@@ -94,14 +93,14 @@ class PostsByCategoryView(APIView):
     def get(self, request, pk, ordering=""):
          # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
-            posts = Post.objects.filter(category=pk).order_by("-date_created")
+            posts = Post.objects.annotate(num_comments=Count("comment")).filter(category=pk)
             
         elif ordering == "old":
-            posts = Post.objects.filter(category=pk) # Note that django automatically orders the posts by oldest.
+            posts = Post.objects.annotate(num_comments=Count("comment")).filter(category=pk).order_by("date_created")
         elif ordering == "top":
-            posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")).filter(category=pk).order_by("-net_number_votes")
         elif ordering == "bottom":
-            posts = Post.objects.filter(category=pk).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")).filter(category=pk).order_by("net_number_votes")
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
@@ -122,7 +121,7 @@ class PostView(APIView):
         return super().get_permissions()
 
     def get(self, request, pk):
-        post = Post.objects.get(id=pk)
+        post = Post.objects.annotate(num_comments=Count("comment")).get(id=pk)
         serializer = PostSerializer(post)
         return Response(serializer.data)
 

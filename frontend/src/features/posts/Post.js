@@ -5,12 +5,12 @@ import PostAuthor from "../../common/posts/PostAuthor";
 import Category from "../../common/posts/Category";
 import DateOfPost from "../../common/posts/DateOfPost";
 import Title from "../../common/posts/Title";
-import ViewComments from "../../components/Post/ViewComments/ViewComments";
 import PostContent from "./PostContent";
 import { selectPostById } from "./postsSlice";
 import PostVotes from "./PostVotes";
 import styles from "./styles/post.module.css";
 import DeletePost from "./DeletePost";
+import NumComments from "./NumComments";
 
 const Post = ({ postId }) => {
     const post = useSelector((state) => selectPostById(state, postId));
@@ -52,7 +52,7 @@ const Post = ({ postId }) => {
             <PostContent currentlyEditing={currentlyEditing} postId={postId} />
             {deleteButton}
             {editButton}
-            <ViewComments postId={postId} />
+            <NumComments postId={postId} />
         </div>
     );
 };

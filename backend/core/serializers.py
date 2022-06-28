@@ -12,6 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
     category_name = serializers.ReadOnlyField()
+    num_comments = serializers.ReadOnlyField()
 
     class Meta:
         model = Post
