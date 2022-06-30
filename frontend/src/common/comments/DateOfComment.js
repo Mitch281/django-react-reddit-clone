@@ -1,5 +1,5 @@
-import { getTimeElapsedFromCreation } from "../../../utils/date-time-functions";
-import styles from "./date-of-comment.module.css";
+import { getTimeElapsedFromCreation } from "../../utils/date-time-functions";
+import styles from "./styles/date-of-comment.module.css";
 
 const DateOfComment = ({ dateCreated }) => {
     return (

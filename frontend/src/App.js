@@ -12,7 +12,7 @@ import Comments from "./features/comments/Comments";
 import PostSelected from "./features/posts/PostSelected";
 import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
 import CreateCategoryForm from "./features/categories/CreateCategoryForm";
-import LinkToCreatePost from "./components/Post/LinkToCreatePost/LinkToCreatePost";
+import LinkToCreatePost from "./common/posts/LinkToCreatePost";
 import AddPostForm from "./features/posts/AddPostForm";
 
 export const UserContext = createContext();

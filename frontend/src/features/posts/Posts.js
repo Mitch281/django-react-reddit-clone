@@ -2,7 +2,7 @@ import Post from "./Post";
 import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPosts, fetchPostsByCategory } from "./postsSlice";
-import OrderOptions from "../../components/OrderOptions/OrderOptions";
+import OrderOptions from "../../common/ordering/OrderOptions";
 import { useContext, useEffect } from "react";
 import styles from "./styles/posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";

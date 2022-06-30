@@ -1,4 +1,4 @@
-import styles from "./user.module.css";
+import styles from "./styles/author.module.css";
 
 const Author = ({ username }) => {
     return (

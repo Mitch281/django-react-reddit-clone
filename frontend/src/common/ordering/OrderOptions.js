@@ -1,5 +1,5 @@
 import { Link, useParams, useLocation } from "react-router-dom";
-import styles from "./order-options.module.css";
+import styles from "./styles/order-options.module.css";
 
 const OrderOptions = () => {
     const params = useParams();

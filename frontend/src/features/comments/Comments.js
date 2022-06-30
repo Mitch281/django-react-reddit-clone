@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
-import OrderOptions from "../../components/OrderOptions/OrderOptions";
+import OrderOptions from "../../common/ordering/OrderOptions";
 import { constants } from "../../constants";
 import { selectAllComments } from "./commentsSlice";
 import styles from "./styles/comments.module.css";

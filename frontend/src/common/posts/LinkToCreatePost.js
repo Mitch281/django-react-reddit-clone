@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
-import styles from "./link-to-create-post.module.css";
+import styles from "./styles/link-to-create-post.module.css";
 
 const LinkToCreatePost = () => {
     const [width, setWidth] = useState(window.innerWidth);

@@ -53,7 +53,12 @@ const PostSelected = () => {
         );
     }
 
-    return content;
+    return (
+        // We still include the class of posts here to center the post.
+        <div className={styles["posts"]}>
+            {content}
+        </div>
+    );
 };
 
 export default PostSelected;
