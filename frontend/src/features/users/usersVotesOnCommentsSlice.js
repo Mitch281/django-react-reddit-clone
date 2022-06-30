@@ -4,7 +4,7 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import { v4 as uuid_v4 } from "uuid";
-import { VoteTypes } from "../../constants";
+import { VoteTypes } from "../../common/utils/constants";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

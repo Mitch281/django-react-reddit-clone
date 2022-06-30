@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { constants } from "../../constants";
+import { constants } from "../../common/utils/constants";
 import Post from "./Post";
 import { fetchSinglePost, selectAllPosts } from "./postsSlice";
 import styles from "./styles/posts.module.css";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
 
-//TODO: FIX ISSUE WHERE userIdLoggedIn is undefined when accessing from context (even though we relogin on page refresh?)
 const PostSelected = () => {
     const dispatch = useDispatch();
     const params = useParams();

@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../App";
-import { constants } from "../../constants";
+import { UserContext } from "../../app/App";
+import { constants } from "../../common/utils/constants";
 import { deletePost } from "./postsSlice";
 import styles from "./styles/delete-post.module.css";
 

@@ -3,8 +3,8 @@ import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../App";
-import { VoteTypes } from "../../constants";
+import { UserContext } from "../../app/App";
+import { VoteTypes } from "../../common/utils/constants";
 import {
     selectAllUsersVotesOnComments, trackUsersDownvote, trackUsersUpvote
 } from "../users/usersVotesOnCommentsSlice";

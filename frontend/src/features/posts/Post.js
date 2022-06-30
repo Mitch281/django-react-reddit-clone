@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import PostAuthor from "../../common/posts/PostAuthor";
 import Category from "../../common/posts/Category";
 import DateOfPost from "../../common/posts/DateOfPost";

@@ -7,12 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
 import OrderOptions from "../../common/ordering/OrderOptions";
-import { constants } from "../../constants";
+import { constants } from "../../common/utils/constants";
 import { selectAllComments } from "./commentsSlice";
 import styles from "./styles/comments.module.css";
 import { fetchComments } from "./commentsSlice";
 import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 
 const Comments = () => {
     const params = useParams();

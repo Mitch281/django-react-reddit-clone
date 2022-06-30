@@ -2,9 +2,9 @@ import { editPost, selectPostById } from "./postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles/post-content.module.css";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../constants";
+import { constants } from "../../common/utils/constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

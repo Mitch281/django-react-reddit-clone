@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./login-signup.module.css";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../constants";
-import { login } from "../../utils/auth";
+import { constants } from "../../common/utils/constants";
+import { login } from "../../common/utils/auth";
 
 const LoginPage = () => {
     let navigate = useNavigate();

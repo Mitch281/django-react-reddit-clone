@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import { selectCommentById } from "./commentsSlice";
 import styles from "./styles/reply-to-comment-form.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { v4 as uuid_v4 } from "uuid";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { constants } from "../../constants";
+import { constants } from "../../common/utils/constants";
 import { makeCommentOnPost, incrementNumReplies } from "./commentsSlice";
 
 const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {

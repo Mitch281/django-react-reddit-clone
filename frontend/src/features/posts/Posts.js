@@ -6,12 +6,12 @@ import OrderOptions from "../../common/ordering/OrderOptions";
 import { useContext, useEffect } from "react";
 import styles from "./styles/posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../constants";
+import { constants } from "../../common/utils/constants";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { selectPostIds } from "./postsSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
 
 const Posts = () => {

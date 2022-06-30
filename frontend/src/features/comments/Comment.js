@@ -8,7 +8,7 @@ import Author from "../../common/comments/Author";
 import ToggleHidden from "./ToggleHidden";
 import { useContext, useState } from "react";
 import ReplyToCommentForm from "./ReplyToCommentForm";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import DeleteComment from "./DeleteComment";
 
 const Comment = ({ commentId, replies, isRootComment }) => {
@@ -55,9 +55,7 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                         : `${styles["comment-container"]}`
                 }
             >
-                <div className={styles["comment"]}>
-                    <span>Deleted</span>
-                </div>
+                <span>Deleted</span>
             </div>
         );
     } else {

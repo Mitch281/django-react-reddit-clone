@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useContext, useState, useEffect } from "react";
 import CategoryDropdown from "../../features/categories/CategoryDropdown";
-import { UserContext } from "../../App";
+import { UserContext } from "../../app/App";
 import styles from "./styles/navbar.module.css";
 
 const Navbar = () => {

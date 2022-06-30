@@ -4,16 +4,16 @@ import {
     Route,
     Routes,
 } from "react-router-dom";
-import LoginPage from "./components/Auth/LoginPage";
-import SignupPage from "./components/Auth/SignupPage";
-import Navbar from "./common/nav/Navbar";
-import Posts from "./features/posts/Posts";
-import Comments from "./features/comments/Comments";
-import PostSelected from "./features/posts/PostSelected";
-import { getNewAccessTokenIfExpired, verifyCurrentUser } from "./utils/auth";
-import CreateCategoryForm from "./features/categories/CreateCategoryForm";
-import LinkToCreatePost from "./common/posts/LinkToCreatePost";
-import AddPostForm from "./features/posts/AddPostForm";
+import LoginPage from "../components/Auth/LoginPage";
+import SignupPage from "../components/Auth/SignupPage";
+import Navbar from "../common/nav/Navbar";
+import Posts from "../features/posts/Posts";
+import Comments from "../features/comments/Comments";
+import PostSelected from "../features/posts/PostSelected";
+import { getNewAccessTokenIfExpired, verifyCurrentUser } from "../common/utils/auth";
+import CreateCategoryForm from "../features/categories/CreateCategoryForm";
+import LinkToCreatePost from "../common/posts/LinkToCreatePost";
+import AddPostForm from "../features/posts/AddPostForm";
 
 export const UserContext = createContext();
 //TODO: HANDLE TOKEN REFRESH WHEN TOKEN EXPIRES FOR NEW CODE!
