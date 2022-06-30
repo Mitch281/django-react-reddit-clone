@@ -99,6 +99,7 @@ const Comments = () => {
             </div>
         );
     } else if (commentStatus === "fulfilled") {
+        console.log(commentChain);
         content = commentChain.map((comment) => (
             <Comment
                 key={comment.id}

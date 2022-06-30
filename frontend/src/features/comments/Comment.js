@@ -6,9 +6,20 @@ import CommentContent from "./CommentContent";
 import DateOfComment from "../../components/Comments/DateOfComment/DateOfComment";
 import Author from "../../components/Comments/User/Author";
 import ToggleHidden from "./ToggleHidden";
+import { useContext, useState } from "react";
+import ReplyToCommentForm from "./ReplyToCommentForm";
+import { UserContext } from "../../App";
 
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
+    const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
+    console.log(`content: ${comment.content}, number of replies: ${comment.num_replies}`)
+
+    const { loggedIn } = useContext(UserContext);
+
+    function toggleReplyForm() {
+        setIsCurrentlyEditing(!isCurrentlyEditing);
+    }
 
     function renderReplies() {
         if (comment.num_replies > 0 && !comment.is_hidden) {
@@ -55,9 +66,16 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                 <button
                     type="button"
                     className={styles["reply-to-comment-button"]}
+                    onClick={toggleReplyForm}
                 >
                     Reply
                 </button>
+                {isCurrentlyEditing && loggedIn ? (
+                    <ReplyToCommentForm
+                        commentId={commentId}
+                        toggleReplyForm={toggleReplyForm}
+                    />
+                ) : null}
             </div>
         );
 

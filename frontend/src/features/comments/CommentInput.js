@@ -59,7 +59,7 @@ const CommentInput = () => {
             setCommentContent("");
             toast.success("Comment successful!", {
                 position: "bottom-center",
-                autoClose: 5000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

@@ -22,8 +22,6 @@ function App() {
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
 
-    const [categories, setCategories] = useState([]);
-
     // This function relogs in a user whenever they navigate to a different page or refresh the page.
     async function reLogin() {
         const accessToken = localStorage.getItem("accessToken");
@@ -164,7 +162,7 @@ function App() {
                             element={
                                 <>
                                     <Navbar />
-                                    <AddPostForm categories={categories} />
+                                    <AddPostForm />
                                 </>
                             }
                         />

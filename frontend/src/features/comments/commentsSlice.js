@@ -141,6 +141,24 @@ const commentsSlice = createSlice({
                     }
                 }
             }
+        },
+        // We must increment the number of replies manually everytime a user replies due to the rendering behaviour of 
+        // comment replies. Particularly, replies render only if the number of replies is above 0. Thus, on the first reply
+        // of a comment, if we do not manually increment the number of replies, the reply will not render.
+        incrementNumReplies: {
+            reducer(state, action) {
+                commentsAdapter.updateOne(state, action.payload);
+            },
+            prepare(parentCommentId, currentNumReplies) {
+                return {
+                    payload: {
+                        id: parentCommentId,
+                        changes: {
+                            num_replies: currentNumReplies + 1
+                        }
+                    }
+                }
+            }
         }
     },
     extraReducers(builder) {
@@ -178,7 +196,7 @@ const commentsSlice = createSlice({
 
 export default commentsSlice.reducer;
 
-export const { toggleHidden } = commentsSlice.actions;
+export const { toggleHidden, incrementNumReplies } = commentsSlice.actions;
 
 export const {
     selectAll: selectAllComments,
