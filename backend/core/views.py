@@ -18,7 +18,6 @@ from django.db.models.functions import Lower
 from django.db.models import Count, F
 # Create your views here.
 
-# TODO: Make ordering case insensitive.
 class CategoryView(APIView):
     """
     List and create categories.
@@ -214,6 +213,8 @@ class CommentView(APIView):
         if (comment.deleted):
             return Response(data=None, status=status.HTTP_410_GONE)
 
+        # Note that this is also used to "delete" comments by simply patching comment inforamtion as well as setting 
+        # the deleted property to true.
         if creator_of_comment_id == user_id:
             if serializer.is_valid():
                 serializer.save()

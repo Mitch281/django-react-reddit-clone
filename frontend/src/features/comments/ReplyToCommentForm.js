@@ -53,7 +53,6 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                 progress: undefined,
             });
         } catch (error) {
-            setEditCommentStatus("rejected");
             toast.error("Could not make comment!", {
                 position: "bottom-center",
                 autoClose: 3000,
@@ -63,6 +62,8 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                 draggable: true,
                 progress: undefined,
             });
+        } finally {
+            setEditCommentStatus("idle");
         }
     }
 

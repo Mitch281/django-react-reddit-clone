@@ -9,13 +9,14 @@ import ToggleHidden from "./ToggleHidden";
 import { useContext, useState } from "react";
 import ReplyToCommentForm from "./ReplyToCommentForm";
 import { UserContext } from "../../App";
+import DeleteComment from "./DeleteComment";
 
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
+    console.log(comment);
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
-    console.log(`content: ${comment.content}, number of replies: ${comment.num_replies}`)
 
-    const { loggedIn } = useContext(UserContext);
+    const { loggedIn, userIdLoggedIn } = useContext(UserContext);
 
     function toggleReplyForm() {
         setIsCurrentlyEditing(!isCurrentlyEditing);
@@ -39,22 +40,25 @@ const Comment = ({ commentId, replies, isRootComment }) => {
         }
     }
 
+    let deleteCommentButton =
+        userIdLoggedIn === comment.user ? (
+            <DeleteComment commentId={commentId} />
+        ) : null;
+
     let content;
     if (comment.deleted) {
         content = (
-            <>
-                <div
-                    className={
-                        isRootComment
-                            ? `${styles["comment-container"]} ${styles["root"]}`
-                            : `${styles["comment-container"]}`
-                    }
-                >
-                    <div className={styles["comment"]}>
-                        <span>Deleted</span>
-                    </div>
+            <div
+                className={
+                    isRootComment
+                        ? `${styles["comment-container"]} ${styles["root"]}`
+                        : `${styles["comment-container"]}`
+                }
+            >
+                <div className={styles["comment"]}>
+                    <span>Deleted</span>
                 </div>
-            </>
+            </div>
         );
     } else {
         content = (
@@ -63,36 +67,39 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                 <Author username={comment.username} />
                 <DateOfComment dateCreated={comment.date_created} />
                 <CommentContent commentId={commentId} />
-                <button
-                    type="button"
-                    className={styles["reply-to-comment-button"]}
-                    onClick={toggleReplyForm}
-                >
-                    Reply
-                </button>
-                {isCurrentlyEditing && loggedIn ? (
+                {loggedIn ? (
+                    <button
+                        type="button"
+                        className={styles["reply-to-comment-button"]}
+                        onClick={toggleReplyForm}
+                    >
+                        Reply
+                    </button>
+                ) : null}
+                {isCurrentlyEditing ? (
                     <ReplyToCommentForm
                         commentId={commentId}
                         toggleReplyForm={toggleReplyForm}
                     />
                 ) : null}
-            </div>
-        );
-
-        return (
-            <div
-                className={
-                    isRootComment
-                        ? `${styles["comment-container"]} ${styles["root"]}`
-                        : `${styles["comment-container"]}`
-                }
-            >
-                <div className={styles["comment"]}>{content}</div>
-                <ToggleHidden commentId={commentId} />
-                {renderReplies()}
+                {deleteCommentButton}
             </div>
         );
     }
+
+    return (
+        <div
+            className={
+                isRootComment
+                    ? `${styles["comment-container"]} ${styles["root"]}`
+                    : `${styles["comment-container"]}`
+            }
+        >
+            <div className={styles["comment"]}>{content}</div>
+            <ToggleHidden commentId={commentId} />
+            {renderReplies()}
+        </div>
+    );
 };
 
 export default Comment;

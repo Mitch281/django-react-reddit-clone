@@ -123,6 +123,35 @@ export const makeCommentOnPost = createAsyncThunk(
     }
 )
 
+export const deleteComment = createAsyncThunk(
+    "comments/deleteComment",
+    async (deleteCommentInformation)  => {
+        const { commentId, userId } = deleteCommentInformation;
+        const patchInformation = {
+            deleted: true,
+        }
+
+        const response = await fetch(
+            `${API_ENDPOINT}/comment/id=${commentId}/user-id=${userId}/`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+                body: JSON.stringify(patchInformation),
+            }
+        );
+
+        if (!response.ok) {
+            return Promise.reject(response.status)
+        };
+
+        const json = await response.json();
+        return json;
+    }
+)
+
 const commentsSlice = createSlice({
     name: "comments",
     initialState,
@@ -190,6 +219,10 @@ const commentsSlice = createSlice({
             .addCase(makeCommentOnPost.rejected, (state, action) => {
                 state.makeCommentOnPostStatus = "rejected";
                 state.makeCommentOnPostError = action.error.message;
+            })
+            // Upsert works but update doesn't? Look into this.
+            .addCase(deleteComment.fulfilled, (state, action) => {
+                commentsAdapter.upsertOne(state, action.payload);
             })
     }     
 });
