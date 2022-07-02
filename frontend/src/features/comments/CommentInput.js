@@ -1,23 +1,20 @@
-import PropTypes from "prop-types";
 import { useContext, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { UserContext } from "../../app/App";
-import { constants } from "../../common/utils/constants";
-import styles from "./styles/comment-input.module.css";
-import { v4 as uuid_v4 } from "uuid";
-import { makeCommentOnPost } from "./commentsSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { v4 as uuid_v4 } from "uuid";
+import { UserContext } from "../../app/App";
+import { constants } from "../../common/utils/constants";
+import { makeCommentOnPost } from "./commentsSlice";
+import styles from "./styles/comment-input.module.css";
 
 const CommentInput = () => {
     const [commentContent, setCommentContent] = useState("");
 
     const dispatch = useDispatch();
-    const addNewCommentStatus = useSelector(
-        (state) => state.comments.makeCommentOnPostStatus
-    );
+    const [addNewCommentStatus, setAddNewCommentStatus] = useState("idle");
 
     const { loggedIn, usernameLoggedIn, userIdLoggedIn } =
         useContext(UserContext);
@@ -40,6 +37,8 @@ const CommentInput = () => {
 
     async function addNewComment(e) {
         e.preventDefault();
+        setAddNewCommentStatus("pending");
+
         const newComment = {
             id: uuid_v4(),
             username: usernameLoggedIn,
@@ -76,6 +75,8 @@ const CommentInput = () => {
                 draggable: true,
                 progress: undefined,
             });
+        } finally {
+            setAddNewCommentStatus("idle");
         }
     }
 

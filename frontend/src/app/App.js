@@ -16,7 +16,7 @@ import LinkToCreatePost from "../common/posts/LinkToCreatePost";
 import AddPostForm from "../features/posts/AddPostForm";
 
 export const UserContext = createContext();
-//TODO: HANDLE TOKEN REFRESH WHEN TOKEN EXPIRES FOR NEW CODE!
+//TODO: HANDLE REFRESH TOKEN EXPIRY!!
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");

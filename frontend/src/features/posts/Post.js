@@ -20,6 +20,10 @@ const Post = ({ postId }) => {
 
     const { userIdLoggedIn } = useContext(UserContext);
 
+    function toggleCurrentlyEditing() {
+        setCurrentlyEditing(!currentlyEditing);
+    }
+
     let content;
     // This would happen if the post was deleted while viewing comments. In this case, we display a message saying the post
     // was deleted.
@@ -34,7 +38,7 @@ const Post = ({ postId }) => {
                 <button
                     type="button"
                     className={styles["toggle-edit-post"]}
-                    onClick={() => setCurrentlyEditing(!currentlyEditing)}
+                    onClick={toggleCurrentlyEditing}
                 >
                     Edit
                 </button>
@@ -59,6 +63,7 @@ const Post = ({ postId }) => {
                 <PostContent
                     currentlyEditing={currentlyEditing}
                     postId={postId}
+                    toggleCurrentlyEditing={toggleCurrentlyEditing}
                 />
                 {deleteButton}
                 {editButton}

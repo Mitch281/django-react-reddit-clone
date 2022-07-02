@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { authorisedFetchWrapper } from "../../common/utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -28,19 +29,14 @@ export const fetchCategories = createAsyncThunk(
 export const createCategory = createAsyncThunk(
     "categories/createCategory",
     async (newCategory) => {
-        const response = await fetch(`${API_ENDPOINT}/categories/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(newCategory),
-        });
-        if (!response.ok) {
-            Promise.reject(response.status);
+        const url = `${API_ENDPOINT}/categories/`;
+        try {
+            const response = await authorisedFetchWrapper.post(url, newCategory);
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            return Promise.reject(error);
         }
-        const json = await response.json();
-        return json;
     }
 )
 

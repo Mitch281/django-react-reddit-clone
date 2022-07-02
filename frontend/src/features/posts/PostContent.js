@@ -8,29 +8,46 @@ import { constants } from "../../common/utils/constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const PostContent = ({ postId, currentlyEditing }) => {
+const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
     const dispatch = useDispatch();
     const post = useSelector((state) => selectPostById(state, postId));
-    const editPostStatus = useSelector((state) => state.posts.editPostStatus);
+    const [editPostStatus, setEditPostStatus] = useState("idle");
     const [postContent, setPostContent] = useState(post.content);
 
     const { userIdLoggedIn } = useContext(UserContext);
 
-    function handleEditPost(e) {
+    async function handleEditPost(e) {
         e.preventDefault();
+        setEditPostStatus("pending");
+
         const data = {
             postId: postId,
             userId: userIdLoggedIn,
             newPostContent: postContent,
         };
-        dispatch(editPost(data));
+        try {
+            await dispatch(editPost(data)).unwrap();
+            toggleCurrentlyEditing();
+        } catch (error) {
+            toast.error(error.message, {
+                position: "bottom-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } finally {
+            setEditPostStatus("idle");
+        }
     }
 
     useEffect(() => {
         if (editPostStatus === "fulfilled") {
             toast.success("Succesfully edited post!", {
                 position: "bottom-center",
-                autoClose: 5000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -40,14 +57,19 @@ const PostContent = ({ postId, currentlyEditing }) => {
         }
     }, [editPostStatus]);
 
-    const loader = (
-        <ClipLoader
-            color={constants.loaderColour}
-            loading={true}
-            size={20}
-            css={"margin-top: 10px"}
-        />
-    );
+    let submitButton;
+    if (editPostStatus === "pending") {
+        submitButton = (
+            <ClipLoader
+                color={constants.loaderColour}
+                loading={true}
+                size={20}
+                css={"margin-top: 10px"}
+            />
+        );
+    } else {
+        submitButton = <input type="submit" value="Edit" />;
+    }
 
     let content;
     if (currentlyEditing) {
@@ -62,28 +84,12 @@ const PostContent = ({ postId, currentlyEditing }) => {
                         value={postContent}
                         onChange={(e) => setPostContent(e.target.value)}
                     />
-                    {editPostStatus === "pending" ? (
-                        loader
-                    ) : (
-                        <input type="submit" value="Edit" />
-                    )}
+                    {submitButton}
                 </div>
             </form>
         );
     } else {
         content = <p className={styles["post-content"]}>{post.content}</p>;
-    }
-
-    if (editPostStatus === "rejected") {
-        toast.error("Could not edit post!", {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
     }
 
     return (

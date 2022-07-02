@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { authorisedFetchWrapper } from "../../common/utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -11,8 +12,6 @@ const commentsAdapter = createEntityAdapter();
 const initialState = commentsAdapter.getInitialState({
     status: "idle",
     error: null,
-    makeCommentOnPostStatus: "idle",
-    makeCommentOnPostError: null
 });
 
 export const fetchComments = createAsyncThunk(
@@ -51,19 +50,12 @@ export const upvoteComment = createAsyncThunk(
             data = { num_upvotes: numUpvotes + 1 };
         }
 
-        const response = await fetch(url, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
+        try {
+            const response = await authorisedFetchWrapper.patch(url, data);
             const json = await response.json();
             return json;
-        } else {
-            Promise.reject("Could not upvote!");
+        } catch (error) {
+            return Promise.reject(error);
         }
     }
 );
@@ -87,19 +79,13 @@ export const downvoteComment = createAsyncThunk(
         } else {
             data = { num_downvotes: numDownvotes + 1};
         }
-        const response = await fetch(url, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
+
+        try {
+            const response = await authorisedFetchWrapper.patch(url, data);
             const json = await response.json();
             return json;
-        } else {
-            return Promise.reject("Could not downvote!");
+        } catch (error) {
+            return Promise.reject(error);
         }
     }
 )
@@ -107,19 +93,14 @@ export const downvoteComment = createAsyncThunk(
 export const makeCommentOnPost = createAsyncThunk(
     "comments/makeCommentOnPost",
     async (newComment) => {
-        const response = await fetch(`${API_ENDPOINT}/comments/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(newComment),
-        });
-        if (!response.ok) {
-            Promise.reject("Could not make comment!");
+        const url = `${API_ENDPOINT}/comments/`;
+        try {
+            const response = await authorisedFetchWrapper.post(url, newComment);
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            return Promise.reject(error);
         }
-        const json = await response.json();
-        return json;
     }
 )
 
@@ -130,25 +111,15 @@ export const deleteComment = createAsyncThunk(
         const patchInformation = {
             deleted: true,
         }
+        const url = `${API_ENDPOINT}/comment/id=${commentId}/user-id=${userId}/`;
 
-        const response = await fetch(
-            `${API_ENDPOINT}/comment/id=${commentId}/user-id=${userId}/`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-                body: JSON.stringify(patchInformation),
-            }
-        );
-
-        if (!response.ok) {
-            return Promise.reject(response.status)
-        };
-
-        const json = await response.json();
-        return json;
+        try {
+            const response = await authorisedFetchWrapper.patch(url, patchInformation);
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            return Promise.reject(error);
+        }
     }
 )
 
@@ -212,13 +183,6 @@ const commentsSlice = createSlice({
             .addCase(makeCommentOnPost.fulfilled, (state, action) => {
                 state.makeCommentOnPostStatus = "fulfilled";
                 commentsAdapter.addOne(state, action.payload);
-            })
-            .addCase(makeCommentOnPost.pending, (state, action) => {
-                state.makeCommentOnPostStatus = "pending";
-            })
-            .addCase(makeCommentOnPost.rejected, (state, action) => {
-                state.makeCommentOnPostStatus = "rejected";
-                state.makeCommentOnPostError = action.error.message;
             })
             // Upsert works but update doesn't? Look into this.
             .addCase(deleteComment.fulfilled, (state, action) => {
