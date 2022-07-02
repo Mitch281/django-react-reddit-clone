@@ -7,8 +7,8 @@ import {
 import Navbar from "../common/nav/Navbar";
 import LinkToCreatePost from "../common/posts/LinkToCreatePost";
 import { getNewAccessToken, isTokenExpired, verifyCurrentUser } from "../common/utils/auth";
-import LoginPage from "../components/Auth/LoginPage";
-import SignupPage from "../components/Auth/SignupPage";
+import LoginPage from "../common/auth/LoginPage";
+import SignupPage from "../common/auth/SignupPage";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
 import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";
