@@ -16,7 +16,9 @@ import Posts from "../features/posts/Posts";
 import PostSelected from "../features/posts/PostSelected";
 
 export const UserContext = createContext();
-//TODO: HANDLE REFRESH TOKEN EXPIRY!!
+// TODO: HANDLE REFRESH TOKEN EXPIRY!!
+// TODO: Handle toasts being rendered more than once
+// TODO: Handle multiple unecessary fetches.
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");

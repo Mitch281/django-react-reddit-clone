@@ -1,7 +1,7 @@
 // This file provides a wrapper around fetch, aimed to make authorized api fetches easier. To do this, it will handle
 // JWT expiry.
 
-import { getNewAccessToken, isTokenExpired } from "./auth";
+import { CantGetNewAccessTokenError, getNewAccessToken, isTokenExpired } from "./auth";
 
 async function handleAccessToken() {
     const accessToken = localStorage.getItem("accessToken");
@@ -13,7 +13,7 @@ async function handleAccessToken() {
             await getNewAccessToken();
         } catch (error) {
             // Refresh token is expired.
-            return Promise.reject(error);
+            return Promise.reject(new CantGetNewAccessTokenError("Can't get new access token."));
         }
     }
 }
