@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState } from "react";
-import {
-    BrowserRouter as Router,
-    Route,
-    Routes
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "../common/nav/Navbar";
 import LinkToCreatePost from "../common/posts/LinkToCreatePost";
-import { getNewAccessToken, isTokenExpired, verifyCurrentUser } from "../common/utils/auth";
+import {
+    getNewAccessToken,
+    isTokenExpired,
+    verifyCurrentUser,
+} from "../common/utils/auth";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
@@ -14,10 +14,10 @@ import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";
 import Posts from "../features/posts/Posts";
 import PostSelected from "../features/posts/PostSelected";
+import { ToastContainer } from "react-toastify";
 
 export const UserContext = createContext();
 // TODO: HANDLE REFRESH TOKEN EXPIRY!!
-// TODO: Handle toasts being rendered more than once
 // TODO: Handle multiple unecessary fetches.
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
@@ -64,131 +64,134 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <UserContext.Provider
-                value={{
-                    usernameLoggedIn,
-                    userIdLoggedIn,
-                    loggedIn,
-                    setUsernameLoggedIn,
-                    setUserIdLoggedIn,
-                    setLoggedIn,
-                    reLogin,
-                    logout,
-                }}
-            >
-                <div className="App">
-                    <Routes>
-                        <Route
-                            exact
-                            path="/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <Posts />
-                                    <LinkToCreatePost />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/:order/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <Posts />
-                                    <LinkToCreatePost />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/login/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <LoginPage />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/signup/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <SignupPage />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="posts/category=:categoryName"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <Posts />
-                                    <LinkToCreatePost />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="posts/category=:categoryName/:order"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <Posts />
-                                    <LinkToCreatePost />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="post=:postId/comments"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <PostSelected />
-                                    <Comments />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="post=:postId/comments/:order"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <PostSelected />
-                                    <Comments />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/create-post/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <AddPostForm />
-                                </>
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/create-category/"
-                            element={
-                                <>
-                                    <Navbar />
-                                    <CreateCategoryForm />
-                                </>
-                            }
-                        />
-                    </Routes>
-                </div>
-            </UserContext.Provider>
-        </Router>
+        <>
+            <Router>
+                <UserContext.Provider
+                    value={{
+                        usernameLoggedIn,
+                        userIdLoggedIn,
+                        loggedIn,
+                        setUsernameLoggedIn,
+                        setUserIdLoggedIn,
+                        setLoggedIn,
+                        reLogin,
+                        logout,
+                    }}
+                >
+                    <div className="App">
+                        <Routes>
+                            <Route
+                                exact
+                                path="/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <Posts />
+                                        <LinkToCreatePost />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/:order/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <Posts />
+                                        <LinkToCreatePost />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/login/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <LoginPage />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/signup/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <SignupPage />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="posts/category=:categoryName"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <Posts />
+                                        <LinkToCreatePost />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="posts/category=:categoryName/:order"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <Posts />
+                                        <LinkToCreatePost />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="post=:postId/comments"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <PostSelected />
+                                        <Comments />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="post=:postId/comments/:order"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <PostSelected />
+                                        <Comments />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/create-post/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <AddPostForm />
+                                    </>
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/create-category/"
+                                element={
+                                    <>
+                                        <Navbar />
+                                        <CreateCategoryForm />
+                                    </>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                </UserContext.Provider>
+            </Router>
+            <ToastContainer />
+        </>
     );
 }
 

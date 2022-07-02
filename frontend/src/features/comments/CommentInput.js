@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
@@ -118,7 +118,6 @@ const CommentInput = () => {
     return (
         <>
             {content}
-            <ToastContainer />
         </>
     );
 };

@@ -1,12 +1,12 @@
-import { editPost, selectPostById } from "./postsSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import styles from "./styles/post-content.module.css";
-import { UserContext } from "../../app/App";
+import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../common/utils/constants";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../../app/App";
+import { constants } from "../../common/utils/constants";
+import { editPost, selectPostById } from "./postsSlice";
+import styles from "./styles/post-content.module.css";
 
 const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
     const dispatch = useDispatch();
@@ -95,7 +95,6 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
     return (
         <>
             {content}
-            <ToastContainer />
         </>
     );
 };

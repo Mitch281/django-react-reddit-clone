@@ -1,18 +1,17 @@
-import Post from "./Post";
-import { useParams, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts, fetchPostsByCategory } from "./postsSlice";
-import OrderOptions from "../../common/ordering/OrderOptions";
 import { useContext, useEffect } from "react";
-import styles from "./styles/posts.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { constants } from "../../common/utils/constants";
-import ErrorMessage from "../../common/error-message/ErrorMessage";
-import { selectPostIds } from "./postsSlice";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../../app/App";
+import ErrorMessage from "../../common/error-message/ErrorMessage";
+import OrderOptions from "../../common/ordering/OrderOptions";
+import { constants } from "../../common/utils/constants";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
+import Post from "./Post";
+import { fetchPosts, fetchPostsByCategory, selectPostIds } from "./postsSlice";
+import styles from "./styles/posts.module.css";
 
 const Posts = () => {
     const { userIdLoggedIn } = useContext(UserContext);
@@ -95,7 +94,6 @@ const Posts = () => {
             </h1>
             <OrderOptions />
             <div className={styles["posts"]}>{content}</div>
-            <ToastContainer />
         </>
     );
 };

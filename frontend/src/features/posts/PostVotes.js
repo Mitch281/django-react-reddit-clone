@@ -1,17 +1,17 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
+import { VoteTypes } from "../../common/utils/constants";
 import {
     selectAllUsersVotesOnPosts,
     trackUsersDownvote,
-    trackUsersUpvote,
+    trackUsersUpvote
 } from "../users/usersVotesOnPostsSlice";
 import { downvotePost, selectPostById, upvotePost } from "./postsSlice";
 import styles from "./styles/post-votes.module.css";
-import { VoteTypes } from "../../common/utils/constants";
 
 const PostVotes = ({ postId }) => {
     const dispatch = useDispatch();
@@ -148,7 +148,6 @@ const PostVotes = ({ postId }) => {
                     style={getDownvoteArrowColour()}
                 />
             </div>
-            <ToastContainer />
         </>
     );
 };

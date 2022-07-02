@@ -2,17 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Comment from "./Comment";
-import CommentInput from "./CommentInput";
+import { UserContext } from "../../app/App";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import { constants } from "../../common/utils/constants";
-import { selectAllComments } from "./commentsSlice";
-import styles from "./styles/comments.module.css";
-import { fetchComments } from "./commentsSlice";
 import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
-import { UserContext } from "../../app/App";
+import Comment from "./Comment";
+import CommentInput from "./CommentInput";
+import { fetchComments, selectAllComments } from "./commentsSlice";
+import styles from "./styles/comments.module.css";
 
 const Comments = () => {
     const params = useParams();
@@ -117,7 +116,6 @@ const Comments = () => {
             <div id={styles["comments-flex-container"]}>
                 <div id={styles["comments"]}>{content}</div>
             </div>
-            <ToastContainer />
         </>
     );
 };

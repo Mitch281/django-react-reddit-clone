@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
 import { constants } from "../../common/utils/constants";
@@ -71,7 +71,6 @@ const DeletePost = ({ postId }) => {
                     className={styles["delete-post-button"]}
                     onClick={handleDeletePost}
                 />
-                <ToastContainer />
             </>
         );
     }

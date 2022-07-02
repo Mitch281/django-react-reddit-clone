@@ -2,14 +2,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { addNewPost } from "./postsSlice";
-import styles from "./styles/add-post-form.module.css";
 import { constants } from "../../common/utils/constants";
 import { selectAllCategories } from "../categories/categoriesSlice";
+import { addNewPost } from "./postsSlice";
+import styles from "./styles/add-post-form.module.css";
 
 // TODO: VALDIATE INPUT
 const AddPostForm = () => {
@@ -122,7 +122,6 @@ const AddPostForm = () => {
     return (
         <>
             {content}
-            <ToastContainer />
         </>
     );
 };

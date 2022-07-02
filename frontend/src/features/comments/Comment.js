@@ -13,7 +13,6 @@ import DeleteComment from "./DeleteComment";
 
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
-    console.log(comment);
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
 
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
