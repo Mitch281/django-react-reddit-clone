@@ -5,23 +5,25 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Category, Post, Comment, PostVotes, CommentVotes
-from .serializers import (CategorySerializer, CommentVotesSerializer, 
-PostSerializer, 
-CommentSerializer, 
-UserSerializer, 
-UserSerializerWithToken, 
-PostVotesSerializer,
-MyTokenObtainPairSerializer)
+from .serializers import (CategorySerializer, CommentVotesSerializer,
+                          PostSerializer,
+                          CommentSerializer,
+                          UserSerializer,
+                          UserSerializerWithToken,
+                          PostVotesSerializer,
+                          MyTokenObtainPairSerializer)
 from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db.models.functions import Lower
 from django.db.models import Count, F
 # Create your views here.
 
+
 class CategoryView(APIView):
     """
     List and create categories.
     """
+
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.request.method in ["POST", "DELETE"]:
@@ -42,10 +44,12 @@ class CategoryView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PostsView(APIView):
     """
     List and create posts.
     """
+
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.request.method in ["POST", "DELETE"]:
@@ -59,11 +63,15 @@ class PostsView(APIView):
         if ordering == "" or ordering == "new":
             posts = Post.objects.annotate(num_comments=Count("comment")).all()
         elif ordering == "old":
-            posts = Post.objects.annotate(num_comments=Count("comment")).all().order_by("date_created") # Note that django automatically orders the posts by oldest.
+            # Note that django automatically orders the posts by oldest.
+            posts = Post.objects.annotate(num_comments=Count(
+                "comment")).all().order_by("date_created")
         elif ordering == "top":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes") - F("num_downvotes")).order_by("-net_number_votes")
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
+                net_number_votes=F("num_upvotes") - F("num_downvotes")).order_by("-net_number_votes")
         elif ordering == "bottom":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")-F("num_downvotes")).order_by("net_number_votes")
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
+                net_number_votes=F("num_upvotes")-F("num_downvotes")).order_by("net_number_votes")
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
@@ -75,7 +83,6 @@ class PostsView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# This view is for viewing posts under a certain category.
 class PostsByCategoryView(APIView):
     """
     List posts under certain categories.
@@ -90,19 +97,23 @@ class PostsByCategoryView(APIView):
         return super().get_permissions()
 
     def get(self, request, pk, ordering=""):
-         # Default ordering (order by newest)
+        # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
-            posts = Post.objects.annotate(num_comments=Count("comment")).filter(category=pk)
-            
+            posts = Post.objects.annotate(num_comments=Count("comment")).filter(
+                category=pk).order_by("-date_created")
         elif ordering == "old":
-            posts = Post.objects.annotate(num_comments=Count("comment")).filter(category=pk).order_by("date_created")
+            posts = Post.objects.annotate(num_comments=Count("comment")).filter(
+                category=pk).order_by("date_created")
         elif ordering == "top":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")).filter(category=pk).order_by("-net_number_votes")
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
+                net_number_votes=F("num_upvotes")).filter(category=pk).order_by("-net_number_votes")
         elif ordering == "bottom":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(net_number_votes=F("num_upvotes")).filter(category=pk).order_by("net_number_votes")
+            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
+                net_number_votes=F("num_upvotes")).filter(category=pk).order_by("net_number_votes")
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
 
 class PostView(APIView):
     """
@@ -128,7 +139,7 @@ class PostView(APIView):
     def delete(self, request, pk, user_id):
         post = Post.objects.get(id=pk)
         creator_of_post_id = str(post.user.id)
-        
+
         if creator_of_post_id == user_id:
             post.delete()
 
@@ -143,7 +154,7 @@ class PostView(APIView):
         # We only send a user id when the user wants to edit the post.
         if (user_id):
             return self.edit_content_patch(request, pk, user_id)
-            
+
         else:
             return self.vote_patch(request, pk, user_id)
 
@@ -159,14 +170,14 @@ class PostView(APIView):
         post = Post.objects.get(id=pk)
         creator_of_post_id = str(post.user.id)
         serializer = PostSerializer(post, data=request.data, partial=True)
-        
+
         if creator_of_post_id == user_id:
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
-            
+
 
 class CommentView(APIView):
     """
@@ -199,7 +210,8 @@ class CommentView(APIView):
         if (comment.deleted):
             return Response(data=None, status=status.HTTP_410_GONE)
 
-        serializer = serializers.CommentSerializer(comment, data=request.data, partial=True)
+        serializer = serializers.CommentSerializer(
+            comment, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -208,12 +220,13 @@ class CommentView(APIView):
     def edit_content_patch(self, request, pk, user_id):
         comment = Comment.objects.get(id=pk)
         creator_of_comment_id = str(comment.user.id)
-        serializer = CommentSerializer(comment, data=request.data, partial=True)
+        serializer = CommentSerializer(
+            comment, data=request.data, partial=True)
 
         if (comment.deleted):
             return Response(data=None, status=status.HTTP_410_GONE)
 
-        # Note that this is also used to "delete" comments by simply patching comment inforamtion as well as setting 
+        # Note that this is also used to "delete" comments by simply patching comment inforamtion as well as setting
         # the deleted property to true.
         if creator_of_comment_id == user_id:
             if serializer.is_valid():
@@ -222,10 +235,12 @@ class CommentView(APIView):
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
 
+
 class CommentsView(APIView):
     """
     List and create comments (across all posts).
     """
+
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.request.method in ["POST", "DELETE"]:
@@ -246,6 +261,7 @@ class CommentsView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PostComments(APIView):
     """
     All the comments on a post.
@@ -256,16 +272,21 @@ class PostComments(APIView):
     def get(self, request, parent_post_id, ordering=""):
         # Default ordering (ordering by newest).
         if ordering == "" or ordering == "new":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).order_by("-date_created")
+            post_comments = Comment.objects.filter(
+                parent_post=parent_post_id).order_by("-date_created")
         elif ordering == "old":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id) # Note that django automatically filters by oldest comments.
+            # Note that django automatically filters by oldest comments.
+            post_comments = Comment.objects.filter(parent_post=parent_post_id)
         elif ordering == "top":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(
+                select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
         elif ordering == "bottom":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(
+                select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
 
         serializer = CommentSerializer(post_comments, many=True)
         return Response(serializer.data)
+
 
 @api_view(["GET"])
 @permission_classes((permissions.IsAuthenticated, ))
@@ -299,15 +320,17 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PostVoteView(APIView):
     """
     This view is used to patch one specified post vote object.
     """
     permission_classes = [permissions.IsAuthenticated, ]
-    
+
     def patch(self, request, pk):
         post_vote = PostVotes.objects.get(id=pk)
-        serializer = PostVotesSerializer(post_vote, data=request.data, partial=True)
+        serializer = PostVotesSerializer(
+            post_vote, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -344,6 +367,7 @@ class PostVotesView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CommentVoteView(APIView):
     """
     This view is used to patch one specified comment vote object.
@@ -353,11 +377,13 @@ class CommentVoteView(APIView):
 
     def patch(self, request, pk):
         comment_vote = CommentVotes.objects.get(id=pk)
-        serializer = serializers.CommentVotesSerializer(comment_vote, data=request.data, partial=True)
+        serializer = serializers.CommentVotesSerializer(
+            comment_vote, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CommentVotesView(APIView):
     """
@@ -389,13 +415,16 @@ class CommentVotesView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 class NumberOfCommentsOnPostView(APIView):
     """
     Get the number of comments on a post given the post ID.
     """
+
     def get(self, request, pk):
         comments = Comment.objects.filter(parent_post=pk)
         num_comments = comments.count()

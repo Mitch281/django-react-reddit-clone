@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import styles from "./styles/posts.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../common/utils/constants";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import ErrorMessage from "../../common/error-message/ErrorMessage";
 import { selectPostIds } from "./postsSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

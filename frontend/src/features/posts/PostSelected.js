@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import ErrorMessage from "../../common/error-message/ErrorMessage";
 import { constants } from "../../common/utils/constants";
 import Post from "./Post";
 import { fetchSinglePost, selectAllPosts } from "./postsSlice";
