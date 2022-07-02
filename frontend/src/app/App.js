@@ -2,18 +2,18 @@ import { createContext, useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Route,
-    Routes,
+    Routes
 } from "react-router-dom";
+import Navbar from "../common/nav/Navbar";
+import LinkToCreatePost from "../common/posts/LinkToCreatePost";
+import { getNewAccessToken, isTokenExpired, verifyCurrentUser } from "../common/utils/auth";
 import LoginPage from "../components/Auth/LoginPage";
 import SignupPage from "../components/Auth/SignupPage";
-import Navbar from "../common/nav/Navbar";
-import Posts from "../features/posts/Posts";
-import Comments from "../features/comments/Comments";
-import PostSelected from "../features/posts/PostSelected";
-import { getNewAccessTokenIfExpired, verifyCurrentUser } from "../common/utils/auth";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
-import LinkToCreatePost from "../common/posts/LinkToCreatePost";
+import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";
+import Posts from "../features/posts/Posts";
+import PostSelected from "../features/posts/PostSelected";
 
 export const UserContext = createContext();
 //TODO: HANDLE REFRESH TOKEN EXPIRY!!
@@ -25,20 +25,27 @@ function App() {
     // This function relogs in a user whenever they navigate to a different page or refresh the page.
     async function reLogin() {
         const accessToken = localStorage.getItem("accessToken");
-        try {
-            // Get new access token using the refresh token if the access token is expired.
-            await getNewAccessTokenIfExpired(accessToken);
+        if (!accessToken) {
+            return;
+        }
 
-            // Get the access token. This should always work because if our access token has expired, then the
-            // getNewAccessTokenIfExpired function above will get a new access token using the refresh token, and so
-            // we will be able to use that access token to get the current user information.
-            const json = await verifyCurrentUser();
-
-            setLoggedIn(true);
-            setUserIdLoggedIn(json.id);
-            setUsernameLoggedIn(json.username);
-        } catch (error) {
-            throw error;
+        // Access token is expired, so we get a new access token using the refresh token.
+        if (isTokenExpired(accessToken)) {
+            try {
+                await getNewAccessToken();
+            } catch (error) {
+                return Promise.reject(error);
+            }
+        } else {
+            try {
+                const response = await verifyCurrentUser();
+                const json = await response.json();
+                setLoggedIn(true);
+                setUserIdLoggedIn(json.id);
+                setUsernameLoggedIn(json.username);
+            } catch (error) {
+                return Promise.reject(error);
+            }
         }
     }
 

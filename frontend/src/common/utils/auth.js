@@ -6,18 +6,11 @@ export class CantGetNewAccessTokenError extends Error {
         this.name = CantGetNewAccessTokenError;
     }
 }
-
-export class NoAccessTokenError extends Error {
-    constructor(message) {
-      super(message);
-      this.name = 'NoAccessTokenError';
-    }
-}
   
 
 export function isTokenExpired(token) {
     if (!token) {
-        throw new NoAccessTokenError("Access token does not exist");
+        return;
     }
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -44,8 +37,7 @@ export async function verifyCurrentUser() {
         }
     });
     if (response.ok) {
-        const json = await response.json();
-        return json;
+        return response;
     } else {
         throw new Error(response.status);
     }
@@ -63,32 +55,8 @@ export async function getNewAccessToken() {
         const json = await response.json();
         const newAccessToken = json.access;
         localStorage.setItem("accessToken", newAccessToken);
-        console.log("got new access token");
     } else {
-        Promise.reject(new Error("Refresh token is expired!"));
-    }
-}
-
-// This function gets a new access token if necessary.
-export async function getNewAccessTokenIfExpired(accessToken) {
-    const expired = isTokenExpired(accessToken);
-    if (expired) {
-        const refreshToken = localStorage.getItem("refreshToken");
-        const response = await fetch(`${API_ENDPOINT}/token/refresh/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({refresh: refreshToken})
-        });
-        if (response.ok) {
-            const json = await response.json();
-            const newAccessToken = json.access;
-            localStorage.setItem("accessToken", newAccessToken);
-        } else {
-            // This means that the refresh token is also expired.
-            throw new CantGetNewAccessTokenError("Can't get new access token");
-        }
+        Promise.reject(new CantGetNewAccessTokenError("Can't get new access token."));
     }
 }
 
