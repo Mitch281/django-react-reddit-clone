@@ -39,9 +39,9 @@ const CreateCategoryForm = () => {
 
         try {
             await dispatch(createCategory(newCategory)).unwrap();
-            // TODO: add state here to let user know category was succesfully created.
+            const successMessage = `Succesfully created the category ${categoryName}!`;
             navigate(`/posts/category=${categoryName}/`, {
-                state: { categoryId: categoryId },
+                state: { categoryId: categoryId, successMessage: successMessage },
             });
         } catch (error) {
             toast.error("Could not create category!", {

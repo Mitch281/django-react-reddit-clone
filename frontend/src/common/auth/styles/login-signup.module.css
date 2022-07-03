@@ -3,9 +3,6 @@
     --input-background-colour-focus: rgb(235, 241, 240);
 }
 
-/* TODO: fix error where input of type submit different width to input of type text. See 
-https://stackoverflow.com/questions/6625509/100-width-on-input-type-submit-vs-input-type-text */
-
 #login, #signup {
     display: flex;
     justify-content: center;

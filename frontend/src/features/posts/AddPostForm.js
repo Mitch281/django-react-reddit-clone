@@ -53,8 +53,8 @@ const AddPostForm = () => {
 
         try {
             await dispatch(addNewPost(newPost)).unwrap();
-            // TODO: ADD STATE HERE TO DISPLAY MESSAGE THAT POST WAS SUCCESSFULLY ADDED.
-            navigate("/");
+            const successMessage = "Succesfully added post!";
+            navigate("/", { state: { successMessage: successMessage } });
         } catch (error) {
             toast.error("Could not add post!", {
                 position: "bottom-center",
@@ -119,11 +119,7 @@ const AddPostForm = () => {
         </div>
     );
 
-    return (
-        <>
-            {content}
-        </>
-    );
+    return <>{content}</>;
 };
 
 export default AddPostForm;
