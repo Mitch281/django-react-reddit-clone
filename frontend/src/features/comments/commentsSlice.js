@@ -20,9 +20,9 @@ export const fetchComments = createAsyncThunk(
         const { order, postId } = commentsInformation;
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/comments/post=${postId}/${order}/`;
+            url = `${API_ENDPOINT}/post/${postId}/comments/${order}/`;
         } else {
-            url = `${API_ENDPOINT}/comments/post=${postId}/`;
+            url = `${API_ENDPOINT}/post/${postId}/comments/`;
         }
         const response = await fetch(url);
         const json = await response.json();
@@ -34,7 +34,7 @@ export const upvoteComment = createAsyncThunk(
     "comments/upvoteComment",
     async (commentInformation) => {
         const { comment, currentVote } = commentInformation;
-        const url = `${API_ENDPOINT}/comment/id=${comment.id}/`;
+        const url = `${API_ENDPOINT}/comment/${comment.id}/`;
         const numUpvotes = comment.num_upvotes;
         const numDownvotes = comment.num_downvotes;
         let data;
@@ -64,7 +64,7 @@ export const downvoteComment = createAsyncThunk(
     "comments/downvoteComment",
     async (commentInformation) => {
         const { comment, currentVote } = commentInformation;
-        const url = `${API_ENDPOINT}/comment/id=${comment.id}/`;
+        const url = `${API_ENDPOINT}/comment/${comment.id}/`;
         const numUpvotes = comment.num_upvotes;
         const numDownvotes = comment.num_downvotes;
         let data;
@@ -111,7 +111,7 @@ export const deleteComment = createAsyncThunk(
         const patchInformation = {
             deleted: true,
         }
-        const url = `${API_ENDPOINT}/comment/id=${commentId}/user-id=${userId}/`;
+        const url = `${API_ENDPOINT}/comment/${commentId}?user-id=${userId}/`;
 
         try {
             const response = await authorisedFetchWrapper.patch(url, patchInformation);

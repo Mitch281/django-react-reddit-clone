@@ -74,6 +74,9 @@ const Comments = () => {
 
     let content;
     
+    // TODO: Change ordering of these statements (comments.length check should be second, rejected check should be first.) Also
+    // might not need rejected check, instead put in use effect and render error in use effect otherwise many errors are rendered
+    // since this component gets rendered 6 times for some reason?
     if (comments.length === 0) {
         content = null;
     } else if (commentStatus === "rejected") {

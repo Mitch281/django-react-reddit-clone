@@ -35,9 +35,9 @@ export const fetchPostsByCategory = createAsyncThunk(
         const { order, categoryId } = fetchInformation;
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/posts/category=${categoryId}/${order}/`;
+            url = `${API_ENDPOINT}/posts/category/${categoryId}/${order}/`;
         } else {
-            url = `${API_ENDPOINT}/posts/category=${categoryId}/`;
+            url = `${API_ENDPOINT}/posts/category/${categoryId}/`;
         }
         const response = await fetch(url);
         const json = await response.json();
@@ -48,7 +48,7 @@ export const fetchPostsByCategory = createAsyncThunk(
 export const fetchSinglePost = createAsyncThunk(
     "posts/fetchSinglePost",
     async (postId) => {
-        const response = await fetch(`${API_ENDPOINT}/post/id=${postId}/`);
+        const response = await fetch(`${API_ENDPOINT}/post/${postId}/`);
         const json = await response.json();
         return json;
     }
@@ -58,7 +58,7 @@ export const upvotePost = createAsyncThunk(
     "posts/upvotePost",
     async (postInformation) => {
         const { post, currentVote } = postInformation;
-        const url = `${API_ENDPOINT}/post/id=${post.id}/`;
+        const url = `${API_ENDPOINT}/post/${post.id}/`;
         const numUpvotes = post.num_upvotes;
         const numDownvotes = post.num_downvotes;
         let data;
@@ -88,7 +88,7 @@ export const downvotePost = createAsyncThunk(
     "posts/downvotePost",
     async (postInformation) => {
         const { post, currentVote } = postInformation;
-        const url = `${API_ENDPOINT}/post/id=${post.id}/`;
+        const url = `${API_ENDPOINT}/post/${post.id}/`;
         const numUpvotes = post.num_upvotes;
         const numDownvotes = post.num_downvotes;
         let data;
@@ -133,7 +133,7 @@ export const editPost = createAsyncThunk(
     async (editPostInformation) => {
         const { postId, userId, newPostContent } = editPostInformation;
         const patchData = { content: newPostContent }
-        const url = `${API_ENDPOINT}/post/id=${postId}/user-id=${userId}/`;
+        const url = `${API_ENDPOINT}/post/${postId}/user-id=${userId}/`;
         try {
             const response = await authorisedFetchWrapper.patch(url, patchData);
             const json = await response.json();
@@ -148,7 +148,7 @@ export const deletePost = createAsyncThunk(
     "posts/deletePost",
     async (deleteInformation) => {
         const { postId, userId } = deleteInformation;
-        const url = `${API_ENDPOINT}/post/id=${postId}/user-id=${userId}/`;
+        const url = `${API_ENDPOINT}/post/${postId}/user-id=${userId}/`;
         try {
             const response = await authorisedFetchWrapper.delete(url);
             const json = await response.json();

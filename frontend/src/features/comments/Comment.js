@@ -11,6 +11,8 @@ import ReplyToCommentForm from "./ReplyToCommentForm";
 import { UserContext } from "../../app/App";
 import DeleteComment from "./DeleteComment";
 
+// TODO: When user loads comments of posts multiple times, sometimes an error will show saying "cannot read properties of undefined."
+// Not sure why this is happening since I only render comments once it succesfully is fetched from api??
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
