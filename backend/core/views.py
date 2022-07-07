@@ -1,22 +1,26 @@
-from django.shortcuts import render
-from rest_framework import viewsets, permissions, status
 from django.contrib.auth.models import User
+from django.db.models import Count, F
+from django.db.models.functions import Lower
+from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Category, Post, Comment, PostVotes, CommentVotes
-from .serializers import (CategorySerializer, CommentVotesSerializer,
-                          PostSerializer,
-                          CommentSerializer,
-                          UserSerializer,
-                          UserSerializerWithToken,
-                          PostVotesSerializer,
-                          MyTokenObtainPairSerializer)
-from core import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.db.models.functions import Lower
-from django.db.models import Count, F
-# Create your views here.
+
+from core import serializers
+
+from .models import Category, Comment, CommentVotes, Post, PostVotes
+from .serializers import (CategorySerializer, CommentSerializer,
+                          CommentVotesSerializer, MyTokenObtainPairSerializer,
+                          PostSerializer, PostVotesSerializer, UserSerializer,
+                          UserSerializerWithToken)
+
+
+def set_permission_classes(obj):
+    if obj.request.method in ["POST", "DELETE"]:
+        obj.permission_classes = [permissions.IsAuthenticated]
+    elif obj.request.method in ["GET"]:
+        obj.permission_classes = [permissions.AllowAny]
 
 
 class CategoryView(APIView):
@@ -25,11 +29,7 @@ class CategoryView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, format=None):
@@ -51,11 +51,7 @@ class PostsView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, ordering=""):
@@ -83,17 +79,14 @@ class PostsView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PostsByCategoryView(APIView):
     """
     List posts under certain categories.
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, pk, ordering=""):
@@ -123,11 +116,7 @@ class PostView(APIView):
     serializer_class = PostSerializer
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE", "PATCH"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, pk):
@@ -185,11 +174,7 @@ class CommentView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE", "PATCH"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, pk):
@@ -242,11 +227,7 @@ class CommentsView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, format=None):
@@ -301,8 +282,7 @@ def current_user(request):
 
 class UserList(APIView):
     """
-    Create a new user. It's called 'UserList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
+    Create a new user, and view list of all existing users.
     """
 
     # No authentication here as this view is used to create users.
@@ -344,11 +324,7 @@ class PostVotesView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request):
@@ -392,11 +368,7 @@ class CommentVotesView(APIView):
     """
 
     def get_permissions(self):
-        """Set custom permissions for each action."""
-        if self.request.method in ["POST", "DELETE"]:
-            self.permission_classes = [permissions.IsAuthenticated, ]
-        elif self.request.method in ["GET"]:
-            self.permission_classes = [permissions.AllowAny, ]
+        set_permission_classes(self)
         return super().get_permissions()
 
     def get(self, request, format=None):
@@ -417,6 +389,9 @@ class CommentVotesView(APIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    """
+    Obtain access and refresh tokens on user login. Also returns the user id.
+    """
     serializer_class = MyTokenObtainPairSerializer
 
 
@@ -431,5 +406,4 @@ class NumberOfCommentsOnPostView(APIView):
         data = {"num_comments": num_comments}
         serializer = serializers.NumberOfCommentsOnPostSerializer(data=data)
         serializer.is_valid(True)
-        # return Response({"num_comments": num_comments})
         return Response(serializer.data)

@@ -52,7 +52,8 @@ const PostVotes = ({ postId }) => {
         }
     }
 
-    // TODO: If track users downvote fails, downvotePost still runs. Check why. Maybe handle this on server.
+    // TODO: If track users downvote fails, downvotePost still runs. Check why. Maybe handle this on server. Look into 
+    // transactions.
     async function downvote() {
         const currentVote = getCurrentVote();
         const usersVoteOnPostId = getUsersVoteOnPostId();
