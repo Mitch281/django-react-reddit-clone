@@ -40,6 +40,20 @@ const Comments = () => {
         setCommentChain(nestedComments);
     }, [comments]);
 
+    useEffect(() => {
+        if (commentStatus === "rejected") {
+            toast.error("Could not fetch comments!", {
+                position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }, [commentStatus]);
+
     function nestComments() {
         const commentMap = {};
         const commentsClone = JSON.parse(JSON.stringify(comments));
@@ -73,22 +87,9 @@ const Comments = () => {
     }
 
     let content;
-    
-    // TODO: Change ordering of these statements (comments.length check should be second, rejected check should be first.) Also
-    // might not need rejected check, instead put in use effect and render error in use effect otherwise many errors are rendered
-    // since this component gets rendered 6 times for some reason?
+
     if (comments.length === 0) {
         content = null;
-    } else if (commentStatus === "rejected") {
-        toast.error("Could not fetch comments!", {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
     } else if (commentStatus === "pending") {
         content = (
             <div className={styles["posts"]}>

@@ -1,28 +1,35 @@
-import { selectCommentById } from "./commentsSlice";
-import styles from "./styles/comment.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import CommentVotes from "./CommentVotes";
-import CommentContent from "./CommentContent";
-import DateOfComment from "../../common/comments/DateOfComment";
-import Author from "../../common/comments/Author";
-import ToggleHidden from "./ToggleHidden";
 import { useContext, useState } from "react";
-import ReplyToCommentForm from "./ReplyToCommentForm";
+import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
+import Author from "../../common/comments/Author";
+import DateOfComment from "../../common/comments/DateOfComment";
+import CommentContent from "./CommentContent";
+import { selectCommentById } from "./commentsSlice";
+import CommentVotes from "./CommentVotes";
 import DeleteComment from "./DeleteComment";
+import ReplyToCommentForm from "./ReplyToCommentForm";
+import styles from "./styles/comment.module.css";
+import ToggleHidden from "./ToggleHidden";
 
-// TODO: When user loads comments of posts multiple times, sometimes an error will show saying "cannot read properties of undefined."
-// Not sure why this is happening since I only render comments once it succesfully is fetched from api??
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
+
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
 
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
+
+    // TODO: When user loads comments of a certain post, then a different post an error will show saying "cannot read properties of undefined."
+    // Not sure why this is happening since I only render comments once it succesfully is fetched from api?? This statement here prevents this,
+    // but still want to gain understanding.
+    if (!comment) {
+        return null;
+    }
 
     function toggleReplyForm() {
         setIsCurrentlyEditing(!isCurrentlyEditing);
     }
 
+    // TODO: Maybe change name of is_hidden since we really want to see if replies are hidden. Maybe use is_replies_hidden instaed.
     function renderReplies() {
         if (comment.num_replies > 0 && !comment.is_hidden) {
             return (

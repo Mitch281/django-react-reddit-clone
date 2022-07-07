@@ -393,17 +393,3 @@ class MyTokenObtainPairView(TokenObtainPairView):
     Obtain access and refresh tokens on user login. Also returns the user id.
     """
     serializer_class = MyTokenObtainPairSerializer
-
-
-class NumberOfCommentsOnPostView(APIView):
-    """
-    Get the number of comments on a post given the post ID.
-    """
-
-    def get(self, request, pk):
-        comments = Comment.objects.filter(parent_post=pk)
-        num_comments = comments.count()
-        data = {"num_comments": num_comments}
-        serializer = serializers.NumberOfCommentsOnPostSerializer(data=data)
-        serializer.is_valid(True)
-        return Response(serializer.data)
