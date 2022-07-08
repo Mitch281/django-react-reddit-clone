@@ -25,57 +25,6 @@ export const fetchUsersVotesOnPosts = createAsyncThunk(
     }
 );
 
-export const trackUsersUpvote = createAsyncThunk(
-    "usersVotesOnPosts/trackUsersUpvote",
-    async (upvoteInformation) => {
-        const { usersVoteOnPostId, currentVote, userId, postId } =
-            upvoteInformation;
-        let data;
-        let url;
-        let method;
-
-        // User has voted already
-        if (usersVoteOnPostId) {
-            url = `${API_ENDPOINT}/post-vote/${usersVoteOnPostId}/`;
-            method = "PATCH";
-            if (currentVote === "upvote") {
-                data = { upvote: false };
-            } else if (currentVote === "downvote") {
-                data = {
-                    upvote: true,
-                    downvote: false,
-                };
-            } else {
-                data = { upvote: true };
-            }
-        } else {
-            url = `${API_ENDPOINT}/post-votes/`;
-            method = "POST";
-            data = {
-                id: uuid_v4(),
-                upvote: true,
-                downvote: false,
-                user: userId,
-                post: postId,
-            };
-        }
-
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(data),
-        });
-        if (!response.ok) {
-            Promise.reject("Could not upvote!");
-        }
-        const json = await response.json();
-        return json;
-    }
-);
-
 export const trackUsersDownvote = createAsyncThunk(
     "usersVotesOnPosts/trackUsersDownvote",
     async (downvoteInformation) => {
@@ -130,7 +79,11 @@ export const trackUsersDownvote = createAsyncThunk(
 const usersVotesOnPostsSlice = createSlice({
     name: "usersVotesOnPosts",
     initialState,
-    reducers: {},
+    reducers: {
+        trackUsersVote(state, action) {
+            usersVotesOnPostsAdapter.upsertOne(state, action.payload);
+        }
+    },
     extraReducers(builder) {
         builder
             .addCase(fetchUsersVotesOnPosts.pending, (state, action) => {
@@ -144,9 +97,6 @@ const usersVotesOnPostsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-            .addCase(trackUsersUpvote.fulfilled, (state, action) => {
-                usersVotesOnPostsAdapter.upsertOne(state, action.payload);
-            })
             .addCase(trackUsersDownvote.fulfilled, (state, action) => {
                 usersVotesOnPostsAdapter.upsertOne(state, action.payload);
             })
@@ -154,6 +104,8 @@ const usersVotesOnPostsSlice = createSlice({
 });
 
 export default usersVotesOnPostsSlice.reducer;
+
+export const { trackUsersVote } = usersVotesOnPostsSlice.actions;
 
 export const {
     selectAll: selectAllUsersVotesOnPosts,

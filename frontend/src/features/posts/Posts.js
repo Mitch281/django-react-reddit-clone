@@ -26,6 +26,7 @@ const Posts = () => {
         categoryId = state.categoryId;
         if (state.hasOwnProperty("successMessage")) {
             successMessage = state.successMessage;
+            // TODO: DELETE SUCCESS MESSAGE AFTER STORING IT (OR ELSE WE KEEP GETTING SUCCESS MESSAGE ONCE USER ADDS POST)
         }
     }
 

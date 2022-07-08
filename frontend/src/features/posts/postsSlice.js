@@ -54,35 +54,56 @@ export const fetchSinglePost = createAsyncThunk(
     }
 );
 
-export const upvotePost = createAsyncThunk(
+// export const upvotePost = createAsyncThunk(
+//     "posts/upvotePost",
+//     async (postInformation) => {
+//         const { post, currentVote } = postInformation;
+//         const url = `${API_ENDPOINT}/post/${post.id}/`;
+//         const numUpvotes = post.num_upvotes;
+//         const numDownvotes = post.num_downvotes;
+//         let data;
+
+//         if (currentVote === "downvote") {
+//             data = {
+//                 num_upvotes: numUpvotes + 1,
+//                 num_downvotes: numDownvotes - 1,
+//             };
+//         } else if (currentVote === "upvote") {
+//             data = { num_upvotes: numUpvotes - 1 };
+//         } else {
+//             data = { num_upvotes: numUpvotes + 1 };
+//         }
+
+//         try {
+//             const response = await authorisedFetchWrapper.patch(url, data);
+//             const json = await response.json();
+//             return json;
+//         } catch (error) {
+//             return Promise.reject(error);
+//         }
+//     }
+// );
+
+export const voteOnPost = createAsyncThunk(
     "posts/upvotePost",
-    async (postInformation) => {
-        const { post, currentVote } = postInformation;
-        const url = `${API_ENDPOINT}/post/${post.id}/`;
-        const numUpvotes = post.num_upvotes;
-        const numDownvotes = post.num_downvotes;
-        let data;
-
-        if (currentVote === "downvote") {
-            data = {
-                num_upvotes: numUpvotes + 1,
-                num_downvotes: numDownvotes - 1,
-            };
-        } else if (currentVote === "upvote") {
-            data = { num_upvotes: numUpvotes - 1 };
+    async (upvoteData) => {
+        const { postId, usersVoteOnPostId, data } = upvoteData;
+        let url;
+        if (usersVoteOnPostId) {
+            url = `${API_ENDPOINT}/post/${postId}/upvote/vote-id=${usersVoteOnPostId}/`;
         } else {
-            data = { num_upvotes: numUpvotes + 1 };
+            // User has not voted on post yet.
+            url = `${API_ENDPOINT}/post/${postId}/upvote/vote-id=/`
         }
-
         try {
-            const response = await authorisedFetchWrapper.patch(url, data);
+            const response = await authorisedFetchWrapper.put(url, data);
             const json = await response.json();
             return json;
         } catch (error) {
             return Promise.reject(error);
         }
     }
-);
+)
 
 export const downvotePost = createAsyncThunk(
     "posts/downvotePost",
@@ -198,8 +219,8 @@ const postsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-            .addCase(upvotePost.fulfilled, (state, action) => {
-                postsAdapter.upsertOne(state, action.payload);
+            .addCase(voteOnPost.fulfilled, (state, action) => {
+                postsAdapter.upsertOne(state, action.payload.post_data);
             })
             .addCase(downvotePost.fulfilled, (state, action) => {
                 postsAdapter.upsertOne(state, action.payload);

@@ -3,14 +3,15 @@ import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
 import { VoteTypes } from "../../common/utils/constants";
 import {
     selectAllUsersVotesOnPosts,
     trackUsersDownvote,
-    trackUsersUpvote
+    trackUsersVote,
 } from "../users/usersVotesOnPostsSlice";
-import { downvotePost, selectPostById, upvotePost } from "./postsSlice";
+import { downvotePost, selectPostById, voteOnPost } from "./postsSlice";
 import styles from "./styles/post-votes.module.css";
 
 const PostVotes = ({ postId }) => {
@@ -24,21 +25,115 @@ const PostVotes = ({ postId }) => {
 
     const usersVotesOnPosts = useSelector(selectAllUsersVotesOnPosts);
 
-    async function upvote() {
+    function getUpvotePostData() {
         const currentVote = getCurrentVote();
+        let data;
+        if (currentVote === VoteTypes.Downvote) {
+            data = {
+                num_upvotes: numUpvotes + 1,
+                num_downvotes: numDownvotes - 1,
+            };
+        } else if (currentVote === VoteTypes.Upvote) {
+            data = { num_upvotes: numUpvotes - 1 };
+        } else {
+            data = { num_upvotes: numUpvotes + 1 };
+        }
+
+        return data;
+    }
+
+    function getDownvotePostData() {
+        const currentVote = getCurrentVote();
+        let data;
+        if (currentVote === VoteTypes.Downvote) {
+            data = { num_downvotes: numDownvotes - 1 };
+        } else if (currentVote === VoteTypes.Upvote) {
+            data = {
+                num_upvotes: numUpvotes - 1,
+                num_downvotes: numDownvotes + 1,
+            };
+        } else {
+            data = { num_downvotes: numDownvotes + 1 };
+        }
+
+        return data;
+    }
+
+    function getUserVoteOnUpvote() {
         const usersVoteOnPostId = getUsersVoteOnPostId();
+        const currentVote = getCurrentVote();
+        let data;
+        // User has voted already
+        if (usersVoteOnPostId) {
+            if (currentVote === VoteTypes.Upvote) {
+                data = { id: usersVoteOnPostId, upvote: false };
+            } else if (currentVote === VoteTypes.Downvote) {
+                data = {
+                    id: usersVoteOnPostId,
+                    upvote: true,
+                    downvote: false,
+                };
+            } else {
+                data = { id: usersVoteOnPostId, upvote: true };
+            }
+        } else {
+            data = {
+                id: uuid_v4(),
+                upvote: true,
+                downvote: false,
+                user: userIdLoggedIn,
+                post: postId,
+            };
+        }
+
+        return data;
+    }
+
+    function getUserVoteOnDownvote() {
+        const usersVoteOnPostId = getUsersVoteOnPostId();
+        const currentVote = getCurrentVote();
+        let data;
+        // User has voted already
+        if (usersVoteOnPostId) {
+            if (currentVote === VoteTypes.Upvote) {
+                data = { id: usersVoteOnPostId, upvote: false, downvote: true };
+            } else if (currentVote === VoteTypes.Downvote) {
+                data = {
+                    id: usersVoteOnPostId,
+                    downvote: false,
+                };
+            } else {
+                data = { id: usersVoteOnPostId, downvote: true };
+            }
+        } else {
+            data = {
+                id: uuid_v4(),
+                upvote: true,
+                downvote: false,
+                user: userIdLoggedIn,
+                post: postId,
+            };
+        }
+
+        return data;
+    }
+
+    async function upvote() {
+        const upvotePostData = getUpvotePostData();
+        const usersVoteOnPostData = getUserVoteOnUpvote();
+        const data = {
+            post_data: upvotePostData,
+            user_data: usersVoteOnPostData,
+        };
+        const usersVoteOnPostId = getUsersVoteOnPostId();
+        const upvoteInformation = {
+            postId: postId,
+            usersVoteOnPostId: usersVoteOnPostId,
+            data: data,
+        };
         try {
-            await dispatch(
-                upvotePost({ post: post, currentVote: currentVote })
-            ).unwrap();
-            await dispatch(
-                trackUsersUpvote({
-                    usersVoteOnPostId: usersVoteOnPostId,
-                    currentVote: currentVote,
-                    userId: userIdLoggedIn,
-                    postId: postId,
-                })
-            ).unwrap();
+            await dispatch(voteOnPost(upvoteInformation)).unwrap();
+            dispatch(trackUsersVote(data.user_data));
         } catch (error) {
             toast.error(error.message, {
                 position: "bottom-center",
@@ -52,23 +147,22 @@ const PostVotes = ({ postId }) => {
         }
     }
 
-    // TODO: If track users downvote fails, downvotePost still runs. Check why. Maybe handle this on server. Look into 
-    // transactions.
     async function downvote() {
-        const currentVote = getCurrentVote();
+        const downvotePostData = getDownvotePostData();
+        const usersVoteOnPostData = getUserVoteOnDownvote();
+        const data = {
+            post_data: downvotePostData,
+            user_data: usersVoteOnPostData,
+        };
         const usersVoteOnPostId = getUsersVoteOnPostId();
+        const downvoteInformation = {
+            postId: postId,
+            usersVoteOnPostId: usersVoteOnPostId,
+            data: data,
+        };
         try {
-            await dispatch(
-                downvotePost({ post: post, currentVote: currentVote })
-            ).unwrap();
-            await dispatch(
-                trackUsersDownvote({
-                    usersVoteOnPostId: usersVoteOnPostId,
-                    currentVote: currentVote,
-                    userId: userIdLoggedIn,
-                    postId: postId,
-                })
-            ).unwrap();
+            await dispatch(voteOnPost(downvoteInformation)).unwrap();
+            dispatch(trackUsersVote(data.user_data));
         } catch (error) {
             toast.error(error.message, {
                 position: "bottom-center",

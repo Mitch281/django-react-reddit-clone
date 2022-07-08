@@ -1,7 +1,11 @@
 // This file provides a wrapper around fetch, aimed to make authorized api fetches easier. To do this, it will handle
 // JWT expiry.
 
-import { CantGetNewAccessTokenError, getNewAccessToken, isTokenExpired } from "./auth";
+import {
+    CantGetNewAccessTokenError,
+    getNewAccessToken,
+    isTokenExpired,
+} from "./auth";
 
 async function handleAccessToken() {
     const accessToken = localStorage.getItem("accessToken");
@@ -13,7 +17,9 @@ async function handleAccessToken() {
             await getNewAccessToken();
         } catch (error) {
             // Refresh token is expired.
-            return Promise.reject(new CantGetNewAccessTokenError("Can't get new access token."));
+            return Promise.reject(
+                new CantGetNewAccessTokenError("Can't get new access token.")
+            );
         }
     }
 }
@@ -64,6 +70,29 @@ async function authorisedPost(url, body) {
     return response;
 }
 
+async function authorisedPut(url, body) {
+    try {
+        await handleAccessToken();
+    } catch (error) {
+        return Promise.reject(error);
+    }
+
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+        return Promise.reject(response.status);
+    }
+
+    return response;
+}
+
 async function authorisedDelete(url) {
     try {
         await handleAccessToken();
@@ -89,5 +118,6 @@ async function authorisedDelete(url) {
 export const authorisedFetchWrapper = {
     patch: authorisedPatch,
     post: authorisedPost,
-    delete: authorisedDelete
+    put: authorisedPut,
+    delete: authorisedDelete,
 };

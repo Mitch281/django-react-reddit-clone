@@ -4,6 +4,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from core.views import PostViewSet
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet, basename='user')
+
 urlpatterns = [
     # See https://www.django-rest-framework.org/api-guide/viewsets/ for good documenation as_view params.
     path('categories/', views.CategoryView.as_view(), name='categories'),
@@ -32,10 +38,6 @@ urlpatterns = [
         r'^post/(?P<pk>[0-9a-z-&]+)?user-id=(?P<user_id>[0-9a-z-&]+)/$', views.PostView.as_view()),
 
     path('post-votes/', views.PostVotesView.as_view()),
-    re_path(r'^post-vote/(?P<pk>[0-9a-z-&]+)/$',
-            views.PostVoteView().as_view()),
-    re_path(r'^post-votes?user=(?P<user_id>[0-9a-z-&]+)/$',
-            views.PostVoteView.as_view(), name="users votes on posts"),
 
     path('comment-votes/', views.CommentVotesView.as_view()),
     re_path(r'^comment-vote/(?P<pk>[0-9a-z-&]+)/$',
@@ -47,4 +49,4 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('current-user/', views.current_user, name='current_user'),
     path('users/', views.UserList.as_view(), name='users')
-]
+] + router.urls
