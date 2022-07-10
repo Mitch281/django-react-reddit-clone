@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { authorisedFetchWrapper } from "../../common/utils/authorised-fetch-wrapper";
+import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -30,58 +30,18 @@ export const fetchComments = createAsyncThunk(
     }
 )
 
-export const upvoteComment = createAsyncThunk(
-    "comments/upvoteComment",
-    async (commentInformation) => {
-        const { comment, currentVote } = commentInformation;
-        const url = `${API_ENDPOINT}/comment/${comment.id}/`;
-        const numUpvotes = comment.num_upvotes;
-        const numDownvotes = comment.num_downvotes;
-        let data;
-
-        if (currentVote === "downvote") {
-            data = {
-                num_upvotes: numUpvotes + 1,
-                num_downvotes: numDownvotes - 1,
-            };
-        } else if (currentVote === "upvote") {
-            data = { num_upvotes: numUpvotes - 1 };
+export const voteOnComment = createAsyncThunk(
+    "comments/voteOnComment",
+    async (voteData) => {
+        const { commentId, usersVoteOnCommentId, data } = voteData;
+        let url;
+        if (usersVoteOnCommentId) {
+            url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=${usersVoteOnCommentId}/`
         } else {
-            data = { num_upvotes: numUpvotes + 1 };
+            url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=/`;
         }
-
         try {
-            const response = await authorisedFetchWrapper.patch(url, data);
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
-);
-
-export const downvoteComment = createAsyncThunk(
-    "comments/downvoteComment",
-    async (commentInformation) => {
-        const { comment, currentVote } = commentInformation;
-        const url = `${API_ENDPOINT}/comment/${comment.id}/`;
-        const numUpvotes = comment.num_upvotes;
-        const numDownvotes = comment.num_downvotes;
-        let data;
-
-        if (currentVote === "upvote") {
-            data = {
-                num_upvotes: numUpvotes - 1,
-                num_downvotes: numDownvotes + 1
-            }
-        } else if (currentVote === "downvote") {
-            data = { num_downvotes: numDownvotes - 1};
-        } else {
-            data = { num_downvotes: numDownvotes + 1};
-        }
-
-        try {
-            const response = await authorisedFetchWrapper.patch(url, data);
+            const response = await authorisedFetchWrapper.put(url, data);
             const json = await response.json();
             return json;
         } catch (error) {
@@ -111,7 +71,9 @@ export const deleteComment = createAsyncThunk(
         const patchInformation = {
             deleted: true,
         }
-        const url = `${API_ENDPOINT}/comment/${commentId}?user-id=${userId}/`;
+        // TODO: Why is it that when I don't append slash infront of comment id, I get a did not append slash error in Django? Find out!!
+        // Also, if I append slash to url below, I get same error, but this does not happen for delete request (for example, deleting post). Why??
+        const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
             const response = await authorisedFetchWrapper.patch(url, patchInformation);
@@ -174,11 +136,8 @@ const commentsSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
-            .addCase(upvoteComment.fulfilled, (state, action) => {
-                commentsAdapter.upsertOne(state, action.payload);
-            })
-            .addCase(downvoteComment.fulfilled, (state, action) => {
-                commentsAdapter.upsertOne(state, action.payload);
+            .addCase(voteOnComment.fulfilled, (state, action) => {
+                commentsAdapter.upsertOne(state, action.payload.comment_data);
             })
             .addCase(makeCommentOnPost.fulfilled, (state, action) => {
                 state.makeCommentOnPostStatus = "fulfilled";
@@ -193,7 +152,7 @@ const commentsSlice = createSlice({
 
 export default commentsSlice.reducer;
 
-export const { toggleHidden, incrementNumReplies } = commentsSlice.actions;
+export const { toggleHidden, incrementNumReplies, trackUsersVote } = commentsSlice.actions;
 
 export const {
     selectAll: selectAllComments,

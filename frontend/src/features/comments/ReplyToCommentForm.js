@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { incrementNumReplies, makeCommentOnPost, selectCommentById } from "./commentsSlice";
 import styles from "./styles/reply-to-comment-form.module.css";
 

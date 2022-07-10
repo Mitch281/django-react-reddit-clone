@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { authorisedFetchWrapper } from "../../common/utils/authorised-fetch-wrapper";
+import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -54,46 +54,16 @@ export const fetchSinglePost = createAsyncThunk(
     }
 );
 
-// export const upvotePost = createAsyncThunk(
-//     "posts/upvotePost",
-//     async (postInformation) => {
-//         const { post, currentVote } = postInformation;
-//         const url = `${API_ENDPOINT}/post/${post.id}/`;
-//         const numUpvotes = post.num_upvotes;
-//         const numDownvotes = post.num_downvotes;
-//         let data;
-
-//         if (currentVote === "downvote") {
-//             data = {
-//                 num_upvotes: numUpvotes + 1,
-//                 num_downvotes: numDownvotes - 1,
-//             };
-//         } else if (currentVote === "upvote") {
-//             data = { num_upvotes: numUpvotes - 1 };
-//         } else {
-//             data = { num_upvotes: numUpvotes + 1 };
-//         }
-
-//         try {
-//             const response = await authorisedFetchWrapper.patch(url, data);
-//             const json = await response.json();
-//             return json;
-//         } catch (error) {
-//             return Promise.reject(error);
-//         }
-//     }
-// );
-
 export const voteOnPost = createAsyncThunk(
-    "posts/upvotePost",
-    async (upvoteData) => {
-        const { postId, usersVoteOnPostId, data } = upvoteData;
+    "posts/voteOnPost",
+    async (voteData) => {
+        const { postId, usersVoteOnPostId, data } = voteData;
         let url;
         if (usersVoteOnPostId) {
-            url = `${API_ENDPOINT}/post/${postId}/upvote/vote-id=${usersVoteOnPostId}/`;
+            url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=${usersVoteOnPostId}/`;
         } else {
             // User has not voted on post yet.
-            url = `${API_ENDPOINT}/post/${postId}/upvote/vote-id=/`
+            url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=/`
         }
         try {
             const response = await authorisedFetchWrapper.put(url, data);
@@ -104,36 +74,6 @@ export const voteOnPost = createAsyncThunk(
         }
     }
 )
-
-export const downvotePost = createAsyncThunk(
-    "posts/downvotePost",
-    async (postInformation) => {
-        const { post, currentVote } = postInformation;
-        const url = `${API_ENDPOINT}/post/${post.id}/`;
-        const numUpvotes = post.num_upvotes;
-        const numDownvotes = post.num_downvotes;
-        let data;
-
-        if (currentVote === "upvote") {
-            data = {
-                num_upvotes: numUpvotes - 1,
-                num_downvotes: numDownvotes + 1,
-            };
-        } else if (currentVote === "downvote") {
-            data = { num_downvotes: numDownvotes - 1 };
-        } else {
-            data = { num_downvotes: numDownvotes + 1 };
-        }
-
-        try {
-            const response = await authorisedFetchWrapper.patch(url, data);
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
-);
 
 export const addNewPost = createAsyncThunk(
     "posts/addNewPost",
@@ -154,7 +94,7 @@ export const editPost = createAsyncThunk(
     async (editPostInformation) => {
         const { postId, userId, newPostContent } = editPostInformation;
         const patchData = { content: newPostContent }
-        const url = `${API_ENDPOINT}/post/${postId}/user-id=${userId}/`;
+        const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
             const response = await authorisedFetchWrapper.patch(url, patchData);
             const json = await response.json();
@@ -169,7 +109,7 @@ export const deletePost = createAsyncThunk(
     "posts/deletePost",
     async (deleteInformation) => {
         const { postId, userId } = deleteInformation;
-        const url = `${API_ENDPOINT}/post/${postId}/user-id=${userId}/`;
+        const url = `${API_ENDPOINT}/post/${postId}?user-id=${userId}`;
         try {
             const response = await authorisedFetchWrapper.delete(url);
             const json = await response.json();
@@ -221,9 +161,6 @@ const postsSlice = createSlice({
             })
             .addCase(voteOnPost.fulfilled, (state, action) => {
                 postsAdapter.upsertOne(state, action.payload.post_data);
-            })
-            .addCase(downvotePost.fulfilled, (state, action) => {
-                postsAdapter.upsertOne(state, action.payload);
             })
             .addCase(addNewPost.fulfilled, (state, action) => {
                 postsAdapter.addOne(state, action.payload);

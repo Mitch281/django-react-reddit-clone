@@ -4,11 +4,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from core.views import PostViewSet
+from core.views import PostVotingViewSet, CommentVotingViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'post', PostViewSet, basename='user')
+router.register(r'post', PostVotingViewSet, basename='post')
+router.register(r'comment', CommentVotingViewSet, basename="comment")
 
 urlpatterns = [
     # See https://www.django-rest-framework.org/api-guide/viewsets/ for good documenation as_view params.
@@ -40,10 +41,6 @@ urlpatterns = [
     path('post-votes/', views.PostVotesView.as_view()),
 
     path('comment-votes/', views.CommentVotesView.as_view()),
-    re_path(r'^comment-vote/(?P<pk>[0-9a-z-&]+)/$',
-            views.CommentVoteView().as_view()),
-    re_path(r'^comment-vote?user=(?P<user_id>[0-9a-z-&]+)/$',
-            views.CommentVoteView.as_view(), name="users votes on comments"),
 
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

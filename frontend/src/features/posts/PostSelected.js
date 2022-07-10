@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import Post from "./Post";
 import { fetchSinglePost, selectAllPosts } from "./postsSlice";
 import styles from "./styles/posts.module.css";

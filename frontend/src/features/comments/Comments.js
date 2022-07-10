@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
 import OrderOptions from "../../common/ordering/OrderOptions";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";

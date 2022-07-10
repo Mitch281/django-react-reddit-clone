@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../../app/App";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
 import Post from "./Post";
 import { fetchPosts, fetchPostsByCategory, selectPostIds } from "./postsSlice";

@@ -4,8 +4,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
-import { login } from "../utils/auth";
-import { constants } from "../utils/constants";
+import { login } from "../../utils/auth";
+import { constants } from "../../utils/constants";
 import styles from "./styles/login-signup.module.css";
 
 const LoginPage = () => {

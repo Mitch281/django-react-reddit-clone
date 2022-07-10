@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { createCategory } from "./categoriesSlice";
 import styles from "./styles/create-category.module.css";
 

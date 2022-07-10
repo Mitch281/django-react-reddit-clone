@@ -126,9 +126,10 @@ class PostView(APIView):
         return Response(serializer.data)
 
     # Note that user_id is a string while creator_of_post_id is an int!
-    def delete(self, request, pk, user_id):
+    def delete(self, request, pk):
         post = Post.objects.get(id=pk)
         creator_of_post_id = str(post.user.id)
+        user_id = request.GET.get("user-id", "")
 
         if creator_of_post_id == user_id:
             post.delete()
@@ -139,34 +140,22 @@ class PostView(APIView):
             return Response(data=data, status=status.HTTP_200_OK)
         return Response(data=None, status=status.HTTP_401_UNAUTHORIZED)
 
-    def patch(self, request, pk, user_id=""):
-
-        # We only send a user id when the user wants to edit the post.
-        if (user_id):
-            return self.edit_content_patch(request, pk, user_id)
-
-        else:
-            return self.vote_patch(request, pk, user_id)
-
-    def vote_patch(self, request, pk, user_id):
-        post = Post.objects.get(id=pk)
-        serializer = PostSerializer(post, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, pk):
+        user_id = request.GET.get("user-id", "")
+        return self.edit_content_patch(request, pk, user_id)
 
     def edit_content_patch(self, request, pk, user_id):
         post = Post.objects.get(id=pk)
         creator_of_post_id = str(post.user.id)
         serializer = PostSerializer(post, data=request.data, partial=True)
 
-        if creator_of_post_id == user_id:
-            if serializer.is_valid():
+        if serializer.is_valid():
+            if creator_of_post_id == user_id:
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentView(APIView):
@@ -183,25 +172,9 @@ class CommentView(APIView):
         serializer = serializers.CommentSerializer(comment)
         return Response(serializer.data)
 
-    def patch(self, request, pk, user_id=""):
-
-        if (user_id):
-            return self.edit_content_patch(request, pk, user_id)
-        else:
-            return self.vote_patch(request, pk, user_id)
-
-    def vote_patch(self, request, pk, user_id):
-        comment = Comment.objects.get(id=pk)
-
-        if (comment.deleted):
-            return Response(data=None, status=status.HTTP_410_GONE)
-
-        serializer = serializers.CommentSerializer(
-            comment, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, pk):
+        user_id = request.GET.get("user-id", "")
+        return self.edit_content_patch(request, pk, user_id)
 
     def edit_content_patch(self, request, pk, user_id):
         comment = Comment.objects.get(id=pk)
@@ -212,14 +185,13 @@ class CommentView(APIView):
         if (comment.deleted):
             return Response(data=None, status=status.HTTP_410_GONE)
 
-        # Note that this is also used to "delete" comments by simply patching comment inforamtion as well as setting
-        # the deleted property to true.
-        if creator_of_comment_id == user_id:
-            if serializer.is_valid():
+        if serializer.is_valid():
+            if creator_of_comment_id == user_id:
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentsView(APIView):
@@ -301,6 +273,7 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PostVotesView(APIView):
     """
     List all users and their votes. This is needed to keep track of users' upvotes and downvotes. Needs to be updated
@@ -315,23 +288,6 @@ class PostVotesView(APIView):
             votes = PostVotes.objects.all()
         serializer = PostVotesSerializer(votes, many=True)
         return Response(serializer.data)
-
-
-class CommentVoteView(APIView):
-    """
-    This view is used to patch one specified comment vote object.
-    """
-
-    permission_classes = [permissions.IsAuthenticated, ]
-
-    def patch(self, request, pk):
-        comment_vote = CommentVotes.objects.get(id=pk)
-        serializer = serializers.CommentVotesSerializer(
-            comment_vote, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentVotesView(APIView):
@@ -353,13 +309,6 @@ class CommentVotesView(APIView):
         serializer = CommentVotesSerializer(votes, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
-        serializer = serializers.CommentVotesSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class MyTokenObtainPairView(TokenObtainPairView):
     """
@@ -368,7 +317,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-class PostViewSet(viewsets.ViewSet):
+class PostVotingViewSet(viewsets.ViewSet):
+    """
+    Viewset to handle voting on posts.
+    """
 
     # request:
     # {
@@ -380,10 +332,10 @@ class PostViewSet(viewsets.ViewSet):
     #         upvote: bool
     #         downvote: bool
     #     }
-    # } 
-    # Note, url here would be /post/{pk}/upvote/vote-id={vote_id}
-    @action(detail=True, methods=["put"], url_path=r'upvote/vote-id=(?P<vote_id>[0-9a-z-&]*)', permission_classes=[permissions.IsAuthenticated])
-    def upvote(self, request, pk, vote_id):
+    # }
+    # Note, url here would be /post/{pk}/vote/vote-id={vote_id}
+    @action(detail=True, methods=["put"], url_path=r'vote/vote-id=(?P<vote_id>[0-9a-z-&]*)', permission_classes=[permissions.IsAuthenticated])
+    def vote(self, request, pk, vote_id):
         post_serializer = self.get_post_serializer(request, pk)
         post_vote_serializer = self.get_post_votes_serializer(request, vote_id)
 
@@ -392,13 +344,16 @@ class PostViewSet(viewsets.ViewSet):
                 if post_serializer.is_valid() and post_vote_serializer.is_valid():
                     post_serializer.save()
                     post_vote_serializer.save()
-                    serializer_data = {"post_data": post_serializer.data, "post_vote_data": post_vote_serializer.data}
+                    serializer_data = {
+                        "post_data": post_serializer.data, "post_vote_data": post_vote_serializer.data}
                     return Response(serializer_data, status=status.HTTP_202_ACCEPTED)
                 else:
-                    serializer_errors = {"post_error": post_serializer.errors, "post_vote_error": post_vote_serializer.errors}
+                    serializer_errors = {
+                        "post_error": post_serializer.errors, "post_vote_error": post_vote_serializer.errors}
                     return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
         except:
-            serializer_errors = {"post_error": post_serializer.errors, "post_vote_error": post_vote_serializer.errors}
+            serializer_errors = {"post_error": post_serializer.errors,
+                                 "post_vote_error": post_vote_serializer.errors}
             return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_post_serializer(self, request, pk):
@@ -412,3 +367,42 @@ class PostViewSet(viewsets.ViewSet):
             return serializers.PostVotesSerializer(post_vote, data=request.data["user_data"], partial=True)
         return serializers.PostVotesSerializer(data=request.data["user_data"])
 
+
+class CommentVotingViewSet(viewsets.ViewSet):
+    """
+    Viewset to handle voting on comments.
+    """
+
+    @action(detail=True, methods=["put"], url_path=r'vote/vote-id=(?P<vote_id>[0-9a-z-&]*)', permission_classes=[permissions.IsAuthenticated])
+    def vote(self, request, pk, vote_id):
+        comment_serializer = self.get_comment_serializer(request, pk)
+        comment_vote_serializer = self.get_comment_votes_serializer(
+            request, vote_id)
+
+        try:
+            with transaction.atomic():
+                if comment_serializer.is_valid() and comment_vote_serializer.is_valid():
+                    comment_serializer.save()
+                    comment_vote_serializer.save()
+                    serializer_data = {"comment_data": comment_serializer.data,
+                                       "comment_vote_data": comment_vote_serializer.data}
+                    return Response(serializer_data, status=status.HTTP_202_ACCEPTED)
+                else:
+                    serializer_errors = {"comment_error": comment_serializer.errors,
+                                         "comment_vote_error": comment_vote_serializer.errors}
+                    return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            serializer_errors = {"comment_error": comment_serializer.errors,
+                                 "comment_vote_error": comment_vote_serializer.errors}
+            return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_comment_serializer(self, request, pk):
+        comment = Comment.objects.get(id=pk)
+        comment_data = request.data["comment_data"]
+        return serializers.CommentSerializer(comment, data=comment_data, partial=True)
+
+    def get_comment_votes_serializer(self, request, vote_id):
+        if (vote_id):
+            comment_vote = CommentVotes.objects.get(id=vote_id)
+            return serializers.CommentVotesSerializer(comment_vote, data=request.data["user_data"], partial=True)
+        return serializers.CommentVotesSerializer(data=request.data["user_data"])

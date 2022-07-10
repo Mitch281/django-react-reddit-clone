@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { useEffect } from "react";
 import { fetchCategories, selectCategoryIds } from "./categoriesSlice";

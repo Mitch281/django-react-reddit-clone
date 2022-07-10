@@ -25,57 +25,6 @@ export const fetchUsersVotesOnPosts = createAsyncThunk(
     }
 );
 
-export const trackUsersDownvote = createAsyncThunk(
-    "usersVotesOnPosts/trackUsersDownvote",
-    async (downvoteInformation) => {
-        const { usersVoteOnPostId, currentVote, userId, postId } =
-            downvoteInformation;
-        let data;
-        let url;
-        let method;
-        
-        // User has voted already.
-        if (usersVoteOnPostId) {
-            url = `${API_ENDPOINT}/post-vote/${usersVoteOnPostId}/`;
-            method = "PATCH";
-            if (currentVote === "downvote") {
-                data = { downvote: false };
-            } else if (currentVote === "upvote") {
-                data = {
-                    upvote: false,
-                    downvote: true,
-                };
-            } else {
-                data = { downvote: true };
-            }
-        } else {
-            url = `${API_ENDPOINT}/post-votes/`;
-            method = "POST";
-            data = {
-                id: uuid_v4(),
-                upvote: false,
-                downvote: true,
-                user: userId,
-                post: postId,
-            };
-        }
-
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(data),
-        });
-        if (!response.ok) {
-            Promise.reject("Could not upvote!");
-        }
-        const json = await response.json();
-        return json;
-    }
-);
-
 const usersVotesOnPostsSlice = createSlice({
     name: "usersVotesOnPosts",
     initialState,
@@ -96,9 +45,6 @@ const usersVotesOnPostsSlice = createSlice({
             .addCase(fetchUsersVotesOnPosts.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
-            })
-            .addCase(trackUsersDownvote.fulfilled, (state, action) => {
-                usersVotesOnPostsAdapter.upsertOne(state, action.payload);
             })
     },
 });

@@ -6,7 +6,7 @@ import {
     getNewAccessToken,
     isTokenExpired,
     verifyCurrentUser,
-} from "../common/utils/auth";
+} from "../utils/auth";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";

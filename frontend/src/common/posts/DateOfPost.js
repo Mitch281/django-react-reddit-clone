@@ -1,4 +1,4 @@
-import { getTimeElapsedFromCreation } from "../utils/date-time-functions";
+import { getTimeElapsedFromCreation } from "../../utils/date-time-functions";
 
 const DateOfPost = ({ dateCreated }) => {
 

@@ -4,7 +4,7 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import { v4 as uuid_v4 } from "uuid";
-import { VoteTypes } from "../../common/utils/constants";
+import { VoteTypes } from "../../utils/constants";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -129,7 +129,11 @@ export const trackUsersDownvote = createAsyncThunk(
 const usersVotesOnCommentsSlice = createSlice({
     name: "usersVotesOnComments",
     initialState,
-    reducers: {},
+    reducers: {
+        trackUsersVote(state, action) {
+            usersVotesOnCommentsAdapter.upsertOne(state, action.payload);
+        }
+    },
     extraReducers(builder) {
         builder
             .addCase(fetchUsersVotesOnComments.pending, (state, action) => {
@@ -153,6 +157,8 @@ const usersVotesOnCommentsSlice = createSlice({
 });
 
 export default usersVotesOnCommentsSlice.reducer;
+
+export const { trackUsersVote } = usersVotesOnCommentsSlice.actions;
 
 export const {
     selectAll: selectAllUsersVotesOnComments,

@@ -5,13 +5,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { VoteTypes } from "../../common/utils/constants";
+import { VoteTypes } from "../../utils/constants";
 import {
-    selectAllUsersVotesOnPosts,
-    trackUsersDownvote,
-    trackUsersVote,
+    selectAllUsersVotesOnPosts, trackUsersVote
 } from "../users/usersVotesOnPostsSlice";
-import { downvotePost, selectPostById, voteOnPost } from "./postsSlice";
+import { selectPostById, voteOnPost } from "./postsSlice";
 import styles from "./styles/post-votes.module.css";
 
 const PostVotes = ({ postId }) => {

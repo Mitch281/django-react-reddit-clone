@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { authorisedFetchWrapper } from "../../common/utils/authorised-fetch-wrapper";
+import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

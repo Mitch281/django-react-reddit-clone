@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
-import { constants } from "../../common/utils/constants";
+import { constants } from "../../utils/constants";
 import { deletePost } from "./postsSlice";
 import styles from "./styles/delete-post.module.css";
 
