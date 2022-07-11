@@ -2,24 +2,22 @@
 // JWT expiry.
 
 import {
-    CantGetNewAccessTokenError,
     getNewAccessToken,
     isTokenExpired,
+    NoAccessTokenError
 } from "./auth";
 
 async function handleAccessToken() {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
-        return Promise.reject("No access token!");
+        throw new NoAccessTokenError("There is no access token!");
     }
     if (isTokenExpired(accessToken)) {
         try {
             await getNewAccessToken();
         } catch (error) {
             // Refresh token is expired.
-            return Promise.reject(
-                new CantGetNewAccessTokenError("Can't get new access token.")
-            );
+            throw error;
         }
     }
 }
@@ -64,7 +62,7 @@ async function authorisedPost(url, body) {
     });
 
     if (!response.ok) {
-        return Promise.reject(response.status);
+        return Promise.reject(new Error(response.status));
     }
 
     return response;
@@ -74,7 +72,7 @@ async function authorisedPut(url, body) {
     try {
         await handleAccessToken();
     } catch (error) {
-        return Promise.reject(error);
+        throw error;
     }
 
     const response = await fetch(url, {
@@ -87,7 +85,7 @@ async function authorisedPut(url, body) {
     });
 
     if (!response.ok) {
-        return Promise.reject(response.status);
+        return Promise.reject(new Error(response.status));
     }
 
     return response;
@@ -109,7 +107,7 @@ async function authorisedDelete(url) {
     });
 
     if (!response.ok) {
-        return Promise.reject(response.status);
+        return Promise.reject(new Error(response.status));
     }
 
     return response;

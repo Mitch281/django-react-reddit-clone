@@ -5,6 +5,7 @@ import LinkToCreatePost from "../common/posts/LinkToCreatePost";
 import {
     getNewAccessToken,
     isTokenExpired,
+    NoAccessTokenError,
     verifyCurrentUser,
 } from "../utils/auth";
 import LoginPage from "../common/auth/LoginPage";
@@ -28,7 +29,7 @@ function App() {
     async function reLogin() {
         const accessToken = localStorage.getItem("accessToken");
         if (!accessToken) {
-            return;
+            throw new NoAccessTokenError("No access token exists!");
         }
 
         // Access token is expired, so we get a new access token using the refresh token.

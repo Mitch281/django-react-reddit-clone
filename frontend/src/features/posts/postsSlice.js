@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { CantGetNewAccessTokenError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -70,7 +71,7 @@ export const voteOnPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            throw error;
         }
     }
 )
