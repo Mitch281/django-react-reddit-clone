@@ -2,17 +2,16 @@ import { useContext } from "react";
 import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
     selectAllUsersVotesOnComments, trackUsersVote
 } from "../users/usersVotesOnCommentsSlice";
 import { selectCommentById, voteOnComment } from "./commentsSlice";
 import styles from "./styles/comment-votes.module.css";
-import { handleAuthErrorOnRequest } from "../../utils/auth";
 
 const CommentVotes = ({ commentId }) => {
     const navigate = useNavigate();
@@ -141,22 +140,7 @@ const CommentVotes = ({ commentId }) => {
             await dispatch(voteOnComment(upvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            if (
-                error.name === "CantGetNewAccessTokenError" ||
-                error.name === "NoAccessTokenError"
-            ) {
-                handleAuthErrorOnRequest(error, logout, navigate);
-            } else {
-                toast.error(error.message, {
-                    position: "bottom-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
+            handleErrorOnRequest(error, logout, navigate);
         }
     }
 
@@ -177,22 +161,7 @@ const CommentVotes = ({ commentId }) => {
             await dispatch(voteOnComment(downvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            if (
-                error.name === "CantGetNewAccessTokenError" ||
-                error.name === "NoAccessTokenError"
-            ) {
-                handleAuthErrorOnRequest(error, logout, navigate);
-            } else {
-                toast.error(error.message, {
-                    position: "bottom-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
+            handleErrorOnRequest(error, logout, navigate);
         }
     }
 

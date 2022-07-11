@@ -2,10 +2,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { selectAllCategories } from "../categories/categoriesSlice";
 import { addNewPost } from "./postsSlice";
@@ -14,7 +14,7 @@ import styles from "./styles/add-post-form.module.css";
 // TODO: VALDIATE INPUT
 const AddPostForm = () => {
     let navigate = useNavigate();
-    const { loggedIn, usernameLoggedIn, userIdLoggedIn } =
+    const { loggedIn, usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
     useEffect(() => {
@@ -56,15 +56,7 @@ const AddPostForm = () => {
             const successMessage = "Succesfully added post!";
             navigate("/", { state: { successMessage: successMessage } });
         } catch (error) {
-            toast.error("Could not add post!", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            handleErrorOnRequest(error, logout, navigate);
         } finally {
             setAddPostStatus("idle");
         }

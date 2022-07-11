@@ -1,17 +1,20 @@
 import { useContext, useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { deletePost } from "./postsSlice";
 import styles from "./styles/delete-post.module.css";
 
 const DeletePost = ({ postId }) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { userIdLoggedIn } = useContext(UserContext);
+    const { userIdLoggedIn, logout } = useContext(UserContext);
     const [deletePostStatus, setDeletePostStatus] = useState("idle");
 
     const loader = (
@@ -45,17 +48,9 @@ const DeletePost = ({ postId }) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-            })
-        } catch (error) {
-            toast.error(error.message, {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
             });
+        } catch (error) {
+            handleErrorOnRequest(error, logout, navigate);
         } finally {
             setDeletePostStatus("idle");
         }

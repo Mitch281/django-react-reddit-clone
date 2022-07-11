@@ -102,7 +102,7 @@ export async function signup(username, password) {
     }
 }
 
-export function handleAuthErrorOnRequest(error, logout, navigate) {
+function handleAuthErrorOnRequest(error, logout, navigate) {
     if (error.name === "CantGetNewAccessTokenError") {
         toast.error("Session expired! Please login again.", {
             position: "bottom-center",
@@ -117,6 +117,42 @@ export function handleAuthErrorOnRequest(error, logout, navigate) {
         navigate("/login/");
     } else if (error.name === "NoAccessTokenError") {
         toast.error("You must be logged in to perform this action!", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    }
+}
+
+export function handleErrorOnRequest(error, logout, navigate) {
+    if (error.name === "CantGetNewAccessTokenError") {
+        toast.error("Session expired! Please login again.", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+        logout();
+        navigate("/login/");
+    } else if (error.name === "NoAccessTokenError") {
+        toast.error("You must be logged in to perform this action!", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    } else {
+        toast.error(error.message, {
             position: "bottom-center",
             autoClose: 3000,
             hideProgressBar: false,

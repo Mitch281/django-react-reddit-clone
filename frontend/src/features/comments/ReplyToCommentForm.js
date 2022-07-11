@@ -1,15 +1,22 @@
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
-import { incrementNumReplies, makeCommentOnPost, selectCommentById } from "./commentsSlice";
+import {
+    incrementNumReplies,
+    makeCommentOnPost,
+    selectCommentById,
+} from "./commentsSlice";
 import styles from "./styles/reply-to-comment-form.module.css";
 
 const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const commentToReplyTo = useSelector((state) =>
         selectCommentById(state, commentId)
@@ -19,7 +26,8 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
     const [replyContent, setReplyContent] = useState("");
     const [editCommentStatus, setEditCommentStatus] = useState("idle");
 
-    const { usernameLoggedIn, userIdLoggedIn } = useContext(UserContext);
+    const { usernameLoggedIn, userIdLoggedIn, logout } =
+        useContext(UserContext);
 
     async function handleReplyComment(e) {
         e.preventDefault();
@@ -38,7 +46,9 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
 
         try {
             await dispatch(makeCommentOnPost(reply)).unwrap();
-            dispatch(incrementNumReplies(commentId, commentToReplyTo.num_replies));
+            dispatch(
+                incrementNumReplies(commentId, commentToReplyTo.num_replies)
+            );
             setReplyContent("");
             setEditCommentStatus("fulfilled");
             toggleReplyForm();
@@ -52,15 +62,7 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                 progress: undefined,
             });
         } catch (error) {
-            toast.error("Could not make comment!", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            handleErrorOnRequest(error, logout, navigate);
         } finally {
             setEditCommentStatus("idle");
         }

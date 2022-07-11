@@ -9,6 +9,7 @@ import { UserContext } from "../../app/App";
 import { constants } from "../../utils/constants";
 import { createCategory } from "./categoriesSlice";
 import styles from "./styles/create-category.module.css";
+import { handleErrorOnRequest } from "../../utils/auth";
 
 const CreateCategoryForm = () => {
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const CreateCategoryForm = () => {
     const [categoryName, setCategoryName] = useState("");
     const [createCategoryStatus, setCreateCategoryStatus] = useState("idle");
 
-    const { loggedIn } = useContext(UserContext);
+    const { loggedIn, logout } = useContext(UserContext);
 
     let navigate = useNavigate();
 
@@ -44,15 +45,7 @@ const CreateCategoryForm = () => {
                 state: { categoryId: categoryId, successMessage: successMessage },
             });
         } catch (error) {
-            toast.error("Could not create category!", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            handleErrorOnRequest(error, logout, navigate);
         } finally {
             setCreateCategoryStatus("idle");
         }

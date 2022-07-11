@@ -2,11 +2,10 @@ import { useContext } from "react";
 import { HiArrowSmDown, HiArrowSmUp } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { handleAuthErrorOnRequest } from "../../utils/auth";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
     selectAllUsersVotesOnPosts, trackUsersVote
@@ -137,19 +136,7 @@ const PostVotes = ({ postId }) => {
             await dispatch(voteOnPost(upvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            if (error.name === "CantGetNewAccessTokenError" || error.name === "NoAccessTokenError") {
-                handleAuthErrorOnRequest(error, logout, navigate);
-            } else {
-                toast.error(error.message, {
-                    position: "bottom-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
+            handleErrorOnRequest(error, logout, navigate);
         }
     }
 
@@ -170,19 +157,7 @@ const PostVotes = ({ postId }) => {
             await dispatch(voteOnPost(downvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            if (error.name === "CantGetNewAccessTokenError" || error.name === "NoAccessTokenError") {
-                handleAuthErrorOnRequest(error, logout, navigate);
-            } else {
-                toast.error("Error upvoting. Please try again later.", {
-                    position: "bottom-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
+            handleErrorOnRequest(error, logout, navigate);
         }
     }
 

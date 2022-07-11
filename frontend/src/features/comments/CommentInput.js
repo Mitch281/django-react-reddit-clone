@@ -1,22 +1,25 @@
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { makeCommentOnPost } from "./commentsSlice";
 import styles from "./styles/comment-input.module.css";
 
 const CommentInput = () => {
+    const navigate = useNavigate();
+
     const [commentContent, setCommentContent] = useState("");
 
     const dispatch = useDispatch();
     const [addNewCommentStatus, setAddNewCommentStatus] = useState("idle");
 
-    const { loggedIn, usernameLoggedIn, userIdLoggedIn } =
+    const { loggedIn, usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
     const { postId } = useParams();
@@ -66,15 +69,7 @@ const CommentInput = () => {
                 progress: undefined,
             });
         } catch (error) {
-            toast.error("Could not make comment!", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            handleErrorOnRequest(error, logout, navigate);
         } finally {
             setAddNewCommentStatus("idle");
         }
