@@ -1,24 +1,23 @@
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "../common/nav/Navbar";
-import LinkToCreatePost from "../common/posts/LinkToCreatePost";
-import {
-    getNewAccessToken,
-    isTokenExpired,
-    NoAccessTokenError,
-    verifyCurrentUser,
-} from "../utils/auth";
+import { ToastContainer } from "react-toastify";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
+import Navbar from "../common/nav/Navbar";
+import LinkToCreatePost from "../common/posts/LinkToCreatePost";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
 import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";
 import Posts from "../features/posts/Posts";
 import PostSelected from "../features/posts/PostSelected";
-import { ToastContainer } from "react-toastify";
+import {
+    getNewAccessToken,
+    handleCantReLoginError,
+    isTokenExpired,
+    verifyCurrentUser,
+} from "../utils/auth";
 
 export const UserContext = createContext();
-// TODO: HANDLE REFRESH TOKEN EXPIRY!!
 // TODO: Handle multiple unecessary fetches.
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
@@ -28,8 +27,8 @@ function App() {
     // This function relogs in a user whenever they navigate to a different page or refresh the page.
     async function reLogin() {
         const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-            throw new NoAccessTokenError("No access token exists!");
+        if (accessToken === null) {
+            return;
         }
 
         // Access token is expired, so we get a new access token using the refresh token.
@@ -37,7 +36,7 @@ function App() {
             try {
                 await getNewAccessToken();
             } catch (error) {
-                return Promise.reject(error);
+                handleCantReLoginError(error, logout);
             }
         } else {
             try {
@@ -47,7 +46,7 @@ function App() {
                 setUserIdLoggedIn(json.id);
                 setUsernameLoggedIn(json.username);
             } catch (error) {
-                return Promise.reject(error);
+                handleCantReLoginError(error, logout);
             }
         }
     }

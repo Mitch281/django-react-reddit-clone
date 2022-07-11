@@ -48,7 +48,7 @@ export async function verifyCurrentUser() {
     if (response.ok) {
         return response;
     } else {
-        throw new Error(response.status);
+        throw new CantGetNewAccessTokenError("Cannot get new access token!");
     }
 }
 
@@ -102,32 +102,6 @@ export async function signup(username, password) {
     }
 }
 
-function handleAuthErrorOnRequest(error, logout, navigate) {
-    if (error.name === "CantGetNewAccessTokenError") {
-        toast.error("Session expired! Please login again.", {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-        logout();
-        navigate("/login/");
-    } else if (error.name === "NoAccessTokenError") {
-        toast.error("You must be logged in to perform this action!", {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-    }
-}
-
 export function handleErrorOnRequest(error, logout, navigate) {
     if (error.name === "CantGetNewAccessTokenError") {
         toast.error("Session expired! Please login again.", {
@@ -161,5 +135,39 @@ export function handleErrorOnRequest(error, logout, navigate) {
             draggable: true,
             progress: undefined,
         });
+    }
+}
+
+// Although the logic for this function is similar as the "handleErrorOnRequest" function, we must make this a seperate function.
+// This is because since we call this function in the root App component, we cannot import and use the useNavigate hook from react
+// router dom. This is due to the fact that the hook can only be used inside a Router component. We also do not handle no access
+// token because chances are the user does not intend to relogin if they do not have an access token.
+export function handleCantReLoginError(error, logout) {
+    // If there is no access token, there is no reason for the user to know about re logging in.
+    if (localStorage.getItem("accessToken") === null) {
+        return;
+    }
+    if (error.name === "CantGetNewAccessTokenError") {
+        toast.error("Session expired! Please login again.", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+        logout();
+    } else {
+        toast.error("Could not authenticate user! Please login again.", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+        logout();
     }
 }
