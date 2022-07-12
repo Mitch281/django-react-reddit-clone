@@ -3,7 +3,6 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { v4 as uuid_v4 } from "uuid";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -31,7 +30,7 @@ const usersVotesOnPostsSlice = createSlice({
     reducers: {
         trackUsersVote(state, action) {
             usersVotesOnPostsAdapter.upsertOne(state, action.payload);
-        }
+        },
     },
     extraReducers(builder) {
         builder
@@ -45,7 +44,7 @@ const usersVotesOnPostsSlice = createSlice({
             .addCase(fetchUsersVotesOnPosts.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
-            })
+            });
     },
 });
 

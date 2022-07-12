@@ -61,6 +61,7 @@ function App() {
 
     useEffect(() => {
         reLogin();
+        // eslint-disable-next-line
     }, []);
 
     return (

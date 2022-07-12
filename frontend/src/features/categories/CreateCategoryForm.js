@@ -1,15 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { createCategory } from "./categoriesSlice";
 import styles from "./styles/create-category.module.css";
-import { renderErrorOnRequest } from "../../utils/auth";
 
 const CreateCategoryForm = () => {
     const dispatch = useDispatch();
@@ -21,7 +20,8 @@ const CreateCategoryForm = () => {
 
     let navigate = useNavigate();
 
-    let numCategoryNameCharsLeft = constants.CATEGORY_NAME_CHAR_LIMIT - categoryName.length;
+    let numCategoryNameCharsLeft =
+        constants.CATEGORY_NAME_CHAR_LIMIT - categoryName.length;
 
     async function handleCreateCategory(e) {
         e.preventDefault();
@@ -31,14 +31,17 @@ const CreateCategoryForm = () => {
 
         const newCategory = {
             id: categoryId,
-            name: categoryName
-        }
+            name: categoryName,
+        };
 
         try {
             await dispatch(createCategory(newCategory)).unwrap();
             const successMessage = `Succesfully created the category ${categoryName}!`;
             navigate(`/posts/category=${categoryName}/`, {
-                state: { categoryId: categoryId, successMessage: successMessage },
+                state: {
+                    categoryId: categoryId,
+                    successMessage: successMessage,
+                },
             });
         } catch (error) {
             renderErrorOnRequest(error, logout, navigate);
@@ -69,17 +72,15 @@ const CreateCategoryForm = () => {
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
                 />
-                <span className={styles["char-count"]}>{numCategoryNameCharsLeft} characters left</span>
+                <span className={styles["char-count"]}>
+                    {numCategoryNameCharsLeft} characters left
+                </span>
                 {submitButton}
             </form>
         </div>
     );
 
-    return (
-        <>
-            {content}
-        </>
-    );
+    return <>{content}</>;
 };
 
 export default CreateCategoryForm;

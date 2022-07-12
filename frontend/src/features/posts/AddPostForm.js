@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -25,7 +25,8 @@ const AddPostForm = () => {
     const [addPostStatus, setAddPostStatus] = useState("idle");
 
     let numTitleCharsLeft = constants.POST_TITLE_CHAR_LIMIT - title.length;
-    let numContentCharsLeft = constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
+    let numContentCharsLeft =
+        constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
 
     async function handleAddPost(e) {
         e.preventDefault();
@@ -83,7 +84,9 @@ const AddPostForm = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Title"
                 />
-                <span className={styles["char-count"]}>{numTitleCharsLeft} characters left</span>
+                <span className={styles["char-count"]}>
+                    {numTitleCharsLeft} characters left
+                </span>
                 <textarea
                     id={styles["post-content"]}
                     type="text"
@@ -91,7 +94,9 @@ const AddPostForm = () => {
                     onChange={(e) => setPostContent(e.target.value)}
                     placeholder="Content"
                 />
-                <span className={styles["char-count"]}>{numContentCharsLeft} characters left</span>
+                <span className={styles["char-count"]}>
+                    {numContentCharsLeft} characters left
+                </span>
                 <select id={styles["select-post-category"]} ref={category}>
                     {categories.map((category) => (
                         <option

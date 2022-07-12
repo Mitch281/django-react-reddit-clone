@@ -28,16 +28,19 @@ const Comments = () => {
 
     useEffect(() => {
         dispatch(fetchComments({ order: order, postId: postId }));
+        // eslint-disable-next-line
     }, [order, dispatch]);
 
     useEffect(() => {
         dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
+        // eslint-disable-next-line
     }, [dispatch]);
 
     // Once we fetch the comments, we will put them in their nested structure.
     useEffect(() => {
         const nestedComments = nestComments();
         setCommentChain(nestedComments);
+        // eslint-disable-next-line
     }, [comments]);
 
     useEffect(() => {

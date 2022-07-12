@@ -43,6 +43,7 @@ const CategoryDropdown = () => {
                 "mousedown",
                 handleClickOutsideDropdown
             );
+        // eslint-disable-next-line
     }, [isDropdownOpen]);
 
     return (

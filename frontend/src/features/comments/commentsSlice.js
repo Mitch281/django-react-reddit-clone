@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { CantGetNewAccessTokenError, handleFetchError, NoAccessTokenError } from "../../utils/auth";
+import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -29,7 +29,7 @@ export const fetchComments = createAsyncThunk(
         const json = await response.json();
         return json;
     }
-)
+);
 
 export const voteOnComment = createAsyncThunk(
     "comments/voteOnComment",
@@ -37,7 +37,7 @@ export const voteOnComment = createAsyncThunk(
         const { commentId, usersVoteOnCommentId, data } = voteData;
         let url;
         if (usersVoteOnCommentId) {
-            url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=${usersVoteOnCommentId}/`
+            url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=${usersVoteOnCommentId}/`;
         } else {
             url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=/`;
         }
@@ -46,10 +46,13 @@ export const voteOnComment = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not vote on comment! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not vote on comment! Please try again later."
+            );
         }
     }
-)
+);
 
 export const makeCommentOnPost = createAsyncThunk(
     "comments/makeCommentOnPost",
@@ -60,10 +63,13 @@ export const makeCommentOnPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not comment on post! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not comment on post! Please try again later."
+            );
         }
     }
-)
+);
 
 export const editComment = createAsyncThunk(
     "comments/editComment",
@@ -77,31 +83,40 @@ export const editComment = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not edit comment! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not edit comment! Please try again later."
+            );
         }
     }
-)
+);
 
 export const deleteComment = createAsyncThunk(
     "comments/deleteComment",
-    async (deleteCommentInformation)  => {
+    async (deleteCommentInformation) => {
         const { commentId, userId } = deleteCommentInformation;
         const patchInformation = {
             deleted: true,
-        }
+        };
         // TODO: Why is it that when I don't append slash infront of comment id, I get a did not append slash error in Django? Find out!!
         // Also, if I append slash to url below, I get same error, but this does not happen for delete request (for example, deleting post). Why??
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
-            const response = await authorisedFetchWrapper.patch(url, patchInformation);
+            const response = await authorisedFetchWrapper.patch(
+                url,
+                patchInformation
+            );
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not delete comment! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not delete comment! Please try again later."
+            );
         }
     }
-)
+);
 
 const commentsSlice = createSlice({
     name: "comments",
@@ -110,19 +125,19 @@ const commentsSlice = createSlice({
         toggleHidden: {
             reducer(state, action) {
                 commentsAdapter.updateOne(state, action.payload);
-            }, 
+            },
             prepare(commentId, isHidden) {
                 return {
                     payload: {
                         id: commentId,
                         changes: {
-                            is_hidden: !isHidden
-                        }
-                    }
-                }
-            }
+                            is_hidden: !isHidden,
+                        },
+                    },
+                };
+            },
         },
-        // We must increment the number of replies manually everytime a user replies due to the rendering behaviour of 
+        // We must increment the number of replies manually everytime a user replies due to the rendering behaviour of
         // comment replies. Particularly, replies render only if the number of replies is above 0. Thus, on the first reply
         // of a comment, if we do not manually increment the number of replies, the reply will not render.
         incrementNumReplies: {
@@ -134,12 +149,12 @@ const commentsSlice = createSlice({
                     payload: {
                         id: parentCommentId,
                         changes: {
-                            num_replies: currentNumReplies + 1
-                        }
-                    }
-                }
-            }
-        }
+                            num_replies: currentNumReplies + 1,
+                        },
+                    },
+                };
+            },
+        },
     },
     extraReducers(builder) {
         builder
@@ -167,16 +182,17 @@ const commentsSlice = createSlice({
             // Upsert works but update doesn't? Look into this.
             .addCase(deleteComment.fulfilled, (state, action) => {
                 commentsAdapter.upsertOne(state, action.payload);
-            })
-    }     
+            });
+    },
 });
 
 export default commentsSlice.reducer;
 
-export const { toggleHidden, incrementNumReplies, trackUsersVote } = commentsSlice.actions;
+export const { toggleHidden, incrementNumReplies, trackUsersVote } =
+    commentsSlice.actions;
 
 export const {
     selectAll: selectAllComments,
     selectById: selectCommentById,
-    selectIds: selectCommentIds
-} = commentsAdapter.getSelectors(state => state.comments);
+    selectIds: selectCommentIds,
+} = commentsAdapter.getSelectors((state) => state.comments);

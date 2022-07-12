@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { CantGetNewAccessTokenError, handleFetchError } from "../../utils/auth";
+import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -64,17 +64,20 @@ export const voteOnPost = createAsyncThunk(
             url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=${usersVoteOnPostId}/`;
         } else {
             // User has not voted on post yet.
-            url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=/`
+            url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=/`;
         }
         try {
             const response = await authorisedFetchWrapper.put(url, data);
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not vote on post! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not vote on post! Please try again later."
+            );
         }
     }
-)
+);
 
 export const addNewPost = createAsyncThunk(
     "posts/addNewPost",
@@ -85,7 +88,10 @@ export const addNewPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not add new post! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not add new post! Please try again later."
+            );
         }
     }
 );
@@ -94,14 +100,17 @@ export const editPost = createAsyncThunk(
     "posts/editPost",
     async (editPostInformation) => {
         const { postId, userId, newPostContent } = editPostInformation;
-        const patchData = { content: newPostContent }
+        const patchData = { content: newPostContent };
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
             const response = await authorisedFetchWrapper.patch(url, patchData);
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not edit post! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not edit post! Please try again later."
+            );
         }
     }
 );
@@ -116,7 +125,10 @@ export const deletePost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not delete post! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not delete post! Please try again later."
+            );
         }
     }
 );

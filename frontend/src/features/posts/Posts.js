@@ -77,6 +77,7 @@ const Posts = () => {
                 progress: undefined,
             })
         }
+        // eslint-disable-next-line
     }, [dispatch, order, categoryId]);
 
     let content;

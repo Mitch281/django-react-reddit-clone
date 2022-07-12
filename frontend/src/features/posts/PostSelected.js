@@ -28,6 +28,7 @@ const PostSelected = () => {
             // Since we refreshed the page, our data on the user's votes is gone. Thus, we re fetch this.
             dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
         }
+        // eslint-disable-next-line
     }, [dispatch]);
 
     let content = null;
