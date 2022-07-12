@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { CantGetNewAccessTokenError, NoAccessTokenError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -60,6 +61,28 @@ export const makeCommentOnPost = createAsyncThunk(
             return json;
         } catch (error) {
             return Promise.reject(error);
+        }
+    }
+)
+
+export const editComment = createAsyncThunk(
+    "comments/editComment",
+    async (editCommentInformation) => {
+        const { commentId, userId, newCommentContent } = editCommentInformation;
+        const patchData = { content: newCommentContent };
+        const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
+
+        try {
+            const response = await authorisedFetchWrapper.patch(url, patchData);
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            console.log(error);
+            if (error instanceof CantGetNewAccessTokenError || error instanceof NoAccessTokenError) {
+                throw error;
+            } else {
+                throw new Error("Cannot edit comment! Please try again later.");
+            }
         }
     }
 )
@@ -142,6 +165,9 @@ const commentsSlice = createSlice({
             .addCase(makeCommentOnPost.fulfilled, (state, action) => {
                 state.makeCommentOnPostStatus = "fulfilled";
                 commentsAdapter.addOne(state, action.payload);
+            })
+            .addCase(editComment.fulfilled, (state, action) => {
+                commentsAdapter.upsertOne(state, action.payload);
             })
             // Upsert works but update doesn't? Look into this.
             .addCase(deleteComment.fulfilled, (state, action) => {

@@ -14,6 +14,7 @@ import ToggleHidden from "./ToggleHidden";
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
 
+    const [isCurrentlyReplying, setIsCurrentlyReplying] = useState(false);
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
 
     const { loggedIn, userIdLoggedIn } = useContext(UserContext);
@@ -26,6 +27,10 @@ const Comment = ({ commentId, replies, isRootComment }) => {
     }
 
     function toggleReplyForm() {
+        setIsCurrentlyReplying(!isCurrentlyReplying);
+    }
+
+    function toggleEditForm() {
         setIsCurrentlyEditing(!isCurrentlyEditing);
     }
 
@@ -53,6 +58,27 @@ const Comment = ({ commentId, replies, isRootComment }) => {
             <DeleteComment commentId={commentId} />
         ) : null;
 
+    let replyButton = loggedIn ? (
+        <button
+            type="button"
+            className={styles["reply-to-comment-button"]}
+            onClick={toggleReplyForm}
+        >
+            Reply
+        </button>
+    ) : null;
+
+    let editContentButton =
+        userIdLoggedIn === comment.user ? (
+            <button
+                type="button"
+                className={styles["toggle-edit-comment"]}
+                onClick={toggleEditForm}
+            >
+                Edit
+            </button>
+        ) : null;
+
     let content;
     if (comment.deleted) {
         content = (
@@ -72,22 +98,15 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                 <CommentVotes commentId={commentId} />
                 <Author username={comment.username} />
                 <DateOfComment dateCreated={comment.date_created} />
-                <CommentContent commentId={commentId} />
-                {loggedIn ? (
-                    <button
-                        type="button"
-                        className={styles["reply-to-comment-button"]}
-                        onClick={toggleReplyForm}
-                    >
-                        Reply
-                    </button>
-                ) : null}
-                {isCurrentlyEditing ? (
+                <CommentContent commentId={commentId} isCurrentlyEditing={isCurrentlyEditing} toggleEditForm={toggleEditForm} />
+                {replyButton}
+                {isCurrentlyReplying ? (
                     <ReplyToCommentForm
                         commentId={commentId}
                         toggleReplyForm={toggleReplyForm}
                     />
                 ) : null}
+                {editContentButton}
                 {deleteCommentButton}
             </div>
         );

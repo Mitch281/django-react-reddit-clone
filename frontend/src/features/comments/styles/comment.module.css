@@ -23,11 +23,6 @@
     border-collapse: collapse;
 }
 
-.toggle-edit-comment {
-    float: right;
-    margin-right: 10px;
-}
-
 .reply-to-comment-button, .toggle-edit-comment {
     border: 0px;
     background: var(--post-background-colour);

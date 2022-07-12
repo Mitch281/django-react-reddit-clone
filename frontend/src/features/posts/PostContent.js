@@ -4,6 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
+import { handleErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { editPost, selectPostById } from "./postsSlice";
 import styles from "./styles/post-content.module.css";
@@ -38,15 +39,7 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
                 progress: undefined,
             })
         } catch (error) {
-            toast.error(error.message, {
-                position: "bottom-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            handleErrorOnRequest(error);
         } finally {
             setEditPostStatus("idle");
         }
