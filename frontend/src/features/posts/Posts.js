@@ -24,10 +24,6 @@ const Posts = () => {
     if (state) {
         // State will always have a categoryId in this component, so no need to check if the categoryId property exists.
         categoryId = state.categoryId;
-        if (state.hasOwnProperty("successMessage")) {
-            successMessage = state.successMessage;
-            // TODO: DELETE SUCCESS MESSAGE AFTER STORING IT (OR ELSE WE KEEP GETTING SUCCESS MESSAGE ONCE USER ADDS POST)
-        }
     }
 
     const dispatch = useDispatch();
@@ -65,17 +61,6 @@ const Posts = () => {
             dispatch(
                 fetchPostsByCategory({ order: order, categoryId: categoryId })
             );
-        }
-        if (successMessage) {
-            toast.success(successMessage, {
-                position: "bottom-center",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
         }
         // eslint-disable-next-line
     }, [dispatch, order, categoryId]);

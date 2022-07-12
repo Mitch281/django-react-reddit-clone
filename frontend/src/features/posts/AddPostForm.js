@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
@@ -49,7 +50,16 @@ const AddPostForm = () => {
         try {
             await dispatch(addNewPost(newPost)).unwrap();
             const successMessage = "Succesfully added post!";
-            navigate("/", { state: { successMessage: successMessage } });
+            toast.success(successMessage, {
+                position: "bottom-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            navigate("/");
         } catch (error) {
             renderErrorOnRequest(error, logout, navigate);
         } finally {
