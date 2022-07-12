@@ -29,7 +29,6 @@
 #create-post-flex-container form {
     width: 25vw;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -66,6 +65,11 @@
 
 #create-post-flex-container select {
     cursor: pointer;
+}
+
+.char-count {
+    font-size: 75%;
+    color: grey;
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {

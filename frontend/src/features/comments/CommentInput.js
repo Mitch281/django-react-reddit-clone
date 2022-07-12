@@ -24,6 +24,8 @@ const CommentInput = () => {
 
     const { postId } = useParams();
 
+    let numCommentContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
+
     let submitButton;
     if (addNewCommentStatus === "pending") {
         submitButton = (
@@ -86,6 +88,7 @@ const CommentInput = () => {
                             value={commentContent}
                             onChange={(e) => setCommentContent(e.target.value)}
                         />
+                        <span className={styles["char-count"]}>{numCommentContentCharsLeft} characters left</span>
                         {submitButton}
                     </form>
                 </div>

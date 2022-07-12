@@ -174,6 +174,7 @@ export function handleCantReLoginError(error, logout) {
 
 // This is to be used when fetching from database mainly in slice files.
 export function handleFetchError(error, message) {
+    console.log(error);
     if (
         error instanceof CantGetNewAccessTokenError ||
         error instanceof NoAccessTokenError

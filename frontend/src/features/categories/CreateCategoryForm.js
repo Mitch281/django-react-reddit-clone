@@ -17,15 +17,11 @@ const CreateCategoryForm = () => {
     const [categoryName, setCategoryName] = useState("");
     const [createCategoryStatus, setCreateCategoryStatus] = useState("idle");
 
-    const { loggedIn, logout } = useContext(UserContext);
+    const { logout } = useContext(UserContext);
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        if (!loggedIn) {
-            navigate("/login/");
-        }
-    }, []);
+    let numCategoryNameCharsLeft = constants.CATEGORY_NAME_CHAR_LIMIT - categoryName.length;
 
     async function handleCreateCategory(e) {
         e.preventDefault();
@@ -73,6 +69,7 @@ const CreateCategoryForm = () => {
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
                 />
+                <span className={styles["char-count"]}>{numCategoryNameCharsLeft} characters left</span>
                 {submitButton}
             </form>
         </div>

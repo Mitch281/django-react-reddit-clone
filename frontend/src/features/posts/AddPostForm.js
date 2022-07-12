@@ -11,19 +11,10 @@ import { selectAllCategories } from "../categories/categoriesSlice";
 import { addNewPost } from "./postsSlice";
 import styles from "./styles/add-post-form.module.css";
 
-// TODO: VALDIATE INPUT
 const AddPostForm = () => {
     let navigate = useNavigate();
-    const { loggedIn, usernameLoggedIn, userIdLoggedIn, logout } =
+    const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
-
-    useEffect(() => {
-        if (!loggedIn) {
-            // TODO: SET SOME STATE HERE TO LET USER KNOW THEY WERE NAVIGATED HERE
-            // BECAUSE THEY NEED TO BE LOGGED IN TO ADD A POST.
-            navigate("/login/");
-        }
-    }, []);
 
     const dispatch = useDispatch();
     const categories = useSelector(selectAllCategories);
@@ -32,6 +23,9 @@ const AddPostForm = () => {
     const [postContent, setPostContent] = useState("");
     const category = useRef(null);
     const [addPostStatus, setAddPostStatus] = useState("idle");
+
+    let numTitleCharsLeft = constants.POST_TITLE_CHAR_LIMIT - title.length;
+    let numContentCharsLeft = constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
 
     async function handleAddPost(e) {
         e.preventDefault();
@@ -89,6 +83,7 @@ const AddPostForm = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Title"
                 />
+                <span className={styles["char-count"]}>{numTitleCharsLeft} characters left</span>
                 <textarea
                     id={styles["post-content"]}
                     type="text"
@@ -96,6 +91,7 @@ const AddPostForm = () => {
                     onChange={(e) => setPostContent(e.target.value)}
                     placeholder="Content"
                 />
+                <span className={styles["char-count"]}>{numContentCharsLeft} characters left</span>
                 <select id={styles["select-post-category"]} ref={category}>
                     {categories.map((category) => (
                         <option

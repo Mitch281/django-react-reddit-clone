@@ -84,3 +84,8 @@
         font-family: "Fira Sans", sans-serif;
     }
 }
+
+.char-count {
+    font-size: 75%;
+    color: grey;
+}

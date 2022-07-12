@@ -25,6 +25,13 @@
     resize: vertical;
 }
 
+.edit-comment-content-form textarea:focus {
+    outline: none;
+    border-radius: 10px;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
 .edit-comment-content-form input[type="submit"] {
     background-color: darkgrey;
     border: 1px solid black;
@@ -40,4 +47,10 @@
 
 .toggle-edit-comment:hover {
     background: rgb(238, 230, 230);
+}
+
+.char-count {
+    font-size: 75%;
+    color: grey;
+    margin: 10px 0px;
 }

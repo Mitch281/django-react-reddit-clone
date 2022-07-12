@@ -29,6 +29,8 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
     const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
+    let numReplyContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - replyContent.length;
+
     async function handleReplyComment(e) {
         e.preventDefault();
 
@@ -100,6 +102,7 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                         value={replyContent}
                         onChange={(e) => setReplyContent(e.target.value)}
                     />
+                    <span className={styles["char-count"]}>{numReplyContentCharsLeft} characters left</span>
                     {submitButton}
                 </div>
             </form>

@@ -20,6 +20,8 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
 
     const { userIdLoggedIn, logout } = useContext(UserContext);
 
+    let numCommentContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
+
     async function handleEditCommentContent(e) {
         e.preventDefault();
         const editCommentInformation = {
@@ -75,6 +77,7 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
                     placeholder="Content"
                     onChange={(e) => setCommentContent(e.target.value)}
                 />
+                <span className={styles["char-count"]}>{numCommentContentCharsLeft} characters left</span>
                 {submitButton}
             </div>
         </form>
