@@ -109,8 +109,8 @@ const PostVotes = ({ postId }) => {
         } else {
             data = {
                 id: uuid_v4(),
-                upvote: true,
-                downvote: false,
+                upvote: false,
+                downvote: true,
                 user: userIdLoggedIn,
                 post: postId,
             };
