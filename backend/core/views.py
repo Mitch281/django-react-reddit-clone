@@ -58,7 +58,7 @@ class PostsView(APIView):
     def get(self, request, ordering=""):
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
-            posts = Post.objects.annotate(num_comments=Count("comment")).all()
+            posts = Post.objects.annotate(num_comments=Count("comment")).all().order_by("-date_created")
         elif ordering == "old":
             # Note that django automatically orders the posts by oldest.
             posts = Post.objects.annotate(num_comments=Count(
