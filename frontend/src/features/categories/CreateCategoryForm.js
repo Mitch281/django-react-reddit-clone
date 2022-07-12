@@ -9,7 +9,7 @@ import { UserContext } from "../../app/App";
 import { constants } from "../../utils/constants";
 import { createCategory } from "./categoriesSlice";
 import styles from "./styles/create-category.module.css";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 
 const CreateCategoryForm = () => {
     const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const CreateCategoryForm = () => {
                 state: { categoryId: categoryId, successMessage: successMessage },
             });
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         } finally {
             setCreateCategoryStatus("idle");
         }

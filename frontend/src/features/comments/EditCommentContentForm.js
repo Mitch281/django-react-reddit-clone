@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editComment, selectCommentById } from "./commentsSlice";
 import { UserContext } from "../../app/App";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../utils/constants";
 import { toast } from "react-toastify";
@@ -43,7 +43,7 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
                 progress: undefined,
             })
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         } finally {
             setEditCommentStatus("idle");
         }

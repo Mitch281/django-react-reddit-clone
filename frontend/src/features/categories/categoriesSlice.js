@@ -35,7 +35,7 @@ export const createCategory = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not create category! Please try again later.");
         }
     }
 )

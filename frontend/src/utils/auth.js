@@ -102,7 +102,7 @@ export async function signup(username, password) {
     }
 }
 
-export function handleErrorOnRequest(error, logout, navigate) {
+export function renderErrorOnRequest(error, logout, navigate) {
     if (error.name === "CantGetNewAccessTokenError") {
         toast.error("Session expired! Please login again.", {
             position: "bottom-center",
@@ -169,5 +169,17 @@ export function handleCantReLoginError(error, logout) {
             progress: undefined,
         });
         logout();
+    }
+}
+
+// This is to be used when fetching from database mainly in slice files.
+export function handleFetchError(error, message) {
+    if (
+        error instanceof CantGetNewAccessTokenError ||
+        error instanceof NoAccessTokenError
+    ) {
+        throw error;
+    } else {
+        throw new Error(message);
     }
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
     selectAllUsersVotesOnPosts, trackUsersVote
@@ -136,7 +136,7 @@ const PostVotes = ({ postId }) => {
             await dispatch(voteOnPost(upvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         }
     }
 
@@ -157,7 +157,7 @@ const PostVotes = ({ postId }) => {
             await dispatch(voteOnPost(downvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         }
     }
 

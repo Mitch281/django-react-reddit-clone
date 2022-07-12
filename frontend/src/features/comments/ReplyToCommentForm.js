@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import {
     incrementNumReplies,
@@ -62,7 +62,7 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                 progress: undefined,
             });
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         } finally {
             setEditCommentStatus("idle");
         }

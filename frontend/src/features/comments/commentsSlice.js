@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { CantGetNewAccessTokenError, NoAccessTokenError } from "../../utils/auth";
+import { CantGetNewAccessTokenError, handleFetchError, NoAccessTokenError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -46,7 +46,7 @@ export const voteOnComment = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not vote on comment! Please try again later.");
         }
     }
 )
@@ -60,7 +60,7 @@ export const makeCommentOnPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not comment on post! Please try again later.");
         }
     }
 )
@@ -77,12 +77,7 @@ export const editComment = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            console.log(error);
-            if (error instanceof CantGetNewAccessTokenError || error instanceof NoAccessTokenError) {
-                throw error;
-            } else {
-                throw new Error("Cannot edit comment! Please try again later.");
-            }
+            handleFetchError(error, "Could not edit comment! Please try again later.");
         }
     }
 )
@@ -103,7 +98,7 @@ export const deleteComment = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not delete comment! Please try again later.");
         }
     }
 )

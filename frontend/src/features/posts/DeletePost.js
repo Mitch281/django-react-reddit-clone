@@ -6,7 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { deletePost } from "./postsSlice";
 import styles from "./styles/delete-post.module.css";
@@ -50,7 +50,7 @@ const DeletePost = ({ postId }) => {
                 progress: undefined,
             });
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         } finally {
             setDeletePostStatus("idle");
         }

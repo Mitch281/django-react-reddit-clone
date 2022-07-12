@@ -6,7 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
-import { handleErrorOnRequest } from "../../utils/auth";
+import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { deleteComment } from "./commentsSlice";
 import styles from "./styles/delete-comment.module.css";
@@ -43,7 +43,7 @@ const DeleteComment = ({ commentId }) => {
                 progress: undefined,
             });
         } catch (error) {
-            handleErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error, logout, navigate);
         } finally {
             setDeleteCommentStatus("idle");
         }

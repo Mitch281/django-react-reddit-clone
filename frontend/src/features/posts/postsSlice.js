@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { CantGetNewAccessTokenError } from "../../utils/auth";
+import { CantGetNewAccessTokenError, handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -71,7 +71,7 @@ export const voteOnPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            throw error;
+            handleFetchError(error, "Could not vote on post! Please try again later.");
         }
     }
 )
@@ -85,7 +85,7 @@ export const addNewPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not add new post! Please try again later.");
         }
     }
 );
@@ -101,7 +101,7 @@ export const editPost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not edit post! Please try again later.");
         }
     }
 );
@@ -116,7 +116,7 @@ export const deletePost = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch (error) {
-            return Promise.reject(error);
+            handleFetchError(error, "Could not delete post! Please try again later.");
         }
     }
 );
