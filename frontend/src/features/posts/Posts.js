@@ -2,8 +2,8 @@ import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
@@ -20,7 +20,6 @@ const Posts = () => {
 
     const { state } = useLocation();
     let categoryId;
-    let successMessage;
     if (state) {
         // State will always have a categoryId in this component, so no need to check if the categoryId property exists.
         categoryId = state.categoryId;
@@ -29,7 +28,9 @@ const Posts = () => {
     const dispatch = useDispatch();
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
-    const usersVotesOnPostsStatus = useSelector(state => state.usersVotesOnPosts.status);
+    const usersVotesOnPostsStatus = useSelector(
+        (state) => state.usersVotesOnPosts.status
+    );
 
     // Once the user logs in, we want to fetch all of their votes.
     // TODO: Maybe think about moving these calls. It doesn't
@@ -69,7 +70,7 @@ const Posts = () => {
 
     if (postStatus === "rejected") {
         content = (
-            <div className={styles["posts"]} style={{ "marginTop": "100px" }}>
+            <div className={styles["posts"]} style={{ marginTop: "100px" }}>
                 <ErrorMessage errorMessage="Could not load posts. Please try again later." />
             </div>
         );
