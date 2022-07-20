@@ -119,7 +119,7 @@ export const deletePost = createAsyncThunk(
     "posts/deletePost",
     async (deleteInformation) => {
         const { postId, userId } = deleteInformation;
-        const url = `${API_ENDPOINT}/post/${postId}?user-id=${userId}`;
+        const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
             const response = await authorisedFetchWrapper.delete(url);
             const json = await response.json();

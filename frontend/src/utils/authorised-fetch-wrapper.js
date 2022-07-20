@@ -1,6 +1,8 @@
 // This file provides a wrapper around fetch, aimed to make authorized api fetches easier. To do this, it will handle
 // JWT expiry.
 
+// TODO: Error message for user having no access token different in production?
+
 import {
     getNewAccessToken,
     isTokenExpired,

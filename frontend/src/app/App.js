@@ -19,6 +19,8 @@ import {
 
 export const UserContext = createContext();
 // TODO: Handle multiple unecessary fetches.
+// TODO: Upgrade to latest version of react so we can see which renders are due to strict mode (greyed out),
+// and which are actual renders!
 function App() {
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
