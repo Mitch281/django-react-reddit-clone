@@ -48,7 +48,7 @@ const SignupPage = () => {
         try {
             await handleSignup();
         } catch (error) {
-            toast.error("Could not signup!", {
+            toast.error(error.message, {
                 position: "bottom-center",
                 autoClose: 3000,
                 hideProgressBar: false,

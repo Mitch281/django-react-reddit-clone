@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("__all__")
+
 
 class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
@@ -18,6 +20,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("__all__")
+
 
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
@@ -35,25 +38,31 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_hidden(self, obj):
         return False
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "id")
+
 
 class PostVotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostVotes
         fields = ("__all__")
 
+
 class CommentVotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentVotes
         fields = ("__all__")
 
+
 class NumberOfCommentsOnPostSerializer(serializers.Serializer):
     num_comments = serializers.IntegerField()
 
 # Handle signup. For future reference, this was from https://stackoverflow.com/questions/52033003/return-token-after-registration-with-django-rest-framework-simplejwt
+
+
 class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
 
@@ -85,6 +94,10 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
 # For future reference, taken from https://stackoverflow.com/questions/61143726/return-username-and-id-with-django-rest-framework-simple-jwt-tokenrefresh
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        "no_active_account": "The username or password does not match."
+    }
+
     def validate(self, attrs):
         data = super(MyTokenObtainPairSerializer, self).validate(attrs)
 

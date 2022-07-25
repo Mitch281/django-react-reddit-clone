@@ -40,7 +40,7 @@ const LoginPage = () => {
         try {
             await handleLogin();
         } catch (error) {
-            toast.error("Could not login!", {
+            toast.error(error.message, {
                 position: "bottom-center",
                 autoClose: 3000,
                 hideProgressBar: false,

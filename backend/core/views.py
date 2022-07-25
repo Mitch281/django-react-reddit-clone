@@ -58,7 +58,8 @@ class PostsView(APIView):
     def get(self, request, ordering=""):
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
-            posts = Post.objects.annotate(num_comments=Count("comment")).all().order_by("-date_created")
+            posts = Post.objects.annotate(num_comments=Count(
+                "comment")).all().order_by("-date_created")
         elif ordering == "old":
             # Note that django automatically orders the posts by oldest.
             posts = Post.objects.annotate(num_comments=Count(
@@ -271,7 +272,9 @@ class UserList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        error_list = [serializer.errors[error][0]
+                      for error in serializer.errors]
+        return Response(error_list, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostVotesView(APIView):

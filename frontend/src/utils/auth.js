@@ -78,12 +78,15 @@ export async function login(username, password) {
         },
         body: JSON.stringify({ username: username, password: password }),
     });
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
+    const json = await response.json();
+    if (!response.ok) {
+        if (json.hasOwnProperty("detail")) {
+            const errorMessage = json.detail;
+            throw new Error(errorMessage);
+        }
+        throw new Error("Could not login. Please try again later.");
     }
+    return json;
 }
 
 export async function signup(username, password) {
@@ -94,12 +97,12 @@ export async function signup(username, password) {
         },
         body: JSON.stringify({ username: username, password: password }),
     });
-    if (response.ok) {
-        const json = await response.json();
-        return json;
-    } else {
-        throw new Error(response.status);
+    const json = await response.json();
+    if (!response.ok) {
+        const errorMessage = json[0];
+        throw new Error(errorMessage);
     }
+    return json;
 }
 
 export function renderErrorOnRequest(error, logout, navigate) {
