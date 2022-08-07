@@ -71,11 +71,12 @@ const Posts = () => {
         window.addEventListener("scroll", handleScroll);
 
         return () => window.removeEventListener("scroll", handleScroll);
-        // eslint-disale-next-line
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         dispatch(resetPosts());
+        // eslint-disable-next-line
     }, [initialOrder, categoryId]);
 
     useEffect(() => {
