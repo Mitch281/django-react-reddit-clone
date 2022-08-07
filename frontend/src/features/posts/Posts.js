@@ -1,27 +1,24 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../app/App";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
+import useFetchUserVotes from "../../hooks/useFetchUserVotes";
 import useStateRef from "../../hooks/useStateRef";
-import { constants } from "../../utils/constants";
-import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
+import { constants, VoteObjects } from "../../utils/constants";
 import Post from "./Post";
 import {
     fetchPosts,
     fetchPostsByCategory,
-    resetPosts,
     selectPostIds,
     selectPostIdsByPageNumber,
 } from "./postsSlice";
 import styles from "./styles/posts.module.css";
 
 const Posts = () => {
-    const { userIdLoggedIn } = useContext(UserContext);
+    useFetchUserVotes(VoteObjects.Post);
     const params = useParams();
     const order = params.order;
 
@@ -38,9 +35,6 @@ const Posts = () => {
     const initialPageNumber = useSelector((state) => state.posts.pageNumber);
     const pageNumber = useStateRef(initialPageNumber);
     const postIdsByPageNumber = useSelector(selectPostIdsByPageNumber);
-    const usersVotesOnPostsStatus = useSelector(
-        (state) => state.usersVotesOnPosts.status
-    );
     const initialhHasMorePosts = useSelector(
         (state) => state.posts.hasMorePosts
     );
@@ -73,28 +67,6 @@ const Posts = () => {
 
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    // Once the user logs in, we want to fetch all of their votes.
-    // TODO: Maybe think about moving these calls. It doesn't
-    // really belong here. Although, posts is always loaded since user is redirected to root ("/"), which always
-    // renders posts, so maybe it does belong here? TBD
-    useEffect(() => {
-        if (userIdLoggedIn) {
-            dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
-        }
-    }, [dispatch, userIdLoggedIn]);
-
-    if (usersVotesOnPostsStatus === "rejected") {
-        toast.error("Could not fetch your votes!", {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-    }
 
     useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
