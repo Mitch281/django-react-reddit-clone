@@ -49,10 +49,12 @@ This repository is a reddit clone written in django on the backend and react and
 <ul>
   <li>Django</li>
   <li>Postgresql</li>
+  <li>djangorestframework-simplejwt</li>
 </ul>
 <h4>Frontend</h4>
 <ul>
   <li>React</li>
+  <li>Redux Toolkit</li>
   <li>CSS Modules</li>
 </ul>
 <h3>Features</h3>
@@ -64,10 +66,12 @@ This repository is a reddit clone written in django on the backend and react and
   <li>Ability to show and hide replies.</li>
   <li>Ability to upvote and downvote posts and comments.</li>
   <li>Ability to sort posts and comments (sort by new, old, best, worst).</li>
+  <li>Infinite scrolling for posts.</li>
   <li>Responsive Design.</li>
 </ul>
 <h3>Potential Future Features</h3>
 <ul>
+  <li>Infinite scrolling for comments.</li>
   <li>Support html markup in posts and comments.</li>
   <li>Add a dark mode.</li>
   <li>Ability for user to save posts</li>
