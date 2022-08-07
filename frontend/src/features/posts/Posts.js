@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -26,11 +26,12 @@ const Posts = () => {
     const order = useStateRef(initialOrder);
 
     const { state } = useLocation();
-    let categoryId;
+    let initialCategoryId;
     if (state) {
         // State will always have a categoryId in this component, so no need to check if the categoryId property exists.
-        categoryId = state.categoryId;
+        initialCategoryId = state.categoryId;
     }
+    const categoryId = useStateRef(initialCategoryId);
 
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
@@ -48,11 +49,11 @@ const Posts = () => {
                 e.target.documentElement.scrollHeight &&
             hasMorePosts.current
         ) {
-            if (categoryId) {
+            if (categoryId.current) {
                 dispatch(
                     fetchPostsByCategory({
                         order: order.current,
-                        categoryId: categoryId,
+                        categoryId: categoryId.current,
                         pageNumber: pageNumber.current,
                     })
                 );
@@ -77,23 +78,23 @@ const Posts = () => {
     useEffect(() => {
         dispatch(resetPosts());
         // eslint-disable-next-line
-    }, [initialOrder, categoryId]);
+    }, [initialOrder, initialCategoryId]);
 
     useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
-        if (!categoryId) {
+        if (!initialCategoryId) {
             dispatch(fetchPosts({ order: initialOrder, pageNumber: 1 }));
         } else {
             dispatch(
                 fetchPostsByCategory({
                     order: initialOrder,
-                    categoryId: categoryId,
+                    categoryId: initialCategoryId,
                     pageNumber: 1,
                 })
             );
         }
         // eslint-disable-next-line
-    }, [dispatch, initialOrder, categoryId]);
+    }, [dispatch, initialOrder, initialCategoryId]);
 
     let content;
 
