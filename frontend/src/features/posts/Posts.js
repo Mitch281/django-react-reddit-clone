@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -71,6 +71,7 @@ const Posts = () => {
         window.addEventListener("scroll", handleScroll);
 
         return () => window.removeEventListener("scroll", handleScroll);
+        // eslint-disale-next-line
     }, []);
 
     useEffect(() => {

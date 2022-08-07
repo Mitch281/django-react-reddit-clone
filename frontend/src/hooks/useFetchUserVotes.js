@@ -24,6 +24,7 @@ function useFetchUserVotes(voteObject) {
                 dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
             }
         }
+        // eslint-disable-next-line
     }, [dispatch, userIdLoggedIn]);
 
     if (usersVotesOnObjectStatus === "rejected") {
