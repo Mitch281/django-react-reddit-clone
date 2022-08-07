@@ -2,9 +2,11 @@ import {
     createAsyncThunk,
     createEntityAdapter,
     createSlice,
+    createSelector,
 } from "@reduxjs/toolkit";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
+import { constants } from "../../utils/constants";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -13,16 +15,19 @@ const postsAdapter = createEntityAdapter();
 const initialState = postsAdapter.getInitialState({
     status: "idle",
     error: null,
+    hasMorePosts: true,
+    pageNumber: 1,
 });
 
 export const fetchPosts = createAsyncThunk(
     "posts/fetchPosts",
-    async (order) => {
+    async (fetchInformation) => {
+        const { order, pageNumber } = fetchInformation;
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/posts/${order}/`;
+            url = `${API_ENDPOINT}/posts/${order}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         } else {
-            url = `${API_ENDPOINT}/posts/`;
+            url = `${API_ENDPOINT}/posts?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         }
         const response = await fetch(url);
         const json = await response.json();
@@ -136,7 +141,13 @@ export const deletePost = createAsyncThunk(
 const postsSlice = createSlice({
     name: "posts",
     initialState,
-    reducers: {},
+    reducers: {
+        resetPosts(state, action) {
+            state.pageNumber = 1;
+            state.hasMorePosts = true;
+            postsAdapter.removeAll(state);
+        },
+    },
     extraReducers(builder) {
         builder
             .addCase(fetchPosts.pending, (state, action) => {
@@ -144,7 +155,13 @@ const postsSlice = createSlice({
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                postsAdapter.setAll(state, action.payload);
+                state.pageNumber++;
+                if (action.payload.length === 0) {
+                    state.hasMorePosts = false;
+                    // Since no more posts were loaded, we decrement the page number to reflect the true value.
+                    state.pageNumber--;
+                }
+                postsAdapter.addMany(state, action.payload);
             })
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = "rejected";
@@ -190,8 +207,21 @@ const postsSlice = createSlice({
 
 export default postsSlice.reducer;
 
+export const { resetPosts } = postsSlice.actions;
+
 export const {
     selectAll: selectAllPosts,
     selectById: selectPostById,
     selectIds: selectPostIds,
 } = postsAdapter.getSelectors((state) => state.posts);
+
+export const selectPostIdsByPageNumber = createSelector(
+    [selectAllPosts],
+    (posts) =>
+        posts.map((post) => {
+            return {
+                id: post.id,
+                pageNumber: post.page_number,
+            };
+        })
+);

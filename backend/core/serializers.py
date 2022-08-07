@@ -16,6 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField()
     num_comments = serializers.ReadOnlyField()
     net_number_votes = serializers.ReadOnlyField()
+    page_number = serializers.ReadOnlyField()
 
     class Meta:
         model = Post

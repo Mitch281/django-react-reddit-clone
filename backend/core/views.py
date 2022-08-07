@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
-from django.db.models import Count, F
+from django.db.models import Count, F, Value, ExpressionWrapper
 from django.db.models.functions import Lower
+from django.forms import CharField
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db import transaction
+
 
 from core import serializers
 
@@ -56,6 +58,8 @@ class PostsView(APIView):
         return super().get_permissions()
 
     def get(self, request, ordering=""):
+        limit = request.GET.get("limit", "")
+        page_number = request.GET.get("page-number", "")
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
             posts = Post.objects.annotate(num_comments=Count(
@@ -70,6 +74,13 @@ class PostsView(APIView):
         elif ordering == "bottom":
             posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
                 net_number_votes=F("num_upvotes")-F("num_downvotes")).order_by("net_number_votes")
+
+        if (limit and page_number):
+            limit = int(limit)
+            page_number = int(page_number)
+            for post in posts:
+                post.page_number = page_number
+            posts = posts[limit * (page_number - 1): limit * page_number]
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)

@@ -7,10 +7,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
+import useStateRef from "../../hooks/useStateRef";
 import { constants } from "../../utils/constants";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
 import Post from "./Post";
-import { fetchPosts, fetchPostsByCategory, selectPostIds } from "./postsSlice";
+import {
+    fetchPosts,
+    fetchPostsByCategory,
+    resetPosts,
+    selectPostIds,
+    selectPostIdsByPageNumber,
+} from "./postsSlice";
 import styles from "./styles/posts.module.css";
 
 const Posts = () => {
@@ -28,9 +35,44 @@ const Posts = () => {
     const dispatch = useDispatch();
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
+    const initialPageNumber = useSelector((state) => state.posts.pageNumber);
+    const pageNumber = useStateRef(initialPageNumber);
+    const postIdsByPageNumber = useSelector(selectPostIdsByPageNumber);
     const usersVotesOnPostsStatus = useSelector(
         (state) => state.usersVotesOnPosts.status
     );
+    const initialhHasMorePosts = useSelector(
+        (state) => state.posts.hasMorePosts
+    );
+    const hasMorePosts = useStateRef(initialhHasMorePosts);
+
+    function handleScroll(e) {
+        if (
+            window.innerHeight + e.target.documentElement.scrollTop + 1 >=
+                e.target.documentElement.scrollHeight &&
+            hasMorePosts.current
+        ) {
+            if (categoryId) {
+                dispatch(
+                    fetchPostsByCategory({
+                        order: order,
+                        categoryId: categoryId,
+                        pageNumber: pageNumber.current,
+                    })
+                );
+            } else {
+                dispatch(
+                    fetchPosts({ order: order, pageNumber: pageNumber.current })
+                );
+            }
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // Once the user logs in, we want to fetch all of their votes.
     // TODO: Maybe think about moving these calls. It doesn't
@@ -57,7 +99,7 @@ const Posts = () => {
     useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
         if (!categoryId) {
-            dispatch(fetchPosts(order));
+            dispatch(fetchPosts({ order: order, pageNumber: 1 }));
         } else {
             dispatch(
                 fetchPostsByCategory({ order: order, categoryId: categoryId })
@@ -75,8 +117,21 @@ const Posts = () => {
             </div>
         );
     } else if (postStatus === "pending") {
-        content = (
-            <div className={styles["posts"]}>
+        content = [];
+        const existingPosts = postIdsByPageNumber
+            .filter(
+                (postIdByPageNumber) =>
+                    postIdByPageNumber.pageNumber !== pageNumber.current
+            )
+            .map((postIdByPageNumber) => (
+                <Post
+                    key={postIdByPageNumber.id}
+                    postId={postIdByPageNumber.id}
+                />
+            ));
+        content.push(existingPosts);
+        content.push(
+            <div className={styles["posts"]} key="loader">
                 <ClipLoader
                     css={"margin-top: 50px"}
                     color={constants.loaderColour}

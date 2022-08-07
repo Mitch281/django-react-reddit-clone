@@ -5,10 +5,16 @@ export const constants = {
     POST_TITLE_CHAR_LIMIT: 100,
     POST_CONTENT_CHAR_LIMIT: 1000,
     COMMENT_CONTENT_CHAR_LIMIT: 1000,
-    CATEGORY_NAME_CHAR_LIMIT: 20
+    CATEGORY_NAME_CHAR_LIMIT: 20,
+    POSTS_PER_PAGE: 10,
 };
 
 export const VoteTypes = {
     Upvote: "upvote",
     Downvote: "downvote",
+};
+
+export const VoteObjects = {
+    Post: "post",
+    Comment: "comment",
 };

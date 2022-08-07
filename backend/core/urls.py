@@ -18,6 +18,10 @@ urlpatterns = [
     path("posts/", views.PostsView.as_view(), name="posts"),
     re_path(r'^posts/(?P<ordering>[a-zA-Z\s]*)/$',
             views.PostsView.as_view(), name='posts'),
+    re_path(r'^posts/(?P<ordering>[a-zA-Z\s]*)?limit=(?P<limit>[0-9]*)&page-number=(?P<page_number>[0-9]*)/$',
+            views.PostsView.as_view(), name='posts'),
+    re_path(
+        r'^posts?limit=(?P<limit>[0-9]*)&page-number=(?P<page_number>[0-9]*)/$', views.PostsView.as_view()),
 
     re_path(r'^posts/category/(?P<pk>[0-9a-z-&]+)/$',
             views.PostsByCategoryView.as_view()),
