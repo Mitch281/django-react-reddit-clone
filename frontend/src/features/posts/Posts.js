@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -12,15 +12,18 @@ import Post from "./Post";
 import {
     fetchPosts,
     fetchPostsByCategory,
+    resetPosts,
     selectPostIds,
     selectPostIdsByPageNumber,
 } from "./postsSlice";
 import styles from "./styles/posts.module.css";
 
 const Posts = () => {
+    const dispatch = useDispatch();
     useFetchUserVotes(VoteObjects.Post);
     const params = useParams();
-    const order = params.order;
+    const initialOrder = params.order;
+    const order = useStateRef(initialOrder);
 
     const { state } = useLocation();
     let categoryId;
@@ -29,7 +32,6 @@ const Posts = () => {
         categoryId = state.categoryId;
     }
 
-    const dispatch = useDispatch();
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
     const initialPageNumber = useSelector((state) => state.posts.pageNumber);
@@ -49,14 +51,17 @@ const Posts = () => {
             if (categoryId) {
                 dispatch(
                     fetchPostsByCategory({
-                        order: order,
+                        order: order.current,
                         categoryId: categoryId,
                         pageNumber: pageNumber.current,
                     })
                 );
             } else {
                 dispatch(
-                    fetchPosts({ order: order, pageNumber: pageNumber.current })
+                    fetchPosts({
+                        order: order.current,
+                        pageNumber: pageNumber.current,
+                    })
                 );
             }
         }
@@ -69,16 +74,23 @@ const Posts = () => {
     }, []);
 
     useEffect(() => {
+        dispatch(resetPosts());
+    }, [params]);
+
+    useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
         if (!categoryId) {
-            dispatch(fetchPosts({ order: order, pageNumber: 1 }));
+            dispatch(fetchPosts({ order: initialOrder, pageNumber: 1 }));
         } else {
             dispatch(
-                fetchPostsByCategory({ order: order, categoryId: categoryId })
+                fetchPostsByCategory({
+                    order: initialOrder,
+                    categoryId: categoryId,
+                })
             );
         }
         // eslint-disable-next-line
-    }, [dispatch, order, categoryId]);
+    }, [dispatch, initialOrder, categoryId]);
 
     let content;
 
