@@ -25,7 +25,11 @@ urlpatterns = [
 
     re_path(r'^posts/category/(?P<pk>[0-9a-z-&]+)/$',
             views.PostsByCategoryView.as_view()),
+    re_path(r'^posts/category/(?P<pk>[0-9a-z-&]+)?limit=(?P<limit>[0-9]*)&page-number=(?P<page_number>[0-9]*)/$',
+            views.PostsByCategoryView.as_view()),
     re_path(r'^posts/category/(?P<pk>[0-9a-z-&]+)/(?P<ordering>[a-zA-Z\s]*)/$',
+            views.PostsByCategoryView.as_view()),
+    re_path(r'^posts/category/(?P<pk>[0-9a-z-&]+)/(?P<ordering>[a-zA-Z\s]*)?limit=(?P<limit>[0-9]*)&page-number=(?P<page_number>[0-9]*)/$',
             views.PostsByCategoryView.as_view()),
 
     re_path(r'^comment/(?P<pk>[0-9a-z-&]+)/$', views.CommentView.as_view()),

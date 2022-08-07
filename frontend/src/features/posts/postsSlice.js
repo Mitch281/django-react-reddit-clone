@@ -39,12 +39,12 @@ export const fetchPosts = createAsyncThunk(
 export const fetchPostsByCategory = createAsyncThunk(
     "posts/fetchPostsByCategory",
     async (fetchInformation) => {
-        const { order, categoryId } = fetchInformation;
+        const { order, categoryId, pageNumber } = fetchInformation;
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/posts/category/${categoryId}/${order}/`;
+            url = `${API_ENDPOINT}/posts/category/${categoryId}/${order}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         } else {
-            url = `${API_ENDPOINT}/posts/category/${categoryId}/`;
+            url = `${API_ENDPOINT}/posts/category/${categoryId}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         }
         const response = await fetch(url);
         const json = await response.json();
@@ -173,7 +173,12 @@ const postsSlice = createSlice({
             })
             .addCase(fetchPostsByCategory.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                postsAdapter.setAll(state, action.payload);
+                state.pageNumber++;
+                if (action.payload.length === 0) {
+                    state.hasMorePosts = false;
+                    state.pageNumber--;
+                }
+                postsAdapter.addMany(state, action.payload);
             })
             .addCase(fetchPostsByCategory.rejected, (state, action) => {
                 state.status = "rejected";

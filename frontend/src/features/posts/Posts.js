@@ -86,6 +86,7 @@ const Posts = () => {
                 fetchPostsByCategory({
                     order: initialOrder,
                     categoryId: categoryId,
+                    pageNumber: 1,
                 })
             );
         }

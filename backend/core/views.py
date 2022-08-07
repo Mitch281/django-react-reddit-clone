@@ -103,6 +103,8 @@ class PostsByCategoryView(APIView):
         return super().get_permissions()
 
     def get(self, request, pk, ordering=""):
+        limit = request.GET.get("limit", "")
+        page_number = request.GET.get("page-number", "")
         # Default ordering (order by newest)
         if ordering == "" or ordering == "new":
             posts = Post.objects.annotate(num_comments=Count("comment")).filter(
@@ -112,10 +114,17 @@ class PostsByCategoryView(APIView):
                 category=pk).order_by("date_created")
         elif ordering == "top":
             posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes")).filter(category=pk).order_by("-net_number_votes")
+                net_number_votes=F("num_upvotes")-F("num_downvotes")).filter(category=pk).order_by("-net_number_votes")
         elif ordering == "bottom":
             posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes")).filter(category=pk).order_by("net_number_votes")
+                net_number_votes=F("num_upvotes")-F("num_downvotes")).filter(category=pk).order_by("net_number_votes")
+
+        if (limit and page_number):
+            limit = int(limit)
+            page_number = int(page_number)
+            for post in posts:
+                post.page_number = page_number
+            posts = posts[limit * (page_number - 1): limit * page_number]
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
