@@ -23,7 +23,6 @@ export const fetchPosts = createAsyncThunk(
     "posts/fetchPosts",
     async (fetchInformation) => {
         const { order, pageNumber } = fetchInformation;
-        console.log(order);
         let url;
         if (order) {
             url = `${API_ENDPOINT}/posts/${order}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;

@@ -75,7 +75,7 @@ const Posts = () => {
 
     useEffect(() => {
         dispatch(resetPosts());
-    }, [params]);
+    }, [initialOrder, categoryId]);
 
     useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
