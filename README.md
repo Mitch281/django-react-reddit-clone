@@ -49,10 +49,12 @@ This repository is a reddit clone written in django on the backend and react and
 <ul>
   <li>Django</li>
   <li>Postgresql</li>
+  <li>djangorestframework-simplejwt</li>
 </ul>
 <h4>Frontend</h4>
 <ul>
   <li>React</li>
+  <li>Redux Toolkit</li>
   <li>CSS Modules</li>
 </ul>
 <h3>Features</h3>
