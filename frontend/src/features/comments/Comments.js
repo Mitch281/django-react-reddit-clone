@@ -1,19 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../app/App";
 import OrderOptions from "../../common/ordering/OrderOptions";
-import { constants } from "../../utils/constants";
-import { fetchUsersVotesOnComments } from "../users/usersVotesOnCommentsSlice";
+import useFetchUserVotes from "../../hooks/useFetchUserVotes";
+import { constants, VoteObjects } from "../../utils/constants";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
 import { fetchComments, selectAllComments } from "./commentsSlice";
 import styles from "./styles/comments.module.css";
 
 const Comments = () => {
+    useFetchUserVotes(VoteObjects.Comment);
     const params = useParams();
     const postId = params.postId;
     const order = params.order;
@@ -24,17 +24,10 @@ const Comments = () => {
 
     const [commentChain, setCommentChain] = useState([]);
 
-    const { userIdLoggedIn } = useContext(UserContext);
-
     useEffect(() => {
         dispatch(fetchComments({ order: order, postId: postId }));
         // eslint-disable-next-line
     }, [order, dispatch]);
-
-    useEffect(() => {
-        dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
-        // eslint-disable-next-line
-    }, [dispatch]);
 
     // Once we fetch the comments, we will put them in their nested structure.
     useEffect(() => {
