@@ -1,6 +1,7 @@
 #navbar-site-name {
     text-decoration: none;
     color: black;
+    font-size: 1.3em;
 }
 
 #app-name-and-dropdown {
@@ -11,13 +12,12 @@
 #username-and-logout-button {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 #nav-to-login-and-signup {
     display: flex;
     align-items: center;
-    margin-right: 100px;
 }
 
 #username {
@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0px;
+    margin: 0px 50px;
     height: var(--navbar-height);
 }
 

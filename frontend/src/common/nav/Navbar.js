@@ -27,25 +27,25 @@ const Navbar = () => {
     const isMobile = width <= 768;
 
     return (
-        <div id={styles["navbar"]}>
-            <ul id={styles["navbar-nav"]}>
-                <li id={styles["app-name-and-dropdown"]}>
+        <nav id={styles["navbar"]}>
+            <div id={styles["navbar-nav"]}>
+                <div id={styles["app-name-and-dropdown"]}>
                     <AppName isMobile={isMobile} />
                     <CategoryDropdown />
-                </li>
+                </div>
                 {loggedIn ? (
-                    <li id={styles["username-and-logout-button"]}>
+                    <div id={styles["username-and-logout-button"]}>
                         <SignedInAsUsername username={usernameLoggedIn} />
                         <LogoutButton />
-                    </li>
+                    </div>
                 ) : (
-                    <li id={styles["nav-to-login-and-signup"]}>
+                    <div id={styles["nav-to-login-and-signup"]}>
                         <NavToLogin />
                         <NavToSignup />
-                    </li>
+                    </div>
                 )}
-            </ul>
-        </div>
+            </div>
+        </nav>
     );
 };
 
