@@ -43,10 +43,6 @@
     position: relative;
 }
 
-#navbar-auth {
-    display: flex;
-}
-
 #nav-to-login, #nav-to-signup {
     display: inline-block;
     /* Allows text align center to work. */

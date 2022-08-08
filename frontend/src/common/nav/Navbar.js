@@ -29,26 +29,20 @@ const Navbar = () => {
     return (
         <div id={styles["navbar"]}>
             <ul id={styles["navbar-nav"]}>
-                <div id={styles["app-name-and-dropdown"]}>
-                    <li>
-                        <AppName isMobile={isMobile} />
-                    </li>
+                <li id={styles["app-name-and-dropdown"]}>
+                    <AppName isMobile={isMobile} />
                     <CategoryDropdown />
-                </div>
+                </li>
                 {loggedIn ? (
-                    <div id={styles["username-and-logout-button"]}>
+                    <li id={styles["username-and-logout-button"]}>
                         <SignedInAsUsername username={usernameLoggedIn} />
-                        <li id={styles["navbar-auth"]}>
-                            <LogoutButton />
-                        </li>
-                    </div>
+                        <LogoutButton />
+                    </li>
                 ) : (
-                    <div id={styles["nav-to-login-and-signup"]}>
-                        <li id={styles["navbar-auth"]}>
-                            <NavToLogin />
-                            <NavToSignup />
-                        </li>
-                    </div>
+                    <li id={styles["nav-to-login-and-signup"]}>
+                        <NavToLogin />
+                        <NavToSignup />
+                    </li>
                 )}
             </ul>
         </div>
