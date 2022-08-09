@@ -2,6 +2,8 @@
 # Reddit Clone
 
 App: https://threddit.netlify.app/
+
+
 This repository is a reddit clone written in 
 django on the backend and react and redux 
 toolkit on the frontend. The database is a postgresql 
