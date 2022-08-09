@@ -79,17 +79,18 @@ exit()
 ```
 
 ### Frontend Dependencies
-First, navigate back to the root directory. Next, make
-sure you have node installed. This can be installed from
+First, navigate back to the root directory like so:
+```
+cd ..
+```
+Next, make sure you have node installed. This can be installed from
 https://nodejs.org/en/download/.
 Now perform the below commands to install dependencies:
 ```
 cd frontend
 npm install
 ```
-### Running the Program
-Navigate back to the root directory, and perform
-the following commands:
+### Running the App
 Open two seperate terminals and 
 in the first terminal, perform (from the root directory):
 ```
@@ -98,7 +99,7 @@ cd backend
 python manage.py migrate
 python manage.py runserver
 ```
-And in the second terminal:
+And in the second terminal (from the root directory):
 ```
 cd frontend
 npm start
