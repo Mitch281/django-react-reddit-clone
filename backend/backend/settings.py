@@ -10,6 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from datetime import timedelta
+from dotenv import load_dotenv, find_dotenv
+import os
 import dj_database_url
 import django_heroku
 
@@ -22,17 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-import os
-from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'reddit-clone-backend-restapi.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1',
+                 'reddit-clone-backend-restapi.herokuapp.com']
 
 
 # Application definition
@@ -151,8 +153,8 @@ REST_FRAMEWORK = {
 
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000',
-     'https://threddit.netlify.app'
+    'http://localhost:3000',
+    'https://threddit.netlify.app'
 ]
 
 django_heroku.settings(locals())
@@ -172,10 +174,9 @@ os.makedirs(STATIC_TMP, exist_ok=True)
 os.makedirs(STATIC_ROOT, exist_ok=True)
 
 STATICFILES_DIRS = (
-os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
-from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
