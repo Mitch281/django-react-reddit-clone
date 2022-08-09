@@ -57,21 +57,25 @@ it like so:
 pipenv shell
 pipenv install
 ```
-Next, generate a random secret key;
+Next, create a .env file in the backend directory (the directory containing manage.py), and place the following code:
+```
+SECRET_KEY="1"
+```
+Note that this is just a placeholder secret key.
+
+
+Next, generate a random secret key
 ```
 cd backend
 python manage.py shell
 from django.core.management.utils import get_random_secret_key
 get_random_secret_key()
 ```
-Copy the secret key generated. Next create a .env file
-in the backend directory (the one you are currently in).
+Replace the "1" previously set as the secret key with the value generated.
+
+Now exit the shell by typing 
 ```
-mkdir .env
-```
-Then place the following line into the .env file:
-```
-SECRET_KEY = <SECRET_KEY_YOU_JUST_COPIED>
+exit()
 ```
 
 ### Frontend Dependencies
@@ -86,19 +90,12 @@ npm install
 ### Running the Program
 Navigate back to the root directory, and perform
 the following commands:
+Open two seperate terminals and 
+in the first terminal, perform (from the root directory):
 ```
 pipenv shell
 cd backend
-python manage.py runserver
-cd ..
-cd frontend
-npm start
-```
-Or, you can open two seperate terminals and 
-in the first terminal, perform:
-```
-pipenv shell
-cd backend
+python manage.py migrate
 python manage.py runserver
 ```
 And in the second terminal:
@@ -106,3 +103,4 @@ And in the second terminal:
 cd frontend
 npm start
 ```
+Congratulations, the app is now running!
