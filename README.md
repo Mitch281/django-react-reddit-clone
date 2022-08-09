@@ -37,7 +37,7 @@ This repository is a reddit clone written in django on the backend and react and
     get_random_secret_key()
   </code>
   Copy the secret key. Then make a file called .env in the backend directory (the directory which contains manage.py) and then put the following code:
-  <code>SECRET_KEY=<SECRET_KEY></code>
+  <code>SECRET_KEY={SECRET_KEY}</code>
 </p>
 <h4>Frontend Dependencies</h4>
 <p>From the root folder, navigate to the frontend directory like so:<br />
