@@ -34,7 +34,7 @@ authentication.
 - Ability to vote on comments and posts.
 - Infinite scrolling when viewing posts.
 ### Desired Future Features
-- Infinite Scrolling for Comments (harder to implement) due to nested nature of comments.
+- Infinite Scrolling for comments (harder to implement due to nested nature of comments).
 - Dark Mode
 - Ability for users to save posts and comments as well as ability to view a user's posts and comments.
 ## Contributing
