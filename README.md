@@ -22,14 +22,18 @@ This repository is a reddit clone written in django on the backend and react and
 <p>Before starting, please make sure you have pipenv installed: https://pypi.org/project/pipenv/. Also make sure you are in the root directory. Now start a virtual environment in the root directory and install dependencies: <br />
   <code>
     pipenv shell
+    <br />
     pipenv install 
   </code>
 </p>
 <p>Next, generate a secret key like so:
   <code>
     cd backend
+    <br />
     python manage.py shell
+    <br />
     from django.core.management.utils import get_random_secret_key
+    <br />
     get_random_secret_key()
   </code>
   Copy the secret key. Then make a file called .env in the backend directory (the directory which contains manage.py) and then put the following code:
