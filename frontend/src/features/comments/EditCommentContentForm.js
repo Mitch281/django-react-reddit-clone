@@ -20,7 +20,8 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
 
     const { userIdLoggedIn, logout } = useContext(UserContext);
 
-    let numCommentContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
+    let numCommentContentCharsLeft =
+        constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
 
     async function handleEditCommentContent(e) {
         e.preventDefault();
@@ -43,7 +44,7 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-            })
+            });
         } catch (error) {
             renderErrorOnRequest(error, logout, navigate);
         } finally {
@@ -53,7 +54,8 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
 
     let submitButton;
     if (editCommentStatus === "idle") {
-        submitButton = <input type="submit" value="Edit" />;
+        const disabled = numCommentContentCharsLeft < 0;
+        submitButton = <input type="submit" value="Edit" disabled={disabled} />;
     } else {
         submitButton = (
             <ClipLoader
@@ -77,7 +79,9 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
                     placeholder="Content"
                     onChange={(e) => setCommentContent(e.target.value)}
                 />
-                <span className={styles["char-count"]}>{numCommentContentCharsLeft} characters left</span>
+                <span className={styles["char-count"]}>
+                    {numCommentContentCharsLeft} characters left
+                </span>
                 {submitButton}
             </div>
         </form>

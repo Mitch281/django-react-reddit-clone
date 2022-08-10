@@ -4,6 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
+import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { editPost, selectPostById } from "./postsSlice";
@@ -11,11 +12,15 @@ import styles from "./styles/post-content.module.css";
 
 const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
     const dispatch = useDispatch();
+    const handleTextInput = useHandleTextInput();
     const post = useSelector((state) => selectPostById(state, postId));
     const [editPostStatus, setEditPostStatus] = useState("idle");
     const [postContent, setPostContent] = useState(post.content);
 
     const { userIdLoggedIn } = useContext(UserContext);
+
+    let numContentCharsLeft =
+        constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
 
     async function handleEditPost(e) {
         e.preventDefault();
@@ -37,7 +42,7 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-            })
+            });
         } catch (error) {
             renderErrorOnRequest(error);
         } finally {
@@ -70,7 +75,8 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
             />
         );
     } else {
-        submitButton = <input type="submit" value="Edit" />;
+        const disabled = numContentCharsLeft < 0;
+        submitButton = <input type="submit" value="Edit" disabled={disabled} />;
     }
 
     let content;
@@ -84,8 +90,17 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
                     <span>Edit Post</span>
                     <textarea
                         value={postContent}
-                        onChange={(e) => setPostContent(e.target.value)}
+                        onChange={(e) =>
+                            handleTextInput(
+                                e,
+                                setPostContent,
+                                numContentCharsLeft
+                            )
+                        }
                     />
+                    <span className={styles["char-count"]}>
+                        {numContentCharsLeft} characters left
+                    </span>
                     {submitButton}
                 </div>
             </form>
@@ -94,11 +109,7 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
         content = <p className={styles["post-content"]}>{post.content}</p>;
     }
 
-    return (
-        <>
-            {content}
-        </>
-    );
+    return <>{content}</>;
 };
 
 export default PostContent;

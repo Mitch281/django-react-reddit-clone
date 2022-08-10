@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { selectAllCategories } from "../categories/categoriesSlice";
@@ -14,6 +15,7 @@ import styles from "./styles/add-post-form.module.css";
 
 const AddPostForm = () => {
     let navigate = useNavigate();
+    const handleTextInput = useHandleTextInput();
     const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
@@ -81,7 +83,10 @@ const AddPostForm = () => {
     if (addPostStatus === "pending") {
         submitButton = loader;
     } else {
-        submitButton = <input type="submit" value="Add Post" />;
+        const disabled = numTitleCharsLeft < 0 || numContentCharsLeft < 0;
+        submitButton = (
+            <input type="submit" value="Add Post" disabled={disabled} />
+        );
     }
 
     const content = (
@@ -91,7 +96,9 @@ const AddPostForm = () => {
                     type="text"
                     id={styles["post-title"]}
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) =>
+                        handleTextInput(e, setTitle, numTitleCharsLeft)
+                    }
                     placeholder="Title"
                 />
                 <span className={styles["char-count"]}>
@@ -101,7 +108,9 @@ const AddPostForm = () => {
                     id={styles["post-content"]}
                     type="text"
                     value={postContent}
-                    onChange={(e) => setPostContent(e.target.value)}
+                    onChange={(e) =>
+                        handleTextInput(e, setPostContent, numContentCharsLeft)
+                    }
                     placeholder="Content"
                 />
                 <span className={styles["char-count"]}>

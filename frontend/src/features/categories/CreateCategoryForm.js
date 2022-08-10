@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { createCategory } from "./categoriesSlice";
@@ -12,6 +13,7 @@ import styles from "./styles/create-category.module.css";
 
 const CreateCategoryForm = () => {
     const dispatch = useDispatch();
+    const handleTextInput = useHandleTextInput();
 
     const [categoryName, setCategoryName] = useState("");
     const [createCategoryStatus, setCreateCategoryStatus] = useState("idle");
@@ -61,7 +63,10 @@ const CreateCategoryForm = () => {
             />
         );
     } else {
-        submitButton = <input type="submit" value="Create Category" />;
+        const disabled = numCategoryNameCharsLeft < 0;
+        submitButton = (
+            <input type="submit" value="Create Category" disabled={disabled} />
+        );
     }
 
     const content = (
@@ -70,7 +75,13 @@ const CreateCategoryForm = () => {
                 <input
                     type="text"
                     value={categoryName}
-                    onChange={(e) => setCategoryName(e.target.value)}
+                    onChange={(e) =>
+                        handleTextInput(
+                            e,
+                            setCategoryName,
+                            numCategoryNameCharsLeft
+                        )
+                    }
                 />
                 <span className={styles["char-count"]}>
                     {numCategoryNameCharsLeft} characters left

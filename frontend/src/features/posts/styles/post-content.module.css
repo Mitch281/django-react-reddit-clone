@@ -32,6 +32,12 @@
 }
 
 .post-content {
-    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    margin-left: calc(var(--votes-dist-to-left) + 25px);
+    /* Helps stop overlapping of post information and post votes. */
     margin-top: 0px;
+}
+
+.char-count {
+    font-size: 75%;
+    color: grey;
 }

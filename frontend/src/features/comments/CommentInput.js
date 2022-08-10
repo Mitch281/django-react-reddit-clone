@@ -2,10 +2,11 @@ import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { makeCommentOnPost } from "./commentsSlice";
@@ -13,6 +14,7 @@ import styles from "./styles/comment-input.module.css";
 
 const CommentInput = () => {
     const navigate = useNavigate();
+    const handleTextInput = useHandleTextInput();
 
     const [commentContent, setCommentContent] = useState("");
 
@@ -24,7 +26,8 @@ const CommentInput = () => {
 
     const { postId } = useParams();
 
-    let numCommentContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
+    let numCommentContentCharsLeft =
+        constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
 
     let submitButton;
     if (addNewCommentStatus === "pending") {
@@ -37,7 +40,10 @@ const CommentInput = () => {
             />
         );
     } else {
-        submitButton = <input type="submit" value="Comment" />;
+        const disabled = numCommentContentCharsLeft < 0;
+        submitButton = (
+            <input type="submit" value="Comment" disabled={disabled} />
+        );
     }
 
     async function addNewComment(e) {
@@ -55,7 +61,7 @@ const CommentInput = () => {
             date_created: new Date().toString(),
             parent_comment: null,
             hidden: false,
-            num_replies: 0
+            num_replies: 0,
         };
 
         try {
@@ -86,9 +92,17 @@ const CommentInput = () => {
                     <form onSubmit={addNewComment}>
                         <textarea
                             value={commentContent}
-                            onChange={(e) => setCommentContent(e.target.value)}
+                            onChange={(e) =>
+                                handleTextInput(
+                                    e,
+                                    setCommentContent,
+                                    numCommentContentCharsLeft
+                                )
+                            }
                         />
-                        <span className={styles["char-count"]}>{numCommentContentCharsLeft} characters left</span>
+                        <span className={styles["char-count"]}>
+                            {numCommentContentCharsLeft} characters left
+                        </span>
                         {submitButton}
                     </form>
                 </div>
@@ -113,11 +127,7 @@ const CommentInput = () => {
         );
     }
 
-    return (
-        <>
-            {content}
-        </>
-    );
+    return <>{content}</>;
 };
 
 export default CommentInput;

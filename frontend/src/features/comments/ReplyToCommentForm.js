@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import {
@@ -18,6 +19,7 @@ import styles from "./styles/reply-to-comment-form.module.css";
 const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const handleTextInput = useHandleTextInput();
     const commentToReplyTo = useSelector((state) =>
         selectCommentById(state, commentId)
     );
@@ -29,7 +31,8 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
     const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
-    let numReplyContentCharsLeft = constants.COMMENT_CONTENT_CHAR_LIMIT - replyContent.length;
+    let numReplyContentCharsLeft =
+        constants.COMMENT_CONTENT_CHAR_LIMIT - replyContent.length;
 
     async function handleReplyComment(e) {
         e.preventDefault();
@@ -83,7 +86,10 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
             />
         );
     } else {
-        submitButton = <input type="submit" value="Reply" />;
+        const disabled = numReplyContentCharsLeft < 0;
+        submitButton = (
+            <input type="submit" value="Reply" disabled={disabled} />
+        );
     }
 
     content = (
@@ -100,9 +106,17 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
                         type="text"
                         placeholder="Content"
                         value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
+                        onChange={(e) =>
+                            handleTextInput(
+                                e,
+                                setReplyContent,
+                                numReplyContentCharsLeft
+                            )
+                        }
                     />
-                    <span className={styles["char-count"]}>{numReplyContentCharsLeft} characters left</span>
+                    <span className={styles["char-count"]}>
+                        {numReplyContentCharsLeft} characters left
+                    </span>
                     {submitButton}
                 </div>
             </form>
