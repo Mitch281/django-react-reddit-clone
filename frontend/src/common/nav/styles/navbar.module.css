@@ -68,11 +68,7 @@
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
-    #navbar-auth {
-        margin-left: 15%;
-    }
-
     #navbar-nav {
-        padding-left: 10px;
+        margin: 0px;
     }
 }
