@@ -96,7 +96,7 @@ in the first terminal, perform (from the root directory):
 ```
 pipenv shell
 cd backend
-python manage.py migrate
+python manage.py migrate <!-- Only necessary when running for first time. -->
 python manage.py runserver
 ```
 And in the second terminal (from the root directory):
