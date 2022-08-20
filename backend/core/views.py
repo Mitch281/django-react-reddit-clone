@@ -1,16 +1,14 @@
 from django.contrib.auth.models import User
-from django.db.models import Count, F, Value, ExpressionWrapper
+from django.db import transaction
+from django.db.models import Count, F
 from django.db.models.functions import Lower
-from django.forms import CharField
 from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.db import transaction
 
-
-from core import serializers
+from core import serializers, services
 
 from .models import Category, Comment, CommentVotes, Post, PostVotes
 from .serializers import (CategorySerializer, CommentSerializer,
@@ -60,27 +58,8 @@ class PostsView(APIView):
     def get(self, request, ordering=""):
         limit = request.GET.get("limit", "")
         page_number = request.GET.get("page-number", "")
-        # Default ordering (order by newest)
-        if ordering == "" or ordering == "new":
-            posts = Post.objects.annotate(num_comments=Count(
-                "comment")).all().order_by("-date_created")
-        elif ordering == "old":
-            # Note that django automatically orders the posts by oldest.
-            posts = Post.objects.annotate(num_comments=Count(
-                "comment")).all().order_by("date_created")
-        elif ordering == "top":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes") - F("num_downvotes")).order_by("-net_number_votes")
-        elif ordering == "bottom":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes")-F("num_downvotes")).order_by("net_number_votes")
-
-        if (limit and page_number):
-            limit = int(limit)
-            page_number = int(page_number)
-            for post in posts:
-                post.page_number = page_number
-            posts = posts[limit * (page_number - 1): limit * page_number]
+        posts = services.PostService.get_posts(
+            Post, ordering, limit, page_number)
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
@@ -105,26 +84,8 @@ class PostsByCategoryView(APIView):
     def get(self, request, pk, ordering=""):
         limit = request.GET.get("limit", "")
         page_number = request.GET.get("page-number", "")
-        # Default ordering (order by newest)
-        if ordering == "" or ordering == "new":
-            posts = Post.objects.annotate(num_comments=Count("comment")).filter(
-                category=pk).order_by("-date_created")
-        elif ordering == "old":
-            posts = Post.objects.annotate(num_comments=Count("comment")).filter(
-                category=pk).order_by("date_created")
-        elif ordering == "top":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes")-F("num_downvotes")).filter(category=pk).order_by("-net_number_votes")
-        elif ordering == "bottom":
-            posts = Post.objects.annotate(num_comments=Count("comment")).annotate(
-                net_number_votes=F("num_upvotes")-F("num_downvotes")).filter(category=pk).order_by("net_number_votes")
-
-        if (limit and page_number):
-            limit = int(limit)
-            page_number = int(page_number)
-            for post in posts:
-                post.page_number = page_number
-            posts = posts[limit * (page_number - 1): limit * page_number]
+        posts = services.PostService.get_posts_by_category(
+            Post, ordering, limit, page_number, category_id=pk)
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
@@ -246,20 +207,10 @@ class PostComments(APIView):
 
     def get(self, request, parent_post_id, ordering=""):
         # Default ordering (ordering by newest).
-        if ordering == "" or ordering == "new":
-            post_comments = Comment.objects.filter(
-                parent_post=parent_post_id).order_by("-date_created")
-        elif ordering == "old":
-            # Note that django automatically filters by oldest comments.
-            post_comments = Comment.objects.filter(parent_post=parent_post_id)
-        elif ordering == "top":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(
-                select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["-net_number_votes"])
-        elif ordering == "bottom":
-            post_comments = Comment.objects.filter(parent_post=parent_post_id).extra(
-                select={"net_number_votes": "num_upvotes - num_downvotes"}).extra(order_by=["net_number_votes"])
+        comments_on_specific_post = services.CommentsOnSpecificPostService.get_comments(
+            Comment, parent_post_id, ordering)
 
-        serializer = CommentSerializer(post_comments, many=True)
+        serializer = CommentSerializer(comments_on_specific_post, many=True)
         return Response(serializer.data)
 
 
