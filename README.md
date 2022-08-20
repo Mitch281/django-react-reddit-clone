@@ -37,8 +37,7 @@ authentication.
 - Infinite Scrolling for comments (harder to implement due to nested nature of comments).
 - Dark Mode
 - Ability for users to save posts and comments as well as ability to view a user's posts and comments.
-## Contributing
-### Installation
+## Building
 First, clone the repository onto your local machine
 like so:
 ```
