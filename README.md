@@ -50,7 +50,7 @@ cd django-react-reddit-clone
 ### Backend Dependencies
 Before starting, make sure you have pipenv installed.
 This can be instaled from https://pypi.org/project/pipenv/.
-After installing, start a virtual environment and run
+After installing, start a virtual environment and install dependencies like so:
 it like so:
 ```
 pipenv shell
