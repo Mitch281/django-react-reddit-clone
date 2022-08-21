@@ -19,9 +19,11 @@ const Category = ({ categoryId, filterCategoriesText }) => {
     );
     if (!filterCategoriesText) {
         return content;
-    } 
+    }
 
-    const wantRenderCategoryName = category.name.includes(filterCategoriesText.toLowerCase());
+    const wantRenderCategoryName = category.name
+        .toLowerCase()
+        .includes(filterCategoriesText.toLowerCase());
     if (wantRenderCategoryName) {
         return content;
     } else {
