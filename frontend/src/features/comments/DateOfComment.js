@@ -7,6 +7,6 @@ const DateOfComment = ({ dateCreated }) => {
             {getTimeElapsedFromCreation(dateCreated)}
         </span>
     );
-}
+};
 
 export default DateOfComment;

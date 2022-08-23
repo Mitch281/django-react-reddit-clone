@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
-import Author from "../../common/comments/Author";
-import DateOfComment from "../../common/comments/DateOfComment";
+import Author from "./Author";
 import CommentContent from "./CommentContent";
 import { selectCommentById } from "./commentsSlice";
 import CommentVotes from "./CommentVotes";
+import DateOfComment from "./DateOfComment";
 import DeleteComment from "./DeleteComment";
 import ReplyToCommentForm from "./ReplyToCommentForm";
 import styles from "./styles/comment.module.css";
@@ -98,7 +98,11 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                 <CommentVotes commentId={commentId} />
                 <Author username={comment.username} />
                 <DateOfComment dateCreated={comment.date_created} />
-                <CommentContent commentId={commentId} isCurrentlyEditing={isCurrentlyEditing} toggleEditForm={toggleEditForm} />
+                <CommentContent
+                    commentId={commentId}
+                    isCurrentlyEditing={isCurrentlyEditing}
+                    toggleEditForm={toggleEditForm}
+                />
                 {replyButton}
                 {isCurrentlyReplying ? (
                     <ReplyToCommentForm
@@ -120,7 +124,8 @@ const Comment = ({ commentId, replies, isRootComment }) => {
                     : `${styles["comment-container"]}`
             }
         >
-            <div className={styles["comment"]}>{content}</div>
+            {/* <div className={styles["comment"]}>{content}</div> */}
+            {content}
             <ToggleHidden commentId={commentId} />
             {renderReplies()}
         </div>

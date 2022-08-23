@@ -10,7 +10,8 @@
 }
 
 .comment {
-    border: 1px solid white;    
+    position: relative;
+    border: 1px solid white;
     background: var(--comment-background-colour);
     border-radius: 5px;
     padding: 10px;

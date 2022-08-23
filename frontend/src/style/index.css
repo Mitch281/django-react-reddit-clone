@@ -5,7 +5,7 @@
 :root {
     --post-background-colour: rgb(250, 249, 249);
     --votes-dist-to-left: 10px;
-    --votes-dist-to-top: 20px;
+    --votes-dist-to-top: 1px;
     --navbar-height: 7vh;
     --navbar-button-border-radii: 5px;
     --input-border-colour: rgb(147, 213, 252);
@@ -30,7 +30,7 @@ p {
     font-weight: 300;
 }
 
-body { 
+body {
     font-family: "Fira Sans", sans-serif;
     background-color: var(--background-colour);
     margin: 0px;

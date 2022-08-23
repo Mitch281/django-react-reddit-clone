@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";
-import LinkToCreatePost from "../common/posts/LinkToCreatePost";
+import LinkToCreatePost from "../features/posts/LinkToCreatePost";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
 import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";

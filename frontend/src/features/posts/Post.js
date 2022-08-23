@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
-import PostAuthor from "../../common/posts/PostAuthor";
-import Category from "../../common/posts/Category";
-import DateOfPost from "../../common/posts/DateOfPost";
-import Title from "../../common/posts/Title";
+import Category from "./Category";
+import DateOfPost from "./DateOfPost";
+import DeletePost from "./DeletePost";
+import NumComments from "./NumComments";
+import PostAuthor from "./PostAuthor";
 import PostContent from "./PostContent";
+import PostDeletedMessage from "./PostDeletedMessage";
 import { selectPostById } from "./postsSlice";
 import PostVotes from "./PostVotes";
 import styles from "./styles/post.module.css";
-import DeletePost from "./DeletePost";
-import NumComments from "./NumComments";
-import PostDeletedMessage from "../../common/posts/PostDeletedMessage";
+import Title from "./Title";
 
 const Post = ({ postId }) => {
     const post = useSelector((state) => selectPostById(state, postId));
@@ -72,11 +72,7 @@ const Post = ({ postId }) => {
         );
     }
 
-    return (
-        <div className={styles["post"]}>
-            {content}
-        </div>
-    );
+    return <div className={styles["post"]}>{content}</div>;
 };
 
 export default Post;
