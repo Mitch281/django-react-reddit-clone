@@ -34,7 +34,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'reddit-clone-backend-restapi.herokuapp.com']
+                 'reddit-clone-backend-restapi.herokuapp.com', 'https://django-react-reddit-clone-production.up.railway.app/']
 
 
 # Application definition
