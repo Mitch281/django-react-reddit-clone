@@ -31,8 +31,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DATABASE_URL is None
-# DEBUG = True
+# DEBUG = DATABASE_URL is None
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
                  'django-react-reddit-clone-production.up.railway.app']
