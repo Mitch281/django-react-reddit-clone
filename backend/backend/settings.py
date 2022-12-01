@@ -97,7 +97,9 @@ DATABASES = {
     }
 }
 
-DATABASES['default'].update(DATABASE_URL)
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(
+    {"ENGINE": "django.db.backends.postgresql", "NAME": DATABASE_URL})
 
 
 # Password validation
