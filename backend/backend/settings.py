@@ -15,7 +15,6 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
-import django_heroku
 from dotenv import find_dotenv, load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,8 +31,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = DATABASE_URL is None
-DEBUG = True
+DEBUG = DATABASE_URL is None
+# DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
                  'reddit-clone-backend-restapi.herokuapp.com', 'https://django-react-reddit-clone-production.up.railway.app/']
@@ -161,8 +160,6 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://threddit.netlify.app'
 ]
-
-django_heroku.settings(locals())
 
 # STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
