@@ -24,6 +24,10 @@ authentication.
 - React
 - Redux (Redux Toolkit)
 - CSS Modules
+- Webpack (through [Create React App](https://github.com/facebook/create-react-app))
+### Deployment
+- Frontend deployed on Netlify
+- Backend deployed on Railway (previously deployed on Heroku prior to free tier removal)
 ### Features
 - Ability to create, edit and delete posts/comments.
 - Ability to create categories for posts.
