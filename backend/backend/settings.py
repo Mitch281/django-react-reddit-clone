@@ -99,6 +99,7 @@ if DATABASE_URL is None:
     }
 else:
     DATABASES = {
+        'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=1800),
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('PGDATABASE'),
         'USER': os.getenv('PGUSER'),
