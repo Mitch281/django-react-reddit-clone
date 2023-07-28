@@ -31,11 +31,12 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DATABASE_URL is None
+# DEBUG = DATABASE_URL is None
+DEBUG = True
 # DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'https://django-react-reddit-clone-api-3735cadf34e9.herokuapp.com']
+                 'django-react-reddit-clone-api-3735cadf34e9.herokuapp.com']
 
 
 # Application definition
