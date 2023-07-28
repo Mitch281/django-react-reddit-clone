@@ -35,7 +35,7 @@ DEBUG = DATABASE_URL is None
 # DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'django-react-reddit-clone-production.up.railway.app']
+                 'https://django-react-reddit-clone-api-3735cadf34e9.herokuapp.com/']
 
 
 # Application definition
@@ -98,16 +98,11 @@ if DATABASE_URL is None:
         }
     }
 else:
+    db_from_env = dj_database_url.config()
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('PGDATABASE'),
-            'USER': os.getenv('PGUSER'),
-            'PASSWORD': os.getenv('PGPASSWORD'),
-            'HOST': os.getenv('PGHOST'),
-            'PORT': os.getenv('PGPORT'),
-        }
+        'default': db_from_env
     }
+    
 
 
 # Password validation
