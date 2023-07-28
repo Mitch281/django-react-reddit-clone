@@ -9,10 +9,7 @@ django on the backend and react and redux
 toolkit on the frontend. The database is a postgresql 
 database. The backend simply serves as a rest api to 
 the frontend using the django rest framework. The 
-styling of the application was completed mostly with 
-css modules, although styled components were used 
-with for loading indicators. JWT is used for user 
-authentication.
+styling of the application was completed with CSS modules.
 
 ## Technologies Used
 ### Backend
