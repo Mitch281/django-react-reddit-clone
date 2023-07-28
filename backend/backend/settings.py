@@ -35,7 +35,7 @@ DEBUG = DATABASE_URL is None
 # DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'https://django-react-reddit-clone-api-3735cadf34e9.herokuapp.com/']
+                 'https://django-react-reddit-clone-api-3735cadf34e9.herokuapp.com']
 
 
 # Application definition
