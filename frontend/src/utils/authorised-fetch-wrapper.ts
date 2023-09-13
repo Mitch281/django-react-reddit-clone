@@ -3,11 +3,7 @@
 
 // TODO: Error message for user having no access token different in production?
 
-import {
-    getNewAccessToken,
-    isTokenExpired,
-    NoAccessTokenError
-} from "./auth";
+import { getNewAccessToken, isTokenExpired, NoAccessTokenError } from "./auth";
 
 async function handleAccessToken() {
     const accessToken = localStorage.getItem("accessToken");
@@ -45,7 +41,6 @@ async function authorisedPatch<T1, T2>(url: string, body: T1): Promise<T2> {
     }
 
     const json: T2 = await response.json();
-    console.log(json);
     return json;
 }
 

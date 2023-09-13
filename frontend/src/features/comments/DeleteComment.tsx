@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DeleteCommentPayload } from "../../../types";
 import { UserContext } from "../../app/App";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -21,7 +22,9 @@ const DeleteComment = ({ commentId }) => {
     const { userIdLoggedIn, logout } = useContext(UserContext);
 
     async function handleDeleteComment() {
-        const wantDelete = window.confirm("Are you sure you want to delete this comment?");
+        const wantDelete = window.confirm(
+            "Are you sure you want to delete this comment?"
+        );
 
         if (!wantDelete) {
             return;
@@ -29,10 +32,11 @@ const DeleteComment = ({ commentId }) => {
 
         try {
             setDeleteCommentStatus("pending");
-            await dispatch(deleteComment({
+            const deleteCommentPayload: DeleteCommentPayload = {
                 commentId: commentId,
-                userId: userIdLoggedIn
-            }));
+                userId: userIdLoggedIn,
+            };
+            dispatch(deleteComment(deleteCommentPayload));
             toast.success("Succesfully deleted comment!", {
                 position: "bottom-center",
                 autoClose: 1000,
@@ -70,11 +74,7 @@ const DeleteComment = ({ commentId }) => {
         );
     }
 
-    return (
-        <>
-            {deleteButton}
-        </>
-    );
+    return <>{deleteButton}</>;
 };
 
 export default DeleteComment;

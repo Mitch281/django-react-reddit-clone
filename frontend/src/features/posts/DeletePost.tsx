@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DeletePostPayload } from "../../../types";
 import { UserContext } from "../../app/App";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -37,9 +38,11 @@ const DeletePost = ({ postId }) => {
 
         try {
             setDeletePostStatus("pending");
-            await dispatch(
-                deletePost({ postId: postId, userId: userIdLoggedIn })
-            ).unwrap();
+            const deletePostPayload: DeletePostPayload = {
+                postId: postId,
+                userId: userIdLoggedIn,
+            };
+            dispatch(deletePost(deletePostPayload)).unwrap();
             toast.success("Successfully deleted post!", {
                 position: "bottom-center",
                 autoClose: 3000,

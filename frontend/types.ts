@@ -43,3 +43,24 @@ export type EditCommentPayload = {
     commentId: string;
     newCommentContent: string;
 };
+
+export type DeletePostPayload = {
+    postId: string;
+    userId: number;
+};
+
+export type DeleteCommentPayload = {
+    commentId: string;
+    userId: number;
+};
+
+export type DeletePostResponse = {
+    id: string;
+};
+
+export type DeleteCommentBody = {
+    deleted: boolean;
+};
+
+// Since we actually patch the comment when we delete it.
+export type DeleteCommentResponse = PatchCommentResponse;

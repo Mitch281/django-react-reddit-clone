@@ -5,6 +5,8 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import {
+    DeletePostPayload,
+    DeletePostResponse,
     EditPostPayload,
     PatchPostBody,
     PatchPostResponse,
@@ -127,11 +129,12 @@ export const editPost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
     "posts/deletePost",
-    async (deleteInformation) => {
+    async (deleteInformation: DeletePostPayload) => {
         const { postId, userId } = deleteInformation;
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
-            const json = await authorisedFetchWrapper.delete(url);
+            const json: DeletePostResponse =
+                await authorisedFetchWrapper.delete(url);
             return json;
         } catch (error) {
             handleFetchError(

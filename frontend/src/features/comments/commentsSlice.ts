@@ -6,6 +6,9 @@ import {
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import {
+    DeleteCommentBody,
+    DeleteCommentPayload,
+    DeleteCommentResponse,
     EditCommentPayload,
     PatchCommentBody,
     PatchCommentResponse,
@@ -78,7 +81,6 @@ export const editComment = createAsyncThunk(
     "comments/editComment",
     async (editCommentInformation: EditCommentPayload) => {
         const { commentId, userId, newCommentContent } = editCommentInformation;
-        console.log(editCommentInformation);
         const patchData: PatchCommentBody = { content: newCommentContent };
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
@@ -100,9 +102,9 @@ export const editComment = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
     "comments/deleteComment",
-    async (deleteCommentInformation) => {
+    async (deleteCommentInformation: DeleteCommentPayload) => {
         const { commentId, userId } = deleteCommentInformation;
-        const patchInformation = {
+        const patchInformation: DeleteCommentBody = {
             deleted: true,
         };
         // TODO: Why is it that when I don't append slash infront of comment id, I get a did not append slash error in Django? Find out!!
@@ -110,10 +112,11 @@ export const deleteComment = createAsyncThunk(
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
-            const json = await authorisedFetchWrapper.patch(
-                url,
-                patchInformation
-            );
+            const json: DeleteCommentResponse =
+                await authorisedFetchWrapper.patch<
+                    DeleteCommentBody,
+                    DeleteCommentResponse
+                >(url, patchInformation);
             return json;
         } catch (error) {
             handleFetchError(
