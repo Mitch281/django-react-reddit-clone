@@ -6,6 +6,8 @@ import {
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import {
+    AddCommentBody,
+    AddCommentResponse,
     DeleteCommentBody,
     DeleteCommentPayload,
     DeleteCommentResponse,
@@ -63,10 +65,13 @@ export const voteOnComment = createAsyncThunk(
 
 export const makeCommentOnPost = createAsyncThunk(
     "comments/makeCommentOnPost",
-    async (newComment) => {
+    async (newComment: AddCommentBody) => {
         const url = `${API_ENDPOINT}/comments/`;
         try {
-            const json = await authorisedFetchWrapper.post(url, newComment);
+            const json: AddCommentResponse = await authorisedFetchWrapper.post<
+                AddCommentBody,
+                AddCommentResponse
+            >(url, newComment);
             return json;
         } catch (error) {
             handleFetchError(

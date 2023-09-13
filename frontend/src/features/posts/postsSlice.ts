@@ -5,6 +5,8 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import {
+    AddPostBody,
+    AddPostResponse,
     DeletePostPayload,
     DeletePostResponse,
     EditPostPayload,
@@ -92,10 +94,13 @@ export const voteOnPost = createAsyncThunk(
 
 export const addNewPost = createAsyncThunk(
     "posts/addNewPost",
-    async (newPost) => {
+    async (newPost: AddPostBody) => {
         const url = `${API_ENDPOINT}/posts/`;
         try {
-            const json = await authorisedFetchWrapper.post(url, newPost);
+            const json: AddPostResponse = await authorisedFetchWrapper.post<
+                AddPostBody,
+                AddPostResponse
+            >(url, newPost);
             return json;
         } catch (error) {
             handleFetchError(

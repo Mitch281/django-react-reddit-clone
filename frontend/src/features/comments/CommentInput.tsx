@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
+import { AddCommentBody } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -50,17 +51,17 @@ const CommentInput = () => {
         e.preventDefault();
         setAddNewCommentStatus("pending");
 
-        const newComment = {
+        const newComment: AddCommentBody = {
             id: uuid_v4(),
             username: usernameLoggedIn,
             user: userIdLoggedIn,
-            parent_post: postId,
+            parent_post: postId as string,
             content: commentContent,
             num_upvotes: 0,
             num_downvotes: 0,
             date_created: new Date().toString(),
             parent_comment: null,
-            hidden: false,
+            is_hidden: false,
             num_replies: 0,
         };
 

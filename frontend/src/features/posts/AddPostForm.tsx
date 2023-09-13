@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
+import { AddPostBody } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -38,7 +39,7 @@ const AddPostForm = () => {
         const categoryName = category.current.value.split(",")[1];
         const categoryId = category.current.value.split(",")[0];
 
-        const newPost = {
+        const newPost: AddPostBody = {
             id: uuid_v4(),
             username: usernameLoggedIn,
             category_name: categoryName,

@@ -65,6 +65,7 @@ async function authorisedPost<T1, T2>(url: string, body: T1): Promise<T2> {
     }
 
     const json: T2 = await response.json();
+    console.log(json);
     return json;
 }
 
