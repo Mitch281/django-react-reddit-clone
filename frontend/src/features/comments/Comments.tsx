@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FetchCommentsPayload } from "../../../types";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
-import { constants, VoteObjects } from "../../utils/constants";
+import { VoteObjects, constants } from "../../utils/constants";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
 import { fetchComments, selectAllComments } from "./commentsSlice";
@@ -25,7 +26,11 @@ const Comments = () => {
     const [commentChain, setCommentChain] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchComments({ order: order, postId: postId }));
+        const payload: FetchCommentsPayload = {
+            order,
+            postId,
+        };
+        dispatch(fetchComments(payload));
         // eslint-disable-next-line
     }, [order, dispatch]);
 

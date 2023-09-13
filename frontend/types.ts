@@ -134,3 +134,23 @@ export type FetchPostsByCategoryPayload = {
     pageNumber: number;
     categoryId: string;
 };
+
+export type Comment = {
+    content: string;
+    date_created: string;
+    deleted: boolean;
+    id: string;
+    is_hidden: boolean;
+    num_downvotes: number;
+    num_replies: number;
+    num_upvotes: number;
+    parent_comment: null | string;
+    parent_post: string;
+    user: number;
+    username: string;
+};
+
+export type FetchCommentsPayload = {
+    order?: Order;
+    postId: string;
+};

@@ -12,6 +12,7 @@ import {
     DeleteCommentPayload,
     DeleteCommentResponse,
     EditCommentPayload,
+    FetchCommentsPayload,
     PatchCommentBody,
     PatchCommentResponse,
 } from "./../../../types";
@@ -27,7 +28,7 @@ const initialState = commentsAdapter.getInitialState({
 
 export const fetchComments = createAsyncThunk(
     "comments/fetchComments",
-    async (commentsInformation) => {
+    async (commentsInformation: FetchCommentsPayload) => {
         const { order, postId } = commentsInformation;
         let url;
         if (order) {
@@ -36,8 +37,7 @@ export const fetchComments = createAsyncThunk(
             url = `${API_ENDPOINT}/post/${postId}/comments/`;
         }
         const response = await fetch(url);
-        const json = await response.json();
-        console.log(json);
+        const json: Comment[] = await response.json();
         return json;
     }
 );
