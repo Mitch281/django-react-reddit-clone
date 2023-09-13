@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SignupResponse } from "../../../types";
 import { UserContext } from "../../app/App";
 import { signup } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import styles from "./styles/login-signup.module.css";
 
 const SignupPage = () => {
-    let navigate = useNavigate("/");
+    const navigate = useNavigate();
 
     const { setUsernameLoggedIn, setLoggedIn, setUserIdLoggedIn } =
         useContext(UserContext);
@@ -29,10 +30,10 @@ const SignupPage = () => {
         }
 
         try {
-            const json = await signup(username, password);
+            const json: SignupResponse = await signup(username, password);
             setLoggedIn(true);
             setUsernameLoggedIn(json.username);
-            setUserIdLoggedIn(json.id);
+            setUserIdLoggedIn(json.id.toString());
             localStorage.setItem("accessToken", json.token.access);
             localStorage.setItem("refreshToken", json.token.refresh);
             navigate("/");
@@ -41,13 +42,13 @@ const SignupPage = () => {
         }
     }
 
-    async function performSignup(e) {
+    async function performSignup(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setSignupStatus("pending");
 
         try {
             await handleSignup();
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message, {
                 position: "bottom-center",
                 autoClose: 3000,
@@ -78,7 +79,7 @@ const SignupPage = () => {
 
     return (
         <>
-            <div id={[styles["signup"]]}>
+            <div id={styles["signup"]}>
                 <form id={styles["signup-form"]} onSubmit={performSignup}>
                     <input
                         type="text"

@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { LoginResponse, SignupResponse } from "../../types";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -70,7 +71,10 @@ export async function getNewAccessToken() {
     }
 }
 
-export async function login(username, password) {
+export async function login(
+    username: string,
+    password: string
+): Promise<LoginResponse> {
     const response = await fetch(`${API_ENDPOINT}/token/`, {
         method: "POST",
         headers: {
@@ -89,7 +93,10 @@ export async function login(username, password) {
     return json;
 }
 
-export async function signup(username, password) {
+export async function signup(
+    username: string,
+    password: string
+): Promise<SignupResponse> {
     const response = await fetch(`${API_ENDPOINT}/users/`, {
         method: "POST",
         headers: {

@@ -170,3 +170,20 @@ export type UsersVoteOnComment = {
     upvote: boolean;
     user: number;
 };
+
+export type LoginResponse = {
+    access: string;
+    refresh: string;
+    user_id: number;
+};
+
+type Token = {
+    access: string;
+    refresh: string;
+};
+
+export type SignupResponse = {
+    id: number;
+    token: Token;
+    username: string;
+};

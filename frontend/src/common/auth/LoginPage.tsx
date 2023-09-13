@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LoginResponse } from "../../../types";
 import { UserContext } from "../../app/App";
 import { login } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -21,11 +22,11 @@ const LoginPage = () => {
 
     async function handleLogin() {
         try {
-            const json = await login(username, password);
+            const json: LoginResponse = await login(username, password);
             localStorage.setItem("accessToken", json.access);
             localStorage.setItem("refreshToken", json.refresh);
             setLoggedIn(true);
-            setUserIdLoggedIn(json.user_id);
+            setUserIdLoggedIn(json.user_id.toString());
             setUsernameLoggedIn(username);
             navigate("/", { state: { userId: json.user_id } });
         } catch (error) {
@@ -33,13 +34,13 @@ const LoginPage = () => {
         }
     }
 
-    async function performLogin(e) {
+    async function performLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setLoginStatus("pending");
 
         try {
             await handleLogin();
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message, {
                 position: "bottom-center",
                 autoClose: 3000,
