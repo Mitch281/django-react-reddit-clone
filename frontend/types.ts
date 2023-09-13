@@ -154,3 +154,19 @@ export type FetchCommentsPayload = {
     order?: Order;
     postId: string;
 };
+
+export type UsersVoteOnPost = {
+    downvote: boolean;
+    id: string;
+    post: string;
+    upvote: boolean;
+    user: number;
+};
+
+export type UsersVoteOnComment = {
+    comment: string;
+    downvote: boolean;
+    id: string;
+    upvote: boolean;
+    user: number;
+};

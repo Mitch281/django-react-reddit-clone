@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { UsersVoteOnPost } from "../../../types";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -15,11 +16,11 @@ const initialState = usersVotesOnPostsAdapter.getInitialState({
 
 export const fetchUsersVotesOnPosts = createAsyncThunk(
     "usersVotesOnPosts/fetchUsersVotesOnPosts",
-    async (userId) => {
+    async (userId: number): Promise<UsersVoteOnPost[]> => {
         const response = await fetch(
             `${API_ENDPOINT}/post-votes?user=${userId}`
         );
-        const json = await response.json();
+        const json: UsersVoteOnPost[] = await response.json();
         return json;
     }
 );

@@ -67,17 +67,6 @@ function App() {
         // eslint-disable-next-line
     }, []);
 
-    console.log({
-        usernameLoggedIn,
-        userIdLoggedIn,
-        loggedIn,
-        setUsernameLoggedIn,
-        setUserIdLoggedIn,
-        setLoggedIn,
-        reLogin,
-        logout,
-    });
-
     return (
         <>
             <Router>
