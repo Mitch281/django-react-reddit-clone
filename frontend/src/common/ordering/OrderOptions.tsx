@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styles from "./styles/order-options.module.css";
 
 const OrderOptions = () => {
@@ -213,7 +213,6 @@ const OrderOptions = () => {
                     </Link>
                     <Link
                         to={`/post=${postId}/comments/old/`}
-
                         id={order === "old" ? styles["current-ordering"] : ""}
                     >
                         Old

@@ -104,7 +104,7 @@ export type UserContextType = {
     setUserIdLoggedIn: React.Dispatch<SetStateAction<string>>;
     setUsernameLoggedIn: React.Dispatch<SetStateAction<string>>;
     userIdLoggedIn: number;
-    userNameLoggedIn: string;
+    usernameLoggedIn: string;
 };
 
 export type Post = {
