@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+
 export type PatchPostBody = {
     content: string;
 };
@@ -93,3 +95,14 @@ export type AddCommentBody = {
 };
 
 export type AddCommentResponse = AddCommentBody;
+
+export type UserContextType = {
+    loggedIn: boolean;
+    logout: () => void;
+    reLogin: () => Promise<void>;
+    setLoggedIn: React.Dispatch<SetStateAction<boolean>>;
+    setUserIdLoggedIn: React.Dispatch<SetStateAction<string>>;
+    setUsernameLoggedIn: React.Dispatch<SetStateAction<string>>;
+    userIdLoggedIn: number;
+    userNameLoggedIn: string;
+};

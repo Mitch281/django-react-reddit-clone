@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { UserContextType } from "../../types";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";
@@ -17,7 +18,7 @@ import {
     verifyCurrentUser,
 } from "../utils/auth";
 
-export const UserContext = createContext();
+export const UserContext = createContext({} as UserContextType);
 // TODO: Handle multiple unecessary fetches.
 // TODO: Upgrade to latest version of react so we can see which renders are due to strict mode (greyed out),
 // and which are actual renders!
@@ -27,7 +28,7 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
 
     // This function relogs in a user whenever they navigate to a different page or refresh the page.
-    async function reLogin() {
+    async function reLogin(): Promise<void> {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken === null) {
             return;
@@ -65,6 +66,17 @@ function App() {
         reLogin();
         // eslint-disable-next-line
     }, []);
+
+    console.log({
+        usernameLoggedIn,
+        userIdLoggedIn,
+        loggedIn,
+        setUsernameLoggedIn,
+        setUserIdLoggedIn,
+        setLoggedIn,
+        reLogin,
+        logout,
+    });
 
     return (
         <>
