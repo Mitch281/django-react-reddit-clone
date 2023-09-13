@@ -92,11 +92,9 @@ const Posts = () => {
             const payload: FetchPostsPayload = {
                 order: initialOrder,
                 pageNumber: 1,
-                categoryId: initialCategoryId;
+                categoryId: initialCategoryId,
             };
-            dispatch(
-                fetchPostsByCategory(payload)
-            );
+            dispatch(fetchPostsByCategory(payload));
         }
         // eslint-disable-next-line
     }, [dispatch, initialOrder, initialCategoryId]);
