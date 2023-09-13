@@ -1,13 +1,14 @@
-import styles from "./styles/comment-content.module.css";
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editComment, selectCommentById } from "./commentsSlice";
+import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { toast } from "react-toastify";
+import { EditCommentPayload } from "../../../types";
 import { UserContext } from "../../app/App";
 import { renderErrorOnRequest } from "../../utils/auth";
-import ClipLoader from "react-spinners/ClipLoader";
 import { constants } from "../../utils/constants";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { editComment, selectCommentById } from "./commentsSlice";
+import styles from "./styles/comment-content.module.css";
 
 const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
 
     async function handleEditCommentContent(e) {
         e.preventDefault();
-        const editCommentInformation = {
+        const editCommentInformation: EditCommentPayload = {
             userId: userIdLoggedIn,
             newCommentContent: commentContent,
             commentId: commentId,

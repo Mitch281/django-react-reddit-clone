@@ -4,7 +4,11 @@ import {
     createSelector,
     createSlice,
 } from "@reduxjs/toolkit";
-import { PatchPostData } from "../../../types";
+import {
+    EditPostPayload,
+    PatchPostBody,
+    PatchPostResponse,
+} from "../../../types";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import { constants } from "../../utils/constants";
@@ -102,12 +106,15 @@ export const addNewPost = createAsyncThunk(
 
 export const editPost = createAsyncThunk(
     "posts/editPost",
-    async (editPostInformation) => {
+    async (editPostInformation: EditPostPayload) => {
         const { postId, userId, newPostContent } = editPostInformation;
-        const patchData: PatchPostData = { content: newPostContent };
+        const patchData: PatchPostBody = { content: newPostContent };
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
-            const json = await authorisedFetchWrapper.patch(url, patchData);
+            const json: PatchPostResponse = await authorisedFetchWrapper.patch<
+                PatchPostBody,
+                PatchPostResponse
+            >(url, patchData);
             return json;
         } catch (error) {
             handleFetchError(

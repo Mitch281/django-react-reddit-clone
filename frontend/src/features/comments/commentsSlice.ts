@@ -5,6 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
+import {
+    EditCommentPayload,
+    PatchCommentBody,
+    PatchCommentResponse,
+} from "./../../../types";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -71,13 +76,18 @@ export const makeCommentOnPost = createAsyncThunk(
 
 export const editComment = createAsyncThunk(
     "comments/editComment",
-    async (editCommentInformation) => {
+    async (editCommentInformation: EditCommentPayload) => {
         const { commentId, userId, newCommentContent } = editCommentInformation;
-        const patchData = { content: newCommentContent };
+        console.log(editCommentInformation);
+        const patchData: PatchCommentBody = { content: newCommentContent };
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
-            const json = await authorisedFetchWrapper.patch(url, patchData);
+            const json: PatchCommentResponse =
+                await authorisedFetchWrapper.patch<
+                    PatchCommentBody,
+                    PatchCommentResponse
+                >(url, patchData);
             return json;
         } catch (error) {
             handleFetchError(

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { EditPostPayload } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -26,11 +27,12 @@ const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
         e.preventDefault();
         setEditPostStatus("pending");
 
-        const data = {
+        const data: EditPostPayload = {
             postId: postId,
             userId: userIdLoggedIn,
             newPostContent: postContent,
         };
+        console.log(data);
         try {
             await dispatch(editPost(data)).unwrap();
             toggleCurrentlyEditing();
