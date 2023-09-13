@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectCategoryById } from "./categoriesSlice";
+import { selectCategoryById } from "./categoriesSlice.ts";
 
 const Category = ({ categoryId, filterCategoriesText }) => {
     const category = useSelector((state) =>

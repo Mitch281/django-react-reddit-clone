@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import { constants } from "../../utils/constants";
-import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { useEffect } from "react";
-import { fetchCategories, selectCategoryIds } from "./categoriesSlice";
-import Category from "./Category";
-import ClipLoader from "react-spinners/ClipLoader";
+import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { constants } from "../../utils/constants";
+import Category from "./Category";
+import { fetchCategories, selectCategoryIds } from "./categoriesSlice";
 
 const Categories = ({ filterCategoriesText }) => {
     const dispatch = useDispatch();

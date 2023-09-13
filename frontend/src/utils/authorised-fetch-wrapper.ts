@@ -24,7 +24,7 @@ async function handleAccessToken() {
     }
 }
 
-async function authorisedPatch(url, body) {
+async function authorisedPatch<T1, T2>(url: string, body: T1): Promise<T2> {
     try {
         await handleAccessToken();
     } catch (error) {
@@ -41,14 +41,15 @@ async function authorisedPatch(url, body) {
     });
 
     if (!response.ok) {
-        return Promise.reject(response.status);
+        return Promise.reject(response.status.toString());
     }
 
-    const json = await response.json();
+    const json: T2 = await response.json();
+    console.log(json);
     return json;
 }
 
-async function authorisedPost(url, body) {
+async function authorisedPost<T1, T2>(url: string, body: T1): Promise<T2> {
     try {
         await handleAccessToken();
     } catch (error) {
@@ -65,14 +66,14 @@ async function authorisedPost(url, body) {
     });
 
     if (!response.ok) {
-        return Promise.reject(new Error(response.status));
+        return Promise.reject(new Error(response.status.toString()));
     }
 
-    const json = await response.json();
+    const json: T2 = await response.json();
     return json;
 }
 
-async function authorisedPut(url, body) {
+async function authorisedPut<T1, T2>(url: string, body: T1): Promise<T2> {
     try {
         await handleAccessToken();
     } catch (error) {
@@ -89,14 +90,14 @@ async function authorisedPut(url, body) {
     });
 
     if (!response.ok) {
-        return Promise.reject(new Error(response.status));
+        return Promise.reject(new Error(response.status.toString()));
     }
 
     const json = await response.json();
     return json;
 }
 
-async function authorisedDelete(url) {
+async function authorisedDelete<T>(url: string): Promise<T> {
     try {
         await handleAccessToken();
     } catch (error) {
@@ -112,7 +113,7 @@ async function authorisedDelete(url) {
     });
 
     if (!response.ok) {
-        return Promise.reject(new Error(response.status));
+        return Promise.reject(new Error(response.status.toString()));
     }
 
     const json = await response.json();

@@ -1,15 +1,15 @@
 import { createContext, useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";
-import LinkToCreatePost from "../features/posts/LinkToCreatePost";
 import CreateCategoryForm from "../features/categories/CreateCategoryForm";
 import Comments from "../features/comments/Comments";
 import AddPostForm from "../features/posts/AddPostForm";
-import Posts from "../features/posts/Posts";
+import LinkToCreatePost from "../features/posts/LinkToCreatePost";
 import PostSelected from "../features/posts/PostSelected";
+import Posts from "../features/posts/Posts";
 import {
     getNewAccessToken,
     handleCantReLoginError,

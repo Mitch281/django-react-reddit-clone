@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import postsReducer from "../features/posts/postsSlice";
+import categoriesReducer from "../features/categories/categoriesSlice.ts";
 import commentsReducer from "../features/comments/commentsSlice";
-import categoriesReducer from "../features/categories/categoriesSlice";
-import usersVotesOnPostsReducer from "../features/users/usersVotesOnPostsSlice";
+import postsReducer from "../features/posts/postsSlice";
 import usersVotesOnCommentsReducer from "../features/users/usersVotesOnCommentsSlice";
+import usersVotesOnPostsReducer from "../features/users/usersVotesOnPostsSlice";
 
 export default configureStore({
   reducer: {

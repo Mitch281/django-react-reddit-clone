@@ -4,6 +4,7 @@ import {
     createSelector,
     createSlice,
 } from "@reduxjs/toolkit";
+import { PatchPostData } from "../../../types";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import { constants } from "../../utils/constants";
@@ -103,7 +104,7 @@ export const editPost = createAsyncThunk(
     "posts/editPost",
     async (editPostInformation) => {
         const { postId, userId, newPostContent } = editPostInformation;
-        const patchData = { content: newPostContent };
+        const patchData: PatchPostData = { content: newPostContent };
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
             const json = await authorisedFetchWrapper.patch(url, patchData);
