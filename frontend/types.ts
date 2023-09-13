@@ -106,3 +106,31 @@ export type UserContextType = {
     userIdLoggedIn: number;
     userNameLoggedIn: string;
 };
+
+export type Post = {
+    category: string;
+    category_name: string;
+    content: string;
+    date_created: string;
+    id: string;
+    num_comments: number;
+    num_downvotes: number;
+    num_upvotes: number;
+    page_number: number;
+    title: string;
+    user: number;
+    username: string;
+};
+
+export type Order = "new" | "old" | "top" | "bottom";
+
+export type FetchPostsPayload = {
+    order?: Order;
+    pageNumber: number;
+};
+
+export type FetchPostsByCategoryPayload = {
+    order?: Order;
+    pageNumber: number;
+    categoryId: string;
+};

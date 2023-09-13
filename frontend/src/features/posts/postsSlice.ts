@@ -10,8 +10,11 @@ import {
     DeletePostPayload,
     DeletePostResponse,
     EditPostPayload,
+    FetchPostsByCategoryPayload,
+    FetchPostsPayload,
     PatchPostBody,
     PatchPostResponse,
+    Post,
 } from "../../../types";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
@@ -30,7 +33,7 @@ const initialState = postsAdapter.getInitialState({
 
 export const fetchPosts = createAsyncThunk(
     "posts/fetchPosts",
-    async (fetchInformation) => {
+    async (fetchInformation: FetchPostsPayload) => {
         const { order, pageNumber } = fetchInformation;
         let url;
         if (order) {
@@ -39,14 +42,14 @@ export const fetchPosts = createAsyncThunk(
             url = `${API_ENDPOINT}/posts?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         }
         const response = await fetch(url);
-        const json = await response.json();
+        const json: Post[] = await response.json();
         return json;
     }
 );
 
 export const fetchPostsByCategory = createAsyncThunk(
     "posts/fetchPostsByCategory",
-    async (fetchInformation) => {
+    async (fetchInformation: FetchPostsByCategoryPayload) => {
         const { order, categoryId, pageNumber } = fetchInformation;
         let url;
         if (order) {
@@ -55,7 +58,7 @@ export const fetchPostsByCategory = createAsyncThunk(
             url = `${API_ENDPOINT}/posts/category/${categoryId}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         }
         const response = await fetch(url);
-        const json = await response.json();
+        const json: Post[] = await response.json();
         return json;
     }
 );

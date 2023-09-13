@@ -5,8 +5,6 @@ type Props = {
 };
 
 const DateOfPost = ({ dateCreated }: Props) => {
-    console.log(typeof dateCreated);
-
     return (
         <span className="post-date">
             {getTimeElapsedFromCreation(dateCreated)}

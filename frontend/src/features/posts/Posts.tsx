@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
+import { FetchPostsByCategoryPayload, FetchPostsPayload } from "../../../types";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
 import useStateRef from "../../hooks/useStateRef";
-import { constants, VoteObjects } from "../../utils/constants";
+import { VoteObjects, constants } from "../../utils/constants";
 import Post from "./Post";
 import {
     fetchPosts,
@@ -50,20 +51,19 @@ const Posts = () => {
             hasMorePosts.current
         ) {
             if (categoryId.current) {
-                dispatch(
-                    fetchPostsByCategory({
-                        order: order.current,
-                        categoryId: categoryId.current,
-                        pageNumber: pageNumber.current,
-                    })
-                );
+                const payload: FetchPostsByCategoryPayload = {
+                    order: order.current,
+                    categoryId: categoryId.current,
+                    pageNumber: pageNumber.current,
+                };
+
+                dispatch(fetchPostsByCategory(payload));
             } else {
-                dispatch(
-                    fetchPosts({
-                        order: order.current,
-                        pageNumber: pageNumber.current,
-                    })
-                );
+                const payload: FetchPostsPayload = {
+                    order: order.current,
+                    pageNumber: pageNumber.current,
+                };
+                dispatch(fetchPosts(payload));
             }
         }
     }
@@ -83,14 +83,19 @@ const Posts = () => {
     useEffect(() => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
         if (!initialCategoryId) {
-            dispatch(fetchPosts({ order: initialOrder, pageNumber: 1 }));
+            const payload: FetchPostsPayload = {
+                order: initialOrder,
+                pageNumber: 1,
+            };
+            dispatch(fetchPosts(payload));
         } else {
+            const payload: FetchPostsPayload = {
+                order: initialOrder,
+                pageNumber: 1,
+                categoryId: initialCategoryId;
+            };
             dispatch(
-                fetchPostsByCategory({
-                    order: initialOrder,
-                    categoryId: initialCategoryId,
-                    pageNumber: 1,
-                })
+                fetchPostsByCategory(payload)
             );
         }
         // eslint-disable-next-line
