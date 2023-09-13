@@ -32,8 +32,7 @@ export const createCategory = createAsyncThunk(
     async (newCategory) => {
         const url = `${API_ENDPOINT}/categories/`;
         try {
-            const response = await authorisedFetchWrapper.post(url, newCategory);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.post(url, newCategory);
             return json;
         } catch (error) {
             handleFetchError(error, "Could not create category! Please try again later.");

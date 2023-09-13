@@ -1,8 +1,8 @@
 import {
     createAsyncThunk,
     createEntityAdapter,
-    createSlice,
     createSelector,
+    createSlice,
 } from "@reduxjs/toolkit";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
@@ -72,8 +72,7 @@ export const voteOnPost = createAsyncThunk(
             url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=/`;
         }
         try {
-            const response = await authorisedFetchWrapper.put(url, data);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.put(url, data);
             return json;
         } catch (error) {
             handleFetchError(
@@ -89,8 +88,7 @@ export const addNewPost = createAsyncThunk(
     async (newPost) => {
         const url = `${API_ENDPOINT}/posts/`;
         try {
-            const response = await authorisedFetchWrapper.post(url, newPost);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.post(url, newPost);
             return json;
         } catch (error) {
             handleFetchError(
@@ -108,8 +106,7 @@ export const editPost = createAsyncThunk(
         const patchData = { content: newPostContent };
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
-            const response = await authorisedFetchWrapper.patch(url, patchData);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.patch(url, patchData);
             return json;
         } catch (error) {
             handleFetchError(
@@ -126,8 +123,7 @@ export const deletePost = createAsyncThunk(
         const { postId, userId } = deleteInformation;
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
-            const response = await authorisedFetchWrapper.delete(url);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.delete(url);
             return json;
         } catch (error) {
             handleFetchError(

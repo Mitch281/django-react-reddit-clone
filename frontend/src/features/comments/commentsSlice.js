@@ -42,8 +42,7 @@ export const voteOnComment = createAsyncThunk(
             url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=/`;
         }
         try {
-            const response = await authorisedFetchWrapper.put(url, data);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.put(url, data);
             return json;
         } catch (error) {
             handleFetchError(
@@ -59,8 +58,7 @@ export const makeCommentOnPost = createAsyncThunk(
     async (newComment) => {
         const url = `${API_ENDPOINT}/comments/`;
         try {
-            const response = await authorisedFetchWrapper.post(url, newComment);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.post(url, newComment);
             return json;
         } catch (error) {
             handleFetchError(
@@ -79,8 +77,7 @@ export const editComment = createAsyncThunk(
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
-            const response = await authorisedFetchWrapper.patch(url, patchData);
-            const json = await response.json();
+            const json = await authorisedFetchWrapper.patch(url, patchData);
             return json;
         } catch (error) {
             handleFetchError(
@@ -103,11 +100,10 @@ export const deleteComment = createAsyncThunk(
         const url = `${API_ENDPOINT}/comment/${commentId}/?user-id=${userId}`;
 
         try {
-            const response = await authorisedFetchWrapper.patch(
+            const json = await authorisedFetchWrapper.patch(
                 url,
                 patchInformation
             );
-            const json = await response.json();
             return json;
         } catch (error) {
             handleFetchError(

@@ -44,7 +44,8 @@ async function authorisedPatch(url, body) {
         return Promise.reject(response.status);
     }
 
-    return response;
+    const json = await response.json();
+    return json;
 }
 
 async function authorisedPost(url, body) {
@@ -67,7 +68,8 @@ async function authorisedPost(url, body) {
         return Promise.reject(new Error(response.status));
     }
 
-    return response;
+    const json = await response.json();
+    return json;
 }
 
 async function authorisedPut(url, body) {
@@ -90,7 +92,8 @@ async function authorisedPut(url, body) {
         return Promise.reject(new Error(response.status));
     }
 
-    return response;
+    const json = await response.json();
+    return json;
 }
 
 async function authorisedDelete(url) {
@@ -112,7 +115,8 @@ async function authorisedDelete(url) {
         return Promise.reject(new Error(response.status));
     }
 
-    return response;
+    const json = await response.json();
+    return json;
 }
 
 export const authorisedFetchWrapper = {
