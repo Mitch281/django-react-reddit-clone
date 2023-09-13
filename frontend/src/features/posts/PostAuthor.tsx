@@ -1,10 +1,14 @@
 import styles from "./styles/post-author.module.css";
 
-const PostAuthor = ({ username }) => {
+type Props = {
+    username: string;
+};
+
+const PostAuthor = ({ username }: Props) => {
     return (
         <span>
-            Posted by{" "}
-            <span className={styles["username"]}>{username}</span> &nbsp;
+            Posted by <span className={styles["username"]}>{username}</span>{" "}
+            &nbsp;
         </span>
     );
 };

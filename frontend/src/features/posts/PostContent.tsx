@@ -11,7 +11,17 @@ import { constants } from "../../utils/constants";
 import { editPost, selectPostById } from "./postsSlice";
 import styles from "./styles/post-content.module.css";
 
-const PostContent = ({ postId, currentlyEditing, toggleCurrentlyEditing }) => {
+type Props = {
+    postId: string;
+    currentlyEditing: boolean;
+    toggleCurrentlyEditing: () => void;
+};
+
+const PostContent = ({
+    postId,
+    currentlyEditing,
+    toggleCurrentlyEditing,
+}: Props) => {
     const dispatch = useDispatch();
     const handleTextInput = useHandleTextInput();
     const post = useSelector((state) => selectPostById(state, postId));

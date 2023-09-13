@@ -12,7 +12,11 @@ import { constants } from "../../utils/constants";
 import { deleteComment } from "./commentsSlice";
 import styles from "./styles/delete-comment.module.css";
 
-const DeleteComment = ({ commentId }) => {
+type Props = {
+    commentId: string;
+};
+
+const DeleteComment = ({ commentId }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();

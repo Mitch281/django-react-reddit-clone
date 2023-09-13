@@ -2,7 +2,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCategoryById } from "./categoriesSlice.ts";
 
-const Category = ({ categoryId, filterCategoriesText }) => {
+type Props = {
+    categoryId: string;
+    filterCategoriesText: string;
+};
+
+const Category = ({ categoryId, filterCategoriesText }: Props) => {
     const category = useSelector((state) =>
         selectCategoryById(state, categoryId)
     );

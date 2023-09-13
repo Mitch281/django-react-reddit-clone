@@ -7,7 +7,11 @@ import { constants } from "../../utils/constants";
 import Category from "./Category";
 import { fetchCategories, selectCategoryIds } from "./categoriesSlice";
 
-const Categories = ({ filterCategoriesText }) => {
+type Props = {
+    filterCategoriesText: string;
+};
+
+const Categories = ({ filterCategoriesText }: Props) => {
     const dispatch = useDispatch();
     const categoriesStatus = useSelector((state) => state.categories.status);
     const categoryIds = useSelector(selectCategoryIds);

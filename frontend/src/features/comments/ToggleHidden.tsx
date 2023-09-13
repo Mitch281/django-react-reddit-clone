@@ -1,9 +1,12 @@
-import { useSelector, useDispatch } from "react-redux";
-import { selectCommentById } from "./commentsSlice";
-import { toggleHidden } from "./commentsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCommentById, toggleHidden } from "./commentsSlice";
 import styles from "./styles/comment.module.css";
 
-const ToggleHidden = ({ commentId }) => {
+type Props = {
+    commentId: string;
+};
+
+const ToggleHidden = ({ commentId }: Props) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
     const dispatch = useDispatch();
 
@@ -22,9 +25,7 @@ const ToggleHidden = ({ commentId }) => {
         <button
             type="button"
             className={styles["hide-replies-button"]}
-            onClick={() =>
-                dispatch(toggleHidden(commentId, comment.is_hidden))
-            }
+            onClick={() => dispatch(toggleHidden(commentId, comment.is_hidden))}
         >
             {text}
         </button>

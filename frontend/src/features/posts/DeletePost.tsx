@@ -12,7 +12,11 @@ import { constants } from "../../utils/constants";
 import { deletePost } from "./postsSlice";
 import styles from "./styles/delete-post.module.css";
 
-const DeletePost = ({ postId }) => {
+type Props = {
+    postId: string;
+};
+
+const DeletePost = ({ postId }: Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { userIdLoggedIn, logout } = useContext(UserContext);

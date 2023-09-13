@@ -8,12 +8,16 @@ import NumComments from "./NumComments";
 import PostAuthor from "./PostAuthor";
 import PostContent from "./PostContent";
 import PostDeletedMessage from "./PostDeletedMessage";
-import { selectPostById } from "./postsSlice";
 import PostVotes from "./PostVotes";
-import styles from "./styles/post.module.css";
 import Title from "./Title";
+import { selectPostById } from "./postsSlice";
+import styles from "./styles/post.module.css";
 
-const Post = ({ postId }) => {
+type Props = {
+    postId: string;
+};
+
+const Post = ({ postId }: Props) => {
     const post = useSelector((state) => selectPostById(state, postId));
 
     const [currentlyEditing, setCurrentlyEditing] = useState(false);

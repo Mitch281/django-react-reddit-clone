@@ -10,7 +10,12 @@ import { constants } from "../../utils/constants";
 import { editComment, selectCommentById } from "./commentsSlice";
 import styles from "./styles/comment-content.module.css";
 
-const EditCommentContentForm = ({ commentId, toggleEditForm }) => {
+type Props = {
+    commentId: string;
+    toggleEditForm: () => void;
+};
+
+const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();

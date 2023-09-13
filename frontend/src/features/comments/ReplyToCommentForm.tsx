@@ -16,7 +16,12 @@ import {
 } from "./commentsSlice";
 import styles from "./styles/reply-to-comment-form.module.css";
 
-const ReplyToCommentForm = ({ commentId, toggleReplyForm }) => {
+type Props = {
+    commentId: string;
+    toggleReplyForm: () => void;
+};
+
+const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleTextInput = useHandleTextInput();

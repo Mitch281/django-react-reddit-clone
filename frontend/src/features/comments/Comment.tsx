@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
 import Author from "./Author";
 import CommentContent from "./CommentContent";
-import { selectCommentById } from "./commentsSlice";
 import CommentVotes from "./CommentVotes";
 import DateOfComment from "./DateOfComment";
 import DeleteComment from "./DeleteComment";
 import ReplyToCommentForm from "./ReplyToCommentForm";
-import styles from "./styles/comment.module.css";
 import ToggleHidden from "./ToggleHidden";
+import { selectCommentById } from "./commentsSlice";
+import styles from "./styles/comment.module.css";
 
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));

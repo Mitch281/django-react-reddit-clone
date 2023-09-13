@@ -8,12 +8,17 @@ import { UserContext } from "../../app/App";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
-    selectAllUsersVotesOnComments, trackUsersVote
+    selectAllUsersVotesOnComments,
+    trackUsersVote,
 } from "../users/usersVotesOnCommentsSlice";
 import { selectCommentById, voteOnComment } from "./commentsSlice";
 import styles from "./styles/comment-votes.module.css";
 
-const CommentVotes = ({ commentId }) => {
+type Props = {
+    commentId: string;
+};
+
+const CommentVotes = ({ commentId }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
