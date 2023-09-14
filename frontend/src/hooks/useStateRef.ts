@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-function useStateRef(initialValue) {
+function useStateRef<T>(initialValue: T): React.RefObject<T> {
     const [value, setValue] = useState(initialValue);
 
-    const ref = useRef(value);
+    const ref = useRef<T>(value);
 
     useEffect(() => {
         setValue(initialValue);

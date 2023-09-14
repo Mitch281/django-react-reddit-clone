@@ -24,25 +24,26 @@ const Posts = () => {
     useFetchUserVotes(VoteObjects.Post);
     const params = useParams();
     const initialOrder = params.order;
-    const order = useStateRef(initialOrder);
+    const order = useStateRef<string | undefined>(initialOrder);
 
     const { state } = useLocation();
-    let initialCategoryId;
+    let initialCategoryId: string | undefined;
     if (state) {
         // State will always have a categoryId in this component, so no need to check if the categoryId property exists.
         initialCategoryId = state.categoryId;
     }
-    const categoryId = useStateRef(initialCategoryId);
+    console.log(initialCategoryId);
+    const categoryId = useStateRef<string | undefined>(initialCategoryId);
 
     const postStatus = useSelector((state) => state.posts.status);
     const postIds = useSelector(selectPostIds);
     const initialPageNumber = useSelector((state) => state.posts.pageNumber);
-    const pageNumber = useStateRef(initialPageNumber);
+    const pageNumber = useStateRef<number>(initialPageNumber);
     const postIdsByPageNumber = useSelector(selectPostIdsByPageNumber);
-    const initialhHasMorePosts = useSelector(
+    const initialHasMorePosts: boolean = useSelector(
         (state) => state.posts.hasMorePosts
     );
-    const hasMorePosts = useStateRef(initialhHasMorePosts);
+    const hasMorePosts = useStateRef<boolean>(initialHasMorePosts);
 
     function handleScroll(e) {
         if (

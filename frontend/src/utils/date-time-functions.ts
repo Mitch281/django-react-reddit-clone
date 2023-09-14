@@ -1,11 +1,14 @@
-export function getTimeElapsedFromCreation(pythonDateTimeObject) {
+export function getTimeElapsedFromCreation(
+    pythonDateTimeObject: string
+): string {
     const dateCreated = Date.parse(pythonDateTimeObject);
     const dateToday = new Date();
 
-    const secondsElapsed = 0 || Math.round(((dateToday.getTime() - dateCreated) / 1000));
+    const secondsElapsed =
+        0 || Math.round((dateToday.getTime() - dateCreated) / 1000);
     const minutesElapsed = Math.round(secondsElapsed / 60);
     const hoursElapsed = Math.round(secondsElapsed / (60 * 60));
-    const daysElapsed = Math.round(secondsElapsed / ( 60 * 60 * 24));
+    const daysElapsed = Math.round(secondsElapsed / (60 * 60 * 24));
     const monthsElapsed = Math.round(secondsElapsed / (60 * 60 * 24 * 31));
     const yearsElapsed = Math.round(secondsElapsed / (60 * 60 * 24 * 31 * 12));
 
@@ -15,36 +18,31 @@ export function getTimeElapsedFromCreation(pythonDateTimeObject) {
         } else {
             return `${secondsElapsed} seconds ago`;
         }
-    }
-    else if (minutesElapsed < 60) {
+    } else if (minutesElapsed < 60) {
         if (minutesElapsed === 1) {
             return `${minutesElapsed} minute ago`;
         } else {
             return `${minutesElapsed} minutes ago`;
         }
-    }
-    else if (hoursElapsed < 24) {
+    } else if (hoursElapsed < 24) {
         if (hoursElapsed === 1) {
             return `${hoursElapsed} hour ago`;
         } else {
             return `${hoursElapsed} hours ago`;
         }
-    } 
-    else if (daysElapsed < 31) {
+    } else if (daysElapsed < 31) {
         if (daysElapsed === 1) {
             return `${daysElapsed} day ago`;
         } else {
             return `${daysElapsed} days ago`;
         }
-    }
-    else if (monthsElapsed < 12) {
+    } else if (monthsElapsed < 12) {
         if (monthsElapsed === 1) {
             return `${monthsElapsed} month ago`;
         } else {
             return `${monthsElapsed} months ago`;
         }
-    }
-    else {
+    } else {
         if (yearsElapsed === 1) {
             return `${yearsElapsed} year ago`;
         } else {
