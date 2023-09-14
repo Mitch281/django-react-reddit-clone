@@ -39,7 +39,7 @@ function App() {
             try {
                 await getNewAccessToken();
             } catch (error) {
-                handleCantReLoginError(error, logout);
+                handleCantReLoginError(error as Error, logout);
             }
         } else {
             try {
@@ -49,7 +49,7 @@ function App() {
                 setUserIdLoggedIn(json.id.toString());
                 setUsernameLoggedIn(json.username);
             } catch (error) {
-                handleCantReLoginError(error, logout);
+                handleCantReLoginError(error as Error, logout);
             }
         }
     }
@@ -85,7 +85,6 @@ function App() {
                     <div className="App">
                         <Routes>
                             <Route
-                                exact
                                 path="/"
                                 element={
                                     <>
@@ -96,7 +95,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="/:order/"
                                 element={
                                     <>
@@ -107,7 +105,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="/login/"
                                 element={
                                     <>
@@ -117,7 +114,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="/signup/"
                                 element={
                                     <>
@@ -127,7 +123,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="posts/category=:categoryName"
                                 element={
                                     <>
@@ -138,7 +133,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="posts/category=:categoryName/:order"
                                 element={
                                     <>
@@ -149,7 +143,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="post=:postId/comments"
                                 element={
                                     <>
@@ -160,7 +153,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="post=:postId/comments/:order"
                                 element={
                                     <>
@@ -171,7 +163,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="/create-post/"
                                 element={
                                     <>
@@ -181,7 +172,6 @@ function App() {
                                 }
                             />
                             <Route
-                                exact
                                 path="/create-category/"
                                 element={
                                     <>
