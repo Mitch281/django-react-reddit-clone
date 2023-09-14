@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
-import { FetchPostsByCategoryPayload, FetchPostsPayload } from "../../../types";
 import { RootState } from "../../app/store";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
 import useStateRef from "../../hooks/useStateRef";
+import {
+    FetchPostsByCategoryPayload,
+    FetchPostsPayload,
+} from "../../types/shared";
 import { VoteObjects, constants } from "../../utils/constants";
 import Post from "./Post";
 import {

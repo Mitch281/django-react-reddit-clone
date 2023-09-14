@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import type { UserContextType, VerifyCurrentUserResponse } from "../../types";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";
@@ -11,6 +10,8 @@ import AddPostForm from "../features/posts/AddPostForm";
 import LinkToCreatePost from "../features/posts/LinkToCreatePost";
 import PostSelected from "../features/posts/PostSelected";
 import Posts from "../features/posts/Posts";
+import type { UserContextType } from "../types/frontend";
+import type { VerifyCurrentUserResponse } from "../types/shared";
 import {
     getNewAccessToken,
     handleCantReLoginError,

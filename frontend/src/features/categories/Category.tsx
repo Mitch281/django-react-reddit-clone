@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import type { Category as CategoryType } from "../../../types.js";
 import { RootState } from "../../app/store.js";
+import type { Category as CategoryType } from "../../types/shared.js";
 import { selectCategoryById } from "./categoriesSlice";
 
 type Props = {

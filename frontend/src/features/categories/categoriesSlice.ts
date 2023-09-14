@@ -3,12 +3,9 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import {
-    AddCategoryResponse,
-    Category,
-    CreateCategoryPayload,
-} from "../../../types";
 import { RootState } from "../../app/store";
+import { AddCategoryResponse } from "../../types/api";
+import { Category, CreateCategoryPayload } from "../../types/shared";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 

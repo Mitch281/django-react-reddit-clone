@@ -5,17 +5,19 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import {
-    AddPostBody,
     AddPostResponse,
-    DeletePostPayload,
     DeletePostResponse,
+    PatchPostBody,
+    PatchPostResponse,
+} from "../../types/api";
+import {
+    AddPostBody,
+    DeletePostPayload,
     EditPostPayload,
     FetchPostsByCategoryPayload,
     FetchPostsPayload,
-    PatchPostBody,
-    PatchPostResponse,
     Post,
-} from "../../../types";
+} from "../../types/shared";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import { constants } from "../../utils/constants";

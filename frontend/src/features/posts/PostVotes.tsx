@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
-import { Post, UsersVoteOnPost } from "../../../types";
 import { UserContext } from "../../app/App";
 import { RootState } from "../../app/store";
+import { Post, UsersVoteOnPost } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {

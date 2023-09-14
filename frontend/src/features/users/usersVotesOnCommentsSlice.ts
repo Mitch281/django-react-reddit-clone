@@ -3,7 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { UsersVoteOnComment } from "../../../types";
+import { UsersVoteOnComment } from "../../types/shared";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

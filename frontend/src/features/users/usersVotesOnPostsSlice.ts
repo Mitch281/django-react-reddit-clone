@@ -3,8 +3,8 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { UsersVoteOnPost } from "../../../types";
 import { RootState } from "../../app/store";
+import { UsersVoteOnPost } from "../../types/shared";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

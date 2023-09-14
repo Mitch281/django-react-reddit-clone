@@ -1,7 +1,7 @@
 import { BiCommentDetail } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Post } from "../../../types";
+import { Post } from "../../types/shared";
 import { selectPostById } from "./postsSlice";
 import styles from "./styles/num-comments.module.css";
 

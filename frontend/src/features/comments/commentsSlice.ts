@@ -3,19 +3,21 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { handleFetchError } from "../../utils/auth";
-import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
+import { PatchCommentResponse } from "../../../PatchCommentResponse";
 import {
-    AddCommentBody,
     AddCommentResponse,
     DeleteCommentBody,
-    DeleteCommentPayload,
     DeleteCommentResponse,
+    PatchCommentBody,
+} from "../../types/api";
+import {
+    AddCommentBody,
+    DeleteCommentPayload,
     EditCommentPayload,
     FetchCommentsPayload,
-    PatchCommentBody,
-    PatchCommentResponse,
-} from "./../../../types";
+} from "../../types/shared";
+import { handleFetchError } from "../../utils/auth";
+import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

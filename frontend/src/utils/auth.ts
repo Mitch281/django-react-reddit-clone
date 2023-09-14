@@ -4,7 +4,7 @@ import {
     LoginResponse,
     SignupResponse,
     VerifyCurrentUserResponse,
-} from "../../types";
+} from "../types/shared";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

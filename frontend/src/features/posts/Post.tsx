@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import type { Post as PostType } from "../../../types";
 import { UserContext } from "../../app/App";
+import type { Post as PostType } from "../../types/shared";
 import Category from "./Category";
 import DateOfPost from "./DateOfPost";
 import DeletePost from "./DeletePost";
