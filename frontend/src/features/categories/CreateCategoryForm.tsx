@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
+import { CreateCategoryPayload } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -31,7 +32,7 @@ const CreateCategoryForm = () => {
 
         const categoryId = uuid_v4();
 
-        const newCategory = {
+        const newCategory: CreateCategoryPayload = {
             id: categoryId,
             name: categoryName,
         };

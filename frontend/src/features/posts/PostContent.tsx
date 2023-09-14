@@ -42,7 +42,6 @@ const PostContent = ({
             userId: userIdLoggedIn,
             newPostContent: postContent,
         };
-        console.log(data);
         try {
             await dispatch(editPost(data)).unwrap();
             toggleCurrentlyEditing();

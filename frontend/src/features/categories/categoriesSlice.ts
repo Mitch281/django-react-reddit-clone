@@ -3,6 +3,11 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import {
+    AddCategoryResponse,
+    Category,
+    CreateCategoryPayload,
+} from "../../../types";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
@@ -22,23 +27,29 @@ export const fetchCategories = createAsyncThunk(
         if (!response.ok) {
             return Promise.reject(response.status);
         }
-        const json = await response.json();
+        const json: Category = await response.json();
         return json;
     }
 );
 
 export const createCategory = createAsyncThunk(
     "categories/createCategory",
-    async (newCategory) => {
+    async (newCategory: CreateCategoryPayload) => {
         const url = `${API_ENDPOINT}/categories/`;
         try {
-            const json = await authorisedFetchWrapper.post(url, newCategory);
+            const json: AddCategoryResponse = await authorisedFetchWrapper.post(
+                url,
+                newCategory
+            );
             return json;
         } catch (error) {
-            handleFetchError(error, "Could not create category! Please try again later.");
+            handleFetchError(
+                error,
+                "Could not create category! Please try again later."
+            );
         }
     }
-)
+);
 
 const categoriesSlice = createSlice({
     name: "categories",
@@ -59,7 +70,7 @@ const categoriesSlice = createSlice({
             })
             .addCase(createCategory.fulfilled, (state, action) => {
                 categoriesAdapter.addOne(state, action.payload);
-            })
+            });
     },
 });
 

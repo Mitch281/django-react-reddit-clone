@@ -187,3 +187,12 @@ export type SignupResponse = {
     token: Token;
     username: string;
 };
+
+export type Category = {
+    id: string;
+    name: string;
+};
+
+export type AddCategoryResponse = Category;
+
+export type CreateCategoryPayload = AddCategoryResponse;
