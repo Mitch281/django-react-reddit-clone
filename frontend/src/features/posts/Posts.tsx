@@ -4,6 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { FetchPostsByCategoryPayload, FetchPostsPayload } from "../../../types";
+import { RootState } from "../../app/store";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
@@ -19,6 +20,10 @@ import {
 } from "./postsSlice";
 import styles from "./styles/posts.module.css";
 
+type State = {
+    categoryId: string;
+};
+
 const Posts = () => {
     const dispatch = useDispatch();
     useFetchUserVotes(VoteObjects.Post);
@@ -26,29 +31,31 @@ const Posts = () => {
     const initialOrder = params.order;
     const order = useStateRef<string | undefined>(initialOrder);
 
-    const { state } = useLocation();
+    const { state }: { state: State } = useLocation() as { state: State };
     let initialCategoryId: string | undefined;
     if (state) {
         // State will always have a categoryId in this component, so no need to check if the categoryId property exists.
         initialCategoryId = state.categoryId;
     }
-    console.log(initialCategoryId);
     const categoryId = useStateRef<string | undefined>(initialCategoryId);
 
-    const postStatus = useSelector((state) => state.posts.status);
+    const postStatus = useSelector((state: RootState) => state.posts.status);
     const postIds = useSelector(selectPostIds);
-    const initialPageNumber = useSelector((state) => state.posts.pageNumber);
+    const initialPageNumber = useSelector(
+        (state: RootState) => state.posts.pageNumber
+    );
     const pageNumber = useStateRef<number>(initialPageNumber);
     const postIdsByPageNumber = useSelector(selectPostIdsByPageNumber);
     const initialHasMorePosts: boolean = useSelector(
-        (state) => state.posts.hasMorePosts
+        (state: RootState) => state.posts.hasMorePosts
     );
     const hasMorePosts = useStateRef<boolean>(initialHasMorePosts);
 
-    function handleScroll(e) {
+    function handleScroll(e: Event) {
+        const target = e.target as Document;
         if (
-            window.innerHeight + e.target.documentElement.scrollTop + 1 >=
-                e.target.documentElement.scrollHeight &&
+            window.innerHeight + target.documentElement.scrollTop + 1 >=
+                target.documentElement.scrollHeight &&
             hasMorePosts.current
         ) {
             if (categoryId.current) {
@@ -134,7 +141,7 @@ const Posts = () => {
         );
     } else if (postStatus === "fulfilled") {
         content = postIds.map((postId) => (
-            <Post key={postId} postId={postId} />
+            <Post key={postId} postId={postId as string} />
         ));
     }
 

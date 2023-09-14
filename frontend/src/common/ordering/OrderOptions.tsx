@@ -1,12 +1,17 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import styles from "./styles/order-options.module.css";
 
+type State = {
+    categoryId: string;
+};
+
 const OrderOptions = () => {
     const params = useParams();
     const order = params.order;
     const postId = params.postId;
 
-    const { state, pathname } = useLocation();
+    const { state, pathname }: { state: State; pathname: string } =
+        useLocation() as { state: State; pathname: string };
     const categoryName = params.categoryName;
     function getPostOrderingOutput() {
         if (categoryName && !order) {

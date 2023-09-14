@@ -41,7 +41,7 @@ const PostContent = ({
 
         const data: EditPostPayload = {
             postId: postId,
-            userId: userIdLoggedIn,
+            userId: parseInt(userIdLoggedIn),
             newPostContent: postContent,
         };
         try {
@@ -57,7 +57,7 @@ const PostContent = ({
                 progress: undefined,
             });
         } catch (error: any) {
-            renderErrorOnRequest(error);
+            renderErrorOnRequest(error as Error);
         } finally {
             setEditPostStatus("idle");
         }

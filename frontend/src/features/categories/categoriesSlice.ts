@@ -8,6 +8,7 @@ import {
     Category,
     CreateCategoryPayload,
 } from "../../../types";
+import { RootState } from "../../app/store";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
@@ -44,7 +45,7 @@ export const createCategory = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not create category! Please try again later."
             );
         }
@@ -80,4 +81,4 @@ export const {
     selectAll: selectAllCategories,
     selectById: selectCategoryById,
     selectIds: selectCategoryIds,
-} = categoriesAdapter.getSelectors((state) => state.categories);
+} = categoriesAdapter.getSelectors((state: RootState) => state.categories);

@@ -117,8 +117,8 @@ export async function signup(
 
 export function renderErrorOnRequest(
     error: Error,
-    logout: () => void,
-    navigate: NavigateFunction
+    logout?: () => void,
+    navigate?: NavigateFunction
 ) {
     if (error.name === "CantGetNewAccessTokenError") {
         toast.error("Session expired! Please login again.", {
@@ -130,8 +130,10 @@ export function renderErrorOnRequest(
             draggable: true,
             progress: undefined,
         });
-        logout();
-        navigate("/login/");
+        if (logout && navigate) {
+            logout();
+            navigate("/login/");
+        }
     } else if (error.name === "NoAccessTokenError") {
         toast.error("You must be logged in to perform this action!", {
             position: "bottom-center",

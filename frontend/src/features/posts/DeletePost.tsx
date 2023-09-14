@@ -44,7 +44,7 @@ const DeletePost = ({ postId }: Props) => {
             setDeletePostStatus("pending");
             const deletePostPayload: DeletePostPayload = {
                 postId: postId,
-                userId: userIdLoggedIn,
+                userId: parseInt(userIdLoggedIn),
             };
             dispatch(deletePost(deletePostPayload)).unwrap();
             toast.success("Successfully deleted post!", {
@@ -57,7 +57,7 @@ const DeletePost = ({ postId }: Props) => {
                 progress: undefined,
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setDeletePostStatus("idle");
         }

@@ -47,7 +47,7 @@ const CreateCategoryForm = () => {
                 },
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setCreateCategoryStatus("idle");
         }

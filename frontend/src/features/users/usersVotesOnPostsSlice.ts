@@ -4,6 +4,7 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import { UsersVoteOnPost } from "../../../types";
+import { RootState } from "../../app/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -57,4 +58,6 @@ export const {
     selectAll: selectAllUsersVotesOnPosts,
     selectById: selectUsersVoteOnPostById,
     selectIds: selectUsersVoteOnPostsIds,
-} = usersVotesOnPostsAdapter.getSelectors((state) => state.usersVotesOnPosts);
+} = usersVotesOnPostsAdapter.getSelectors(
+    (state: RootState) => state.usersVotesOnPosts
+);

@@ -11,6 +11,10 @@ import ToggleHidden from "./ToggleHidden";
 import { selectCommentById } from "./commentsSlice";
 import styles from "./styles/comment.module.css";
 
+type Props = {
+    commentId: string;
+};
+
 const Comment = ({ commentId, replies, isRootComment }) => {
     const comment = useSelector((state) => selectCommentById(state, commentId));
 

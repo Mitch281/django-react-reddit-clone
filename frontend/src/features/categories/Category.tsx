@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import type { Category as CategoryType } from "../../../types.js";
-import { selectCategoryById } from "./categoriesSlice.ts";
+import { RootState } from "../../app/store.js";
+import { selectCategoryById } from "./categoriesSlice";
 
 type Props = {
     categoryId: string;
@@ -9,7 +10,7 @@ type Props = {
 };
 
 const Category = ({ categoryId, filterCategoriesText }: Props) => {
-    const category: CategoryType = useSelector((state) =>
+    const category: CategoryType = useSelector((state: RootState) =>
         selectCategoryById(state, categoryId)
     ) as CategoryType;
 

@@ -52,7 +52,7 @@ const AddPostForm = () => {
             title: title,
             content: postContent,
             date_created: new Date().toString(),
-            user: userIdLoggedIn,
+            user: parseInt(userIdLoggedIn),
             category: categoryId,
         };
 
@@ -70,7 +70,7 @@ const AddPostForm = () => {
             });
             navigate("/");
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setAddPostStatus("idle");
         }

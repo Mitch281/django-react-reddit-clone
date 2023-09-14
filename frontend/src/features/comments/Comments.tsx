@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FetchCommentsPayload } from "../../../types";
+import { RootState } from "../../app/store";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
 import { VoteObjects, constants } from "../../utils/constants";
@@ -20,7 +21,9 @@ const Comments = () => {
     const order = params.order;
 
     const dispatch = useDispatch();
-    const commentStatus = useSelector((state) => state.comments.status);
+    const commentStatus = useSelector(
+        (state: RootState) => state.comments.status
+    );
     const comments = useSelector(selectAllComments);
 
     const [commentChain, setCommentChain] = useState([]);
@@ -113,6 +116,8 @@ const Comments = () => {
             />
         ));
     }
+
+    console.log(commentChain);
 
     return (
         <>

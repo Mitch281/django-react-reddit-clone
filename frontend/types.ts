@@ -4,7 +4,9 @@ export type PatchPostBody = {
     content: string;
 };
 
-export type PatchCommentBody = PatchPostBody;
+export type PatchCommentBody = {
+    content: string;
+};
 
 export type PatchPostResponse = {
     category: string;
@@ -64,8 +66,21 @@ export type DeleteCommentBody = {
     deleted: boolean;
 };
 
-// Since we actually patch the comment when we delete it.
-export type DeleteCommentResponse = PatchCommentResponse;
+// Same as PatchCommentResponse since we actually patch a comment when we delete it.
+export type DeleteCommentResponse = {
+    content: string;
+    date_created: string;
+    deleted: boolean;
+    id: string;
+    is_hidden: boolean;
+    num_downvotes: number;
+    num_replies: number;
+    num_upvotes: number;
+    parent_comment: null | string;
+    parent_post: string;
+    user: number;
+    username: string;
+};
 
 export type AddPostBody = {
     category: string;
@@ -78,7 +93,16 @@ export type AddPostBody = {
     username: string;
 };
 
-export type AddPostResponse = PatchPostResponse;
+export type AddPostResponse = {
+    category: string;
+    category_name: string;
+    content: string;
+    date_created: string;
+    id: string;
+    title: string;
+    user: number;
+    username: string;
+};
 
 export type AddCommentBody = {
     content: string;
@@ -94,7 +118,35 @@ export type AddCommentBody = {
     username: string;
 };
 
-export type AddCommentResponse = AddCommentBody;
+export type AddCommentResponse = {
+    content: string;
+    date_created: string;
+    is_hidden: boolean;
+    id: string;
+    num_downvotes: number;
+    num_replies: number;
+    num_upvotes: number;
+    parent_comment: null | string;
+    parent_post: string;
+    user: number;
+    username: string;
+};
+
+export type Comment = {
+    content: string;
+    date_created: string;
+    deleted: boolean;
+    id: string;
+    is_hidden: boolean;
+    nestingLevel: number;
+    num_downvotes: number;
+    num_replies: number;
+    num_upvotes: number;
+    parent_comment: string | null;
+    parent_post: string;
+    user: number;
+    username: string;
+};
 
 export type UserContextType = {
     loggedIn: boolean;
@@ -135,20 +187,20 @@ export type FetchPostsByCategoryPayload = {
     categoryId: string;
 };
 
-export type Comment = {
-    content: string;
-    date_created: string;
-    deleted: boolean;
-    id: string;
-    is_hidden: boolean;
-    num_downvotes: number;
-    num_replies: number;
-    num_upvotes: number;
-    parent_comment: null | string;
-    parent_post: string;
-    user: number;
-    username: string;
-};
+// export type Comment = {
+//     content: string;
+//     date_created: string;
+//     deleted: boolean;
+//     id: string;
+//     is_hidden: boolean;
+//     num_downvotes: number;
+//     num_replies: number;
+//     num_upvotes: number;
+//     parent_comment: null | string;
+//     parent_post: string;
+//     user: number;
+//     username: string;
+// };
 
 export type FetchCommentsPayload = {
     order?: Order;
@@ -193,9 +245,15 @@ export type Category = {
     name: string;
 };
 
-export type AddCategoryResponse = Category;
+export type AddCategoryResponse = {
+    id: string;
+    name: string;
+};
 
-export type CreateCategoryPayload = AddCategoryResponse;
+export type CreateCategoryPayload = {
+    id: string;
+    name: string;
+};
 
 export type VerifyCurrentUserResponse = {
     username: string;

@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
+import { Post, UsersVoteOnPost } from "../../../types";
 import { UserContext } from "../../app/App";
+import { RootState } from "../../app/store";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
@@ -22,14 +24,18 @@ const PostVotes = ({ postId }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const post = useSelector((state) => selectPostById(state, postId));
+    const post = useSelector((state: RootState) =>
+        selectPostById(state, postId)
+    ) as Post;
 
     const numUpvotes = post.num_upvotes;
     const numDownvotes = post.num_downvotes;
 
     const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
 
-    const usersVotesOnPosts = useSelector(selectAllUsersVotesOnPosts);
+    const usersVotesOnPosts = useSelector(
+        selectAllUsersVotesOnPosts
+    ) as UsersVoteOnPost[];
 
     function getUpvotePostData() {
         const currentVote = getCurrentVote();
@@ -141,7 +147,7 @@ const PostVotes = ({ postId }: Props) => {
             await dispatch(voteOnPost(upvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         }
     }
 
@@ -162,7 +168,7 @@ const PostVotes = ({ postId }: Props) => {
             await dispatch(voteOnPost(downvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         }
     }
 
@@ -170,6 +176,7 @@ const PostVotes = ({ postId }: Props) => {
         const usersVoteOnPost = usersVotesOnPosts.find(
             (usersVoteOnPost) => usersVoteOnPost.post === postId
         );
+        console.log(usersVoteOnPost);
         if (!usersVoteOnPost) {
             return;
         }
