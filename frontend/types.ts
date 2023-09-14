@@ -196,3 +196,8 @@ export type Category = {
 export type AddCategoryResponse = Category;
 
 export type CreateCategoryPayload = AddCategoryResponse;
+
+export type VerifyCurrentUserResponse = {
+    username: string;
+    id: number;
+};

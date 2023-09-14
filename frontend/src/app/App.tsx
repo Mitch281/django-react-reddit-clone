@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { UserContextType } from "../../types";
+import { UserContextType, VerifyCurrentUserResponse } from "../../types";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";
@@ -43,10 +43,10 @@ function App() {
             }
         } else {
             try {
-                const response = await verifyCurrentUser();
-                const json = await response.json();
+                const json: VerifyCurrentUserResponse =
+                    await verifyCurrentUser();
                 setLoggedIn(true);
-                setUserIdLoggedIn(json.id);
+                setUserIdLoggedIn(json.id.toString());
                 setUsernameLoggedIn(json.username);
             } catch (error) {
                 handleCantReLoginError(error, logout);

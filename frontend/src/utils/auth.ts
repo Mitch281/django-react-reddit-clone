@@ -1,10 +1,15 @@
+import { NavigateFunction } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LoginResponse, SignupResponse } from "../../types";
+import {
+    LoginResponse,
+    SignupResponse,
+    VerifyCurrentUserResponse,
+} from "../../types";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 export class NoAccessTokenError extends Error {
-    constructor(message) {
+    constructor(message: string) {
         super(message);
         this.name = this.constructor.name;
     }
@@ -12,16 +17,13 @@ export class NoAccessTokenError extends Error {
 
 // TODO: Figure out why instanceof check not working!! For now, we will check using the name property.
 export class CantGetNewAccessTokenError extends Error {
-    constructor(message) {
+    constructor(message: string) {
         super(message);
         this.name = this.constructor.name;
     }
 }
 
-export function isTokenExpired(token) {
-    if (!token) {
-        return;
-    }
+export function isTokenExpired(token: string): boolean {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
@@ -38,7 +40,7 @@ export function isTokenExpired(token) {
     return expired;
 }
 
-export async function verifyCurrentUser() {
+export async function verifyCurrentUser(): Promise<VerifyCurrentUserResponse> {
     const response = await fetch(`${API_ENDPOINT}/current-user/`, {
         method: "GET",
         headers: {
@@ -47,7 +49,8 @@ export async function verifyCurrentUser() {
         },
     });
     if (response.ok) {
-        return response;
+        const json: VerifyCurrentUserResponse = await response.json();
+        return json;
     } else {
         throw new CantGetNewAccessTokenError("Cannot get new access token!");
     }
@@ -112,7 +115,11 @@ export async function signup(
     return json;
 }
 
-export function renderErrorOnRequest(error, logout, navigate) {
+export function renderErrorOnRequest(
+    error: Error,
+    logout: () => void,
+    navigate: NavigateFunction
+) {
     if (error.name === "CantGetNewAccessTokenError") {
         toast.error("Session expired! Please login again.", {
             position: "bottom-center",
@@ -152,7 +159,7 @@ export function renderErrorOnRequest(error, logout, navigate) {
 // This is because since we call this function in the root App component, we cannot import and use the useNavigate hook from react
 // router dom. This is due to the fact that the hook can only be used inside a Router component. We also do not handle no access
 // token because chances are the user does not intend to relogin if they do not have an access token.
-export function handleCantReLoginError(error, logout) {
+export function handleCantReLoginError(error: Error, logout: () => void) {
     // If there is no access token, there is no reason for the user to know about re logging in.
     if (localStorage.getItem("accessToken") === null) {
         return;
@@ -183,7 +190,7 @@ export function handleCantReLoginError(error, logout) {
 }
 
 // This is to be used when fetching from database mainly in slice files.
-export function handleFetchError(error, message) {
+export function handleFetchError(error: Error, message: string) {
     if (
         error instanceof CantGetNewAccessTokenError ||
         error instanceof NoAccessTokenError
