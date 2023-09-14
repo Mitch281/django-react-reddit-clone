@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { EditPostPayload } from "../../../types";
+import type { EditPostPayload, Post } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -24,7 +24,9 @@ const PostContent = ({
 }: Props) => {
     const dispatch = useDispatch();
     const handleTextInput = useHandleTextInput();
-    const post = useSelector((state) => selectPostById(state, postId));
+    const post: Post = useSelector((state) =>
+        selectPostById(state, postId)
+    ) as Post;
     const [editPostStatus, setEditPostStatus] = useState("idle");
     const [postContent, setPostContent] = useState(post.content);
 
@@ -33,7 +35,7 @@ const PostContent = ({
     let numContentCharsLeft =
         constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
 
-    async function handleEditPost(e) {
+    async function handleEditPost(e: React.FormEvent) {
         e.preventDefault();
         setEditPostStatus("pending");
 
@@ -54,7 +56,7 @@ const PostContent = ({
                 draggable: true,
                 progress: undefined,
             });
-        } catch (error) {
+        } catch (error: any) {
             renderErrorOnRequest(error);
         } finally {
             setEditPostStatus("idle");

@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
+import type { Post as PostType } from "../../../types";
 import { UserContext } from "../../app/App";
 import Category from "./Category";
 import DateOfPost from "./DateOfPost";
@@ -18,7 +19,9 @@ type Props = {
 };
 
 const Post = ({ postId }: Props) => {
-    const post = useSelector((state) => selectPostById(state, postId));
+    const post: PostType = useSelector((state) =>
+        selectPostById(state, postId)
+    ) as PostType;
 
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
 

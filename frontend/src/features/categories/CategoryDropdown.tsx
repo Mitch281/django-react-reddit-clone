@@ -1,14 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { BiPlus } from "react-icons/bi";
+import { Link, useParams } from "react-router-dom";
 import ActiveCategory from "./ActiveCategory";
 import Categories from "./Categories";
-import { Link } from "react-router-dom";
 import styles from "./styles/category-dropdown.module.css";
-import { BiPlus } from "react-icons/bi";
 
 const CategoryDropdown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const categoryDropdown = useRef(null);
+    const categoryDropdown = useRef<HTMLLIElement>(null);
     const [filterCategoriesText, setFilterCategoriesText] = useState("");
 
     const params = useParams();
@@ -17,10 +16,10 @@ const CategoryDropdown = () => {
         ? { display: "block" }
         : { display: "none" };
 
-    function handleClickOutsideDropdown(e) {
+    function handleClickOutsideDropdown(e: MouseEvent) {
         const closeDropdown =
             categoryDropdown.current &&
-            !categoryDropdown.current.contains(e.target) &&
+            !categoryDropdown.current.contains(e.target as Node) &&
             isDropdownOpen;
         if (closeDropdown) {
             setIsDropdownOpen(false);

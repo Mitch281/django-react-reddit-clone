@@ -1,6 +1,7 @@
 import { BiCommentDetail } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Post } from "../../../types";
 import { selectPostById } from "./postsSlice";
 import styles from "./styles/num-comments.module.css";
 
@@ -9,7 +10,9 @@ type Props = {
 };
 
 const NumComments = ({ postId }: Props) => {
-    const post = useSelector((state) => selectPostById(state, postId));
+    const post: Post = useSelector((state) =>
+        selectPostById(state, postId)
+    ) as Post;
 
     return (
         <Link

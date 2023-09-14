@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
-import { AddPostBody } from "../../../types";
+import { AddPostBody, Category } from "../../../types";
 import { UserContext } from "../../app/App";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -21,23 +21,29 @@ const AddPostForm = () => {
         useContext(UserContext);
 
     const dispatch = useDispatch();
-    const categories = useSelector(selectAllCategories);
+    const categories: Category[] = useSelector(
+        selectAllCategories
+    ) as Category[];
 
     const [title, setTitle] = useState("");
     const [postContent, setPostContent] = useState("");
-    const category = useRef(null);
+    const categoryDropdown = useRef<HTMLSelectElement>(null);
     const [addPostStatus, setAddPostStatus] = useState("idle");
 
     let numTitleCharsLeft = constants.POST_TITLE_CHAR_LIMIT - title.length;
     let numContentCharsLeft =
         constants.POST_CONTENT_CHAR_LIMIT - postContent.length;
 
-    async function handleAddPost(e) {
+    async function handleAddPost(e: React.FormEvent) {
         e.preventDefault();
         setAddPostStatus("pending");
 
-        const categoryName = category.current.value.split(",")[1];
-        const categoryId = category.current.value.split(",")[0];
+        if (!categoryDropdown.current) {
+            return;
+        }
+
+        const categoryName = categoryDropdown.current.value.split(",")[1];
+        const categoryId = categoryDropdown.current.value.split(",")[0];
 
         const newPost: AddPostBody = {
             id: uuid_v4(),
@@ -107,7 +113,6 @@ const AddPostForm = () => {
                 </span>
                 <textarea
                     id={styles["post-content"]}
-                    type="text"
                     value={postContent}
                     onChange={(e) =>
                         handleTextInput(e, setPostContent, numContentCharsLeft)
@@ -117,7 +122,10 @@ const AddPostForm = () => {
                 <span className={styles["char-count"]}>
                     {numContentCharsLeft} characters left
                 </span>
-                <select id={styles["select-post-category"]} ref={category}>
+                <select
+                    id={styles["select-post-category"]}
+                    ref={categoryDropdown}
+                >
                     {categories.map((category) => (
                         <option
                             key={category.id}
