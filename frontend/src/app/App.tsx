@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { UserContextType, VerifyCurrentUserResponse } from "../../types";
+import type { UserContextType, VerifyCurrentUserResponse } from "../../types";
 import LoginPage from "../common/auth/LoginPage";
 import SignupPage from "../common/auth/SignupPage";
 import Navbar from "../common/nav/Navbar";

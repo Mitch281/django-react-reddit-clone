@@ -103,7 +103,7 @@ export type UserContextType = {
     setLoggedIn: React.Dispatch<SetStateAction<boolean>>;
     setUserIdLoggedIn: React.Dispatch<SetStateAction<string>>;
     setUsernameLoggedIn: React.Dispatch<SetStateAction<string>>;
-    userIdLoggedIn: number;
+    userIdLoggedIn: string;
     usernameLoggedIn: string;
 };
 
