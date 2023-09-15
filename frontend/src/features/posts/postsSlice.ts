@@ -17,6 +17,7 @@ import {
     FetchPostsByCategoryPayload,
     FetchPostsPayload,
     Post,
+    VoteOnPostPayload,
 } from "../../types/shared";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
@@ -76,7 +77,7 @@ export const fetchSinglePost = createAsyncThunk(
 
 export const voteOnPost = createAsyncThunk(
     "posts/voteOnPost",
-    async (voteData) => {
+    async (voteData: VoteOnPostPayload) => {
         const { postId, usersVoteOnPostId, data } = voteData;
         let url;
         if (usersVoteOnPostId) {
@@ -90,7 +91,7 @@ export const voteOnPost = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not vote on post! Please try again later."
             );
         }
@@ -109,7 +110,7 @@ export const addNewPost = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not add new post! Please try again later."
             );
         }
@@ -130,7 +131,7 @@ export const editPost = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not edit post! Please try again later."
             );
         }
@@ -148,7 +149,7 @@ export const deletePost = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not delete post! Please try again later."
             );
         }

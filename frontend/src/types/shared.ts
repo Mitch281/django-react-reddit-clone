@@ -125,17 +125,74 @@ export type LoginResponse = {
     user_id: number;
 };
 
-type UpvoteCommentData = {
+export type UpvoteData = {
     num_upvotes: number;
     num_downvotes?: number;
 };
 
-type DownvoteCommentData = {
+export type DownvoteData = {
     num_upvotes?: number;
     num_downvotes: number;
 };
 
-export type UserVoteOnUpvote =
+export type UserPostVoteOnUpvote =
+    | {
+          id: any;
+          upvote: boolean;
+          downvote?: undefined;
+          user?: undefined;
+          post?: undefined;
+      }
+    | {
+          id: any;
+          upvote: boolean;
+          downvote: boolean;
+          user?: undefined;
+          post?: undefined;
+      }
+    | {
+          id: string;
+          upvote: boolean;
+          downvote: boolean;
+          user: string;
+          post: string;
+      };
+
+export type UserPostVoteOnDownvote =
+    | {
+          id: any;
+          upvote: boolean;
+          downvote: boolean;
+          user?: undefined;
+          post?: undefined;
+      }
+    | {
+          id: any;
+          downvote: boolean;
+          upvote?: undefined;
+          user?: undefined;
+          post?: undefined;
+      }
+    | {
+          id: string;
+          upvote: boolean;
+          downvote: boolean;
+          user: string;
+          post: string;
+      };
+
+export type PostVoteData = {
+    post_data: UpvoteData | DownvoteData;
+    user_data: UserPostVoteOnUpvote | UserPostVoteOnDownvote;
+};
+
+export type VoteOnPostPayload = {
+    postId: string;
+    data: PostVoteData;
+    usersVoteOnPostId?: string;
+};
+
+export type UserCommentVoteOnUpvote =
     | {
           id: any;
           upvote: boolean;
@@ -158,7 +215,7 @@ export type UserVoteOnUpvote =
           comment: string;
       };
 
-export type UserVoteOnDownvote =
+export type UserCommentVoteOnDownvote =
     | {
           id: any;
           upvote: boolean;
@@ -181,13 +238,13 @@ export type UserVoteOnDownvote =
           comment: string;
       };
 
-export type VoteData = {
-    comment_data: UpvoteCommentData | DownvoteCommentData;
-    user_data: UserVoteOnUpvote | UserVoteOnDownvote;
+export type CommentVoteData = {
+    comment_data: UpvoteData | DownvoteData;
+    user_data: UserCommentVoteOnUpvote | UserCommentVoteOnDownvote;
 };
 
 export type VoteOnCommentPayload = {
     commentId: string;
-    data: VoteData;
+    data: CommentVoteData;
     usersVoteOnCommentId?: string;
 };

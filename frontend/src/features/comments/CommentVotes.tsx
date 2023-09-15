@@ -8,10 +8,12 @@ import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
 import {
     Comment,
-    UserVoteOnDownvote,
-    UserVoteOnUpvote,
+    CommentVoteData,
+    DownvoteData,
+    UpvoteData,
+    UserCommentVoteOnDownvote,
+    UserCommentVoteOnUpvote,
     UsersVoteOnComment,
-    VoteData,
     VoteOnCommentPayload,
 } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -44,7 +46,7 @@ const CommentVotes = ({ commentId }: Props) => {
         selectAllUsersVotesOnComments
     ) as UsersVoteOnComment[];
 
-    function getUpvoteCommentData() {
+    function getUpvoteCommentData(): UpvoteData {
         const currentVote = getCurrentVote();
         let data;
         if (currentVote === VoteTypes.Downvote) {
@@ -61,7 +63,7 @@ const CommentVotes = ({ commentId }: Props) => {
         return data;
     }
 
-    function getDownvoteCommentData() {
+    function getDownvoteCommentData(): DownvoteData {
         const currentVote = getCurrentVote();
         let data;
         if (currentVote === VoteTypes.Downvote) {
@@ -78,7 +80,7 @@ const CommentVotes = ({ commentId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnUpvote(): UserVoteOnUpvote {
+    function getUserVoteOnUpvote(): UserCommentVoteOnUpvote {
         const usersVoteOnPostId = getUsersVoteOnCommentId();
         const currentVote = getCurrentVote();
         let data;
@@ -108,7 +110,7 @@ const CommentVotes = ({ commentId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnDownvote(): UserVoteOnDownvote {
+    function getUserVoteOnDownvote(): UserCommentVoteOnDownvote {
         const usersVoteOnCommentId = getUsersVoteOnCommentId();
         const currentVote = getCurrentVote();
         let data;
@@ -144,7 +146,7 @@ const CommentVotes = ({ commentId }: Props) => {
     async function upvote() {
         const upvoteCommentData = getUpvoteCommentData();
         const usersVoteOnCommentData = getUserVoteOnUpvote();
-        const data: VoteData = {
+        const data: CommentVoteData = {
             comment_data: upvoteCommentData,
             user_data: usersVoteOnCommentData,
         };
@@ -165,7 +167,7 @@ const CommentVotes = ({ commentId }: Props) => {
     async function downvote() {
         const downvoteCommentData = getDownvoteCommentData();
         const usersVoteOnCommentData = getUserVoteOnDownvote();
-        const data: VoteData = {
+        const data: CommentVoteData = {
             comment_data: downvoteCommentData,
             user_data: usersVoteOnCommentData,
         };

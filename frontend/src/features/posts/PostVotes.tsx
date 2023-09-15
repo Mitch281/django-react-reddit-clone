@@ -6,7 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
-import { Post, UsersVoteOnPost } from "../../types/shared";
+import {
+    DownvoteData,
+    Post,
+    PostVoteData,
+    UpvoteData,
+    UserPostVoteOnDownvote,
+    UserPostVoteOnUpvote,
+    UsersVoteOnPost,
+    VoteOnPostPayload,
+} from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
@@ -37,7 +46,7 @@ const PostVotes = ({ postId }: Props) => {
         selectAllUsersVotesOnPosts
     ) as UsersVoteOnPost[];
 
-    function getUpvotePostData() {
+    function getUpvotePostData(): UpvoteData {
         const currentVote = getCurrentVote();
         let data;
         if (currentVote === VoteTypes.Downvote) {
@@ -54,7 +63,7 @@ const PostVotes = ({ postId }: Props) => {
         return data;
     }
 
-    function getDownvotePostData() {
+    function getDownvotePostData(): DownvoteData {
         const currentVote = getCurrentVote();
         let data;
         if (currentVote === VoteTypes.Downvote) {
@@ -71,7 +80,7 @@ const PostVotes = ({ postId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnUpvote() {
+    function getUserVoteOnUpvote(): UserPostVoteOnUpvote {
         const usersVoteOnPostId = getUsersVoteOnPostId();
         const currentVote = getCurrentVote();
         let data;
@@ -101,7 +110,7 @@ const PostVotes = ({ postId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnDownvote() {
+    function getUserVoteOnDownvote(): UserPostVoteOnDownvote {
         const usersVoteOnPostId = getUsersVoteOnPostId();
         const currentVote = getCurrentVote();
         let data;
@@ -133,12 +142,12 @@ const PostVotes = ({ postId }: Props) => {
     async function upvote() {
         const upvotePostData = getUpvotePostData();
         const usersVoteOnPostData = getUserVoteOnUpvote();
-        const data = {
+        const data: PostVoteData = {
             post_data: upvotePostData,
             user_data: usersVoteOnPostData,
         };
         const usersVoteOnPostId = getUsersVoteOnPostId();
-        const upvoteInformation = {
+        const upvoteInformation: VoteOnPostPayload = {
             postId: postId,
             usersVoteOnPostId: usersVoteOnPostId,
             data: data,
@@ -154,12 +163,12 @@ const PostVotes = ({ postId }: Props) => {
     async function downvote() {
         const downvotePostData = getDownvotePostData();
         const usersVoteOnPostData = getUserVoteOnDownvote();
-        const data = {
+        const data: PostVoteData = {
             post_data: downvotePostData,
             user_data: usersVoteOnPostData,
         };
         const usersVoteOnPostId = getUsersVoteOnPostId();
-        const downvoteInformation = {
+        const downvoteInformation: VoteOnPostPayload = {
             postId: postId,
             usersVoteOnPostId: usersVoteOnPostId,
             data: data,
