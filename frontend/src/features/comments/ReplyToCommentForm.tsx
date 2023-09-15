@@ -8,7 +8,7 @@ import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
-import { Comment } from "../../types/shared";
+import { AddCommentReplyBody, Comment } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import {
@@ -41,18 +41,18 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
     let numReplyContentCharsLeft =
         constants.COMMENT_CONTENT_CHAR_LIMIT - replyContent.length;
 
-    async function handleReplyComment(e) {
+    async function handleReplyComment(e: React.FormEvent) {
         e.preventDefault();
 
-        const reply = {
+        const reply: AddCommentReplyBody = {
             id: uuid_v4(),
             username: usernameLoggedIn,
-            user: userIdLoggedIn,
+            user: parseInt(userIdLoggedIn),
             parent_post: commentToReplyTo.parent_post,
             content: replyContent,
             date_created: new Date().toString(),
             parent_comment: commentId,
-            hidden: false,
+            is_hidden: false,
             num_replies: 0,
         };
 
@@ -89,7 +89,6 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
                 color={constants.loaderColour}
                 loading={true}
                 size={20}
-                css={"margin-top: 10px"}
             />
         );
     } else {

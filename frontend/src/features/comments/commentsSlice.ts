@@ -13,6 +13,7 @@ import {
 } from "../../types/api";
 import {
     AddCommentBody,
+    AddCommentReplyBody,
     DeleteCommentPayload,
     EditCommentPayload,
     FetchCommentsPayload,
@@ -70,7 +71,7 @@ export const voteOnComment = createAsyncThunk(
 
 export const makeCommentOnPost = createAsyncThunk(
     "comments/makeCommentOnPost",
-    async (newComment: AddCommentBody) => {
+    async (newComment: AddCommentBody | AddCommentReplyBody) => {
         const url = `${API_ENDPOINT}/comments/`;
         try {
             const json: AddCommentResponse = await authorisedFetchWrapper.post<
@@ -163,7 +164,7 @@ const commentsSlice = createSlice({
             reducer(state, action) {
                 commentsAdapter.updateOne(state, action.payload);
             },
-            prepare(parentCommentId, currentNumReplies) {
+            prepare(parentCommentId: string, currentNumReplies: number) {
                 return {
                     payload: {
                         id: parentCommentId,

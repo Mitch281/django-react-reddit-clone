@@ -40,7 +40,7 @@ const Post = ({ postId }: Props) => {
         let editButton;
         let deleteButton;
 
-        if (userIdLoggedIn && userIdLoggedIn === post.user) {
+        if (userIdLoggedIn && userIdLoggedIn === post.user.toString()) {
             editButton = (
                 <button
                     type="button"

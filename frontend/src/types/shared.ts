@@ -39,6 +39,19 @@ export type AddCommentBody = {
     user: number;
     username: string;
 };
+
+export type AddCommentReplyBody = {
+    id: string;
+    username: string;
+    user: number;
+    parent_post: string;
+    content: string;
+    date_created: string;
+    parent_comment: string;
+    is_hidden: boolean;
+    num_replies: number;
+};
+
 export type Comment = {
     content: string;
     date_created: string;
@@ -69,10 +82,12 @@ export type Post = {
     username: string;
 };
 export type Order = "new" | "old" | "top" | "bottom";
+
 export type FetchPostsPayload = {
     order?: Order;
     pageNumber: number;
 };
+
 export type FetchPostsByCategoryPayload = {
     order?: Order;
     pageNumber: number;

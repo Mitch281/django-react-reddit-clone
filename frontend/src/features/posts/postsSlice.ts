@@ -4,6 +4,7 @@ import {
     createSelector,
     createSlice,
 } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import {
     AddPostResponse,
     DeletePostResponse,
@@ -68,7 +69,7 @@ export const fetchPostsByCategory = createAsyncThunk(
 
 export const fetchSinglePost = createAsyncThunk(
     "posts/fetchSinglePost",
-    async (postId) => {
+    async (postId: string) => {
         const response = await fetch(`${API_ENDPOINT}/post/${postId}/`);
         const json = await response.json();
         return json;
@@ -236,12 +237,12 @@ export const {
     selectAll: selectAllPosts,
     selectById: selectPostById,
     selectIds: selectPostIds,
-} = postsAdapter.getSelectors((state) => state.posts);
+} = postsAdapter.getSelectors((state: RootState) => state.posts);
 
 export const selectPostIdsByPageNumber = createSelector(
     [selectAllPosts],
     (posts) =>
-        posts.map((post) => {
+        (posts as Post[]).map((post) => {
             return {
                 id: post.id,
                 pageNumber: post.page_number,

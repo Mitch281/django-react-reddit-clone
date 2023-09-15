@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import { UsersVoteOnComment } from "../../types/shared";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
@@ -16,7 +17,7 @@ const initialState = usersVotesOnCommentsAdapter.getInitialState({
 
 export const fetchUsersVotesOnComments = createAsyncThunk(
     "usersVotesOnComments/fetchUsersVotesOnComments",
-    async (userId: number) => {
+    async (userId: string) => {
         const response = await fetch(
             `${API_ENDPOINT}/comment-votes?user=${userId}`
         );
@@ -58,5 +59,5 @@ export const {
     selectById: selectUsersVoteOnCommentById,
     selectIds: selectUsersVoteOnCommentsIds,
 } = usersVotesOnCommentsAdapter.getSelectors(
-    (state) => state.usersVotesOnComments
+    (state: RootState) => state.usersVotesOnComments
 );

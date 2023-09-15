@@ -20,9 +20,9 @@ function useFetchUserVotes(voteObject: "comment" | "post") {
     useEffect(() => {
         if (userIdLoggedIn) {
             if (voteObject === VoteObjects.Post) {
-                dispatch(fetchUsersVotesOnPosts(parseInt(userIdLoggedIn)));
+                dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
             } else {
-                dispatch(fetchUsersVotesOnComments(parseInt(userIdLoggedIn)));
+                dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
             }
         }
         // eslint-disable-next-line

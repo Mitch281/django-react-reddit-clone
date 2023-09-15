@@ -11,6 +11,7 @@ import useStateRef from "../../hooks/useStateRef";
 import {
     FetchPostsByCategoryPayload,
     FetchPostsPayload,
+    Order,
 } from "../../types/shared";
 import { VoteObjects, constants } from "../../utils/constants";
 import Post from "./Post";
@@ -63,16 +64,16 @@ const Posts = () => {
         ) {
             if (categoryId.current) {
                 const payload: FetchPostsByCategoryPayload = {
-                    order: order.current,
+                    order: order.current as Order,
                     categoryId: categoryId.current,
-                    pageNumber: pageNumber.current,
+                    pageNumber: pageNumber.current as number,
                 };
 
                 dispatch(fetchPostsByCategory(payload));
             } else {
                 const payload: FetchPostsPayload = {
-                    order: order.current,
-                    pageNumber: pageNumber.current,
+                    order: order.current as Order,
+                    pageNumber: pageNumber.current as number,
                 };
                 dispatch(fetchPosts(payload));
             }
@@ -95,13 +96,13 @@ const Posts = () => {
         // Check if there is a category ID so that we do not accidently fetch posts twice.
         if (!initialCategoryId) {
             const payload: FetchPostsPayload = {
-                order: initialOrder,
+                order: initialOrder as Order,
                 pageNumber: 1,
             };
             dispatch(fetchPosts(payload));
         } else {
-            const payload: FetchPostsPayload = {
-                order: initialOrder,
+            const payload: FetchPostsByCategoryPayload = {
+                order: initialOrder as Order,
                 pageNumber: 1,
                 categoryId: initialCategoryId,
             };

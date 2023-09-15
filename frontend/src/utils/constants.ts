@@ -15,6 +15,6 @@ export const VoteTypes = {
 };
 
 export const VoteObjects = {
-    Post: "post",
-    Comment: "comment",
+    Post: "post" as "post",
+    Comment: "comment" as "comment",
 };

@@ -47,7 +47,7 @@ const CommentInput = () => {
         );
     }
 
-    async function addNewComment(e) {
+    async function addNewComment(e: React.FormEvent) {
         e.preventDefault();
         setAddNewCommentStatus("pending");
 

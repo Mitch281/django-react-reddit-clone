@@ -39,7 +39,7 @@ const DeleteComment = ({ commentId }: Props) => {
             setDeleteCommentStatus("pending");
             const deleteCommentPayload: DeleteCommentPayload = {
                 commentId: commentId,
-                userId: userIdLoggedIn,
+                userId: parseInt(userIdLoggedIn),
             };
             dispatch(deleteComment(deleteCommentPayload));
             toast.success("Succesfully deleted comment!", {
@@ -52,7 +52,7 @@ const DeleteComment = ({ commentId }: Props) => {
                 progress: undefined,
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setDeleteCommentStatus("idle");
         }

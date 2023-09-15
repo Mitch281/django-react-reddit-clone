@@ -17,7 +17,7 @@ const initialState = usersVotesOnPostsAdapter.getInitialState({
 
 export const fetchUsersVotesOnPosts = createAsyncThunk(
     "usersVotesOnPosts/fetchUsersVotesOnPosts",
-    async (userId: number): Promise<UsersVoteOnPost[]> => {
+    async (userId: string): Promise<UsersVoteOnPost[]> => {
         const response = await fetch(
             `${API_ENDPOINT}/post-votes?user=${userId}`
         );

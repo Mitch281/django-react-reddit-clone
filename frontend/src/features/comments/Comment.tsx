@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
+import { RootState } from "../../app/store";
 import type { FrontendModifiedComment } from "../../types/frontend";
 import { Comment as CommentType } from "../../types/shared";
 import Author from "./Author";
@@ -20,7 +21,7 @@ type Props = {
 };
 
 const Comment = ({ commentId, replies, isRootComment }: Props) => {
-    const comment = useSelector((state) =>
+    const comment = useSelector((state: RootState) =>
         selectCommentById(state, commentId)
     ) as CommentType;
 

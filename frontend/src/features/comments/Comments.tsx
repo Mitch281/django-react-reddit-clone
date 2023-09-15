@@ -90,7 +90,7 @@ const Comments = () => {
         comment: FrontendModifiedComment,
         mapping: CommentMap,
         nestingLevel: number
-    ) {
+    ): number {
         // Note that comment.parent_comment is simply the id of the parent comment due to the django naming (maybe look into
         // changing this in future to parent_comment_id), while parentComment is the actual parent comment object. Same thing
         // in above function.
