@@ -1,7 +1,14 @@
+import { SetStateAction } from "react";
+
 function useHandleTextInput() {
-    return (e, setState, numCharsLeft) => {
-        const charEntered = e.nativeEvent.data;
-        const inputType = e.nativeEvent.inputType;
+    return (
+        e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+        setState: React.Dispatch<SetStateAction<string>>,
+        numCharsLeft: number
+    ) => {
+        console.log(e.nativeEvent);
+        const charEntered = (e.nativeEvent as InputEvent).data;
+        const inputType = (e.nativeEvent as InputEvent).inputType;
         if (numCharsLeft <= 0) {
             if (charEntered || inputType === "insertFromPaste") return;
         }

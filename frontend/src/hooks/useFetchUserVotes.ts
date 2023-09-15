@@ -7,7 +7,7 @@ import { fetchUsersVotesOnComments } from "../features/users/usersVotesOnComment
 import { fetchUsersVotesOnPosts } from "../features/users/usersVotesOnPostsSlice";
 import { VoteObjects } from "../utils/constants";
 
-function useFetchUserVotes(voteObject) {
+function useFetchUserVotes(voteObject: "comment" | "post") {
     const dispatch = useDispatch<AppDispatch>();
     const usersVotesOnObjectStatus = useSelector((state: RootState) => {
         if (voteObject === VoteObjects.Post) {
@@ -20,9 +20,9 @@ function useFetchUserVotes(voteObject) {
     useEffect(() => {
         if (userIdLoggedIn) {
             if (voteObject === VoteObjects.Post) {
-                dispatch(fetchUsersVotesOnPosts(userIdLoggedIn));
+                dispatch(fetchUsersVotesOnPosts(parseInt(userIdLoggedIn)));
             } else {
-                dispatch(fetchUsersVotesOnComments(userIdLoggedIn));
+                dispatch(fetchUsersVotesOnComments(parseInt(userIdLoggedIn)));
             }
         }
         // eslint-disable-next-line
@@ -30,7 +30,7 @@ function useFetchUserVotes(voteObject) {
 
     if (usersVotesOnObjectStatus === "rejected") {
         let errorMessage;
-        if ((voteObject = VoteObjects.Post)) {
+        if (voteObject === VoteObjects.Post) {
             errorMessage = "Could not fetch your votes on posts!";
         } else {
             errorMessage = "Could not fetch your votes on comments!";
