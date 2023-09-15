@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import { Post, UsersVoteOnPost } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
@@ -23,7 +23,7 @@ type Props = {
 const PostVotes = ({ postId }: Props) => {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const post = useSelector((state: RootState) =>
         selectPostById(state, postId)
     ) as Post;

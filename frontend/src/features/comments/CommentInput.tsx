@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { AddCommentBody } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -19,7 +20,7 @@ const CommentInput = () => {
 
     const [commentContent, setCommentContent] = useState("");
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const [addNewCommentStatus, setAddNewCommentStatus] = useState("idle");
 
     const { loggedIn, usernameLoggedIn, userIdLoggedIn, logout } =

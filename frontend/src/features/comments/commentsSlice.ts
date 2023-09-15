@@ -3,12 +3,12 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import { PatchCommentResponse } from "../../../PatchCommentResponse";
 import {
     AddCommentResponse,
     DeleteCommentBody,
     DeleteCommentResponse,
     PatchCommentBody,
+    PatchCommentResponse,
 } from "../../types/api";
 import {
     AddCommentBody,

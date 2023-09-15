@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { AddPostBody, Category } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -20,7 +21,7 @@ const AddPostForm = () => {
     const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const categories: Category[] = useSelector(
         selectAllCategories
     ) as Category[];

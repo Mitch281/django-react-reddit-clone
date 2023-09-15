@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { CreateCategoryPayload } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -13,7 +14,7 @@ import { createCategory } from "./categoriesSlice";
 import styles from "./styles/create-category.module.css";
 
 const CreateCategoryForm = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const handleTextInput = useHandleTextInput();
 
     const [categoryName, setCategoryName] = useState("");
@@ -26,7 +27,7 @@ const CreateCategoryForm = () => {
     let numCategoryNameCharsLeft =
         constants.CATEGORY_NAME_CHAR_LIMIT - categoryName.length;
 
-    async function handleCreateCategory(e) {
+    async function handleCreateCategory(e: React.FormEvent) {
         e.preventDefault();
         setCreateCategoryStatus("pending");
 

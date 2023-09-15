@@ -6,6 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import { DeleteCommentPayload } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -19,7 +20,7 @@ type Props = {
 const DeleteComment = ({ commentId }: Props) => {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [deleteCommentStatus, setDeleteCommentStatus] = useState("idle");
 

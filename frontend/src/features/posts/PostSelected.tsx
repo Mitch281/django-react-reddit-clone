@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { UserContext } from "../../app/App";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import { constants } from "../../utils/constants";
 import { fetchUsersVotesOnPosts } from "../users/usersVotesOnPostsSlice";
@@ -12,7 +12,7 @@ import { fetchSinglePost, selectAllPosts } from "./postsSlice";
 import styles from "./styles/posts.module.css";
 
 const PostSelected = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const params = useParams();
     const postId = params.postId as string;
     const posts = useSelector(selectAllPosts);

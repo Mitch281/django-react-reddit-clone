@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
@@ -21,7 +22,7 @@ type Props = {
 const CommentVotes = ({ commentId }: Props) => {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const comment = useSelector((state) => selectCommentById(state, commentId));
 
     const numUpvotes = comment.num_upvotes;

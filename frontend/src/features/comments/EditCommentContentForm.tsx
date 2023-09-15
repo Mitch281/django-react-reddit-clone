@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import { EditCommentPayload } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -18,7 +19,7 @@ type Props = {
 const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const comment = useSelector((state) => selectCommentById(state, commentId));
 
     const [commentContent, setCommentContent] = useState(comment.content);

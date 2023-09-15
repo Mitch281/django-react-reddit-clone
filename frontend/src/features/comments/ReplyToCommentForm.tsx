@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
+import { AppDispatch } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -23,7 +24,7 @@ type Props = {
 
 const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const handleTextInput = useHandleTextInput();
     const commentToReplyTo = useSelector((state) =>
         selectCommentById(state, commentId)

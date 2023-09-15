@@ -133,3 +133,9 @@ export type VerifyCurrentUserResponse = {
     username: string;
     id: number;
 };
+
+export type LoginResponse = {
+    access: string;
+    refresh: string;
+    user_id: number;
+};

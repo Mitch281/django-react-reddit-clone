@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import "react-toastify/dist/ReactToastify.css";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import ErrorMessage from "../../common/error-message/ErrorMessage";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
@@ -28,7 +28,7 @@ type State = {
 };
 
 const Posts = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     useFetchUserVotes(VoteObjects.Post);
     const params = useParams();
     const initialOrder = params.order;

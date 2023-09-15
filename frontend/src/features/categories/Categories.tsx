@@ -3,7 +3,7 @@ import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import { constants } from "../../utils/constants";
 import Category from "./Category";
 import { fetchCategories, selectCategoryIds } from "./categoriesSlice";
@@ -13,11 +13,11 @@ type Props = {
 };
 
 const Categories = ({ filterCategoriesText }: Props) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const categoriesStatus = useSelector(
         (state: RootState) => state.categories.status
     );
-    const categoryIds = useSelector(selectCategoryIds);
+    const categoryIds = useSelector(selectCategoryIds) as string[];
 
     const errorStyling = {
         display: "table",
