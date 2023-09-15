@@ -6,7 +6,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
-import { Comment } from "../../types/shared";
+import {
+    Comment,
+    UserVoteOnDownvote,
+    UserVoteOnUpvote,
+    UsersVoteOnComment,
+    VoteData,
+    VoteOnCommentPayload,
+} from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
@@ -33,7 +40,9 @@ const CommentVotes = ({ commentId }: Props) => {
 
     const { loggedIn, userIdLoggedIn, logout } = useContext(UserContext);
 
-    const usersVotesOnComments = useSelector(selectAllUsersVotesOnComments);
+    const usersVotesOnComments = useSelector(
+        selectAllUsersVotesOnComments
+    ) as UsersVoteOnComment[];
 
     function getUpvoteCommentData() {
         const currentVote = getCurrentVote();
@@ -69,7 +78,7 @@ const CommentVotes = ({ commentId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnUpvote() {
+    function getUserVoteOnUpvote(): UserVoteOnUpvote {
         const usersVoteOnPostId = getUsersVoteOnCommentId();
         const currentVote = getCurrentVote();
         let data;
@@ -99,7 +108,7 @@ const CommentVotes = ({ commentId }: Props) => {
         return data;
     }
 
-    function getUserVoteOnDownvote() {
+    function getUserVoteOnDownvote(): UserVoteOnDownvote {
         const usersVoteOnCommentId = getUsersVoteOnCommentId();
         const currentVote = getCurrentVote();
         let data;
@@ -135,12 +144,12 @@ const CommentVotes = ({ commentId }: Props) => {
     async function upvote() {
         const upvoteCommentData = getUpvoteCommentData();
         const usersVoteOnCommentData = getUserVoteOnUpvote();
-        const data = {
+        const data: VoteData = {
             comment_data: upvoteCommentData,
             user_data: usersVoteOnCommentData,
         };
         const usersVoteOnCommentId = getUsersVoteOnCommentId();
-        const upvoteInformation = {
+        const upvoteInformation: VoteOnCommentPayload = {
             commentId: commentId,
             usersVoteOnCommentId: usersVoteOnCommentId,
             data: data,
@@ -156,25 +165,25 @@ const CommentVotes = ({ commentId }: Props) => {
     async function downvote() {
         const downvoteCommentData = getDownvoteCommentData();
         const usersVoteOnCommentData = getUserVoteOnDownvote();
-        const data = {
+        const data: VoteData = {
             comment_data: downvoteCommentData,
             user_data: usersVoteOnCommentData,
         };
         const usersVoteOnCommentId = getUsersVoteOnCommentId();
-        const downvoteInformation = {
+        const downvoteInformation: VoteOnCommentPayload = {
             commentId: commentId,
             usersVoteOnCommentId: usersVoteOnCommentId,
-            data: data,
+            data,
         };
         try {
             await dispatch(voteOnComment(downvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         }
     }
 
-    function getUsersVoteOnCommentId() {
+    function getUsersVoteOnCommentId(): string | undefined {
         const usersVoteOnComment = usersVotesOnComments.find(
             (usersVoteOnComment) => usersVoteOnComment.comment === commentId
         );

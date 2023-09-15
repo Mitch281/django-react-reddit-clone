@@ -124,3 +124,70 @@ export type LoginResponse = {
     refresh: string;
     user_id: number;
 };
+
+type UpvoteCommentData = {
+    num_upvotes: number;
+    num_downvotes?: number;
+};
+
+type DownvoteCommentData = {
+    num_upvotes?: number;
+    num_downvotes: number;
+};
+
+export type UserVoteOnUpvote =
+    | {
+          id: any;
+          upvote: boolean;
+          downvote?: undefined;
+          user?: undefined;
+          comment?: undefined;
+      }
+    | {
+          id: any;
+          upvote: boolean;
+          downvote: boolean;
+          user?: undefined;
+          comment?: undefined;
+      }
+    | {
+          id: string;
+          upvote: boolean;
+          downvote: boolean;
+          user: string;
+          comment: string;
+      };
+
+export type UserVoteOnDownvote =
+    | {
+          id: any;
+          upvote: boolean;
+          downvote: boolean;
+          user?: undefined;
+          comment?: undefined;
+      }
+    | {
+          id: any;
+          downvote: boolean;
+          upvote?: undefined;
+          user?: undefined;
+          comment?: undefined;
+      }
+    | {
+          id: string;
+          upvote: boolean;
+          downvote: boolean;
+          user: string;
+          comment: string;
+      };
+
+export type VoteData = {
+    comment_data: UpvoteCommentData | DownvoteCommentData;
+    user_data: UserVoteOnUpvote | UserVoteOnDownvote;
+};
+
+export type VoteOnCommentPayload = {
+    commentId: string;
+    data: VoteData;
+    usersVoteOnCommentId?: string;
+};

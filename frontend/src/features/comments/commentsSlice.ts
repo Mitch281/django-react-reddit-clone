@@ -16,6 +16,7 @@ import {
     DeleteCommentPayload,
     EditCommentPayload,
     FetchCommentsPayload,
+    VoteOnCommentPayload,
 } from "../../types/shared";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
@@ -47,7 +48,7 @@ export const fetchComments = createAsyncThunk(
 
 export const voteOnComment = createAsyncThunk(
     "comments/voteOnComment",
-    async (voteData) => {
+    async (voteData: VoteOnCommentPayload) => {
         const { commentId, usersVoteOnCommentId, data } = voteData;
         let url;
         if (usersVoteOnCommentId) {
@@ -60,7 +61,7 @@ export const voteOnComment = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not vote on comment! Please try again later."
             );
         }
@@ -79,7 +80,7 @@ export const makeCommentOnPost = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not comment on post! Please try again later."
             );
         }
@@ -102,7 +103,7 @@ export const editComment = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not edit comment! Please try again later."
             );
         }
@@ -129,7 +130,7 @@ export const deleteComment = createAsyncThunk(
             return json;
         } catch (error) {
             handleFetchError(
-                error,
+                error as Error,
                 "Could not delete comment! Please try again later."
             );
         }
