@@ -39,7 +39,6 @@ const PostSelected = () => {
         content = (
             <div className={styles["posts"]}>
                 <ClipLoader
-                    css={"margin-top: 50px"}
                     color={constants.loaderColour}
                     loading={true}
                     size={150}

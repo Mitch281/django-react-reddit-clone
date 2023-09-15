@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -24,7 +24,7 @@ const Categories = ({ filterCategoriesText }: Props) => {
         margin: "0px auto 5px auto",
     };
 
-    const loadingStyling = {
+    const loadingStyling: CSSProperties = {
         display: "table",
         margin: "0px auto 5px auto",
     };
@@ -40,7 +40,7 @@ const Categories = ({ filterCategoriesText }: Props) => {
             color={constants.loaderColour}
             loading={true}
             size={20}
-            css={loadingStyling}
+            cssOverride={loadingStyling}
         />
     );
 

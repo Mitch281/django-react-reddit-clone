@@ -83,7 +83,6 @@ const AddPostForm = () => {
             color={constants.loaderColour}
             loading={true}
             size={20}
-            css={"float: right;"}
         />
     );
 

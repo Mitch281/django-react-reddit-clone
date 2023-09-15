@@ -61,7 +61,6 @@ const CreateCategoryForm = () => {
                 color={constants.loaderColour}
                 loading={true}
                 size={20}
-                css={"margin-top: 10px"}
             />
         );
     } else {

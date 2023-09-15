@@ -67,7 +67,6 @@ const DeleteComment = ({ commentId }: Props) => {
                 color={constants.loaderColour}
                 loading={true}
                 size={20}
-                css={"float: right;"}
             />
         );
     } else {

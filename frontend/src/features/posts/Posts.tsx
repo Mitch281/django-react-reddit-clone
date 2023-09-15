@@ -135,7 +135,6 @@ const Posts = () => {
         content.push(
             <div className={styles["posts"]} key="loader">
                 <ClipLoader
-                    css={"margin-top: 50px"}
                     color={constants.loaderColour}
                     loading={true}
                     size={150}
