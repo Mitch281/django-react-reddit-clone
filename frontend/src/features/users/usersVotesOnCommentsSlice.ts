@@ -6,11 +6,17 @@ import {
 import { RootState } from "../../app/store";
 import { UsersVoteOnComment } from "../../types/shared";
 
+type State = {
+    status: "idle" | "pending" | "fulfilled" | "rejected";
+    error: string | null;
+    entities?: UsersVoteOnComment[];
+};
+
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 const usersVotesOnCommentsAdapter = createEntityAdapter();
 
-const initialState = usersVotesOnCommentsAdapter.getInitialState({
+const initialState = usersVotesOnCommentsAdapter.getInitialState<State>({
     status: "idle",
     error: null,
 });
@@ -45,7 +51,7 @@ const usersVotesOnCommentsSlice = createSlice({
             })
             .addCase(fetchUsersVotesOnComments.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             });
     },
 });

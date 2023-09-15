@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
+import { RootState } from "../../app/store";
 import type { Post as PostType } from "../../types/shared";
 import Category from "./Category";
 import DateOfPost from "./DateOfPost";
@@ -19,7 +20,7 @@ type Props = {
 };
 
 const Post = ({ postId }: Props) => {
-    const post: PostType = useSelector((state) =>
+    const post: PostType = useSelector((state: RootState) =>
         selectPostById(state, postId)
     ) as PostType;
 

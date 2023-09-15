@@ -10,6 +10,7 @@ import {
     DeletePostResponse,
     PatchPostBody,
     PatchPostResponse,
+    PostVoteResponse,
 } from "../../types/api";
 import {
     AddPostBody,
@@ -24,11 +25,19 @@ import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 import { constants } from "../../utils/constants";
 
+type State = {
+    status: "idle" | "pending" | "fulfilled" | "rejected";
+    error: string | null;
+    hasMorePosts: boolean;
+    pageNumber: number;
+    entities?: Post[];
+};
+
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 const postsAdapter = createEntityAdapter();
 
-const initialState = postsAdapter.getInitialState({
+const initialState = postsAdapter.getInitialState<State>({
     status: "idle",
     error: null,
     hasMorePosts: true,
@@ -78,7 +87,9 @@ export const fetchSinglePost = createAsyncThunk(
 
 export const voteOnPost = createAsyncThunk(
     "posts/voteOnPost",
-    async (voteData: VoteOnPostPayload) => {
+    async (
+        voteData: VoteOnPostPayload
+    ): Promise<PostVoteResponse | undefined> => {
         const { postId, usersVoteOnPostId, data } = voteData;
         let url;
         if (usersVoteOnPostId) {
@@ -88,7 +99,10 @@ export const voteOnPost = createAsyncThunk(
             url = `${API_ENDPOINT}/post/${postId}/vote/vote-id=/`;
         }
         try {
-            const json = await authorisedFetchWrapper.put(url, data);
+            const json: PostVoteResponse = await authorisedFetchWrapper.put(
+                url,
+                data
+            );
             return json;
         } catch (error) {
             handleFetchError(
@@ -101,7 +115,7 @@ export const voteOnPost = createAsyncThunk(
 
 export const addNewPost = createAsyncThunk(
     "posts/addNewPost",
-    async (newPost: AddPostBody) => {
+    async (newPost: AddPostBody): Promise<AddPostResponse | undefined> => {
         const url = `${API_ENDPOINT}/posts/`;
         try {
             const json: AddPostResponse = await authorisedFetchWrapper.post<
@@ -141,7 +155,9 @@ export const editPost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
     "posts/deletePost",
-    async (deleteInformation: DeletePostPayload) => {
+    async (
+        deleteInformation: DeletePostPayload
+    ): Promise<DeletePostResponse | undefined> => {
         const { postId, userId } = deleteInformation;
         const url = `${API_ENDPOINT}/post/${postId}/?user-id=${userId}`;
         try {
@@ -184,7 +200,7 @@ const postsSlice = createSlice({
             })
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             })
             .addCase(fetchPostsByCategory.pending, (state, action) => {
                 state.status = "pending";
@@ -200,7 +216,7 @@ const postsSlice = createSlice({
             })
             .addCase(fetchPostsByCategory.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             })
             .addCase(fetchSinglePost.pending, (state, action) => {
                 state.status = "pending";
@@ -211,20 +227,19 @@ const postsSlice = createSlice({
             })
             .addCase(fetchSinglePost.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             })
             .addCase(voteOnPost.fulfilled, (state, action) => {
-                postsAdapter.upsertOne(state, action.payload.post_data);
+                postsAdapter.upsertOne(state, action.payload!.post_data);
             })
             .addCase(addNewPost.fulfilled, (state, action) => {
                 postsAdapter.addOne(state, action.payload);
             })
             .addCase(editPost.fulfilled, (state, action) => {
-                state.editPostStatus = "fulfilled";
                 postsAdapter.upsertOne(state, action.payload);
             })
             .addCase(deletePost.fulfilled, (state, action) => {
-                postsAdapter.removeOne(state, action.payload.id);
+                postsAdapter.removeOne(state, action.payload!.id);
             });
     },
 });

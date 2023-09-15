@@ -9,23 +9,29 @@ import { Category, CreateCategoryPayload } from "../../types/shared";
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
+type State = {
+    status: "idle" | "pending" | "fulfilled" | "rejected";
+    error: string | null;
+    entities?: Category[];
+};
+
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 const categoriesAdapter = createEntityAdapter();
 
-const initialState = categoriesAdapter.getInitialState({
+const initialState = categoriesAdapter.getInitialState<State>({
     status: "idle",
     error: null,
 });
 
 export const fetchCategories = createAsyncThunk(
     "categories/fetchCategories",
-    async () => {
+    async (): Promise<Category[]> => {
         const response = await fetch(`${API_ENDPOINT}/categories/`);
         if (!response.ok) {
             return Promise.reject(response.status);
         }
-        const json: Category = await response.json();
+        const json: Category[] = await response.json();
         return json;
     }
 );
@@ -64,7 +70,7 @@ const categoriesSlice = createSlice({
             })
             .addCase(fetchCategories.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             })
             .addCase(createCategory.fulfilled, (state, action) => {
                 categoriesAdapter.addOne(state, action.payload);

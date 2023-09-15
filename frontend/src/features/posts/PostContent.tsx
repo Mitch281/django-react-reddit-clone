@@ -4,7 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../app/App";
-import { AppDispatch } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import type { EditPostPayload, Post } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -25,7 +25,7 @@ const PostContent = ({
 }: Props) => {
     const dispatch = useDispatch<AppDispatch>();
     const handleTextInput = useHandleTextInput();
-    const post: Post = useSelector((state) =>
+    const post: Post = useSelector((state: RootState) =>
         selectPostById(state, postId)
     ) as Post;
     const [editPostStatus, setEditPostStatus] = useState("idle");

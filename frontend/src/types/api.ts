@@ -78,3 +78,25 @@ export type AddCategoryResponse = {
     id: string;
     name: string;
 };
+
+export type PostVoteResponse = {
+    post_data: PatchPostResponse;
+    post_vote_data: {
+        downvote: boolean;
+        id: string;
+        post: string;
+        upvote: boolean;
+        user: number;
+    };
+};
+
+export type CommentVoteResponse = {
+    comment_data: PatchCommentResponse;
+    comment_vote_data: {
+        comment: string;
+        downvote: boolean;
+        id: string;
+        upvote: boolean;
+        user: number;
+    };
+};

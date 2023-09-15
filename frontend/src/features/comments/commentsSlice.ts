@@ -6,6 +6,7 @@ import {
 import { RootState } from "../../app/store";
 import {
     AddCommentResponse,
+    CommentVoteResponse,
     DeleteCommentBody,
     DeleteCommentResponse,
     PatchCommentBody,
@@ -22,11 +23,17 @@ import {
 import { handleFetchError } from "../../utils/auth";
 import { authorisedFetchWrapper } from "../../utils/authorised-fetch-wrapper";
 
+type State = {
+    status: "idle" | "pending" | "fulfilled" | "rejected";
+    error: string | null;
+    entities?: Comment[];
+};
+
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 const commentsAdapter = createEntityAdapter();
 
-const initialState = commentsAdapter.getInitialState({
+const initialState = commentsAdapter.getInitialState<State>({
     status: "idle",
     error: null,
 });
@@ -49,7 +56,9 @@ export const fetchComments = createAsyncThunk(
 
 export const voteOnComment = createAsyncThunk(
     "comments/voteOnComment",
-    async (voteData: VoteOnCommentPayload) => {
+    async (
+        voteData: VoteOnCommentPayload
+    ): Promise<CommentVoteResponse | undefined> => {
         const { commentId, usersVoteOnCommentId, data } = voteData;
         let url;
         if (usersVoteOnCommentId) {
@@ -58,7 +67,10 @@ export const voteOnComment = createAsyncThunk(
             url = `${API_ENDPOINT}/comment/${commentId}/vote/vote-id=/`;
         }
         try {
-            const json = await authorisedFetchWrapper.put(url, data);
+            const json: CommentVoteResponse = await authorisedFetchWrapper.put(
+                url,
+                data
+            );
             return json;
         } catch (error) {
             handleFetchError(
@@ -75,7 +87,7 @@ export const makeCommentOnPost = createAsyncThunk(
         const url = `${API_ENDPOINT}/comments/`;
         try {
             const json: AddCommentResponse = await authorisedFetchWrapper.post<
-                AddCommentBody,
+                AddCommentBody | AddCommentReplyBody,
                 AddCommentResponse
             >(url, newComment);
             return json;
@@ -187,13 +199,12 @@ const commentsSlice = createSlice({
             })
             .addCase(fetchComments.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
+                state.error = action.error.message as string;
             })
             .addCase(voteOnComment.fulfilled, (state, action) => {
-                commentsAdapter.upsertOne(state, action.payload.comment_data);
+                commentsAdapter.upsertOne(state, action.payload!.comment_data);
             })
             .addCase(makeCommentOnPost.fulfilled, (state, action) => {
-                state.makeCommentOnPostStatus = "fulfilled";
                 commentsAdapter.addOne(state, action.payload);
             })
             .addCase(editComment.fulfilled, (state, action) => {
@@ -208,8 +219,7 @@ const commentsSlice = createSlice({
 
 export default commentsSlice.reducer;
 
-export const { toggleHidden, incrementNumReplies, trackUsersVote } =
-    commentsSlice.actions;
+export const { toggleHidden, incrementNumReplies } = commentsSlice.actions;
 
 export const {
     selectAll: selectAllComments,

@@ -88,7 +88,7 @@ const Posts = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(resetPosts());
+        dispatch(resetPosts({}));
         // eslint-disable-next-line
     }, [initialOrder, initialCategoryId]);
 
