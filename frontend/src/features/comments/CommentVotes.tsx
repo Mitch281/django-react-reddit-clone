@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { AppDispatch } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
+import { Comment } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { VoteTypes } from "../../utils/constants";
 import {
@@ -23,7 +24,9 @@ const CommentVotes = ({ commentId }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch<AppDispatch>();
-    const comment = useSelector((state) => selectCommentById(state, commentId));
+    const comment = useSelector((state: RootState) =>
+        selectCommentById(state, commentId)
+    ) as Comment;
 
     const numUpvotes = comment.num_upvotes;
     const numDownvotes = comment.num_downvotes;
@@ -146,7 +149,7 @@ const CommentVotes = ({ commentId }: Props) => {
             await dispatch(voteOnComment(upvoteInformation)).unwrap();
             dispatch(trackUsersVote(data.user_data));
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         }
     }
 

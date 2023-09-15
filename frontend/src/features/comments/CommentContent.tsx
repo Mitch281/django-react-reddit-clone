@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Comment } from "../../types/shared";
 import EditCommentContentForm from "./EditCommentContentForm";
 import { selectCommentById } from "./commentsSlice";
 import styles from "./styles/comment-content.module.css";
@@ -14,7 +15,9 @@ const CommentContent = ({
     isCurrentlyEditing,
     toggleEditForm,
 }: Props) => {
-    const comment = useSelector((state) => selectCommentById(state, commentId));
+    const comment = useSelector((state) =>
+        selectCommentById(state, commentId)
+    ) as Comment;
 
     let content;
     if (isCurrentlyEditing) {

@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../../app/App";
+import type { FrontendModifiedComment } from "../../types/frontend";
+import { Comment as CommentType } from "../../types/shared";
 import Author from "./Author";
 import CommentContent from "./CommentContent";
 import CommentVotes from "./CommentVotes";
@@ -13,10 +15,14 @@ import styles from "./styles/comment.module.css";
 
 type Props = {
     commentId: string;
+    replies?: FrontendModifiedComment[];
+    isRootComment: boolean;
 };
 
-const Comment = ({ commentId, replies, isRootComment }) => {
-    const comment = useSelector((state) => selectCommentById(state, commentId));
+const Comment = ({ commentId, replies, isRootComment }: Props) => {
+    const comment = useSelector((state) =>
+        selectCommentById(state, commentId)
+    ) as CommentType;
 
     const [isCurrentlyReplying, setIsCurrentlyReplying] = useState(false);
     const [isCurrentlyEditing, setIsCurrentlyEditing] = useState(false);
@@ -43,13 +49,12 @@ const Comment = ({ commentId, replies, isRootComment }) => {
         if (comment.num_replies > 0 && !comment.is_hidden) {
             return (
                 <div className={styles["replies"]}>
-                    {replies.map((comment) => (
+                    {replies?.map((comment) => (
                         <Comment
                             key={comment.id}
                             commentId={comment.id}
                             replies={comment.replies}
                             isRootComment={false}
-                            isHidden={comment.is_hidden}
                         />
                     ))}
                 </div>
@@ -58,7 +63,7 @@ const Comment = ({ commentId, replies, isRootComment }) => {
     }
 
     let deleteCommentButton =
-        userIdLoggedIn === comment.user ? (
+        userIdLoggedIn === comment.user.toString() ? (
             <DeleteComment commentId={commentId} />
         ) : null;
 
@@ -73,7 +78,7 @@ const Comment = ({ commentId, replies, isRootComment }) => {
     ) : null;
 
     let editContentButton =
-        userIdLoggedIn === comment.user ? (
+        userIdLoggedIn === comment.user.toString() ? (
             <button
                 type="button"
                 className={styles["toggle-edit-comment"]}

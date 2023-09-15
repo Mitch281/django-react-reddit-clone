@@ -3,6 +3,7 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import {
     AddCommentResponse,
     DeleteCommentBody,
@@ -212,4 +213,4 @@ export const {
     selectAll: selectAllComments,
     selectById: selectCommentById,
     selectIds: selectCommentIds,
-} = commentsAdapter.getSelectors((state) => state.comments);
+} = commentsAdapter.getSelectors((state: RootState) => state.comments);

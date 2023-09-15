@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
+import { Comment } from "../../types/shared";
 import { selectCommentById, toggleHidden } from "./commentsSlice";
 import styles from "./styles/comment.module.css";
 
@@ -8,7 +9,9 @@ type Props = {
 };
 
 const ToggleHidden = ({ commentId }: Props) => {
-    const comment = useSelector((state) => selectCommentById(state, commentId));
+    const comment = useSelector((state: RootState) =>
+        selectCommentById(state, commentId)
+    ) as Comment;
     const dispatch = useDispatch<AppDispatch>();
 
     let text;

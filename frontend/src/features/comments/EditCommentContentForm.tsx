@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import { UserContext } from "../../app/App";
-import { AppDispatch } from "../../app/store";
-import { EditCommentPayload } from "../../types/shared";
+import { AppDispatch, RootState } from "../../app/store";
+import { Comment, EditCommentPayload } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import { editComment, selectCommentById } from "./commentsSlice";
@@ -20,7 +20,9 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch<AppDispatch>();
-    const comment = useSelector((state) => selectCommentById(state, commentId));
+    const comment = useSelector((state: RootState) =>
+        selectCommentById(state, commentId)
+    ) as Comment;
 
     const [commentContent, setCommentContent] = useState(comment.content);
     const [editCommentStatus, setEditCommentStatus] = useState("idle");
@@ -30,10 +32,10 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
     let numCommentContentCharsLeft =
         constants.COMMENT_CONTENT_CHAR_LIMIT - commentContent.length;
 
-    async function handleEditCommentContent(e) {
+    async function handleEditCommentContent(e: React.FormEvent) {
         e.preventDefault();
         const editCommentInformation: EditCommentPayload = {
-            userId: userIdLoggedIn,
+            userId: parseInt(userIdLoggedIn),
             newCommentContent: commentContent,
             commentId: commentId,
         };
@@ -53,7 +55,7 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
                 progress: undefined,
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setEditCommentStatus("idle");
         }

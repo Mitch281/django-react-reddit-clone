@@ -7,7 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { AppDispatch, RootState } from "../../app/store";
 import OrderOptions from "../../common/ordering/OrderOptions";
 import useFetchUserVotes from "../../hooks/useFetchUserVotes";
-import { FetchCommentsPayload } from "../../types/shared";
+import {
+    CommentChain,
+    type CommentMap,
+    type FrontendModifiedComment,
+} from "../../types/frontend";
+import { FetchCommentsPayload, Order } from "../../types/shared";
 import { VoteObjects, constants } from "../../utils/constants";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
@@ -17,16 +22,16 @@ import styles from "./styles/comments.module.css";
 const Comments = () => {
     useFetchUserVotes(VoteObjects.Comment);
     const params = useParams();
-    const postId = params.postId;
-    const order = params.order;
+    const postId = params.postId as string;
+    const order = params.order as Order | undefined;
 
     const dispatch = useDispatch<AppDispatch>();
     const commentStatus = useSelector(
         (state: RootState) => state.comments.status
     );
-    const comments = useSelector(selectAllComments);
+    const comments = useSelector(selectAllComments) as Comment[];
 
-    const [commentChain, setCommentChain] = useState([]);
+    const [commentChain, setCommentChain] = useState<CommentChain>([]);
 
     useEffect(() => {
         const payload: FetchCommentsPayload = {
@@ -58,9 +63,11 @@ const Comments = () => {
         }
     }, [commentStatus]);
 
-    function nestComments() {
-        const commentMap = {};
-        const commentsClone = JSON.parse(JSON.stringify(comments));
+    function nestComments(): FrontendModifiedComment[] {
+        const commentMap: CommentMap = {};
+        const commentsClone = JSON.parse(
+            JSON.stringify(comments)
+        ) as FrontendModifiedComment[];
 
         commentsClone.forEach((comment) => (commentMap[comment.id] = comment));
 
@@ -79,7 +86,11 @@ const Comments = () => {
         return commentsClone.filter((comment) => !comment.parent_comment);
     }
 
-    function getNestingLevel(comment, mapping, nestingLevel) {
+    function getNestingLevel(
+        comment: FrontendModifiedComment,
+        mapping: CommentMap,
+        nestingLevel: number
+    ) {
         // Note that comment.parent_comment is simply the id of the parent comment due to the django naming (maybe look into
         // changing this in future to parent_comment_id), while parentComment is the actual parent comment object. Same thing
         // in above function.
@@ -106,23 +117,20 @@ const Comments = () => {
             </div>
         );
     } else if (commentStatus === "fulfilled") {
-        content = commentChain.map((comment) => (
+        content = commentChain.map((comment: FrontendModifiedComment) => (
             <Comment
                 key={comment.id}
                 commentId={comment.id}
                 replies={comment.replies}
                 isRootComment={true}
-                isHidden={false}
             />
         ));
     }
 
-    console.log(commentChain);
-
     return (
         <>
             <CommentInput />
-            <OrderOptions orderingType="comments" />
+            <OrderOptions />
             <div id={styles["comments-flex-container"]}>
                 <div id={styles["comments"]}>{content}</div>
             </div>

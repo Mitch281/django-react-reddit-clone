@@ -6,8 +6,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
-import { AppDispatch } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
+import { Comment } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
 import {
@@ -26,9 +27,9 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const handleTextInput = useHandleTextInput();
-    const commentToReplyTo = useSelector((state) =>
+    const commentToReplyTo = useSelector((state: RootState) =>
         selectCommentById(state, commentId)
-    );
+    ) as Comment;
     const parentUsername = commentToReplyTo.username;
 
     const [replyContent, setReplyContent] = useState("");
@@ -73,7 +74,7 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
                 progress: undefined,
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setEditCommentStatus("idle");
         }
@@ -109,7 +110,6 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
                         Reply to {parentUsername} as {usernameLoggedIn}
                     </span>
                     <textarea
-                        type="text"
                         placeholder="Content"
                         value={replyContent}
                         onChange={(e) =>

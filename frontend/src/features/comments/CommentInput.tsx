@@ -55,7 +55,7 @@ const CommentInput = () => {
         const newComment: AddCommentBody = {
             id: uuid_v4(),
             username: usernameLoggedIn,
-            user: userIdLoggedIn,
+            user: parseInt(userIdLoggedIn),
             parent_post: postId as string,
             content: commentContent,
             num_upvotes: 0,
@@ -79,7 +79,7 @@ const CommentInput = () => {
                 progress: undefined,
             });
         } catch (error) {
-            renderErrorOnRequest(error, logout, navigate);
+            renderErrorOnRequest(error as Error, logout, navigate);
         } finally {
             setAddNewCommentStatus("idle");
         }
