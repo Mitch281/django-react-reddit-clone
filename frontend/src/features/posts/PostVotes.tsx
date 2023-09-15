@@ -185,7 +185,6 @@ const PostVotes = ({ postId }: Props) => {
         const usersVoteOnPost = usersVotesOnPosts.find(
             (usersVoteOnPost) => usersVoteOnPost.post === postId
         );
-        console.log(usersVoteOnPost);
         if (!usersVoteOnPost) {
             return;
         }

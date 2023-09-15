@@ -6,7 +6,6 @@ function useHandleTextInput() {
         setState: React.Dispatch<SetStateAction<string>>,
         numCharsLeft: number
     ) => {
-        console.log(e.nativeEvent);
         const charEntered = (e.nativeEvent as InputEvent).data;
         const inputType = (e.nativeEvent as InputEvent).inputType;
         if (numCharsLeft <= 0) {
