@@ -12,8 +12,9 @@ django-heroku = "*"
 gunicorn = "*"
 python-dotenv = "*"
 dj-database-url = "*"
+factory-boy = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.10"
