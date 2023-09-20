@@ -4,7 +4,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-USER_ID_OF_TEST_USER = 1
 
 class TestLogin(APITestCase):
     def test_signup(self):
