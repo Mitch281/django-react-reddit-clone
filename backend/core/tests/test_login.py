@@ -23,8 +23,8 @@ class TestLogin(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.data
-        self.assertEqual(data['refresh'][0: 2] == 'ey', True)
-        self.assertEqual(data['access'][0: 2] == 'ey', True)
+        self.assertEqual(data['refresh'][0: 2], 'ey')
+        self.assertEqual(data['access'][0: 2], 'ey')
         self.assertEqual(data['user_id'], USER_ID_OF_TEST_USER)
 
     def test_username_does_not_exist(self):
