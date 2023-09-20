@@ -14,7 +14,7 @@ class TestLogin(APITestCase):
         test_user.save()
 
     def test_login(self):
-        url = reverse('core:token_obtain_pair')
+        url = reverse('authentication:token_obtain_pair')
         body = {
             'username': 'test',
             'password': 'test'
@@ -28,7 +28,7 @@ class TestLogin(APITestCase):
         self.assertEqual(data['user_id'], USER_ID_OF_TEST_USER)
 
     def test_username_does_not_exist(self):
-        url = reverse('core:token_obtain_pair')
+        url = reverse('authentication:token_obtain_pair')
         body = {
             'username': 'does not exist',
             'password': 'test'
@@ -40,7 +40,7 @@ class TestLogin(APITestCase):
         self.assertEqual(data['detail'], 'The username or password does not match.')
 
     def test_wrong_password(self):
-        url = reverse('core:token_obtain_pair')
+        url = reverse('authentication:token_obtain_pair')
         body = {
             'username': 'test',
             'password': 'wrong password'

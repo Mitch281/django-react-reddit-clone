@@ -13,34 +13,30 @@ class TestLogin(APITestCase):
         test_user.password = make_password('test')
         test_user.save()
 
-    def test_valid_refresh_token(self):
-        url = reverse('core:token_obtain_pair')
+    def login(self):
+        url = reverse('authentication:token_obtain_pair')
         body = {
             'username': 'test',
             'password': 'test'
         }
         response = self.client.post(url, body, format='json')
-        refresh_token = response.data['refresh']
+        access_token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
 
-        url = reverse('core:token_refresh')
-        body = {
-            'refresh': refresh_token
-        }
-        response = self.client.post(url, body, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        data = response.data
-        self.assertEqual(data['access'][0: 2], 'ey')
-
-    def test_invalid_refresh_token(self):
-        url = reverse('core:token_refresh')
-        refresh_token = 'abcdefg'
-        body = {
-            'refresh': refresh_token
-        }
-        response = self.client.post(url, body, format='json')   
+    def test_get_current_user_unauthenticated(self):
+        url = reverse('authentication:current_user')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
+        
         data = response.data
-        self.assertEqual(data['detail'], 'Token is invalid or expired')
+        self.assertEqual(data['detail'], 'Authentication credentials were not provided.')
 
+    def test_get_current_user(self):
+        self.login()
+        url = reverse('authentication:current_user')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        data = response.data
+        self.assertEqual(data['username'], 'test')
+        self.assertEqual(data['id'], USER_ID_OF_TEST_USER)

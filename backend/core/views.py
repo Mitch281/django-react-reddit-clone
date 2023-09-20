@@ -1,20 +1,16 @@
-from django.contrib.auth.models import User
+from core import serializers, services
 from django.db import transaction
-from django.db.models import Count, F
+from django.db.models import Count
 from django.db.models.functions import Lower
 from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-from core import serializers, services
 
 from .models import Category, Comment, CommentVotes, Post, PostVotes
 from .serializers import (CategorySerializer, CommentSerializer,
-                          CommentVotesSerializer, MyTokenObtainPairSerializer,
-                          PostSerializer, PostVotesSerializer, UserSerializer,
-                          UserSerializerWithToken)
+                          CommentVotesSerializer, PostSerializer,
+                          PostVotesSerializer)
 
 
 def set_permission_classes(obj):
@@ -214,39 +210,6 @@ class PostComments(APIView):
         return Response(serializer.data)
 
 
-@api_view(["GET"])
-@permission_classes((permissions.IsAuthenticated, ))
-def current_user(request):
-    """
-    Determine current user by their token and return their data
-    """
-
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
-
-class UserList(APIView):
-    """
-    Create a new user, and view list of all existing users.
-    """
-
-    # No authentication here as this view is used to create users.
-    permission_classes = [permissions.AllowAny, ]
-
-    def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = UserSerializerWithToken(users, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = UserSerializerWithToken(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        error_list = [serializer.errors[error][0]
-                      for error in serializer.errors]
-        return Response(error_list, status=status.HTTP_400_BAD_REQUEST)
-
 
 class PostVotesView(APIView):
     """
@@ -283,12 +246,6 @@ class CommentVotesView(APIView):
         serializer = CommentVotesSerializer(votes, many=True)
         return Response(serializer.data)
 
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    """
-    Obtain access and refresh tokens on user login. Also returns the user id.
-    """
-    serializer_class = MyTokenObtainPairSerializer
 
 
 class PostVotingViewSet(viewsets.ViewSet):

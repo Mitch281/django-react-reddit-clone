@@ -1,5 +1,3 @@
-from core.models import User
-from django.contrib.auth.hashers import make_password
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -7,7 +5,7 @@ from rest_framework.test import APITestCase
 
 class TestLogin(APITestCase):
     def test_signup(self):
-        url = reverse('core:users')
+        url = reverse('authentication:users')
         body = {
             'username': 'test',
             'password': 'test'
@@ -23,7 +21,7 @@ class TestLogin(APITestCase):
         self.assertEqual(data['id'], 1)
 
     def test_signup_username_already_exists(self):
-        url = reverse('core:users')
+        url = reverse('authentication:users')
         body = {
             'username': 'test',
             'password': 'test'
