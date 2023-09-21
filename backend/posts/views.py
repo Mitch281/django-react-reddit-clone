@@ -1,5 +1,4 @@
 # Create your views here.
-from core import services
 from core.models import Category, Post, PostVotes
 from django.db import transaction
 from django.db.models import Count
@@ -10,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import (CategorySerializer, PostSerializer,
-                          PostVotesSerializer, serializers)
+                          PostVotesSerializer)
+from .services import PostService
 
 
 def set_permission_classes(obj):
@@ -54,7 +54,7 @@ class PostsView(APIView):
     def get(self, request, ordering=""):
         limit = request.GET.get("limit", "")
         page_number = request.GET.get("page-number", "")
-        posts = services.PostService.get_posts(
+        posts = PostService.get_posts(
             Post, ordering, limit, page_number)
 
         serializer = PostSerializer(posts, many=True)

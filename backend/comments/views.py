@@ -1,4 +1,3 @@
-from core import services
 from core.models import Category, Comment, CommentVotes
 from django.db import transaction
 from django.db.models.functions import Lower
@@ -9,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import CommentSerializer, CommentVotesSerializer
+from .services import CommentsOnSpecificPostService
 
 # Create your views here.
 
@@ -108,7 +108,7 @@ class PostComments(APIView):
 
     def get(self, request, parent_post_id, ordering=""):
         # Default ordering (ordering by newest).
-        comments_on_specific_post = services.CommentsOnSpecificPostService.get_comments(
+        comments_on_specific_post = CommentsOnSpecificPostService.get_comments(
             Comment, parent_post_id, ordering)
 
         serializer = CommentSerializer(comments_on_specific_post, many=True)
