@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'authentication',
+    'comments',
     'core',
     'posts',
     'seeding'

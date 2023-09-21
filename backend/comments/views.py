@@ -1,17 +1,16 @@
-from core import serializers, services
+from core import services
+from core.models import Category, Comment, CommentVotes
 from django.db import transaction
-from django.db.models import Count
 from django.db.models.functions import Lower
+from posts.serializers import CategorySerializer
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Category, Comment, CommentVotes, Post, PostVotes
-from .serializers import (CategorySerializer, CommentSerializer,
-                          CommentVotesSerializer, PostSerializer,
-                          PostVotesSerializer)
+from .serializers import CommentSerializer, CommentVotesSerializer
 
+# Create your views here.
 
 def set_permission_classes(obj):
     if obj.request.method in ["POST", "DELETE"]:
@@ -53,7 +52,7 @@ class CommentView(APIView):
 
     def get(self, request, pk):
         comment = Comment.objects.get(id=pk)
-        serializer = serializers.CommentSerializer(comment)
+        serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
     def patch(self, request, pk):
@@ -97,7 +96,7 @@ class CommentsView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostComments(APIView):
@@ -168,10 +167,10 @@ class CommentVotingViewSet(viewsets.ViewSet):
     def get_comment_serializer(self, request, pk):
         comment = Comment.objects.get(id=pk)
         comment_data = request.data["comment_data"]
-        return serializers.CommentSerializer(comment, data=comment_data, partial=True)
+        return CommentSerializer(comment, data=comment_data, partial=True)
 
     def get_comment_votes_serializer(self, request, vote_id):
         if (vote_id):
             comment_vote = CommentVotes.objects.get(id=vote_id)
-            return serializers.CommentVotesSerializer(comment_vote, data=request.data["user_data"], partial=True)
-        return serializers.CommentVotesSerializer(data=request.data["user_data"])
+            return CommentVotesSerializer(comment_vote, data=request.data["user_data"], partial=True)
+        return CommentVotesSerializer(data=request.data["user_data"])

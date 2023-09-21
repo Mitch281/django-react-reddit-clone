@@ -1,5 +1,5 @@
 # Create your views here.
-from core import serializers, services
+from core import services
 from core.models import Category, Post, PostVotes
 from django.db import transaction
 from django.db.models import Count
@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import (CategorySerializer, PostSerializer,
-                          PostVotesSerializer)
+                          PostVotesSerializer, serializers)
 
 
 def set_permission_classes(obj):
@@ -195,10 +195,10 @@ class PostVotingViewSet(viewsets.ViewSet):
     def get_post_serializer(self, request, pk):
         post = Post.objects.get(id=pk)
         post_data = request.data["post_data"]
-        return serializers.PostSerializer(post, data=post_data, partial=True)
+        return PostSerializer(post, data=post_data, partial=True)
 
     def get_post_votes_serializer(self, request, vote_id):
         if (vote_id):
             post_vote = PostVotes.objects.get(id=vote_id)
-            return serializers.PostVotesSerializer(post_vote, data=request.data["user_data"], partial=True)
-        return serializers.PostVotesSerializer(data=request.data["user_data"])
+            return PostVotesSerializer(post_vote, data=request.data["user_data"], partial=True)
+        return PostVotesSerializer(data=request.data["user_data"])

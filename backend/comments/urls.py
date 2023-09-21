@@ -1,7 +1,7 @@
 app_name = 'core'
 
-from core import views
-from core.views import CommentVotingViewSet
+from comments import views
+from comments.views import CommentVotingViewSet
 from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
 
