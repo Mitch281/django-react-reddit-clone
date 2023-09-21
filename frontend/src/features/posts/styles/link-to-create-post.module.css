@@ -1,15 +1,16 @@
 #link-to-create-post {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     left: 5vw;
     top: 10vh;
     width: fit-content;
-    height: 25px;
+    height: 50px;
     background: var(--input-background-colour-focus);
     padding: 10px;
-    text-align: center;
     border-radius: 5px;
     color: black;
     line-height: 25px;
