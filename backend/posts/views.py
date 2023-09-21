@@ -80,7 +80,7 @@ class PostsByCategoryView(APIView):
     def get(self, request, pk, ordering=""):
         limit = request.GET.get("limit", "")
         page_number = request.GET.get("page-number", "")
-        posts = services.PostService.get_posts_by_category(
+        posts = PostService.get_posts_by_category(
             Post, ordering, limit, page_number, category_id=pk)
 
         serializer = PostSerializer(posts, many=True)
