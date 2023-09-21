@@ -112,12 +112,13 @@ const AddPostForm = () => {
                     {numTitleCharsLeft} characters left
                 </span>
                 <textarea
-                    id={styles["post-content"]}
+                    id={styles["post-content-text-area"]}
                     value={postContent}
                     onChange={(e) =>
                         handleTextInput(e, setPostContent, numContentCharsLeft)
                     }
                     placeholder="Content"
+                    rows={15}
                 />
                 <span className={styles["char-count"]}>
                     {numContentCharsLeft} characters left
