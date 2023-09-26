@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from core.models import User
+from core.models import Category, Post, User
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse
 from posts.types import PostOrderingOptions, PostType
@@ -83,7 +83,7 @@ class TestGetPosts(APITestCase):
         self.assertEqual('user' in posts[0], True)
         self.assertEqual('category' in posts[0], True)
 
-        self.assertEqual(self.is_ordering_new_to_old(posts, PostOrderingOptions.NO_ORDERING), True)
+        self.assertEqual(self.is_ordering_new_to_old(posts), True)
 
 
     def test_get_posts_by_new_to_old(self):
@@ -194,3 +194,92 @@ class TestGetPosts(APITestCase):
 
         data = response.data
         self.assertEqual(len(data), limit)
+
+    def test_get_posts_by_category(self):
+        random_category = Category.objects.all()[0]
+        num_posts_in_category = len(Post.objects.filter(category=random_category))
+
+        url = reverse('posts:posts by category', kwargs = {
+            'pk': random_category.id
+        })
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        posts = response.data
+
+        self.assertEqual(len(posts), num_posts_in_category)
+        self.assertEqual(self.is_ordering_new_to_old(posts), True)
+
+    def test_get_posts_by_category_and_new_to_old(self):
+        random_category = Category.objects.all()[0]
+        num_posts_in_category = len(Post.objects.filter(category=random_category))
+
+        url = reverse('posts:posts by category and order', kwargs = {
+            'pk': random_category.id,
+            'ordering': PostOrderingOptions.NEW.value
+        })
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        posts = response.data
+
+        self.assertEqual(len(posts), num_posts_in_category)
+        self.assertEqual(self.is_ordering_new_to_old(posts), True)
+
+    def test_get_posts_by_category_and_old_to_new(self):
+        random_category = Category.objects.all()[0]
+        num_posts_in_category = len(Post.objects.filter(category=random_category))
+
+        url = reverse('posts:posts by category and order', kwargs = {
+            'pk': random_category.id,
+            'ordering': PostOrderingOptions.OLD.value
+        })
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        posts = response.data
+
+        self.assertEqual(len(posts), num_posts_in_category)
+        self.assertEqual(self.is_ordering_new_to_old(posts), True)
+
+    def test_get_posts_by_category_and_top_to_bottom(self):
+        random_category = Category.objects.all()[0]
+        num_posts_in_category = len(Post.objects.filter(category=random_category))
+
+        url = reverse('posts:posts by category and order', kwargs = {
+            'pk': random_category.id,
+            'ordering': PostOrderingOptions.TOP.value
+        })
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        posts = response.data
+
+        self.assertEqual(len(posts), num_posts_in_category)
+        self.assertEqual(self.is_ordering_top_to_bottom(posts), True)
+
+    def test_get_posts_by_category_and_bottom_to_top(self):
+        random_category = Category.objects.all()[0]
+        num_posts_in_category = len(Post.objects.filter(category=random_category))
+
+        url = reverse('posts:posts by category and order', kwargs = {
+            'pk': random_category.id,
+            'ordering': PostOrderingOptions.BOTTOM.value
+        })
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        posts = response.data
+
+        self.assertEqual(len(posts), num_posts_in_category)
+        self.assertEqual(self.is_ordering_bottom_to_top(posts), True)
