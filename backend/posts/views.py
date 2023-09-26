@@ -3,6 +3,7 @@ from core.models import Category, Post, PostVotes
 from django.db import transaction
 from django.db.models import Count
 from django.db.models.functions import Lower
+from posts.types import PostOrderingOptions
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -51,7 +52,7 @@ class PostsView(APIView):
         set_permission_classes(self)
         return super().get_permissions()
 
-    def get(self, request, ordering=""):
+    def get(self, request, ordering: PostOrderingOptions=""):
         limit = request.GET.get("limit", "")
         page_number = request.GET.get("page-number", "")
         posts = PostService.get_posts(
