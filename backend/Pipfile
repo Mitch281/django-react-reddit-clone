@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+django-heroku = "*"
+gunicorn = "*"
+python-dotenv = "*"
+dj-database-url = "*"
+factory-boy = "*"
+zappa = "*"
+aws-psycopg2 = "*"
+urllib3 = "<2"
+django-s3-storage = "*"
+pyscopg2 = "*"
+zappa-django-utils = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

@@ -31,12 +31,12 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DATABASE_URL is None
-# DEBUG = True
-# DEBUG = False
+is_aws = True if os.environ.get("AWS_DEFAULT_REGION") else False
+
+DEBUG = not is_aws
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'django-react-reddit-clone-api-3735cadf34e9.herokuapp.com']
+                 'django-react-reddit-clone-api-3735cadf34e9.herokuapp.com', 'h12soefq7c.execute-api.ap-southeast-2.amazonaws.com']
 
 
 # Application definition
@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'comments',
     'core',
     'posts',
-    'seeding'
+    'seeding',
+    'zappa_django_utils'
 ]
 
 MIDDLEWARE = [
@@ -90,12 +91,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-
-if DATABASE_URL is None:
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -103,10 +99,16 @@ if DATABASE_URL is None:
         }
     }
 else:
-    db_from_env = dj_database_url.config()
     DATABASES = {
-        'default': db_from_env
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
+}
     
 
 
@@ -142,11 +144,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
+STATIC_URL = '/production/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+WHITENOISE_STATIC_PREFIX = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
