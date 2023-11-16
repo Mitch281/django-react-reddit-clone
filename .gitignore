@@ -11,3 +11,5 @@ jsconfig.json
 *.zip
 
 zappa_settings.json
+
+*staticfiles/
