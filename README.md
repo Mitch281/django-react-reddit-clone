@@ -24,7 +24,7 @@ styling of the application was completed with CSS modules.
 - Webpack (through [Create React App](https://github.com/facebook/create-react-app))
 ### Deployment
 - Frontend deployed on Netlify
-- Backend deployed on Railway (previously deployed on Heroku prior to free tier removal)
+- Backend with AWS Lambda through an API Gateway. Amazon RDS is used for database.
 ### Features
 - Ability to create, edit and delete posts/comments.
 - Ability to create categories for posts.
