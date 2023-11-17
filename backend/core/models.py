@@ -1,8 +1,18 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Q
 
 # Create your models here.
+
+class AWSLambdaModel(models.Model):
+    num_invocations = models.PositiveBigIntegerField(default=0)
+    last_invocation_date = models.DateTimeField(auto_now=True)
+
+    def reset_num_invocations(self):
+        self.num_invocations = 0
+
+    def increment_num_invocations(self):
+        self.num_invocations += 1
 
 class Category(models.Model):
     id = models.TextField(primary_key=True)
