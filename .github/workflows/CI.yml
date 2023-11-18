@@ -27,3 +27,19 @@ jobs:
               run: |
                   python manage.py makemigrations
                   python manage.py test --noinput --verbosity 2
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: tests
+        steps:
+            - name: Deploy
+              env:
+                  SECRET_KEY: ${{secrets.SECRET_KEY}}
+                  DB_USER: ${{secrets.DB_USER}}
+                  DB_NAME: ${{secrets.DB_NAME}}
+                  DB_HOST: ${{secrets.DB_HOST}}
+                  DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+                  DB_PORT: ${{secrets.DB_PORT}}
+              working-directory: ./backend
+              run: |
+                  zappa deploy dev
