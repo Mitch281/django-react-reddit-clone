@@ -35,7 +35,6 @@ class AWSLambdaMiddleware:
 
         aws_lambda_model = AWSLambdaModel.objects.get(pk=1)
         num_aws_lambda_invocations = aws_lambda_model.num_invocations
-        print(num_aws_lambda_invocations)
         if num_aws_lambda_invocations >= NUM_LAMBDA_INVOCATIONS_PER_MONTH:
             set_lambda_function_concurrency(0)
 

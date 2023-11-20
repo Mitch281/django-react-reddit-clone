@@ -20,6 +20,7 @@ django-s3-storage = "*"
 pyscopg2 = "*"
 zappa-django-utils = "*"
 boto3 = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
