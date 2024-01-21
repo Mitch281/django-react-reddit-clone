@@ -2,7 +2,7 @@
     position: absolute;
     left: var(--votes-dist-to-left);
     top: var(--votes-dist-to-top);
-    
+
     /* To make pattern of top arrow then votes then bottom arrow */
     display: flex;
     flex-direction: column;
@@ -14,13 +14,10 @@
     font-size: 1.5em;
     color: black;
     margin: 4px auto;
+    color: inherit;
 }
 
 .upvote, .downvote {
     display: block;
     cursor: pointer;
-}
-
-.upvote:hover, .downvote:hover {
-    background-color: rgb(238, 230, 230);
 }

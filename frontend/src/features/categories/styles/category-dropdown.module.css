@@ -3,7 +3,7 @@
 }
 
 #top-of-dropdown button {
-    background-color:rgb(238, 238, 238);
+    background-color: var(--button-background-colour);
     border: none;
     border-radius: var(--navbar-button-border-radii);
     height: calc(var(--navbar-height) / 1.5);
@@ -14,8 +14,14 @@
     font-weight: 600;
 }
 
-#category-dropdown-content { /* Dropdown Nav UL */
-    z-index: 1; /* Important so that it renders over anything if the category list gets long. */
+#top-of-dropdown button:hover {
+    background-color: var(--button-hover-background-colour-primary);
+}
+
+#category-dropdown-content {
+    /* Dropdown Nav UL */
+    z-index: 1;
+    /* Important so that it renders over anything if the category list gets long. */
     display: none;
     padding-left: 0;
     position: absolute;
@@ -65,5 +71,5 @@
 }
 
 #category-in-focus:hover {
-    border: 1px solid var(--input-border-colour);
+    background: var(--button-hover-background-colour);
 }

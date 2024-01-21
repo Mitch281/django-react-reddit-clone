@@ -7,19 +7,27 @@
 }
 
 :root {
-    --soft-gray: rgb(250, 249, 249);
-    --light-blue: rgb(235, 241, 240);
-    --sky-blue: rgb(147, 213, 252);
-    --pale-lavendar: rgb(224, 222, 230);
-    --transparent-red: rgb(255, 0, 0, 0.2);
+    --blue-800: #5AA9E6;
+    --blue-500: #7FC8F8;
+    --blue-200: #F9F9F9;
+    --orange-200: #FFE45E;
+    --orange-500: #FF6392;
+    --white-200: #cac5c3;
 
-    --post-background-colour: var(--soft-gray);
-    --comment-background-colour: var(--soft-gray);
-    --input-background-colour-focus: var(--light-blue);
-    --button-colours: var(--light-blue);
-    --input-border-colour: var(--sky-blue);
-    --background-colour: var(--pale-lavendar);
-    --error-message-colour: var(--transparent-red);
+    --primary-text-colour: white;
+    --secondary-text-colour: var(--white-200);
+    --tertiary-text-colour: var(--blue-800);
+    --button-background-colour: var(--orange-500);
+    --button-hover-background-colour-primary: var(--blue-800);
+    --button-hover-background-colour-secondary: var(--blue-500);
+
+    --page-background-colour: var(--blue-800);
+    --post-background-colour: var(--blue-500);
+    --comment-background-colour: var(--post-background-colour);
+    --navbar-background-colour: var(--post-background-colour);
+    --input-background-colour-focus: var(--blue-200);
+
+    --error-message-colour: var(--red);
 
     --votes-dist-to-left: 10px;
     --votes-dist-to-top: 1px;
@@ -44,7 +52,7 @@ p {
 
 body {
     font-family: "Fira Sans", sans-serif;
-    background-color: var(--background-colour);
+    background-color: #1a1a1a;
     margin: 0px;
     min-height: 100vh;
 }
@@ -52,4 +60,8 @@ body {
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+}
+
+span, p, h1, h2, h3, a, button {
+    color: var(--primary-text-colour);
 }

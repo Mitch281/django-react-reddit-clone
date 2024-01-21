@@ -24,18 +24,12 @@
     border-radius: 5px;
 }
 
-#sorting-options a:not(#current-ordering) {
-    color: grey;
-}
-
 #sorting-options span {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
-    color: black;
 }
 
 #current-ordering {
-    color: var(--input-border-colour);
     border: 2px solid var(--input-border-colour);
     background-color: var(--input-background-colour-focus);
     border-radius: 5px;

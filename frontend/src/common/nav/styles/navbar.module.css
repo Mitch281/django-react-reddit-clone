@@ -1,6 +1,5 @@
 #navbar-site-name {
     text-decoration: none;
-    color: black;
     font-size: 1.3em;
 }
 
@@ -21,12 +20,12 @@
 }
 
 #username {
-    color: orange;
+    color: var(--tertiary-text-colour);
     font-weight: bold;
 }
 
 #navbar {
-    background-color: white;
+    background-color: var(--navbar-background-colour);
     width: 100%;
 }
 

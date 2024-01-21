@@ -1,7 +1,7 @@
 .post {
     background: var(--post-background-colour);
-    position: relative; /* Ensures that position absolute for post votes works. */
-    border: 1px solid white;
+    position: relative;
+    /* Ensures that position absolute for post votes works. */
     width: 50%;
     margin-top: 10px;
     overflow-wrap: break-word;
@@ -17,7 +17,8 @@
 }
 
 .post-info {
-    margin-left: calc(var(--votes-dist-to-left) + 25px); /* Helps stop overlapping of post information and post votes. */
+    margin-left: calc(var(--votes-dist-to-left) + 25px);
+    /* Helps stop overlapping of post information and post votes. */
 }
 
 .post-info span:not(.username) {

@@ -9,16 +9,15 @@
     top: 10vh;
     width: fit-content;
     height: 50px;
-    background: var(--input-background-colour-focus);
+    background: var(--button-background-colour);
     padding: 10px;
     border-radius: 5px;
-    color: black;
     line-height: 25px;
     text-decoration: none;
 }
 
 #link-to-create-post:hover {
-    border: 2px solid var(--input-border-colour);
+    background: var(--button-hover-background-colour-secondary);
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
