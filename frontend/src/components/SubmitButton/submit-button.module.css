@@ -1,0 +1,22 @@
+.input {
+    background-color: var(--button-background-colour);
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+    width: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgb(238, 230, 230);
+}
+
+.input:hover {
+    background: var(--button-hover-background-colour-primary);
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+    .input {
+        width: 75%;
+    }
+}

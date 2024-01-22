@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
+import SubmitButton from "../../components/SubmitButton/SubmitButton";
+import Textarea from "../../components/Textarea/Textarea";
 import { Comment, EditCommentPayload } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
 import { constants } from "../../utils/constants";
@@ -25,7 +26,9 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
     ) as Comment;
 
     const [commentContent, setCommentContent] = useState(comment.content);
-    const [editCommentStatus, setEditCommentStatus] = useState("idle");
+    const [editCommentStatus, setEditCommentStatus] = useState<
+        "pending" | "idle" | "fulfilled"
+    >("idle");
 
     const { userIdLoggedIn, logout } = useContext(UserContext);
 
@@ -61,20 +64,6 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
         }
     }
 
-    let submitButton;
-    if (editCommentStatus === "idle") {
-        const disabled = numCommentContentCharsLeft < 0;
-        submitButton = <input type="submit" value="Edit" disabled={disabled} />;
-    } else {
-        submitButton = (
-            <ClipLoader
-                color={constants.loaderColour}
-                loading={true}
-                size={20}
-            />
-        );
-    }
-
     return (
         <form
             className={styles["edit-comment-content-form"]}
@@ -82,15 +71,17 @@ const EditCommentContentForm = ({ commentId, toggleEditForm }: Props) => {
         >
             <div>
                 <span>Edit Comment</span>
-                <textarea
-                    value={commentContent}
+                <Textarea
                     placeholder="Content"
-                    onChange={(e) => setCommentContent(e.target.value)}
+                    value={commentContent}
+                    onChangeHandler={(e) => setCommentContent(e.target.value)}
+                    numCharsLeft={numCommentContentCharsLeft}
                 />
-                <span className={styles["char-count"]}>
-                    {numCommentContentCharsLeft} characters left
-                </span>
-                {submitButton}
+                <SubmitButton
+                    value="Edit"
+                    apiRequestStatus={editCommentStatus}
+                    isDisabled={numCommentContentCharsLeft < 0}
+                />
             </div>
         </form>
     );

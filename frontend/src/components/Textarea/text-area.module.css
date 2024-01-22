@@ -1,0 +1,20 @@
+.textarea {
+    border: 0px;
+    margin-top: 10px;
+    background: var(--input-background-colour);
+    outline: none;
+    resize: vertical;
+}
+
+.textarea:focus {
+    outline: none;
+    border-radius: 10px;
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-colour-focus);
+}
+
+.charCount {
+    font-size: 75%;
+    color: var(--secondary-text-colour);
+    margin: 10px 0px;
+}

@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuid_v4 } from "uuid";
 import { UserContext } from "../../app/App";
 import { AppDispatch, RootState } from "../../app/store";
+import SubmitButton from "../../components/SubmitButton/SubmitButton";
+import Textarea from "../../components/Textarea/Textarea";
 import useHandleTextInput from "../../hooks/useHandleTextInput";
 import { AddCommentReplyBody, Comment } from "../../types/shared";
 import { renderErrorOnRequest } from "../../utils/auth";
@@ -33,7 +34,9 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
     const parentUsername = commentToReplyTo.username;
 
     const [replyContent, setReplyContent] = useState("");
-    const [editCommentStatus, setEditCommentStatus] = useState("idle");
+    const [editCommentStatus, setEditCommentStatus] = useState<
+        "idle" | "pending" | "fulfilled"
+    >("idle");
 
     const { usernameLoggedIn, userIdLoggedIn, logout } =
         useContext(UserContext);
@@ -56,6 +59,7 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
             num_replies: 0,
         };
 
+        setEditCommentStatus("pending");
         try {
             await dispatch(makeCommentOnPost(reply)).unwrap();
             dispatch(
@@ -82,22 +86,6 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
 
     let content;
 
-    let submitButton;
-    if (editCommentStatus === "pending") {
-        submitButton = (
-            <ClipLoader
-                color={constants.loaderColour}
-                loading={true}
-                size={20}
-            />
-        );
-    } else {
-        const disabled = numReplyContentCharsLeft < 0;
-        submitButton = (
-            <input type="submit" value="Reply" disabled={disabled} />
-        );
-    }
-
     content = (
         <div>
             <form
@@ -108,21 +96,23 @@ const ReplyToCommentForm = ({ commentId, toggleReplyForm }: Props) => {
                     <span>
                         Reply to {parentUsername} as {usernameLoggedIn}
                     </span>
-                    <textarea
+                    <Textarea
                         placeholder="Content"
                         value={replyContent}
-                        onChange={(e) =>
+                        onChangeHandler={(e) =>
                             handleTextInput(
                                 e,
                                 setReplyContent,
                                 numReplyContentCharsLeft
                             )
                         }
+                        numCharsLeft={numReplyContentCharsLeft}
                     />
-                    <span className={styles["char-count"]}>
-                        {numReplyContentCharsLeft} characters left
-                    </span>
-                    {submitButton}
+                    <SubmitButton
+                        value="Reply"
+                        apiRequestStatus={editCommentStatus}
+                        isDisabled={numReplyContentCharsLeft < 0}
+                    />
                 </div>
             </form>
         </div>

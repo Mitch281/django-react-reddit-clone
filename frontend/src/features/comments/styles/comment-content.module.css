@@ -17,21 +17,6 @@
     margin: 10px;
 }
 
-.edit-comment-content-form textarea {
-    border: 0px;
-    margin-top: 15px;
-    background: var(--input-background-colour);
-    outline: none;
-    resize: vertical;
-}
-
-.edit-comment-content-form textarea:focus {
-    outline: none;
-    border-radius: 10px;
-    border: 2px solid var(--input-border-colour);
-    background-color: var(--input-background-colour-focus);
-}
-
 .edit-comment-content-form input[type="submit"] {
     background-color: var(--button-background-colour);
     border: 1px solid black;
