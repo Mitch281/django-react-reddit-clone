@@ -7,24 +7,23 @@
 }
 
 :root {
-    --blue-800: #5AA9E6;
-    --blue-500: #7FC8F8;
-    --blue-200: #F9F9F9;
-    --orange-200: #FFE45E;
-    --orange-500: #FF6392;
-    --white-200: #cac5c3;
+    --blue-900: #0D1B2A;
+    --blue-500: #1B263B;
+    --blue-200: #415A77;
+    --white-400: #778DA9;
+    --white-100: #E0E1DD;
 
-    --primary-text-colour: white;
-    --secondary-text-colour: var(--white-200);
-    --tertiary-text-colour: var(--blue-800);
-    --button-background-colour: var(--orange-500);
-    --button-hover-background-colour-primary: var(--blue-800);
+    --primary-text-colour: black;
+    --secondary-text-colour: var(--blue-500);
+    --tertiary-text-colour: var(--blue-200);
+    --button-background-colour: var(--white-400);
+    --button-hover-background-colour-primary: var(--blue-200);
     --button-hover-background-colour-secondary: var(--blue-500);
-
-    --page-background-colour: var(--blue-800);
-    --post-background-colour: var(--blue-500);
+    --page-background-colour: var(--white-100);
+    --post-background-colour: var(--white-400);
     --comment-background-colour: var(--post-background-colour);
     --navbar-background-colour: var(--post-background-colour);
+    --input-background-colour: var(--white-100);
     --input-background-colour-focus: var(--blue-200);
 
     --error-message-colour: var(--red);
@@ -52,7 +51,7 @@ p {
 
 body {
     font-family: "Fira Sans", sans-serif;
-    background-color: #1a1a1a;
+    background-color: var(--page-background-colour);
     margin: 0px;
     min-height: 100vh;
 }

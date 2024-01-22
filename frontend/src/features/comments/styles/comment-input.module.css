@@ -26,6 +26,11 @@
 #comment-input form input[type="submit"] {
     margin-top: 7px;
     width: 30%;
+    background: var(--button-background-colour);
+}
+
+#comment-input form input[type="submit"]:hover {
+    background: var(--button-hover-background-colour-primary);
 }
 
 #comment-input form input, #comment-input form textarea {
@@ -80,7 +85,8 @@
     }
 
     .not-logged-in-message span {
-        display: block; /* Prevent overlapping of log in and sign up buttons with text. */
+        display: block;
+        /* Prevent overlapping of log in and sign up buttons with text. */
         font-family: "Fira Sans", sans-serif;
     }
 }
@@ -88,4 +94,12 @@
 .char-count {
     font-size: 75%;
     color: grey;
+}
+
+.button {
+    background: var(--button-background-colour);
+}
+
+.button:hover {
+    background: var(--button-hover-background-colour);
 }

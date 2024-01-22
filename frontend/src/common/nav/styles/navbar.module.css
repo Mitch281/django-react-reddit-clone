@@ -59,11 +59,16 @@
 }
 
 #nav-to-login:hover, #nav-to-signup:hover {
-    border: 1px solid var(--input-border-colour);
+    background: var(--button-hover-background-colour);
 }
 
 #nav-to-login {
     margin-right: 1em;
+    background: var(--button-background-colour);
+}
+
+#nav-to-signup {
+    background: var(--button-background-colour);
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {

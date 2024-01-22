@@ -120,9 +120,13 @@ const CommentInput = () => {
                     className={styles["not-logged-in-message"]}
                 >
                     <span>Log in or signup to leave a comment &nbsp;</span>
-                    <Link to="/login/">Login</Link>
+                    <Link to="/login/" className={styles.button}>
+                        Login
+                    </Link>
                     &nbsp;
-                    <Link to="/signup/">Signup</Link>
+                    <Link to="/signup/" className={styles.button}>
+                        Signup
+                    </Link>
                 </div>
             </div>
         );

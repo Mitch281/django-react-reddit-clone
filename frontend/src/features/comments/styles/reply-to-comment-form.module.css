@@ -14,7 +14,7 @@
 .reply-to-comment-form textarea {
     border: 0px;
     margin-top: 10px;
-    background: var(--post-background-colour);
+    background: var(--input-background-colour);
     outline: none;
     resize: vertical;
 }
@@ -27,7 +27,7 @@
 }
 
 .reply-to-comment-form input[type="submit"] {
-    background-color: darkgrey;
+    background-color: var(--button-background-colour);
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
@@ -39,6 +39,10 @@
     color: rgb(238, 230, 230);
 }
 
+.reply-to-comment-form input[type="submit"]:hover {
+    background: var(--button-hover-background-colour-primary);
+}
+
 @media only screen and (hover: none) and (pointer: coarse) {
     .reply-to-comment-form input[type="submit"] {
         width: 100%;
@@ -47,6 +51,6 @@
 
 .char-count {
     font-size: 75%;
-    color: grey;
+    color: var(--secondary-text-colour);
     margin: 10px 0px;
 }
