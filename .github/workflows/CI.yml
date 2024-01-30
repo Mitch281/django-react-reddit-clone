@@ -38,6 +38,7 @@ jobs:
                   python manage.py test --noinput --verbosity 2
 
     deploy:
+        if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         needs: tests
         steps:
