@@ -75,6 +75,5 @@ jobs:
             - name: Deploy With Zappa
               working-directory: ./backend
               run: |
-                  echo "$${env.SECRET_KEY}"
                   pipenv run python manage.py collectstatic
                   pipenv run zappa update dev
