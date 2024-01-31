@@ -24,13 +24,6 @@ echo '{
         "include": [
             "pyscopg2-binary"
         ],
-        "vpc_config": {
-            "SubnetIds": [
-                "'$SUBNET_ID_ONE'",
-                "'$SUBNET_ID_TWO'",
-                "'$SUBNET_ID_THREE'"
-            ],
-            "SecurityGroupIds": ["'$RDS_SECURITY_GROUP_ID'"]
     }}
 }' >zappa_settings.json
 

@@ -36,7 +36,7 @@ is_aws = True if os.environ.get("AWS_DEFAULT_REGION") else False
 DEBUG = not is_aws
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'r2se78s5ui.execute-api.ap-southeast-2.amazonaws.com']
+                 '51sw84d6qk.execute-api.ap-southeast-2.amazonaws.com']
 
 
 # Application definition

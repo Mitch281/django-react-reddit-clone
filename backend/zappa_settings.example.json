@@ -10,10 +10,6 @@
         "manage_roles": false,
         "role_name": "IAM ROLE NAME",
         "role_arn": "IAM ROLE ARM",
-        "cors": true,
-        "vpc_config": {
-            "SubnetIds": ["RDS SUBNETS"],
-            "SecurityGroupIds": ["RDS SECURITY GROUP"]
-        }
+        "cors": true
     }
 }
