@@ -23,8 +23,8 @@ echo '{
         },
         "include": [
             "pyscopg2-binary"
-        ],
-    }}
+        ]
+    }
 }' >zappa_settings.json
 
 cat zappa_settings.json
