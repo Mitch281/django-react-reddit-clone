@@ -6,25 +6,6 @@ from core.models import *
 from django.utils import timezone
 from factory.django import DjangoModelFactory
 
-SAMPLE_EXERCISES = [
-    'Lat Pulldown',
-    'Bench Press',
-    'Leg Press',
-    'Squat',
-    'Deadlift',
-    'Barbell Overhead Press',
-    'Bicep Curls',
-    'Tricep Pushdowns'
-]
-
-SAMPLE_WORKOUT_TITLES = [
-    'Chest',
-    'Full Body',
-    'Back',
-    'Arms',
-    'Shoulders'
-]
-
 
 class UserFactory(DjangoModelFactory):
     class Meta:
