@@ -26,3 +26,7 @@ psycopg2-binary = "*"
 
 [requires]
 python_version = "3.10"
+
+[scripts]
+dev-windows = "set ENV=dev && python manage.py runserver"
+prod-windows = "set ENV=prod && python manage.py runserver"

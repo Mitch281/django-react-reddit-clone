@@ -14,7 +14,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-import dj_database_url
 from dotenv import find_dotenv, load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,10 +29,9 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-is_aws = True if os.environ.get("AWS_DEFAULT_REGION") else False
+ENV = os.getenv('ENV').strip()
+DEBUG = ENV == 'dev'
 
-DEBUG = not is_aws
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
