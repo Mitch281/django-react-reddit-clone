@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'comments',
     'core',
     'posts',
-    'seeding',
-    'zappa_django_utils'
+    'seeding'
 ]
 
 MIDDLEWARE = [
@@ -66,7 +65,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'backend.middleware.aws_lambda_middleware.AWSLambdaMiddleware'
 ]
 
 ROOT_URLCONF = 'backend.urls'
