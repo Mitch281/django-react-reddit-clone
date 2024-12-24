@@ -6,7 +6,7 @@ import {
     VerifyCurrentUserResponse,
 } from "../types/shared";
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+const API_ENDPOINT = import.meta.env.VITE_APP_API_ENDPOINT;
 
 export class NoAccessTokenError extends Error {
     constructor(message: string) {

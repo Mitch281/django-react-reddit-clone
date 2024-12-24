@@ -17,5 +17,5 @@
         "jsx": "react-jsx",
         "plugins": [{ "name": "typescript-plugin-css-modules" }]
     },
-    "include": ["src", "declaration.d.ts"]
+    "include": ["src", "declaration.d.ts", "vite-env.d.ts"]
 }

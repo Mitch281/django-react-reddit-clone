@@ -33,7 +33,7 @@ type State = {
     entities?: Post[];
 };
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+const API_ENDPOINT = import.meta.env.VITE_APP_API_ENDPOINT;
 
 const postsAdapter = createEntityAdapter();
 
@@ -50,9 +50,9 @@ export const fetchPosts = createAsyncThunk(
         const { order, pageNumber } = fetchInformation;
         let url;
         if (order) {
-            url = `${API_ENDPOINT}/posts/${order}?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
+            url = `${API_ENDPOINT}/posts/${order}/?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         } else {
-            url = `${API_ENDPOINT}/posts?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
+            url = `${API_ENDPOINT}/posts/?limit=${constants.POSTS_PER_PAGE}&page-number=${pageNumber}`;
         }
         const response = await fetch(url);
         const json: Post[] = await response.json();
