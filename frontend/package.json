@@ -23,7 +23,8 @@
         "web-vitals": "^2.1.3"
     },
     "scripts": {
-        "start": "vite",
+        "start:dev": "cross-env NODE_ENV=dev vite",
+        "start:prod": "cross-env NODE_ENV=PROD vite",
         "build": "vite build",
         "serve": "vite preview"
     },
@@ -48,6 +49,7 @@
     "devDependencies": {
         "@types/uuid": "^9.0.4",
         "@vitejs/plugin-react": "^4.3.4",
+        "cross-env": "^7.0.3",
         "vite": "^6.0.5"
     }
 }
