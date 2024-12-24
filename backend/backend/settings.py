@@ -35,8 +35,7 @@ is_aws = True if os.environ.get("AWS_DEFAULT_REGION") else False
 
 DEBUG = not is_aws
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 '51sw84d6qk.execute-api.ap-southeast-2.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -166,7 +165,7 @@ REST_FRAMEWORK = {
 
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    'http://localhost:5173',
     'https://threddit.netlify.app'
 ]
 
