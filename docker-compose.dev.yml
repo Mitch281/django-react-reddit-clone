@@ -1,0 +1,27 @@
+services:
+    backend:
+        build:
+            context: .
+            dockerfile: ./backend/Docker/Dockerfile
+        ports:
+            - "8000:8000"
+        env_file:
+            - ./backend/.env
+        environment:
+            - ENV=dev
+
+    frontend:
+        build:
+            context: .
+            dockerfile: ./frontend/Docker/Dockerfile
+        ports:
+            - "5173:5173"
+        env_file:
+            - ./frontend/.env
+        environment:
+            - NODE_ENV=dev
+            # http://localhost:8000 resolves to the host machine, not the ai-api service. Hence, we
+            # override this environment variable accordingly to reference the ai-api service.
+            - AI_MICROSERVICE_URL=http://backend/api
+        depends_on:
+            - backend
