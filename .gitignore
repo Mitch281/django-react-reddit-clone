@@ -4,12 +4,11 @@
 # Database
 db.sqlite3
 
-jsconfig.json
 **/__pycache__/
 .vscode/settings.json
 
 *.zip
 
-zappa_settings.json
-
 *staticfiles/
+
+deployment-notes.txt
