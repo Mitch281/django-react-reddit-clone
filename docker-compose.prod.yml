@@ -20,8 +20,5 @@ services:
             - ./frontend/.env
         environment:
             - NODE_ENV=prod
-            # http://localhost:8000 resolves to the host machine, not the ai-api service. Hence, we
-            # override this environment variable accordingly to reference the ai-api service.
-            - AI_MICROSERVICE_URL=http://backend/api
         depends_on:
             - backend
