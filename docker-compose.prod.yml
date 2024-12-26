@@ -9,7 +9,6 @@ services:
             - ./backend/.env
         environment:
             - ENV=prod
-            - DB_HOST=host.docker.internal
         extra_hosts:
             # To make host.docker.internal work on Linux.
             - "host.docker.internal:host-gateway"
