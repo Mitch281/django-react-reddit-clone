@@ -11,7 +11,8 @@ services:
             - ENV=prod
             - DB_HOST=host.docker.internal
         extra_hosts:
-            - "host.docker.internal:172.17.0.1"
+            # To make host.docker.internal work on Linux.
+            - "host.docker.internal:host-gateway"
 
     frontend:
         build:
