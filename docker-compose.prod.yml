@@ -9,6 +9,9 @@ services:
             - ./backend/.env
         environment:
             - ENV=prod
+            - DB_HOST=host.docker.internal
+        extra_hosts:
+            - "host.docker.internal:172.17.0.1"
 
     frontend:
         build:
