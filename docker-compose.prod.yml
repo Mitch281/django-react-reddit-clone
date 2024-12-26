@@ -20,8 +20,6 @@ services:
             dockerfile: ./frontend/Docker/Dockerfile
         ports:
             - "5173:5173"
-        env_file:
-            - ./frontend/.env
         environment:
             - NODE_ENV=prod
             - VITE_APP_API_ENDPOINT=http://backend/api
