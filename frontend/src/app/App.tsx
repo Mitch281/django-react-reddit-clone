@@ -26,6 +26,7 @@ export const UserContext = createContext({} as UserContextType);
 function App() {
     console.log("***********");
     console.log(import.meta.env);
+    console.log(import.meta.env.VITE_APP_API_ENDPOINT);
     console.log("***********");
 
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
