@@ -30,5 +30,6 @@ jobs:
             - name: Run Tests
               working-directory: ./backend
               run: |
+                  export ENV=dev
                   python manage.py makemigrations
                   python manage.py test --noinput --verbosity 2
