@@ -24,6 +24,10 @@ export const UserContext = createContext({} as UserContextType);
 // TODO: Upgrade to latest version of react so we can see which renders are due to strict mode (greyed out),
 // and which are actual renders!
 function App() {
+    console.log("***********");
+    console.log(import.meta.env);
+    console.log("***********");
+
     const [usernameLoggedIn, setUsernameLoggedIn] = useState("");
     const [userIdLoggedIn, setUserIdLoggedIn] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
