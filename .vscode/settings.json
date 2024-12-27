@@ -1,0 +1,20 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "git.ignoredRepositories": ["C:Users/61403/reddit-clone/backend"],
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "[ignore]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*.yml"
+    }
+}
