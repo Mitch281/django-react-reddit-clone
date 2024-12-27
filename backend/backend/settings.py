@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
-    'https://threddit.netlify.app'
+    'http://209.38.22.34:5173'
 ]
 
 # STATIC_URL = '/static/'
