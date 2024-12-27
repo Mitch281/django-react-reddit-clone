@@ -39,3 +39,8 @@ jobs:
                   host: 209.38.22.34
                   username: root
                   key: ${{secrets.SERVER_PRIVATE_KEY}}
+                  script: |
+                      cd /usr/local/src/django-react-reddit-clone
+                      git checkout main
+                      git pull
+                      docker-compose -f docker-compose.prod.yml up --build
