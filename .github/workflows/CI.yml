@@ -43,4 +43,4 @@ jobs:
                       cd /usr/local/src/django-react-reddit-clone
                       git checkout main
                       git pull
-                      docker-compose -f docker-compose.prod.yml up --build
+                      docker-compose -f docker-compose.prod.yml up --build -d
