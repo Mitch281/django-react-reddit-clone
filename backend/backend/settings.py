@@ -29,7 +29,11 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-ENV = os.getenv('ENV').strip()
+ENV = os.getenv('ENV')
+if ENV:
+    ENV = ENV.strip()
+else:
+    raise EnvironmentError('ENV not defined.')
 DEBUG = ENV == 'dev'
 
 
