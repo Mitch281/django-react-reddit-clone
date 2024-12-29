@@ -16,6 +16,7 @@ styling of the application was completed with CSS modules.
 -   Django
 -   Django Rest Framework
 -   PostgresSQL (with ORM)
+-   SQLite (for dev environment only)
 -   djangorestframework-simplejwt
 
 ### Frontend
@@ -23,7 +24,7 @@ styling of the application was completed with CSS modules.
 -   React
 -   Redux (Redux Toolkit)
 -   CSS Modules
--   Webpack (through [Create React App](https://github.com/facebook/create-react-app))
+-   Vite
 
 ### Deployment
 
