@@ -1,6 +1,6 @@
 # Reddit Clone
 
-App: https://threddit.netlify.app/
+App: http://209.38.22.34:5173/
 
 This repository is a reddit clone written in
 django on the backend and react and redux
