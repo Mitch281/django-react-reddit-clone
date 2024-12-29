@@ -1,14 +1,4 @@
 services:
-    db:
-        image: postgres
-        environment:
-            - POSTGRES_USER=${DB_USER}
-            - POSTGRES_PASSWORD=${DB_PASSWORD}
-        volumes:
-            - db/:data/postgres
-        ports:
-            - "5432:5432"
-
     backend:
         build:
             context: .
