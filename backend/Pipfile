@@ -24,4 +24,6 @@ python_version = "3.10"
 [scripts]
 dev-windows = "set ENV=dev && python manage.py runserver"
 prod-windows = "set ENV=prod && python manage.py runserver"
+"dev-unix" = "export ENV=DEV && python manage.py runserver"
+"prod-unix" = "export ENV=PROD && python manage.py runserver"
 requirements = "pipenv run pip freeze > requirements.txt"
