@@ -28,8 +28,7 @@ styling of the application was completed with CSS modules.
 
 ### Deployment
 
--   Frontend deployed on Netlify
--   Backend with AWS Lambda through an API Gateway. Amazon RDS is used for database.
+- Deployed on a Digital Ocean Virtual Machine.
 
 ### Features
 
