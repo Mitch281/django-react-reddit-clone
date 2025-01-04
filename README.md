@@ -125,7 +125,7 @@ pipenv shell
 cd backend
 python manage.py migrate <!-- Only necessary when running for first time. -->
 pipenv run dev-windows # If on Windows
-pipenv run prod-windows # If on a Unix based machine.
+pipenv run dev-unix # If on a Unix based machine.
 ```
 
 And in the second terminal (from the root directory):
